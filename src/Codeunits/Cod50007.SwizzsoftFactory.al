@@ -13,7 +13,7 @@ Codeunit 50007 "Swizzsoft Factory."
         ObjVendor: Record Vendor;
         Date: Date;
         ObjProducts: Record "Account Types-Saving Products";
-        ObjMemberLedgerEntry: Record "Member Ledger Entry";
+        ObjMemberLedgerEntry: Record "Cust. Ledger Entry";
         ObjLoans: Record "Loans Register";
         ObjBanks: Record "Bank Account";
         ObjLoanProductSetup: Record "Loan Products Setup";

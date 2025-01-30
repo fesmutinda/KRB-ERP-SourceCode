@@ -113,7 +113,7 @@ Report 50223 "Member Detailed Statement"
                 column(ModeofDisbursement_Loans; Loans."Mode of Disbursement")
                 {
                 }
-                dataitem(loan; "Member Ledger Entry")
+                dataitem(loan; "Cust. Ledger Entry")
                 {
                     DataItemLink = "Customer No." = field("Client Code"), "Loan No" = field("Loan  No."), "Posting Date" = field("Date filter");
                     DataItemTableView = sorting("Posting Date") where("Transaction Type" = filter(Loan | "Loan Repayment"), "Loan No" = filter(<> ''), Reversed = filter(false));
@@ -187,7 +187,7 @@ Report 50223 "Member Detailed Statement"
                         OpeningBalInt := InterestBF;
                     end;
                 }
-                dataitem(Interests; "Member Ledger Entry")
+                dataitem(Interests; "Cust. Ledger Entry")
                 {
                     DataItemLink = "Customer No." = field("Client Code"), "Loan No" = field("Loan  No."), "Posting Date" = field("Date filter");
                     DataItemTableView = sorting("Posting Date") where("Transaction Type" = filter("Interest Due" | "Interest Paid"), "Loan No" = filter(<> ''), Reversed = filter(false));
@@ -294,10 +294,10 @@ Report 50223 "Member Detailed Statement"
                 end;
             }
 
-            dataitem(Share; "Member Ledger Entry")
+            dataitem(Share; "Cust. Ledger Entry")
             {
                 DataItemLink = "Customer No." = field("No."), "Posting Date" = field("Date Filter");
-                DataItemTableView = sorting("Posting Date") where("Transaction Type" = const("Share Capital"), Reversed = filter(false));
+                DataItemTableView = sorting("Posting Date") where("Transaction Type" = const("Shares Capital"), Reversed = filter(false));
                 column(openBalances; OpenBalance)
                 {
                 }
@@ -365,7 +365,7 @@ Report 50223 "Member Detailed Statement"
                 end;
             }
 
-            dataitem(HousingShares; "Member Ledger Entry")
+            dataitem(HousingShares; "Cust. Ledger Entry")
             {
                 DataItemLink = "Customer No." = field("No."), "Posting Date" = field("Date Filter");
                 DataItemTableView = sorting("Transaction Type", "Loan No", "Posting Date") where("Transaction Type" = const("Benevolent Fund"), Reversed = filter(false)); //"Benevolent Fund" from Investment
@@ -542,7 +542,7 @@ Report 50223 "Member Detailed Statement"
             //     end;
             // }
 
-            dataitem(Deposits; "Member Ledger Entry")
+            dataitem(Deposits; "Cust. Ledger Entry")
             {
                 DataItemLink = "Customer No." = field("No."), "Posting Date" = field("Date Filter");
                 DataItemTableView = sorting("Posting Date") where("Transaction Type" = const("Deposit Contribution"), Reversed = filter(false));
@@ -606,7 +606,7 @@ Report 50223 "Member Detailed Statement"
                     OpeningBal := SharesBF;
                 end;
             }
-            dataitem(Dividend; "Member Ledger Entry")//
+            dataitem(Dividend; "Cust. Ledger Entry")//
             {
                 DataItemLink = "Customer No." = field("No."), "Posting Date" = field("Date Filter");
                 DataItemTableView = sorting("Transaction Type", "Loan No", "Posting Date") where("Transaction Type" = const(dividend), Reversed = filter(false));
@@ -833,11 +833,11 @@ Report 50223 "Member Detailed Statement"
         ApprovedAmount_Interest: Decimal;
         LonRepaymentSchedule: Record "Loan Repayment Schedule";
 
-        MembLedgerEntry: Record "Member Ledger Entry";
+        MembLedgerEntry: Record "Cust. Ledger Entry";
         TbMembReg: Record Customer;
 
 
-    local procedure GetBankCode(MembLedger: Record "Member Ledger Entry"): Text
+    local procedure GetBankCode(MembLedger: Record "Cust. Ledger Entry"): Text
     var
         BankLedger: Record "Bank Account Ledger Entry";
     begin
