@@ -30,7 +30,7 @@ Codeunit 50119 AdminPortal
         ProductsSetup: Record 51381;
         LoanApp: Record 51371;
         Banks: Record "Dimension Value";
-        Members: Record 51364;
+        Members: Record Customer;
         Approvals: Record "Approval Entry";
         Dimensions: Record "Dimension Value";
         RiskAllocation: Record 51015;
@@ -39,7 +39,7 @@ Codeunit 50119 AdminPortal
         LoanApprovalCommitee: Record 51429;
         LoanApprovalCommiteeexisting: Record 51429;
         ReturnList: Text;
-        objMember: Record 51364;
+        objMember: Record Customer;
         Paymentheader: Record "Payment Header";
         NewApplicationNumber: Integer;
         OnlineUser: Record 51489;

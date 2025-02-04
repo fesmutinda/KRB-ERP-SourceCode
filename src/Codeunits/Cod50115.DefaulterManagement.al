@@ -8,7 +8,7 @@ Codeunit 50115 "Defaulter Management"
     end;
 
     var
-        MemberRegister: Record 51364;
+        MemberRegister: Record Customer;
         Loans: Record 51371;
         SMSMessages: Record 51471;
         FirstMonthDate: Date;

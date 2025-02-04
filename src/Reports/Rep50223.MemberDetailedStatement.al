@@ -297,7 +297,7 @@ Report 50223 "Member Detailed Statement"
             dataitem(Share; "Cust. Ledger Entry")
             {
                 DataItemLink = "Customer No." = field("No."), "Posting Date" = field("Date Filter");
-                DataItemTableView = sorting("Posting Date") where("Transaction Type" = const("Shares Capital"), Reversed = filter(false));
+                DataItemTableView = sorting("Posting Date") where("Transaction Type" = const("Share Capital"), Reversed = filter(false));
                 column(openBalances; OpenBalance)
                 {
                 }

@@ -414,7 +414,7 @@ page 50654 "Checkoff Processing Headerx"
         GenBatches: Record "Gen. Journal Batch";
         Datefilter: Text[50];
         ReceiptLine: Record "Checkoff Lines-Distributedx";
-        MembLedg: Record "Member Ledger Entry";
+        MembLedg: Record "Cust. Ledger Entry";
         SFactory: Codeunit "Swizzsoft Factory.";
         BATCH_NAME: Code[50];
         BATCH_TEMPLATE: Code[50];

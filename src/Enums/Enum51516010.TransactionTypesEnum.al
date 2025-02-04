@@ -55,7 +55,7 @@ enum 51516010 "TransactionTypesEnum"
     {
         Caption = 'Unallocated Funds';
     }
-    value(14; "Shares Capital")
+    value(14; "Share Capital")
     {
         Caption = 'Shares Capital';
     }
@@ -151,10 +151,10 @@ enum 51516010 "TransactionTypesEnum"
     {
         Caption = 'Insurance Paid';
     }
-    // value(38; "FOSA Account")
-    // {
-    //     Caption = 'FOSA Account';
-    // }
+    value(38; "Withdrawable Savings")
+    {
+        Caption = 'Withdrawable Savings';
+    }
     value(39; "Partial Disbursement")
     {
         Caption = 'Partial Disbursement';
@@ -193,10 +193,10 @@ enum 51516010 "TransactionTypesEnum"
         Caption = 'Alpha Savings';
 
     }
-    // value(54; "Loan Application Fee Paid")
-    // {
+    value(54; "Loan Application Fee Paid")
+    {
 
-    // }
+    }
     value(55; "Loan Insurance Paid")
     {
 
@@ -205,6 +205,6 @@ enum 51516010 "TransactionTypesEnum"
     {
 
     }
-    value(57; "Mwanangu Savings") { Caption = 'Mwanangu Savings'; }
+    value(57; "Junior Savings") { Caption = 'Junior Savings'; }
 
 }

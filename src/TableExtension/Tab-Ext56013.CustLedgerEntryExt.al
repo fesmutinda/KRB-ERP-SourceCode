@@ -143,6 +143,14 @@ tableextension 56013 CustLedgerEntryExt extends "Cust. Ledger Entry"
             OptionCaption = ',Salary Processing,Checkoff Processing,Cashier Receipt,BackOffice Receipt,Autorecovery,Funds Transfer';
             OptionMembers = ,"Salary Processing","Checkoff Processing","Cashier Receipt","BackOffice Receipt",Autorecovery,"Funds Transfer";
         }
+        field(7708; "Recoverd Loan"; Code[20])
+        {
+        }
+        field(7709; "Recovery Transaction Type"; Option)
+        {
+            OptionCaption = 'Normal,Guarantor Recoverd,Guarantor Paid';
+            OptionMembers = Normal,"Guarantor Recoverd","Guarantor Paid";
+        }
     }
     keys
     {

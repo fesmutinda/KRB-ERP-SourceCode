@@ -485,7 +485,7 @@ page 50037 "Posted FD Processing Card"
         InterestBuffer: Record 51467;
         FDType: Record 51447;
         Vend: Record Vendor;
-        Cust: Record 51364;
+        Cust: Record Customer;
         LineNo: Integer;
         UsersID: Record User;
         DActivity: Code[20];

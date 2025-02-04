@@ -499,7 +499,7 @@ Codeunit 50996 "S-Mobile"
                                 GenJournalLine."Account Type" := GenJournalLine."account type"::Customer;
                                 GenJournalLine."Account No." := Loans."Client Code";
                                 GenJournalLine.Validate(GenJournalLine."Account No.");
-                                GenJournalLine."Transaction Type" := GenJournalLine."transaction type"::"Shares Capital";
+                                GenJournalLine."Transaction Type" := GenJournalLine."transaction type"::"Share Capital";
                                 GenJournalLine."Loan No" := Loans."Loan  No.";
                                 GenJournalLine."Document No." := SmobileTrans."Document No";
                                 GenJournalLine."External Document No." := SmobileTrans."Account No";

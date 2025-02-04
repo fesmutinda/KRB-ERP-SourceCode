@@ -44,13 +44,13 @@ Codeunit 50010 "Swizzsoft FactoryMobile"
         UserSetup: Record "User Setup";
         ObjVendor: Record Vendor;
         ObjProducts: Record 51436;
-        ObjMemberLedgerEntry: Record 51365;
+        ObjMemberLedgerEntry: Record "Cust. Ledger Entry";
         ObjLoans: Record 51371;
         ObjBanks: Record "Bank Account";
         ObjLoanProductSetup: Record 51381;
         ObjProductCharges: Record 51383;
-        ObjMembers: Record 51364;
-        ObjMembers2: Record 51364;
+        ObjMembers: Record Customer;
+        ObjMembers2: Record Customer;
         ObjGenSetUp: Record 51398;
         ObjCompInfo: Record "Company Information";
         BAND1: Decimal;
@@ -267,7 +267,7 @@ Codeunit 50010 "Swizzsoft FactoryMobile"
 
     // procedure FnGetMemberBranch(MemberNo: Code[100]) MemberBranch: Code[100]
     // var
-    //     ObjMemberLocal: Record 51364;
+    //     ObjMemberLocal: Record Customer;
     // begin
     //     ObjMemberLocal.Reset;
     //     ObjMemberLocal.SetRange(ObjMemberLocal."No.",MemberNo);
@@ -279,7 +279,7 @@ Codeunit 50010 "Swizzsoft FactoryMobile"
 
     local procedure FnReturnRetirementDate(MemberNo: Code[50]): Date
     var
-        ObjMembers: Record 51364;
+        ObjMembers: Record Customer;
     begin
         ObjGenSetUp.Get();
         ObjMembers.Reset;
@@ -314,7 +314,7 @@ Codeunit 50010 "Swizzsoft FactoryMobile"
 
     procedure FnGetFosaAccount(MemberNo: Code[50]) FosaAccount: Code[50]
     var
-        ObjMembers: Record 51364;
+        ObjMembers: Record Customer;
     begin
         ObjMembers.Reset;
         ObjMembers.SetRange(ObjMembers."No.",MemberNo);
@@ -394,7 +394,7 @@ Codeunit 50010 "Swizzsoft FactoryMobile"
         loanTypes: Record 51381;
         ObjLoanX: Record 51371;
         LoansRec: Record 51371;
-        Cust: Record 51364;
+        Cust: Record Customer;
     begin
           loanTypes.Reset;
           loanTypes.SetRange(loanTypes.Code,'BLOAN');

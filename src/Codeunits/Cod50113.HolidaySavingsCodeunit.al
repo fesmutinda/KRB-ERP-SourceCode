@@ -16,31 +16,31 @@ Codeunit 50113 "Holiday Savings Codeunit"
 
     procedure FnProcessHolidaySavings(MemberNo: Code[50]; StartDate: Date; PostingDate: Date)
     var
-        MembersTable: Record 51364;
+        MembersTable: Record Customer;
         MonthAmountSaved: Decimal;
         InterestEarned: Decimal;
         SaccoGeneralSetUp: Record 51398;
         NewMonth: Date;
         MemberHolidaySaving: Decimal;
-        MembersTable2: Record 51364;
+        MembersTable2: Record Customer;
     begin
         StartDate := CalcDate('-CM', StartDate);
         InterestEarned := 0;
         SaccoGeneralSetUp.Get();
         MembersTable.Reset;
-        MembersTable.SetAutocalcFields(MembersTable."Holiday Savings");
+        MembersTable.SetAutocalcFields(MembersTable."Withdrawable Savings");
         MembersTable.SetRange(MembersTable."No.", MemberNo);
         if MembersTable.Find('-') then begin
             MemberHolidaySaving := 0;
-            MemberHolidaySaving := (MembersTable."Holiday Savings");
+            MemberHolidaySaving := (MembersTable."Withdrawable Savings");
             //.........................12
             MembersTable2.Reset;
             MembersTable2.SetRange(MembersTable2."No.", MemberNo);
-            MembersTable2.SetAutocalcFields(MembersTable2."Holiday Savings");
+            MembersTable2.SetAutocalcFields(MembersTable2."Withdrawable Savings");
             MembersTable2.SetFilter(MembersTable2."Date Filter", '%1..%2', StartDate, CalcDate('CM', StartDate));
             if MembersTable2.Find('-') then begin
                 MonthAmountSaved := 0;
-                MonthAmountSaved := MembersTable2."Holiday Savings";
+                MonthAmountSaved := MembersTable2."Withdrawable Savings";
                 if MonthAmountSaved > 0 then begin
                     InterestEarned := (InterestEarned + (((SaccoGeneralSetUp."HolidaySavings(%)" / 100) * MonthAmountSaved)) * 12 / 12);
                 end else if MonthAmountSaved <= 0 then begin
@@ -52,11 +52,11 @@ Codeunit 50113 "Holiday Savings Codeunit"
             NewMonth := CalcDate('1M', StartDate);
             MembersTable2.Reset;
             MembersTable2.SetRange(MembersTable2."No.", MemberNo);
-            MembersTable2.SetAutocalcFields(MembersTable2."Holiday Savings");
+            MembersTable2.SetAutocalcFields(MembersTable2."Withdrawable Savings");
             MembersTable2.SetFilter(MembersTable2."Date Filter", '%1..%2', NewMonth, CalcDate('CM', NewMonth));
             if MembersTable2.Find('-') then begin
                 MonthAmountSaved := 0;
-                MonthAmountSaved := MembersTable2."Holiday Savings";
+                MonthAmountSaved := MembersTable2."Withdrawable Savings";
                 if MonthAmountSaved > 0 then begin
                     InterestEarned := (InterestEarned + (((SaccoGeneralSetUp."HolidaySavings(%)" / 100) * MonthAmountSaved)) * 11 / 12);
                 end else if MonthAmountSaved <= 0 then begin
@@ -69,11 +69,11 @@ Codeunit 50113 "Holiday Savings Codeunit"
             NewMonth := CalcDate('2M', StartDate);
             MembersTable2.Reset;
             MembersTable2.SetRange(MembersTable2."No.", MemberNo);
-            MembersTable2.SetAutocalcFields(MembersTable2."Holiday Savings");
+            MembersTable2.SetAutocalcFields(MembersTable2."Withdrawable Savings");
             MembersTable2.SetFilter(MembersTable2."Date Filter", '%1..%2', NewMonth, CalcDate('CM', NewMonth));
             if MembersTable2.Find('-') then begin
                 MonthAmountSaved := 0;
-                MonthAmountSaved := MembersTable2."Holiday Savings";
+                MonthAmountSaved := MembersTable2."Withdrawable Savings";
                 if MonthAmountSaved > 0 then begin
                     InterestEarned := (InterestEarned + (((SaccoGeneralSetUp."HolidaySavings(%)" / 100) * MonthAmountSaved)) * 10 / 12);
                 end else if MonthAmountSaved <= 0 then begin
@@ -86,11 +86,11 @@ Codeunit 50113 "Holiday Savings Codeunit"
             NewMonth := CalcDate('3M', StartDate);
             MembersTable2.Reset;
             MembersTable2.SetRange(MembersTable2."No.", MemberNo);
-            MembersTable2.SetAutocalcFields(MembersTable2."Holiday Savings");
+            MembersTable2.SetAutocalcFields(MembersTable2."Withdrawable Savings");
             MembersTable2.SetFilter(MembersTable2."Date Filter", '%1..%2', NewMonth, CalcDate('CM', NewMonth));
             if MembersTable2.Find('-') then begin
                 MonthAmountSaved := 0;
-                MonthAmountSaved := MembersTable2."Holiday Savings";
+                MonthAmountSaved := MembersTable2."Withdrawable Savings";
                 if MonthAmountSaved > 0 then begin
                     InterestEarned := (InterestEarned + (((SaccoGeneralSetUp."HolidaySavings(%)" / 100) * MonthAmountSaved)) * 9 / 12);
                 end else if MonthAmountSaved <= 0 then begin
@@ -103,11 +103,11 @@ Codeunit 50113 "Holiday Savings Codeunit"
             NewMonth := CalcDate('4M', StartDate);
             MembersTable2.Reset;
             MembersTable2.SetRange(MembersTable2."No.", MemberNo);
-            MembersTable2.SetAutocalcFields(MembersTable2."Holiday Savings");
+            MembersTable2.SetAutocalcFields(MembersTable2."Withdrawable Savings");
             MembersTable2.SetFilter(MembersTable2."Date Filter", '%1..%2', NewMonth, CalcDate('CM', NewMonth));
             if MembersTable2.Find('-') then begin
                 MonthAmountSaved := 0;
-                MonthAmountSaved := MembersTable2."Holiday Savings";
+                MonthAmountSaved := MembersTable2."Withdrawable Savings";
                 if MonthAmountSaved > 0 then begin
                     InterestEarned := (InterestEarned + (((SaccoGeneralSetUp."HolidaySavings(%)" / 100) * MonthAmountSaved)) * 8 / 12);
                 end else if MonthAmountSaved <= 0 then begin
@@ -120,11 +120,11 @@ Codeunit 50113 "Holiday Savings Codeunit"
             NewMonth := CalcDate('5M', StartDate);
             MembersTable2.Reset;
             MembersTable2.SetRange(MembersTable2."No.", MemberNo);
-            MembersTable2.SetAutocalcFields(MembersTable2."Holiday Savings");
+            MembersTable2.SetAutocalcFields(MembersTable2."Withdrawable Savings");
             MembersTable2.SetFilter(MembersTable2."Date Filter", '%1..%2', NewMonth, CalcDate('CM', NewMonth));
             if MembersTable2.Find('-') then begin
                 MonthAmountSaved := 0;
-                MonthAmountSaved := MembersTable2."Holiday Savings";
+                MonthAmountSaved := MembersTable2."Withdrawable Savings";
                 if MonthAmountSaved > 0 then begin
                     InterestEarned := (InterestEarned + (((SaccoGeneralSetUp."HolidaySavings(%)" / 100) * MonthAmountSaved)) * 7 / 12);
                 end else if MonthAmountSaved <= 0 then begin
@@ -137,11 +137,11 @@ Codeunit 50113 "Holiday Savings Codeunit"
             NewMonth := CalcDate('6M', StartDate);
             MembersTable2.Reset;
             MembersTable2.SetRange(MembersTable2."No.", MemberNo);
-            MembersTable2.SetAutocalcFields(MembersTable2."Holiday Savings");
+            MembersTable2.SetAutocalcFields(MembersTable2."Withdrawable Savings");
             MembersTable2.SetFilter(MembersTable2."Date Filter", '%1..%2', NewMonth, CalcDate('CM', NewMonth));
             if MembersTable2.Find('-') then begin
                 MonthAmountSaved := 0;
-                MonthAmountSaved := MembersTable2."Holiday Savings";
+                MonthAmountSaved := MembersTable2."Withdrawable Savings";
                 if MonthAmountSaved > 0 then begin
                     InterestEarned := (InterestEarned + (((SaccoGeneralSetUp."HolidaySavings(%)" / 100) * MonthAmountSaved)) * 6 / 12);
                 end else if MonthAmountSaved <= 0 then begin
@@ -154,11 +154,11 @@ Codeunit 50113 "Holiday Savings Codeunit"
             NewMonth := CalcDate('7M', StartDate);
             MembersTable2.Reset;
             MembersTable2.SetRange(MembersTable2."No.", MemberNo);
-            MembersTable2.SetAutocalcFields(MembersTable2."Holiday Savings");
+            MembersTable2.SetAutocalcFields(MembersTable2."Withdrawable Savings");
             MembersTable2.SetFilter(MembersTable2."Date Filter", '%1..%2', NewMonth, CalcDate('CM', NewMonth));
             if MembersTable2.Find('-') then begin
                 MonthAmountSaved := 0;
-                MonthAmountSaved := MembersTable2."Holiday Savings";
+                MonthAmountSaved := MembersTable2."Withdrawable Savings";
                 if MonthAmountSaved > 0 then begin
                     InterestEarned := (InterestEarned + (((SaccoGeneralSetUp."HolidaySavings(%)" / 100) * MonthAmountSaved)) * 5 / 12);
                 end else if MonthAmountSaved <= 0 then begin
@@ -171,11 +171,11 @@ Codeunit 50113 "Holiday Savings Codeunit"
             NewMonth := CalcDate('8M', StartDate);
             MembersTable2.Reset;
             MembersTable2.SetRange(MembersTable2."No.", MemberNo);
-            MembersTable2.SetAutocalcFields(MembersTable2."Holiday Savings");
+            MembersTable2.SetAutocalcFields(MembersTable2."Withdrawable Savings");
             MembersTable2.SetFilter(MembersTable2."Date Filter", '%1..%2', NewMonth, CalcDate('CM', NewMonth));
             if MembersTable2.Find('-') then begin
                 MonthAmountSaved := 0;
-                MonthAmountSaved := MembersTable2."Holiday Savings";
+                MonthAmountSaved := MembersTable2."Withdrawable Savings";
                 if MonthAmountSaved > 0 then begin
                     InterestEarned := (InterestEarned + (((SaccoGeneralSetUp."HolidaySavings(%)" / 100) * MonthAmountSaved)) * 4 / 12);
                 end else if MonthAmountSaved <= 0 then begin
@@ -188,11 +188,11 @@ Codeunit 50113 "Holiday Savings Codeunit"
             NewMonth := CalcDate('9M', StartDate);
             MembersTable2.Reset;
             MembersTable2.SetRange(MembersTable2."No.", MemberNo);
-            MembersTable2.SetAutocalcFields(MembersTable2."Holiday Savings");
+            MembersTable2.SetAutocalcFields(MembersTable2."Withdrawable Savings");
             MembersTable2.SetFilter(MembersTable2."Date Filter", '%1..%2', NewMonth, CalcDate('CM', NewMonth));
             if MembersTable2.Find('-') then begin
                 MonthAmountSaved := 0;
-                MonthAmountSaved := MembersTable2."Holiday Savings";
+                MonthAmountSaved := MembersTable2."Withdrawable Savings";
                 if MonthAmountSaved > 0 then begin
                     InterestEarned := (InterestEarned + (((SaccoGeneralSetUp."HolidaySavings(%)" / 100) * MonthAmountSaved)) * 3 / 12);
                 end else if MonthAmountSaved <= 0 then begin
@@ -205,11 +205,11 @@ Codeunit 50113 "Holiday Savings Codeunit"
             NewMonth := CalcDate('10M', StartDate);
             MembersTable2.Reset;
             MembersTable2.SetRange(MembersTable2."No.", MemberNo);
-            MembersTable2.SetAutocalcFields(MembersTable2."Holiday Savings");
+            MembersTable2.SetAutocalcFields(MembersTable2."Withdrawable Savings");
             MembersTable2.SetFilter(MembersTable2."Date Filter", '%1..%2', NewMonth, CalcDate('CM', NewMonth));
             if MembersTable2.Find('-') then begin
                 MonthAmountSaved := 0;
-                MonthAmountSaved := MembersTable2."Holiday Savings";
+                MonthAmountSaved := MembersTable2."Withdrawable Savings";
                 if MonthAmountSaved > 0 then begin
                     InterestEarned := (InterestEarned + (((SaccoGeneralSetUp."HolidaySavings(%)" / 100) * MonthAmountSaved)) * 2 / 12);
                 end else if MonthAmountSaved <= 0 then begin
@@ -222,11 +222,11 @@ Codeunit 50113 "Holiday Savings Codeunit"
             NewMonth := CalcDate('11M', StartDate);
             MembersTable2.Reset;
             MembersTable2.SetRange(MembersTable2."No.", MemberNo);
-            MembersTable2.SetAutocalcFields(MembersTable2."Holiday Savings");
+            MembersTable2.SetAutocalcFields(MembersTable2."Withdrawable Savings");
             MembersTable2.SetFilter(MembersTable2."Date Filter", '%1..%2', NewMonth, CalcDate('CM', NewMonth));
             if MembersTable2.Find('-') then begin
                 MonthAmountSaved := 0;
-                MonthAmountSaved := MembersTable2."Holiday Savings";
+                MonthAmountSaved := MembersTable2."Withdrawable Savings";
                 if MonthAmountSaved > 0 then begin
                     InterestEarned := (InterestEarned + (((SaccoGeneralSetUp."HolidaySavings(%)" / 100) * MonthAmountSaved)) * 1 / 12);
                 end else if MonthAmountSaved <= 0 then begin
@@ -244,24 +244,24 @@ Codeunit 50113 "Holiday Savings Codeunit"
         //....................................Insert Member Saved Amounts start
         //...Dr Member Holiday Account
         LineNo := LineNo + 10000;
-        SFactory.FnCreateGnlJournalLine('PAYMENTS', 'HOLIDAY', (Format(Date2dmy(Today, 3)) + '-HOLID'), LineNo, GenJournalLine."transaction type"::"Holiday Savings",
+        SFactory.FnCreateGnlJournalLine('PAYMENTS', 'HOLIDAY', (Format(Date2dmy(Today, 3)) + '-HOLID'), LineNo, GenJournalLine."transaction type"::"Withdrawable Savings",
         GenJournalLine."account type"::Customer, MemberNo, PostingDate, MemberHolidaySaving, 'BOSA', '',
         'Holiday Savings Transferred To Bank- ' + Format(PostingDate) + 'BNK_0001', '');
         //...Cr Bank Account Paying Out
         LineNo := LineNo + 10000;
-        SFactory.FnCreateGnlJournalLine('PAYMENTS', 'HOLIDAY', (Format(Date2dmy(Today, 3)) + '-HOLID'), LineNo, GenJournalLine."transaction type"::"Holiday savings",
+        SFactory.FnCreateGnlJournalLine('PAYMENTS', 'HOLIDAY', (Format(Date2dmy(Today, 3)) + '-HOLID'), LineNo, GenJournalLine."transaction type"::"Withdrawable Savings",
         GenJournalLine."account type"::"Bank Account", 'BNK_0001', PostingDate, MemberHolidaySaving * -1, 'BOSA', '',
         'Holiday Savings Paid Out To Member- ' + Format(PostingDate), '');
         //.....................................Insert Member Saved Amounts Stop
         //.....................................Insert Member Interest Earned Amounts Start
         //...Dr Provision Account for Holiday Savings
         LineNo := LineNo + 10000;
-        SFactory.FnCreateGnlJournalLine('PAYMENTS', 'HOLIDAY', (Format(Date2dmy(Today, 3)) + '-HOLID'), LineNo, GenJournalLine."transaction type"::"Holiday savings",
+        SFactory.FnCreateGnlJournalLine('PAYMENTS', 'HOLIDAY', (Format(Date2dmy(Today, 3)) + '-HOLID'), LineNo, GenJournalLine."transaction type"::"Withdrawable Savings",
         GenJournalLine."account type"::"G/L Account", '201216', PostingDate, InterestEarned, 'BOSA', '',
         'Holiday Savings Interest Earned- ' + Format(PostingDate), '');
         //...Cr Bank Account Paying Out
         LineNo := LineNo + 10000;
-        SFactory.FnCreateGnlJournalLine('PAYMENTS', 'HOLIDAY', (Format(Date2dmy(Today, 3)) + '-HOLID'), LineNo, GenJournalLine."transaction type"::"Holiday savings",
+        SFactory.FnCreateGnlJournalLine('PAYMENTS', 'HOLIDAY', (Format(Date2dmy(Today, 3)) + '-HOLID'), LineNo, GenJournalLine."transaction type"::"Withdrawable Savings",
         GenJournalLine."account type"::"Bank Account", 'BNK_0001', PostingDate, InterestEarned * -1, 'BOSA', '',
         'Holiday Savings Interest Earned Paid Out To Member- ' + Format(PostingDate), '');
         //....................................Insert Member Interest Earned Amounts stop

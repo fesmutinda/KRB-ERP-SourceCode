@@ -306,7 +306,7 @@ Table 51417 "Data Sheet Main"
         }
         field(34; Recoveries; Decimal)
         {
-            CalcFormula = sum("Member Ledger Entry".Amount where("Loan No" = field("Remark/LoanNO"),
+            CalcFormula = sum("Cust. Ledger Entry"."Amount Posted" where("Loan No" = field("Remark/LoanNO"),
                                                                   "Transaction Type" = filter("Interest Paid"),
                                                                   "Posting Date" = field(Date)));
             FieldClass = FlowField;

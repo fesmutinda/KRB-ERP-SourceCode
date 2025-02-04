@@ -371,9 +371,9 @@ page 50485 "Posted Checkoff Proc. Header-D"
                         END;
                         //---------------------------16.BENEVOLENT------------------------------------------------------------------
                         LineNo:=LineNo+10000;
-                        SFactory.FnCreateGnlJournalLine(BATCH_TEMPLATE,BATCH_NAME,DOCUMENT_NO,LineNo,GenJournalLine."Transaction Type"::"Shares Capital",
+                        SFactory.FnCreateGnlJournalLine(BATCH_TEMPLATE,BATCH_NAME,DOCUMENT_NO,LineNo,GenJournalLine."transaction type"::"Share Capital",
                         GenJournalLine."Account Type"::Employee,ReceiptLine."No Repayment","Posting date",ReceiptLine.DEPT* -1,'BOSA',"Document No",
-                        FORMAT(GenJournalLine."Transaction Type"::"Shares Capital"),'');
+                        FORMAT(GenJournalLine."transaction type"::"Share Capital"),'');
                     
                     
                         //----------------------------17.ADVANCE_P------------------------------------------------------------------
@@ -601,7 +601,7 @@ page 50485 "Posted Checkoff Proc. Header-D"
         GenBatches: Record "Gen. Journal Batch";
         Datefilter: Text[50];
         ReceiptLine: Record "Checkoff Lines-Distributed";
-        MembLedg: Record "Member Ledger Entry";
+        MembLedg: Record "Cust. Ledger Entry";
         SFactory: Codeunit "Swizzsoft Factory.";
         BATCH_NAME: Code[50];
         BATCH_TEMPLATE: Code[50];

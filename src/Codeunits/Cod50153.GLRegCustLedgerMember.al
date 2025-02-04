@@ -10,6 +10,6 @@ Codeunit 50153 "G/L Reg.-Cust.Ledger-Member"
     end;
 
     var
-        CustLedgEntry: Record 51365;
+        CustLedgEntry: Record "Cust. Ledger Entry";
 }
 

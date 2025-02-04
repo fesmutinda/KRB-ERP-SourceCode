@@ -599,7 +599,7 @@ page 50843 "Updated Change Request Card"
                         Memb.SetRange(Memb."No.", Rec."Account No");
                         if Memb.Find('-') then begin
 
-                            Memb.CalcFields(Memb.Picture, Memb.Signature);
+                            Memb.CalcFields(Memb.Image, Memb.Signature);
                             Memb.Name := Rec.Name;
                             Memb."Global Dimension 2 Code" := Rec.Branch;
                             Memb.Address := Rec."Address(New Value)";
@@ -753,7 +753,7 @@ page 50843 "Updated Change Request Card"
 
     var
         vend: Record Vendor;
-        Memb: Record 51364;
+        Memb: Record Customer;
         MobileVisible: Boolean;
         AtmVisible: Boolean;
         AccountVisible: Boolean;

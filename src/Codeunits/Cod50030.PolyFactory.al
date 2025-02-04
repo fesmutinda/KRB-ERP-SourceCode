@@ -43,7 +43,7 @@ Codeunit 50030 "Poly Factory"
 
     procedure KnGetMemberShares(ClientCode: Code[20]) Amount: Decimal
     var
-        ObjMembersReg: Record 51364;
+        ObjMembersReg: Record Customer;
     begin
         ObjMembersReg.Reset;
         ObjMembersReg.SetRange(ObjMembersReg."No.", ClientCode);
@@ -60,7 +60,7 @@ Codeunit 50030 "Poly Factory"
 
     procedure KnGetDividendAmount(ClientCode: Code[20]) Amount: Decimal
     var
-        ObjMembersReg: Record 51364;
+        ObjMembersReg: Record Customer;
     begin
         ObjMembersReg.Reset;
         ObjMembersReg.SetRange(ObjMembersReg."No.", ClientCode);
@@ -77,7 +77,7 @@ Codeunit 50030 "Poly Factory"
 
     procedure KnGetPaidRejoiningFee(ClientCode: Code[20]) Amount: Decimal
     var
-        ObjMembersReg: Record 51364;
+        ObjMembersReg: Record Customer;
     begin
         /*ObjMembersReg.RESET;
         ObjMembersReg.SETRANGE(ObjMembersReg."No.",ClientCode);
@@ -96,7 +96,7 @@ Codeunit 50030 "Poly Factory"
 
     procedure KnGetPaidByLaws(ClientCode: Code[20]) Amount: Decimal
     var
-        ObjMembersReg: Record 51364;
+        ObjMembersReg: Record Customer;
     begin
         /*ObjMembersReg.RESET;
         ObjMembersReg.SETRANGE(ObjMembersReg."No.",ClientCode);
@@ -219,7 +219,7 @@ Codeunit 50030 "Poly Factory"
 
     procedure KnGetFreeShares(MemberNo: Code[20]; LoanNo: Code[20]) Amount: Decimal
     var
-        ObjMemberRegister: Record 51364;
+        ObjMemberRegister: Record Customer;
         ObjGuaranteeDetails: Record 51372;
         TotalCommited: Decimal;
     begin
@@ -422,7 +422,7 @@ Codeunit 50030 "Poly Factory"
 
     procedure KnGetMaximumGuaranteeAmount(ClientCode: Code[20]; LoanNo: Code[20]) Amount: Decimal
     var
-        ObjMemberRegister: Record 51364;
+        ObjMemberRegister: Record Customer;
         TotalCommited: Decimal;
     begin
         ObjMemberRegister.Reset;
@@ -700,7 +700,7 @@ Codeunit 50030 "Poly Factory"
 
     procedure KnGetLastPrinciplePaid(LoanNo: Code[10]; LastDate: Date): Decimal
     var
-        MembLedger: Record 51365;
+        MembLedger: Record "Cust. Ledger Entry";
         principle: Decimal;
     begin
         principle := 0;
@@ -719,7 +719,7 @@ Codeunit 50030 "Poly Factory"
 
     procedure KnGetLastInterestPaid(LoanNo: Code[10]; LastDate: Date): Decimal
     var
-        MembLedger: Record 51365;
+        MembLedger: Record "Cust. Ledger Entry";
         principle: Decimal;
     begin
         principle := 0;
@@ -897,7 +897,7 @@ Codeunit 50030 "Poly Factory"
         LoanBalance: Decimal;
         ApprovedAmount: Decimal;
         AmountGuaranteed: Decimal;
-        MembersReg: Record 51364;
+        MembersReg: Record Customer;
         freedSharesRetained: Decimal;
         PrevAmount: Decimal;
     begin
@@ -980,7 +980,7 @@ Codeunit 50030 "Poly Factory"
 
     procedure KnGetInsurancePaid(ClientCode: Code[20]) Amount: Decimal
     var
-        ObjMembersRegister: Record 51364;
+        ObjMembersRegister: Record Customer;
     begin
         ObjMembersRegister.Reset;
         ObjMembersRegister.SetRange(ObjMembersRegister."No.", ClientCode);
@@ -996,7 +996,7 @@ Codeunit 50030 "Poly Factory"
 
     procedure KnGetPaidInsurance(ClientCode: Code[15]) Amount: Decimal
     var
-        ObjMembersRegister: Record 51364;
+        ObjMembersRegister: Record Customer;
         UpperBound: Date;
     begin
         ObjMembersRegister.Reset;
@@ -1013,7 +1013,7 @@ Codeunit 50030 "Poly Factory"
 
     procedure KnGetUnpaidStocks(ClientCode: Code[20]) Amount: Decimal
     var
-        ObjMembersRegister: Record 51364;
+        ObjMembersRegister: Record Customer;
     begin
         /*ObjMembersRegister.RESET;
         ObjMembersRegister.SETRANGE(ObjMembersRegister."No.",ClientCode);
@@ -1085,7 +1085,7 @@ Codeunit 50030 "Poly Factory"
 
     procedure KnGetShareCapital(MemberNo: Code[15]) Amount: Decimal
     var
-        ObjMemberRegister: Record 51364;
+        ObjMemberRegister: Record Customer;
     begin
         /*IF ObjMemberRegister.GET(MemberNo) THEN
           BEGIN
@@ -1148,7 +1148,7 @@ Codeunit 50030 "Poly Factory"
 
     procedure KnGetDemandSavingStatus(MemberNo: Code[20]): Boolean
     var
-        ObjMembersRegister: Record 51364;
+        ObjMembersRegister: Record Customer;
     begin
         /*IF ObjMembersRegister.GET(MemberNo) THEN
           BEGIN
@@ -1324,7 +1324,7 @@ Codeunit 50030 "Poly Factory"
 
     procedure KnGetInsuranceBenefits(MemberNo: Code[15]) Amount: Decimal
     var
-        ObjMembersRegister: Record 51364;
+        ObjMembersRegister: Record Customer;
     begin
         /*IF ObjMembersRegister.GET(MemberNo) THEN
           BEGIN
@@ -1341,7 +1341,7 @@ Codeunit 50030 "Poly Factory"
 
     procedure KnCalculateLoanMonthlyPaymentPerMember(FirstDateOfMonth: Date; LastdateOfMonth: Date; LoanNo: Code[10]) Amount: Decimal
     var
-        ObjMemberLedgerEntry: Record 51365;
+        ObjMemberLedgerEntry: Record "Cust. Ledger Entry";
     begin
         ObjMemberLedgerEntry.Reset;
         ObjMemberLedgerEntry.SetRange(ObjMemberLedgerEntry."Loan No", LoanNo);
@@ -1361,7 +1361,7 @@ Codeunit 50030 "Poly Factory"
 
     procedure KnCalculateInterestMonthlyPaymentPerMember(FirstDateOfMonth: Date; LastdateOfMonth: Date; LoanNo: Code[10]) Amount: Decimal
     var
-        ObjMemberLedgerEntry: Record 51365;
+        ObjMemberLedgerEntry: Record "Cust. Ledger Entry";
     begin
         ObjMemberLedgerEntry.Reset;
         ObjMemberLedgerEntry.SetRange(ObjMemberLedgerEntry."Loan No", LoanNo);
@@ -1458,14 +1458,14 @@ Codeunit 50030 "Poly Factory"
 
     procedure KnDeactivateAccounts(MemberNo: Code[10])
     var
-        ObjMembersRegister: Record 51364;
+        ObjMembersRegister: Record Customer;
     begin
     end;
 
 
     procedure KnUpdateStatusToActive(MemberNo: Code[20])
     var
-        ObjMembersRegister: Record 51364;
+        ObjMembersRegister: Record Customer;
     begin
         if ObjMembersRegister.Get(MemberNo) then begin
             if ObjMembersRegister.Status = ObjMembersRegister.Status::"Non-Active" then begin
@@ -1478,7 +1478,7 @@ Codeunit 50030 "Poly Factory"
 
     procedure KnUpdateDemandSavingsStatusToActive(MemberNo: Code[20])
     var
-        ObjMembersRegister: Record 51364;
+        ObjMembersRegister: Record Customer;
     begin
         /*IF ObjMembersRegister.GET(MemberNo) THEN
           BEGIN
@@ -1761,7 +1761,7 @@ Codeunit 50030 "Poly Factory"
 
     procedure KnGetRegistrationFeePaid(MemberNo: Code[10]): Decimal
     var
-        ObjMemberReg: Record 51364;
+        ObjMemberReg: Record Customer;
         Amount: Decimal;
     begin
         if ObjMemberReg.Get(MemberNo) then begin
@@ -1800,7 +1800,7 @@ Codeunit 50030 "Poly Factory"
 
     procedure KnGetMemberPhoneNo(MemberNo: Code[15]): Code[20]
     var
-        ObjMembersReg: Record 51364;
+        ObjMembersReg: Record Customer;
         PhoneNo: Code[20];
     begin
         if ObjMembersReg.Get(MemberNo) then begin
@@ -1813,7 +1813,7 @@ Codeunit 50030 "Poly Factory"
 
     procedure KnGetMemberEmailAddress(MemberNo: Code[15]): Code[50]
     var
-        ObjMembersReg: Record 51364;
+        ObjMembersReg: Record Customer;
         Email: Code[50];
     begin
         if ObjMembersReg.Get(MemberNo) then begin
@@ -1929,7 +1929,7 @@ Codeunit 50030 "Poly Factory"
 
     procedure KnCheckForActiveMember(MemberNo: Code[10]): Boolean
     var
-        ObjMemberReg: Record 51364;
+        ObjMemberReg: Record Customer;
     begin
         if ObjMemberReg.Get(MemberNo) then begin
             if ObjMemberReg.Status = ObjMemberReg.Status::Active then
@@ -1962,7 +1962,7 @@ Codeunit 50030 "Poly Factory"
 
     procedure KnNetRefundableToMember(MemberNo: Code[10]): Decimal
     var
-        ObjMemberReg: Record 51364;
+        ObjMemberReg: Record Customer;
         ObjLoansReg: Record 51371;
         ObjSaccoGenSetUp: Record 51398;
         UnpaidShareCap: Decimal;
@@ -2077,7 +2077,7 @@ Codeunit 50030 "Poly Factory"
 
     procedure KnGetMemberBankAccountNo(MemberNo: Code[15]): Code[30]
     var
-        ObjMembersReg: Record 51364;
+        ObjMembersReg: Record Customer;
         AccountNo: Code[20];
     begin
         if ObjMembersReg.Get(MemberNo) then begin
@@ -2090,7 +2090,7 @@ Codeunit 50030 "Poly Factory"
 
     procedure KnGetMemberBankName(MemberNo: Code[15]): Text
     var
-        ObjMembersReg: Record 51364;
+        ObjMembersReg: Record Customer;
         BankName: Text;
     begin
         /*IF ObjMembersReg.GET(MemberNo) THEN
@@ -2153,7 +2153,7 @@ Codeunit 50030 "Poly Factory"
 
     procedure KnGetMemberBankCode(MemberNo: Code[15]): Code[30]
     var
-        ObjMembersReg: Record 51364;
+        ObjMembersReg: Record Customer;
         AccountNo: Code[20];
     begin
         if ObjMembersReg.Get(MemberNo) then begin
@@ -2166,7 +2166,7 @@ Codeunit 50030 "Poly Factory"
 
     procedure KnGetMemberBranchCode(MemberNo: Code[15]): Code[30]
     var
-        ObjMembersReg: Record 51364;
+        ObjMembersReg: Record Customer;
         AccountNo: Code[20];
     begin
         if ObjMembersReg.Get(MemberNo) then begin
@@ -2260,7 +2260,7 @@ Codeunit 50030 "Poly Factory"
     procedure KnGetLoanBalanceOneLoan(LoanNo: Code[20]) Amount: Decimal
     var
         ObjLoansRegister: Record 51371;
-        MeReg: Record 51364;
+        MeReg: Record Customer;
     begin
         ObjLoansRegister.Reset;
         ObjLoansRegister.SetRange(ObjLoansRegister."Loan  No.", LoanNo);
@@ -2347,7 +2347,7 @@ Codeunit 50030 "Poly Factory"
         NovemberAmt: Decimal;
         DecemberAmt: Decimal;
         TotalAmt: Decimal;
-        Cust: Record 51364;
+        Cust: Record Customer;
         GenSetUp: Record 51398;
     begin
         /*JanuaryStart:=CALCDATE('-CY',Date);
@@ -2761,7 +2761,7 @@ Codeunit 50030 "Poly Factory"
 
     procedure knGetDemandSavings(MemberNo: Code[30]; StartDate: Date; EndDate: Date) Amount: Decimal
     var
-        MemberLedgEntry: Record 51365;
+        MemberLedgEntry: Record "Cust. Ledger Entry";
     begin
         /*MemberLedgEntry.RESET;
         MemberLedgEntry.SETRANGE(MemberLedgEntry."Customer No.",MemberNo);
@@ -2858,7 +2858,7 @@ Codeunit 50030 "Poly Factory"
         //*************Get the total paid insurance of all years******//
     end;
 
-    procedure FnPostRetinedDeposits(MemberR: Record 51364; DocNo: Code[20]; LoanNo: Code[20]; FreedAmt: Decimal; Dim1: Text[50]; Dim2: Text[50])
+    procedure FnPostRetinedDeposits(MemberR: Record Customer; DocNo: Code[20]; LoanNo: Code[20]; FreedAmt: Decimal; Dim1: Text[50]; Dim2: Text[50])
     var
         LineN: Integer;
         GenJournalLine: Record "Gen. Journal Line";
@@ -2926,7 +2926,7 @@ Codeunit 50030 "Poly Factory"
         //CALCFIELDS("Committed Shares");
         GenJournalLine.Amount := ROUND(FreedAmt, 0.0005, '>');
         GenJournalLine.Validate(GenJournalLine.Amount);
-        GenJournalLine."Transaction Type" := GenJournalLine."transaction type"::"Shares Capital";
+        GenJournalLine."Transaction Type" := GenJournalLine."transaction type"::"Share Capital";
         GenJournalLine."Loan No" := LoanNo;
         GenJournalLine."Shortcut Dimension 1 Code" := Dim1;
         GenJournalLine."Shortcut Dimension 2 Code" := Dim2;
@@ -2947,7 +2947,7 @@ Codeunit 50030 "Poly Factory"
 
     procedure KnGetUnallocatedFundsBalance(ClientCode: Code[20]) Amount: Decimal
     var
-        ObjMembersRegister: Record 51364;
+        ObjMembersRegister: Record Customer;
     begin
         ObjMembersRegister.Reset;
         ObjMembersRegister.SetRange(ObjMembersRegister."No.", ClientCode);
@@ -2965,7 +2965,7 @@ Codeunit 50030 "Poly Factory"
 
     procedure KnGetUnpaidByLaws(ClientCode: Code[20]) Amount: Decimal
     var
-        ObjMembersRegister: Record 51364;
+        ObjMembersRegister: Record Customer;
     begin
         /*ObjMembersRegister.RESET;
         ObjMembersRegister.SETRANGE(ObjMembersRegister."No.",ClientCode);

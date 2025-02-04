@@ -22,7 +22,7 @@ page 50886 "Jioke Savings Guarantorship"
                 {
                     ApplicationArea = Basic;
                 }
-                field("Jiokoe Savings"; Rec."Jiokoe Savings")
+                field("Withdrawable Savings"; Rec."Withdrawable Savings")
                 {
                     ApplicationArea = Basic;
                 }

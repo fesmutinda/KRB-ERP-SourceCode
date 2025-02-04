@@ -19,16 +19,16 @@ Table 51711 "Savings Guarantorship"
                 Cust.Reset;
                 Cust.SetRange(Cust."No.", "Member No");
                 if Cust.Find('-') then begin
-                    Cust.CalcFields(Cust."Jiokoe Savings");
-                    SavBal := Cust."Jiokoe Savings";
+                    Cust.CalcFields(Cust."Withdrawable Savings");
+                    SavBal := Cust."Withdrawable Savings";
 
                 end;
 
                 if Cust.Get("Member No") then begin
-                    Cust.CalcFields(Cust."Outstanding Balance", Cust."Jiokoe Savings", Cust.TLoansGuaranteed);
+                    Cust.CalcFields(Cust."Outstanding Balance", Cust."Withdrawable Savings", Cust.TLoansGuaranteed);
                     Name := Cust.Name;
                     "Loan Balance" := Cust."Outstanding Balance";
-                    SavBal := Cust."Jiokoe Savings";
+                    SavBal := Cust."Withdrawable Savings";
                     Amont := 0;
                     Amont := SwizzsoftFactory.FnGetMemberSavingsLiability("Member No");
                     Liability := Liability - Amont;
@@ -39,7 +39,7 @@ Table 51711 "Savings Guarantorship"
         {
             DataClassification = ToBeClassified;
         }
-        field(4; "Jiokoe Savings"; Decimal)
+        field(4; "Withdrawable Savings"; Decimal)
         {
             DataClassification = ToBeClassified;
         }

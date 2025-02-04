@@ -32,13 +32,13 @@ page 50368 "Members Statistics"
                     ApplicationArea = Basic;
                     Caption = 'Deposits Contribution Balance';
                 }
-                field("Benevolent Fund"; Rec."Benevolent Fund")
+                field("Junior Savings"; Rec."Junior Savings")
                 {
                     ApplicationArea = Basic;
-                    Caption = 'Benevolent Fund Balance';
+                    Caption = 'Junior Savings';
                     Editable = false;
                 }
-                field("Additional Shares"; Rec."Additional Shares")
+                field("Withdrawable Savings"; Rec."Withdrawable Savings")
                 {
                     ApplicationArea = Basic;
                     Editable = false;

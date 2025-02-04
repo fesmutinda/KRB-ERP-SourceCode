@@ -33,12 +33,12 @@ Codeunit 50022 AgencyCode
         miniBalance: Decimal;
         Loans: Integer;
         LoanProductsSetup: Record 51381;
-        Members: Record 51364;
+        Members: Record Customer;
         dateExpression: Text[20];
         DetailedVendorLedgerEntry: Record "Detailed Vendor Ledg. Entry";
         dashboardDataFilter: Date;
         VendorLedgerEntry: Record "Vendor Ledger Entry";
-        MemberLedgerEntry: Record 51365;
+        MemberLedgerEntry: Record "Cust. Ledger Entry";
         GenJournalLine: Record "Gen. Journal Line";
         GenBatches: Record "Gen. Journal Batch";
         LineNo: Integer;

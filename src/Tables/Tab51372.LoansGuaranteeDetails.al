@@ -409,7 +409,7 @@ Table 51372 "Loans Guarantee Details"
         }
         field(16; "Outstanding Balance"; Decimal)
         {
-            CalcFormula = sum("Member Ledger Entry".Amount where("Transaction Type" = filter(Loan | "Loan Repayment"),
+            CalcFormula = sum("Cust. Ledger Entry"."Amount Posted" where("Transaction Type" = filter(Loan | "Loan Repayment"),
                                                                   "Loan No" = field("Loan No")));
             FieldClass = FlowField;
         }
@@ -425,7 +425,7 @@ Table 51372 "Loans Guarantee Details"
         }
         field(18; "Loans Outstanding"; Decimal)
         {
-            CalcFormula = sum("Member Ledger Entry".Amount where("Transaction Type" = filter(Loan | "Loan Repayment"),
+            CalcFormula = sum("Cust. Ledger Entry"."Amount Posted" where("Transaction Type" = filter(Loan | "Loan Repayment"),
                                                                   "Loan No" = field("Loan No")));
             FieldClass = FlowField;
 
@@ -439,7 +439,7 @@ Table 51372 "Loans Guarantee Details"
         }
         field(19; "Guarantor Outstanding"; Decimal)
         {
-            CalcFormula = sum("Member Ledger Entry".Amount where("Customer No." = field("Member No"),
+            CalcFormula = sum("Cust. Ledger Entry"."Amount Posted" where("Customer No." = field("Member No"),
                                                                   "Transaction Type" = filter(Loan | "Loan Repayment")));
             FieldClass = FlowField;
         }
@@ -550,7 +550,7 @@ Table 51372 "Loans Guarantee Details"
         }
         field(69162; "Oustanding Interest"; Decimal)
         {
-            CalcFormula = sum("Member Ledger Entry".Amount where("Customer No." = field("Member No"),
+            CalcFormula = sum("Cust. Ledger Entry"."Amount Posted" where("Customer No." = field("Member No"),
                                                                   "Transaction Type" = filter("Interest Paid"),
                                                                   "Loan No" = field("Loan No")));
             FieldClass = FlowField;
@@ -659,7 +659,7 @@ Table 51372 "Loans Guarantee Details"
         Self: Boolean;
         SelfGuaranteeAmount: Decimal;
         Amont: Decimal;
-        MemberLedgerEntry: Record "Member Ledger Entry";
+        MemberLedgerEntry: Record "Cust. Ledger Entry";
         AmountGuar: Decimal;
         vardiff: Decimal;
         MemberLiability: Decimal;

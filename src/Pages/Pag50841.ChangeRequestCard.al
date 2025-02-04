@@ -630,7 +630,7 @@ page 50841 "Change Request Card"
                                 Memb."Group Account Name" := Rec."Group Account Name";
                             if Rec."Employer Code(New)" <> '' then
                                 Memb."Employer Code" := Rec."Employer Code(New)";
-                            Memb.Picture := Rec."Picture.";
+                            Memb.Image := Rec."Picture.";
                             Memb.Status := Rec."Status.(New)";
                             Memb.Modify;
 
@@ -874,7 +874,7 @@ page 50841 "Change Request Card"
 
     var
         vend: Record Vendor;
-        Memb: Record 51364;
+        Memb: Record Customer;
         MobileVisible: Boolean;
         AtmVisible: Boolean;
         AccountVisible: Boolean;

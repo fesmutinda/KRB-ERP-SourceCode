@@ -12,7 +12,7 @@ Codeunit 50031 ManageLoanDefaulters
         ActualLoanBal: Decimal;
         AmountDisbursed: Decimal;
         LastLoanPayDate: Date;
-        cust: Record 51364;
+        cust: Record Customer;
         SMSMessage: Record 51471;
         iEntryNo: Integer;
         LoanGuar: Record 51372;
@@ -88,7 +88,7 @@ Codeunit 50031 ManageLoanDefaulters
 
     local procedure FnGetLastPaymentDate(CustomerNo: Code[20]): Date
     var
-        MemberLedgerEntry: Record 51365;
+        MemberLedgerEntry: Record "Cust. Ledger Entry";
         LastPayDate: Date;
     begin
         LastPayDate := 20150101D;

@@ -54,16 +54,15 @@ page 50428 "Member Statistics FactBox"
                     Style = StrongAccent;
                     StyleExpr = true;
                 }
-                field("Holiday Savings"; Rec."Holiday Savings")
+                field("Withdrawable Savings"; Rec."Withdrawable Savings")
                 {
                     ApplicationArea = Basic;
-                    Caption = 'Holiday Savings';
+                    Caption = 'Withdrawable Savings';
                 }
-                field("Additional Shares"; Rec."Additional Shares")
+                field("Junior Savings"; Rec."Junior Savings")
                 {
                     ApplicationArea = Basic;
-                    Editable = false;
-                    Visible = false;
+                    Caption = 'Junior Savings';
                 }
                 field("Outstanding Interest"; Rec."Outstanding Interest")
                 {

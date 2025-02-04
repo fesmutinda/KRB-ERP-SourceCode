@@ -70,7 +70,7 @@ Codeunit 50123 BackOfficePORTAL
     end;
 
     var
-        objMember: Record 51364;
+        objMember: Record Customer;
         Vendor: Record Vendor;
         VendorLedgEntry: Record "Vendor Ledger Entry";
         FILESPATH: label 'D:\Kentours Revised\KENTOURS\Kentours\Kentours\Downloads\';
@@ -107,7 +107,7 @@ Codeunit 50123 BackOfficePORTAL
         Loanperiod: Integer;
         LastFieldNo: Integer;
         FooterPrinted: Boolean;
-        Cust: Record 51364;
+        Cust: Record Customer;
         StartDate: Date;
         DateFilter: Text[100];
         FromDate: Date;
@@ -116,11 +116,11 @@ Codeunit 50123 BackOfficePORTAL
         ToDateS: Text[100];
         DivTotal: Decimal;
         CDeposits: Decimal;
-        CustDiv: Record 51364;
+        CustDiv: Record Customer;
         DivProg: Record 51393;
         CDiv: Decimal;
         BDate: Date;
-        CustR: Record 51364;
+        CustR: Record Customer;
         CapDiv: Decimal;
         DivCapTotal: Decimal;
         RunningPeriod: Code[10];

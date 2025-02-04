@@ -342,7 +342,7 @@ Page 56011 "Checkoff Processing Header-pos"
     // Gnljnline.Description:='Shares Contribution';
     // Gnljnline.Amount:=ReceiptsProcessingLines.Amount*-1;
     // Gnljnline.VALIDATE(Gnljnline.Amount);
-    // Gnljnline."Transaction Type":=Gnljnline."Transaction Type"::"Shares Capital";
+    // Gnljnline."Transaction Type":=Gnljnline."transaction type"::"Share Capital";
     // Gnljnline."Shortcut Dimension 1 Code":='BOSA';
     // Gnljnline."Shortcut Dimension 2 Code":='NAIROBI';
     // 

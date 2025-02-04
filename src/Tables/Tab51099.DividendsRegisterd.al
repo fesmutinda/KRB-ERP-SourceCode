@@ -82,7 +82,7 @@ Table 51099 "Dividends Registerd"
         }
         field(27; "Div Sim"; Decimal)
         {
-            CalcFormula = sum("Member Ledger Entry"."Debit Amount" where("Customer No." = field("Member No"),
+            CalcFormula = sum("Cust. Ledger Entry"."Debit Amount" where("Customer No." = field("Member No"),
                                                                           "Transaction Type" = const(Dividend),
                                                                           Reversed = const(false),
                                                                           "Document No." = const('DIV2018'),
@@ -232,7 +232,7 @@ Table 51099 "Dividends Registerd"
 
     procedure GetPostedDiv(TransactionType: Option ,"Registration Fee",Loan,Repayment,"Interest Due","Interest Paid","Deposit Contribution","Shares Capital",Dividend,"Insurance Contribution","Demand Savings","Insurance Charge","Retained Shares","Demand Savings Withdrawal","Stock Due","Stock paid","Insurance Benefits","Demand Activation",ByLaws,"Dividend Advance","Rejoining Fee","Unallocated Funds","Life Assurance","STO Charges","T-Shirts",Umbrella) ReturnValue: Decimal
     var
-        MemLed: Record "Member Ledger Entry";
+        MemLed: Record "Cust. Ledger Entry";
     begin
         ReturnValue := 0;
         MemLed.Reset;
@@ -242,7 +242,7 @@ Table 51099 "Dividends Registerd"
         MemLed.SetRange("Document No.", 'DIV-' + Format(Date2dmy(CalcDate('-CY-1D', Today), 3)));
         MemLed.SetFilter(Amount, '<0');
         if MemLed.FindFirst then begin
-            MemLed.CalcSums(Amount);
+            MemLed.CalcSums("Amount Posted");
             ReturnValue := MemLed.Amount * -1;
         end;
     end;

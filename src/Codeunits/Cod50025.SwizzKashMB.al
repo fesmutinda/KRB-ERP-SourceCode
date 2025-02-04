@@ -61,7 +61,7 @@ Codeunit 50025 SwizzKashMB
         DetailedVendorLedgerEntry: Record "Detailed Vendor Ledg. Entry";
         dashboardDataFilter: Date;
         VendorLedgerEntry: Record "Vendor Ledger Entry";
-        MemberLedgerEntry: Record "Member Ledger Entry";
+        MemberLedgerEntry: Record "Cust. Ledger Entry";
         LoansTable: Record  "Loans Register";
         SurePESAApplications: Record "SwizzKash Applications";
         GenJournalLine: Record "Gen. Journal Line";
@@ -482,7 +482,7 @@ Codeunit 50025 SwizzKashMB
                 MemberLedgerEntry.SetCurrentkey(MemberLedgerEntry."Entry No.");
                 MemberLedgerEntry.Ascending(false);
                 MemberLedgerEntry.SetRange(MemberLedgerEntry."Customer No.",Account);
-                MemberLedgerEntry.SetRange(MemberLedgerEntry."Transaction Type",MemberLedgerEntry."transaction type"::"Jiokoe Savings");
+                MemberLedgerEntry.SetRange(MemberLedgerEntry."Transaction Type",MemberLedgerEntry."transaction type"::"Withdrawable Savings");
                 Mrowcount:=MemberLedgerEntry.Count;
                 if MemberLedgerEntry.Find('-') then begin
                   repeat
@@ -1372,7 +1372,7 @@ Codeunit 50025 SwizzKashMB
                         GenJournalLine."Transaction Type" := GenJournalLine."transaction type"::"Deposit Contribution";
                         end;
                         if accTo='Shares Capital' then begin
-                        GenJournalLine."Transaction Type" := GenJournalLine."transaction type"::"Shares Capital";
+                        GenJournalLine."Transaction Type" := GenJournalLine."transaction type"::"Share Capital";
                         end;
                         if accTo='Benevolent Fund' then begin
                         GenJournalLine."Transaction Type" := GenJournalLine."transaction type"::"Benevolent Fund";
@@ -2268,14 +2268,14 @@ Codeunit 50025 SwizzKashMB
           Members.SetRange(Members."No.",FnGetMemberNo(phone));
           if Members.Find('-') then begin
              Members.CalcFields(Members."Benevolent Fund");
-             Members.CalcFields(Members."Jiokoe Savings");
+             Members.CalcFields(Members."Withdrawable Savings");
             // Members.CALCFIELDS(Members."Kisiko Welfare");
           //.. Members.CALCFIELDS(Members."Withdrawable Savings");
 
            if Members."Benevolent Fund">0 then
                accounts:=accounts+ ', Benevolent Fund Ksh. ' + Format(Members."Benevolent Fund");
-            if Members."Jiokoe Savings">0 then
-               accounts:=accounts+ ', Jiokoe Savings Ksh. ' + Format(Members."Jiokoe Savings");
+            if Members."Withdrawable Savings">0 then
+               accounts:=accounts+ ', Jiokoe Savings Ksh. ' + Format(Members."Withdrawable Savings");
 
           end;
 
@@ -2765,9 +2765,9 @@ Codeunit 50025 SwizzKashMB
               GenJournalLine."Posting Date":=Today;
               case PaybillTrans."Key Word" of
                 'DEP': GenJournalLine."Transaction Type" := GenJournalLine."transaction type"::"Deposit Contribution";
-                'SHA': GenJournalLine."Transaction Type" := GenJournalLine."transaction type"::"Shares Capital";
-                // 'JIO': GenJournalLine."Transaction Type" := GenJournalLine."transaction type"::"Jiokoe Savings";
-                'HOL': GenJournalLine."Transaction Type" := GenJournalLine."transaction type"::"Holiday savings";
+                'SHA': GenJournalLine."Transaction Type" := GenJournalLine."transaction type"::"Share Capital";
+                // 'JIO': GenJournalLine."Transaction Type" := GenJournalLine."transaction type"::"Withdrawable Savings";
+                'HOL': GenJournalLine."Transaction Type" := GenJournalLine."transaction type"::"Withdrawable Savings";
               end;
               GenJournalLine."Shortcut Dimension 1 Code":=Members."Global Dimension 1 Code";
               GenJournalLine."Shortcut Dimension 2 Code":=Members."Global Dimension 2 Code";
@@ -2804,8 +2804,8 @@ Codeunit 50025 SwizzKashMB
                 TempBalance:=Members."Shares Retained";
               end;
               if PaybillTrans."Key Word"='JIO' then begin
-                Members.CalcFields(Members."Jiokoe Savings");
-                TempBalance:=Members."Jiokoe Savings";
+                Members.CalcFields(Members."Withdrawable Savings");
+                TempBalance:=Members."Withdrawable Savings";
               end;
 
               msg:='Dear ' +Members.Name+' your: '+PaybillTrans."Account No"+' has been credited with Ksh'+ Format(amount) +'. Your new balance is '+
@@ -3363,7 +3363,7 @@ Codeunit 50025 SwizzKashMB
           IF Members.FIND('-') THEN BEGIN
               MemberLedgerEntry.RESET;
               MemberLedgerEntry.SETRANGE(MemberLedgerEntry."Customer No.",Members."No.");
-              MemberLedgerEntry.SETRANGE(MemberLedgerEntry."Transaction Type",MemberLedgerEntry."Transaction Type"::"Shares Capital");
+              MemberLedgerEntry.SETRANGE(MemberLedgerEntry."Transaction Type",MemberLedgerEntry."transaction type"::"Share Capital");
               MemberLedgerEntry.CALCSUMS(MemberLedgerEntry.Amount);
               SharesAmount:=MemberLedgerEntry.Amount;
            END;
@@ -3525,10 +3525,10 @@ Codeunit 50025 SwizzKashMB
                       GenJournalLine."Document No.":=docNo;
                       GenJournalLine."External Document No.":=docNo;
                       GenJournalLine."Posting Date":=TODAY;
-                      GenJournalLine."Transaction Type" := GenJournalLine."Transaction Type"::"Shares Capital";
+                      GenJournalLine."Transaction Type" := GenJournalLine."transaction type"::"Share Capital";
                       GenJournalLine."Shortcut Dimension 1 Code":='BOSA';
                       GenJournalLine.VALIDATE(GenJournalLine."Shortcut Dimension 1 Code");
-                      GenJournalLine.Description:=FORMAT(GenJournalLine."Transaction Type"::"Shares Capital");
+                      GenJournalLine.Description:=FORMAT(GenJournalLine."transaction type"::"Share Capital");
                       IF amount >= RemainedShares THEN
                       GenJournalLine.Amount:=-RemainedShares
                       ELSE
@@ -3951,7 +3951,7 @@ Codeunit 50025 SwizzKashMB
         VarMemberSelfLiability: Decimal;
         FreeSharesSelf: Decimal;
         countTrans: Integer;
-        MemberLedgerEntry2: Record 51365;
+        MemberLedgerEntry2: Record "Cust. Ledger Entry";
         mcount: Decimal;
         AdvaAmt: Decimal;
         Amountdeposited: Decimal;
@@ -4694,7 +4694,7 @@ Codeunit 50025 SwizzKashMB
         docNo: Code[50];
         NotificationDate: Date;
         EloanAmt: Decimal;
-        ObjMember: Record 51364;
+        ObjMember: Record Customer;
         varMemberNo: Code[50];
         rolledover: Decimal;
         Intcount: Integer;
@@ -5092,7 +5092,7 @@ Codeunit 50025 SwizzKashMB
         loanNotificationDate: Date;
         amtsecondnotice: Decimal;
         amtcompare: Decimal;
-        memb: Record 51364;
+        memb: Record Customer;
         Loanbal: Decimal;
         repayamt: Decimal;
         amtloan: Decimal;
@@ -5323,7 +5323,7 @@ Codeunit 50025 SwizzKashMB
         MemberLedgerEntry.Reset;
         MemberLedgerEntry.SetRange(MemberLedgerEntry."Loan No",LoanNo);
         MemberLedgerEntry.SetFilter(MemberLedgerEntry."Transaction Type", '=%1|=%2',MemberLedgerEntry."transaction type"::"Interest Paid",MemberLedgerEntry."transaction type"::"Loan Repayment");
-        MemberLedgerEntry.CalcSums(MemberLedgerEntry."Credit Amount (LCY)");
+        MemberLedgerEntry.CalcFields(MemberLedgerEntry."Credit Amount (LCY)");
         amout:=MemberLedgerEntry."Credit Amount (LCY)";
     end;
 
@@ -6151,8 +6151,8 @@ Codeunit 50025 SwizzKashMB
                             SMSMessage(docNo,Members."No.",Members."Mobile Phone No",msg,'');
              end;
               if AppType='3' then begin
-                Members.CalcFields(Members."Jiokoe Savings");
-                TempBalance:=Members."Jiokoe Savings";
+                Members.CalcFields(Members."Withdrawable Savings");
+                TempBalance:=Members."Withdrawable Savings";
         
                 msg:='Dear '+SplitString(Members.Name,' ')+' Your Jiokoe Savings A/C Balance is Ksh.'+Format(TempBalance)
                           +  ' .Thank you for using KRB Sacco Mobile.';
@@ -6746,7 +6746,7 @@ Codeunit 50025 SwizzKashMB
     procedure GetMinistatementApp(phoneNumber: Text[20]) response: Text
     var
         statementList: Text;
-        memberTable: Record 51364;
+        memberTable: Record Customer;
         runCount: Integer;
         statementCount: Integer;
         vendorTable: Record Vendor;
@@ -6807,7 +6807,7 @@ Codeunit 50025 SwizzKashMB
 
     procedure GetMemberAccounts(phoneNumber: Text[20]) response: Text
     var
-        memberTable: Record 51364;
+        memberTable: Record Customer;
         accountsList: Text;
         vendorTable: Record Vendor;
         bosaAccounts: Text;
@@ -6821,7 +6821,7 @@ Codeunit 50025 SwizzKashMB
 
           memberTable.CalcFields(memberTable."Current Shares");
           memberTable.CalcFields(memberTable."Shares Retained");
-          memberTable.CalcFields(memberTable."Holiday Savings");
+          memberTable.CalcFields(memberTable."Withdrawable Savings");
           memberTable.CalcFields(memberTable."Insurance Fund");
 
           if accountsList='' then begin
@@ -6834,8 +6834,8 @@ Codeunit 50025 SwizzKashMB
                           ',"balance":"'+Format(memberTable."Shares Retained",0,'<Precision,2:2><Integer><Decimals>')+'" }';
 
             accountsList+=',{ "accountId":"' + memberTable."No."+
-                          '", "accountName":"Holiday Savings"'+
-                          ',"balance":"'+Format(memberTable."Holiday Savings",0,'<Precision,2:2><Integer><Decimals>')+'" }';
+                          '", "accountName":"Withdrawable Savings"'+
+                          ',"balance":"'+Format(memberTable."Withdrawable Savings",0,'<Precision,2:2><Integer><Decimals>')+'" }';
 
             accountsList+=',{ "accountId":"' + memberTable."No."+
                           '", "accountName":"Insurance Fund"'+
@@ -6857,7 +6857,7 @@ Codeunit 50025 SwizzKashMB
     var
         guarantorsList: Text;
         vendorTable: Record Vendor;
-        memberTable: Record 51364;
+        memberTable: Record Customer;
     begin
 
         response:='{ "StatusCode":"2","StatusDescription":"ERROR","guarantorsList": [] }';
@@ -6901,7 +6901,7 @@ Codeunit 50025 SwizzKashMB
     var
         guaranteedList: Text;
         vendorTable: Record Vendor;
-        memberTable: Record 51364;
+        memberTable: Record Customer;
         memberName: Text;
     begin
 
@@ -6945,8 +6945,8 @@ Codeunit 50025 SwizzKashMB
 
     procedure GetBalance(phoneNumber: Text[20];accountType: Text) response: Text
     var
-        membersTable: Record 51364;
-        memberledgerentryTable: Record 51365;
+        membersTable: Record Customer;
+        memberledgerentryTable: Record "Cust. Ledger Entry";
         vendorTable: Record Vendor;
         amount: Decimal;
     begin
@@ -7048,7 +7048,7 @@ Codeunit 50025 SwizzKashMB
     procedure GetOutstandingLoans(phoneNumber: Text[20]) response: Text
     var
         outstandingloansList: Text;
-        membersTable: Record 51364;
+        membersTable: Record Customer;
         loanProductsTable: Record 51381;
     begin
         begin

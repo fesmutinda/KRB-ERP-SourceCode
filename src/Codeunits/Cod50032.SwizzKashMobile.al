@@ -23,9 +23,9 @@ Codeunit 50032 SwizzKashMobile
     end;
 
     var
-        Members: Record 51364;
+        Members: Record Customer;
         LoansRegister: Record 51371;
-        MemberLedgerEntry: Record 51365;
+        MemberLedgerEntry: Record "Cust. Ledger Entry";
         LoanProducttype: Record 51381;
         LoanGuaranteeDetails: Record 51372;
         ammmts: Decimal;

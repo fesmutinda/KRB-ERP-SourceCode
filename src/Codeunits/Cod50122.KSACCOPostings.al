@@ -11,7 +11,7 @@ Codeunit 50122 "KSACCO Postings"
         SwizzsoftFactory: Codeunit "Swizzsoft Factory.";
         LoansGuaranteeDetails: Record 51372;
         LoansReg: Record 51371;
-        MemberRegister: Record 51364;
+        MemberRegister: Record Customer;
         MembersNominee: Record 51366;
         NextofKinAccountSign: Record 51353;
         LoanProductsSetup: Record 51381;
@@ -138,7 +138,7 @@ Codeunit 50122 "KSACCO Postings"
 
     local procedure TransfeeNOK()
     var
-        members: Record 51364;
+        members: Record Customer;
         InsuranceAmt: Decimal;
         InsuranceAmt2: Decimal;
     begin

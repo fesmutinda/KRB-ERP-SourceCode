@@ -449,7 +449,7 @@ page 50863 "Loan 1st Demand Notices Card"
         VarAuctioneerDetailsVisible: Boolean;
         SMSMessage: Record 51471;
         iEntryNo: Integer;
-        cust: Record 51364;
+        cust: Record Customer;
         PreviewOn: Boolean;
 
     local procedure FNenableVisbility()

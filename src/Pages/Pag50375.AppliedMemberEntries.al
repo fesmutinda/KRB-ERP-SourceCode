@@ -2,7 +2,7 @@
 page 50375 "Applied Member Entries"
 {
     PageType = List;
-    SourceTable = "Member Ledger Entry";
+    SourceTable = "Cust. Ledger Entry";
 
     layout
     {

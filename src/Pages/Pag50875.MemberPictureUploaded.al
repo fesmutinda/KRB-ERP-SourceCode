@@ -3,13 +3,13 @@ page 50875 "Member Picture-Uploaded"
 {
     Editable = false;
     PageType = CardPart;
-    SourceTable = 51364;
+    SourceTable = Customer;
 
     layout
     {
         area(content)
         {
-            field(Picture; Rec.Picture)
+            field(Picture; Rec.Image)
             {
                 ApplicationArea = Basic, Suite;
                 Editable = false;
@@ -56,8 +56,8 @@ page 50875 "Member Picture-Uploaded"
                     //TESTFIELD(Description);
 
                     NameValueBuffer.DeleteAll;
-                    ExportPath := TemporaryPath + Rec."No." + Format(Rec.Picture.MediaId);
-                    Rec.Picture.ExportFile(ExportPath);
+                    ExportPath := TemporaryPath + Rec."No." + Format(Rec.Image.MediaId);
+                    Rec.Image.ExportFile(ExportPath);
                     FileManagement.GetServerDirectoryFilesList(TempNameValueBuffer, TemporaryPath);
                     TempNameValueBuffer.SetFilter(Name, StrSubstNo('%1*', ExportPath));
                     TempNameValueBuffer.FindFirst;
@@ -85,7 +85,7 @@ page 50875 "Member Picture-Uploaded"
         Rec.TestField("No.");
         //TESTFIELD(Description);
 
-        if Rec.Picture.HasValue then//.Count > 0 then
+        if Rec.Image.HasValue then//.Count > 0 then
             if not Confirm(OverrideImageQst) then
                 Error('');
 
@@ -94,8 +94,8 @@ page 50875 "Member Picture-Uploaded"
         if FileName = '' then
             Error('');
 
-        Clear(Rec.Picture);
-        Rec.Picture.ImportFile(FileName, ClientFileName);
+        Clear(Rec.Image);
+        Rec.Image.ImportFile(FileName, ClientFileName);
         if not Rec.Insert(true) then
             Rec.Modify(true);
 

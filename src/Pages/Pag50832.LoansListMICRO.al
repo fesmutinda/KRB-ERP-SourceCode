@@ -195,7 +195,7 @@ page 50832 "Loans List-MICRO"
         ScheduleCode: Code[20];
         PreviewShedule: Record 51234;
         PeriodInterval: Code[10];
-        CustomerRecord: Record 51364;
+        CustomerRecord: Record Customer;
         Gnljnline: Record "Gen. Journal Line";
         Jnlinepost: Codeunit "Gen. Jnl.-Post Line";
         CumInterest: Decimal;
@@ -204,9 +204,9 @@ page 50832 "Loans List-MICRO"
         GenBatch: Record "Gen. Journal Batch";
         GnljnlineCopy: Record "Gen. Journal Line";
         NewLNApplicNo: Code[10];
-        Cust: Record 51364;
+        Cust: Record Customer;
         TestAmt: Decimal;
-        CustRec: Record 51364;
+        CustRec: Record Customer;
         CustPostingGroup: Record "Customer Posting Group";
         GenSetUp: Record "Sales & Receivables Setup";
         PCharges: Record 51241;
@@ -237,7 +237,7 @@ page 50832 "Loans List-MICRO"
         BOSAInt: Decimal;
         TopUpComm: Decimal;
         TotalTopupComm: Decimal;
-        CustE: Record 51364;
+        CustE: Record Customer;
         DocN: Text[50];
         DocM: Text[100];
         DNar: Text[250];

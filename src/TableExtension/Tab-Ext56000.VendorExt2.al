@@ -1514,7 +1514,7 @@ tableextension 56000 VendorExt2 extends Vendor
         field(68228; "Member Shares Retained"; Decimal)
         {
             CalcFormula = - sum("Cust. Ledger Entry"."Amount Posted" where("Customer No." = field("BOSA Account No"),
-                                                                   "Transaction Type" = const("Shares Capital"),
+                                                                   "Transaction Type" = const("Share Capital"),
                                                                    "Posting Date" = field("Date Filter"), Reversed = const(false)));
             Editable = false;
             FieldClass = FlowField;

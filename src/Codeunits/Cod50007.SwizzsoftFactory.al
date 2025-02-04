@@ -2923,7 +2923,7 @@ GenJournalLine."account type"::Customer, LoanApps."Client Code",LoanApps."Loan D
 
     procedure FnGetLoanAmountPaid(LoanNo: Code[30]) AmountPaid: Decimal
     var
-        MemberLedgerEntry: Record "Member Ledger Entry";
+        MemberLedgerEntry: Record "Cust. Ledger Entry";
     begin
         MemberLedgerEntry.Reset;
         MemberLedgerEntry.SetRange("Loan No",LoanNo);
@@ -2931,7 +2931,7 @@ GenJournalLine."account type"::Customer, LoanApps."Client Code",LoanApps."Loan D
         MemberLedgerEntry.SetRange(Reversed,false);
         if MemberLedgerEntry.Find('-') then
            begin
-             MemberLedgerEntry.CalcSums(Amount);
+             MemberLedgerEntry.CalcSums("Amount Posted");
              AmountPaid:=-1*MemberLedgerEntry.Amount;
            end;
         exit(AmountPaid);

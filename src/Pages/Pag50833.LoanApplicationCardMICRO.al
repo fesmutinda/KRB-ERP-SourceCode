@@ -1652,7 +1652,7 @@ page 50833 "Loan Application Card - MICRO"
         PreviewShedule: Record 51375;
         PeriodInterval: Code[10];
         LnLoans: Record 51371;
-        CustomerRecord: Record 51364;
+        CustomerRecord: Record Customer;
         Gnljnline: Record "Gen. Journal Line";
         Jnlinepost: Codeunit "Gen. Jnl.-Post Line";
         CumInterest: Decimal;
@@ -1662,7 +1662,7 @@ page 50833 "Loan Application Card - MICRO"
         LineNo: Integer;
         GnljnlineCopy: Record "Gen. Journal Line";
         NewLNApplicNo: Code[10];
-        Cust: Record 51364;
+        Cust: Record Customer;
         LoanApp: Record 51371;
         TestAmt: Decimal;
         CustRec: Record 51371;
@@ -1701,7 +1701,7 @@ page 50833 "Loan Application Card - MICRO"
         DActivity: Code[20];
         DBranch: Code[20];
         TotalTopupComm: Decimal;
-        CustE: Record 51364;
+        CustE: Record Customer;
         DocN: Text[50];
         DocM: Text[100];
         DNar: Text[250];
@@ -1747,7 +1747,7 @@ page 50833 "Loan Application Card - MICRO"
         RepayFrequencyEditable: Boolean;
         ModeofDisburesmentEdit: Boolean;
         DisbursementDateEditable: Boolean;
-        Memb: Record 51364;
+        Memb: Record Customer;
         LoanSecurities: Record 51372;
         Text002: label 'Please Insert Securities Details';
         LnSecurities: Record 51372;
@@ -1902,7 +1902,7 @@ page 50833 "Loan Application Card - MICRO"
         FileName: Text[100];
         Attachment: Text[250];
         CompanyInfo: Record "Company Information";
-        Cust: Record 51364;
+        Cust: Record Customer;
         Email: Text[50];
     begin
         // SMTPSetup.Get();
@@ -1928,7 +1928,7 @@ page 50833 "Loan Application Card - MICRO"
 
     local procedure FnSendGuarantorAppSMS(LoanNo: Code[20])
     var
-        Cust: Record 51364;
+        Cust: Record Customer;
         Sms: Record 51471;
     begin
         LGuarantors.Reset;

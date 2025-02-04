@@ -502,10 +502,10 @@ page 50865 "Loan 2nd  Demand Notices Card"
         VarAuctioneerDetailsVisible: Boolean;
         SMSMessage: Record 51471;
         iEntryNo: Integer;
-        cust: Record 51364;
+        cust: Record Customer;
         LoanGuar: Record 51372;
         Loans: Record 51371;
-        Cust1: Record 51364;
+        Cust1: Record Customer;
 
     local procedure FNenableVisbility()
     begin

@@ -454,7 +454,7 @@ page 50482 "Checkoff Processing Header-D"
                                                                      KnGetPeriodDescription(Rec."CheckOff Period") + ' ' + CheckoffLinesBuffer."Member No." + ' ' + Rec."Employer Code", '');
                                 //share capital
                                 LineNo := LineNo + 10000;
-                                SwizzsoftFactory.FnCreateGnlJournalLine(Jtemplate, JBatch, Rec.No, LineNo, GenJournalLine."transaction type"::"Shares Capital", GenJournalLine."account type"::Customer,
+                                SwizzsoftFactory.FnCreateGnlJournalLine(Jtemplate, JBatch, Rec.No, LineNo, GenJournalLine."transaction type"::"Share Capital", GenJournalLine."account type"::Customer,
                                                                      ReceiptLine."Member No.", Rec."Loan CutOff Date", -ReceiptLine."Shares Capital", 'BOSA', '', 'Shares capital checkofffor '
                                                                      + KnGetPeriodDescription(Rec."CheckOff Period") + ' ' + CheckoffLinesBuffer."Member No." + ' ' + Rec."Employer Code", '');
 
@@ -756,7 +756,7 @@ page 50482 "Checkoff Processing Header-D"
         GenBatches: Record "Gen. Journal Batch";
         Datefilter: Text[50];
         ReceiptLine: Record "Checkoff Lines-Distributed";
-        MembLedg: Record "Member Ledger Entry";
+        MembLedg: Record "Cust. Ledger Entry";
         SFactory: Codeunit "Swizzsoft Factory.";
         BATCH_NAME: Code[50];
         BATCH_TEMPLATE: Code[50];
@@ -819,7 +819,7 @@ page 50482 "Checkoff Processing Header-D"
 
     local procedure FnGetMemberNo(PayrollNo: Code[30]; EmployerCode: Code[30]) MemberNo: Code[20]
     var
-        ObjMembersReg: Record 51364;
+        ObjMembersReg: Record Customer;
     begin
         ObjMembersReg.Reset;
         // ObjMembersReg.SetRange(ObjMembersReg."Personal No", PayrollNo);

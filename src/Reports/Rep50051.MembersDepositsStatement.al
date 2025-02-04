@@ -71,7 +71,7 @@ Report 50051 "Members Deposits Statement"
             column(Company_Email; Company."E-Mail")
             {
             }
-            dataitem(Deposits; "Member Ledger Entry")
+            dataitem(Deposits; "Cust. Ledger Entry")
             {
                 DataItemLink = "Customer No." = field("No."), "Posting Date" = field("Date Filter");
                 DataItemTableView = sorting("Posting Date") where("Transaction Type" = const("Deposit Contribution"), Reversed = filter(false));
@@ -142,7 +142,7 @@ Report 50051 "Members Deposits Statement"
                     OpeningBal := SharesBF;
                 end;
             }
-            /* dataitem(ShareCapital; "Member Ledger Entry")
+            /* dataitem(ShareCapital; "Cust. Ledger Entry")
             {
                 DataItemLink = "Customer No." = field("No."), "Posting Date" = field("Date Filter");
                 DataItemTableView = sorting("Posting Date") where("Transaction Type" = const("Shares Capital"), Reversed = filter(false));
@@ -344,10 +344,10 @@ Report 50051 "Members Deposits Statement"
         ApprovedAmount_Interest: Decimal;
         LonRepaymentSchedule: Record "Loan Repayment Schedule";
         TbMembReg: Record Customer;
-        MembLedgerEntry: Record "Member Ledger Entry";
+        MembLedgerEntry: Record "Cust. Ledger Entry";
 
 
-    local procedure GetBankCode(MembLedger: Record "Member Ledger Entry"): Text
+    local procedure GetBankCode(MembLedger: Record "Cust. Ledger Entry"): Text
     var
         BankLedger: Record "Bank Account Ledger Entry";
     begin

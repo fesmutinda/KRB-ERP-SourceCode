@@ -59,7 +59,7 @@ Report 51314 "Payroll JournalTransfer."
                             // if PeriodTrans."coop parameters" = PeriodTrans."coop parameters"::Likizo then
                             //     SaccoTransactionType := Tntype::Holiday_Savers;
                             if PeriodTrans."coop parameters" = PeriodTrans."coop parameters"::"Share Capital" then
-                                SaccoTransactionType := Tntype::"Shares Capital";
+                                SaccoTransactionType := Tntype::"Share Capital";
 
                             if PeriodTrans."Journal Account Type" = PeriodTrans."journal account type"::Customer then begin
                                 PeriodTrans."Journal Account Type" := PeriodTrans."journal account type"::Customer;

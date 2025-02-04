@@ -126,7 +126,7 @@ Codeunit 50016 prPayrollProcessingXX
         prEmployerDeductions: Record 51342;
         JournalPostingType: Option " ","G/L Account",Customer,Vendor,Member;
         JournalAcc: Code[20];
-        Customer: Record 51364;
+        Customer: Record Customer;
         JournalPostAs: Option " ",Debit,Credit;
         IsCashBenefit: Decimal;
         TotFrigeBenefits: Decimal;

@@ -40,6 +40,7 @@ page 56110 "Member Application Card"
                 {
                     ApplicationArea = all;
                     Editable = false;
+                    Visible = false;
                     Caption = 'Assigned No';
                 }
                 field(Title; Rec.Title)
@@ -195,7 +196,7 @@ page 56110 "Member Application Card"
                         Rec.Age := Dates.DetermineAge(Rec."Date of Birth", Today);
                         GenSetUp.Get();
                         DateofRetirement := CalcDate(GenSetUp."Retirement Age", Rec."Date of Birth");
-                        Message('Date of Retiremtn %1', DateofRetirement);
+                        Message('Date of Retirement %1', DateofRetirement);
                     end;
                 }
                 field(Age; Rec.Age)
@@ -398,9 +399,12 @@ page 56110 "Member Application Card"
                                     exEmployee := false;
                                 end else
                                     if Rec."Employment Info" = Rec."Employment Info"::"Ex KRB Employee" then begin
+                                        // employedMember := false;
+                                        // selfEmployedMember := false;
+                                        // exEmployee := true;
                                         employedMember := false;
-                                        selfEmployedMember := false;
-                                        exEmployee := true;
+                                        selfEmployedMember := true;
+                                        exEmployee := false;
                                     end;
                     end;
                 }
@@ -1654,6 +1658,8 @@ page 56110 "Member Application Card"
         Cust."Registration Date" := Today;
         Cust."Mobile Phone No" := Rec."Mobile Phone No";
         Cust.Status := Cust.Status::Active;
+
+        Cust."Employment Info" := Rec."Employment Info";
         Cust."Employer Code" := Rec."Employer Code";
         Cust."Employer Name" := Rec."Employer Name";
         Cust."Date of Birth" := Rec."Date of Birth";

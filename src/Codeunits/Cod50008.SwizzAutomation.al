@@ -20,7 +20,7 @@ Codeunit 50008 SwizzAutomation
         AccountType: Record 51436;
         SFactory: Codeunit "Swizzsoft FactoryMobile";
         InterestBuffer: Record 51467;
-        Cust: Record 51364;
+        Cust: Record Customer;
         Loans: Record 51371;
 
 

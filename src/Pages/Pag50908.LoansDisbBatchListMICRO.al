@@ -155,10 +155,10 @@ page 50908 "Loans Disb Batch List(MICRO)"
         LineNo: Integer;
         GnljnlineCopy: Record "Gen. Journal Line";
         NewLNApplicNo: Code[10];
-        Cust: Record 51364;
+        Cust: Record Customer;
         LoanApp: Record 51371;
         TestAmt: Decimal;
-        CustRec: Record 51364;
+        CustRec: Record Customer;
         CustPostingGroup: Record "Customer Posting Group";
         GenSetUp: Record 51398;
         PCharges: Record 51383;
@@ -195,7 +195,7 @@ page 50908 "Loans Disb Batch List(MICRO)"
         DBranch: Code[20];
         UsersID: Record User;
         TotalTopupComm: Decimal;
-        CustE: Record 51364;
+        CustE: Record Customer;
         DocN: Text[50];
         DocM: Text[100];
         DNar: Text[250];

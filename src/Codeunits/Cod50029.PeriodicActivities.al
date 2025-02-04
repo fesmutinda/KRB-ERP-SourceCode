@@ -50,7 +50,7 @@ Codeunit 50029 "Periodic Activities"
         Principle: Decimal;
         DailyLoansInterest: Record 51297;
         GeneralSetUp: Record 51398;
-        Memb: Record 51364;
+        Memb: Record Customer;
         SuspendedInterestAccounts: Record 51298;
         BalDate: Date;
     begin
@@ -169,7 +169,7 @@ Codeunit 50029 "Periodic Activities"
     procedure GetInterestAmount(LoanNo: Code[20]; IntDate: Date; CheckExistingBill: Boolean): Decimal
     var
         LoanRec: Record "Loans Register";
-        CLedger: Record 51365;
+        CLedger: Record "Cust. Ledger Entry";
         RSchedule: Record 51375;
         LastDate: Date;
         IntAmount: Decimal;
@@ -310,7 +310,7 @@ Codeunit 50029 "Periodic Activities"
     procedure PostLoanInterest(InterestBufferBillAndAccrue: Record 51296)
     var
         PeriodicActivities: Codeunit "Periodic Activities";
-        members: Record 51364;
+        members: Record Customer;
         GenBatches: Record "Gen. Journal Batch";
         PDate: Date;
         LoanType: Record 51381;

@@ -333,13 +333,13 @@ page 50883 "Salary Processing Card(Posted)"
         DActivityBOSA: Code[20];
         DBranchBOSA: Code[20];
         ReptProcHeader: Record 51414;
-        Cust: Record 51364;
+        Cust: Record Customer;
         salarybuffer: Record 51460;
         SalHeader: Record 51459;
         Sto: Record 51449;
         ELoanBuffer: Record 51533;
         ObjVendor: Record Vendor;
-        MembLedg: Record 51365;
+        MembLedg: Record "Cust. Ledger Entry";
         SFactory: Codeunit "Swizzsoft Factory";
         BATCH_NAME: Code[50];
         BATCH_TEMPLATE: Code[50];

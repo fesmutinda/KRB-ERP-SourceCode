@@ -178,7 +178,10 @@ page 50400 "BOSA Receipt Card"
                             case Rec."Excess Transaction Type" of
                                 Rec."excess transaction type"::"Deposit Contribution":
                                     FnRunDepositContributionFromExcess(Rec, RunBal);
-
+                                Rec."excess transaction type"::"Withdrawable Savings":
+                                    FnRunSavingsProductExcess(Rec, RunBal, 'Withdrawable Savings');
+                                Rec."excess transaction type"::"Junior Savings":
+                                    FnRunSavingsProductExcess(Rec, RunBal, 'Junior Savings');
                             end;
 
                         end;
@@ -693,7 +696,7 @@ page 50400 "BOSA Receipt Card"
                             // ObjReceiptTransactions."Account No" := ObjMember."Share Capital No";
                             ObjReceiptTransactions."Document No" := ObjRcptBuffer."Transaction No.";
                             ObjReceiptTransactions."Member No" := ObjRcptBuffer."Account No.";
-                            ObjReceiptTransactions."Transaction Type" := ObjReceiptTransactions."transaction type"::"Shares Capital";
+                            ObjReceiptTransactions."Transaction Type" := ObjReceiptTransactions."transaction type"::"Share Capital";
                             ObjReceiptTransactions."Global Dimension 1 Code" := 'BOSA';
                             ObjReceiptTransactions."Global Dimension 2 Code" := SURESTEPFactory.FnGetMemberBranch(ObjRcptBuffer."Account No.");
                             ObjReceiptTransactions.Amount := AmountToDeduct;
@@ -932,10 +935,10 @@ page 50400 "BOSA Receipt Card"
             ObjReceiptTransactions."Member No" := ObjMember."No.";
             ObjReceiptTransactions."Account Type" := ObjReceiptTransactions."account type"::Customer;
             ObjReceiptTransactions."Account No" := ObjReceiptTransactions."Member No";
-            // if "Excess Transaction Type" = "excess transaction type"::"Junior Savings" then
-            //     ObjReceiptTransactions."Transaction Type" := ObjReceiptTransactions."transaction type"::"Junior Savings";
-            // if "Excess Transaction Type" = "excess transaction type"::"Silver Savings" then
-            //     ObjReceiptTransactions."Transaction Type" := ObjReceiptTransactions."transaction type"::"Silver Savings";
+            if Rec."Excess Transaction Type" = Rec."excess transaction type"::"Junior Savings" then
+                ObjReceiptTransactions."Transaction Type" := ObjReceiptTransactions."transaction type"::"Junior Savings";
+            if Rec."Excess Transaction Type" = Rec."excess transaction type"::"Withdrawable Savings" then
+                ObjReceiptTransactions."Transaction Type" := ObjReceiptTransactions."transaction type"::"Withdrawable Savings";
             // if "Excess Transaction Type" = "excess transaction type"::"Safari Saving" then
             //     ObjReceiptTransactions."Transaction Type" := ObjReceiptTransactions."transaction type"::"Safari Savings";
             ObjReceiptTransactions."Global Dimension 1 Code" := 'BOSA';

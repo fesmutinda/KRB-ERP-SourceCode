@@ -41,6 +41,7 @@ page 50364 "Membership App Nominee Detail"
                 field(Telephone; Rec.Telephone)
                 {
                     ApplicationArea = Basic;
+                    ShowMandatory = true;
                 }
                 // field(Description; Rec.Description)
                 // {
@@ -54,6 +55,7 @@ page 50364 "Membership App Nominee Detail"
                 {
                     Caption = 'Id/Birth Cert No.';
                     ApplicationArea = Basic;
+                    ShowMandatory = true;
                 }
                 field("%Allocation"; Rec."%Allocation")
                 {

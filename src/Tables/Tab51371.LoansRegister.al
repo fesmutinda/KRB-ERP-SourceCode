@@ -369,6 +369,18 @@ Table 51371 "Loans Register"
                 if "Requested Amount" <> 0 then
                     Validate("Requested Amount");
 
+                // Loans Multiplier
+                Cust.SetRange(Cust."No.", "Client Code");
+                if Cust.FindSet then begin
+                    if Cust."Employment Info" = Cust."Employment Info"::"KRB Employee" then begin
+                        "Loan Deposit Multiplier" := 3;
+                    end else begin
+                        "Loan Deposit Multiplier" := 2;
+                    end;
+
+                    "Recommended Amount" := "Loan Deposit Multiplier" * "Member Deposits";
+                end;
+                // loans Multiplier
             end;
         }
         field(4; "Client Code"; Code[50])
@@ -383,8 +395,8 @@ Table 51371 "Loans Register"
                 RefDate: Date;
                 MembReg: Record Customer;
             begin
-                //Sacco Deductions
-                //"Total Deductions":=("Monthly Contribution"+ "Loan Principle Repayment"+"Loan Interest Repayment");
+                // Sacco Deductions
+                // "Total Deductions" := ("Monthly Contribution" + "Loan Principle Repayment" + "Loan Interest Repayment");
                 //MESSAGE('0101 %1',"Total Deductions");
 
 
@@ -433,15 +445,15 @@ Table 51371 "Loans Register"
                 */
                 GenSetUp.Get();
                 if Cust.Get("Client Code") then begin
-                    //  IF Cust."Registration Date"<>0D THEN
-                    //  RefDate:=CALCDATE('<+'+GenSetup."Share Capital Period"+'>',Cust."Registration Date");
-                    //  IF RefDate<TODAY THEN BEGIN
-                    //    ERROR('Member does not qualify for this loan!');
-                    //  END; // For members who are not 6 months old in the Sacco
+                    // IF Cust."Registration Date" <> 0D THEN
+                    //     RefDate := CALCDATE('<+' + GenSetup."Share Capital Period" + '>', Cust."Registration Date");
+                    // IF RefDate < TODAY THEN BEGIN
+                    //     ERROR('Member does not qualify for this loan!');
+                    // END; // For members who are not 6 months old in the Sacco
 
-                    //  Cust.CALCFIELDS("Shares Retained");
-                    //  IF Cust."Shares Retained"<GenSetUp."Retained Shares" THEN
-                    //    ERROR('Member does not meet the minimum share capital contibution to qualify for this loan');
+                    Cust.CALCFIELDS("Shares Retained");
+                    IF Cust."Shares Retained" < GenSetUp."Retained Shares" THEN
+                        ERROR('Member does not meet the minimum share capital contibution to qualify for this loan');
                 end;
                 if Source = Source::BOSA then begin
                     if "Loan  No." = '' then begin
@@ -542,10 +554,10 @@ Table 51371 "Loans Register"
                     //IF Source = Source::BOSA THEN BEGIN
                     //CustomerRecord.TESTFIELD(CustomerRecord."ID No.");
 
-                    //IF CustomerRecord."Registration Date" <> 0D THEN BEGIN
-                    //IF CALCDATE(GenSetUp."Min. Loan Application Period",CustomerRecord."Registration Date") > TODAY THEN
-                    //ERROR('Member is less than six months old therefor not eligible for loan application.');
-                    //END;
+                    IF CustomerRecord."Registration Date" <> 0D THEN BEGIN
+                        IF CALCDATE(GenSetUp."Min. Loan Application Period", CustomerRecord."Registration Date") > TODAY THEN
+                            ERROR('Member is less than six months old therefor not eligible for loan application.');
+                    END;
 
 
                     CustomerRecord.CalcFields(CustomerRecord."Current Shares", CustomerRecord."Outstanding Balance",
@@ -671,6 +683,19 @@ Table 51371 "Loans Register"
                 "Sacco Deductions" := Saccodeduct;
                 //VALIDATE("Member House Group");
 
+                // Loans Multiplier
+                Cust.SetRange(Cust."No.", "Client Code");
+                if Cust.FindSet then begin
+                    if Cust."Employment Info" = Cust."Employment Info"::"KRB Employee" then begin
+                        "Loan Deposit Multiplier" := 3;
+                    end else begin
+                        "Loan Deposit Multiplier" := 2;
+                    end;
+
+                    "Recommended Amount" := "Loan Deposit Multiplier" * "Member Deposits";
+                end;
+                // loans Multiplier
+
 
                 //Insert Member Deposit History
                 //FnGetMemberDepositHistory();
@@ -776,7 +801,7 @@ Table 51371 "Loans Register"
                 end;
 
 
-                "Approved Amount" := 0;
+                "Approved Amount" := "Recommended Amount";// 0;
                 "Net Payment to FOSA" := "Requested Amount";
 
                 Validate("Approved Amount");
@@ -1649,7 +1674,7 @@ Table 51371 "Loans Register"
         field(53110; "Current Shares"; Decimal)
         {
             CalcFormula = sum("Cust. Ledger Entry"."Amount Posted" where("Customer No." = field("Client Code"),
-                                                                  "Transaction Type" = filter("Shares Capital"),
+                                                                  "Transaction Type" = filter("Share Capital"),
                                                                   "Loan No" = field("Loan  No.")));
             Editable = false;
             FieldClass = FlowField;
@@ -1713,7 +1738,7 @@ Table 51371 "Loans Register"
         field(53182; "Last Pay Date"; Date)
         {
             CalcFormula = max("Cust. Ledger Entry"."Posting Date" where("Loan No" = field("Loan  No."),
-                                                                          "Transaction Type" = filter("Interest Paid" | "Shares Capital")));
+                                                                          "Transaction Type" = filter("Interest Paid" | "Share Capital")));
             Editable = false;
             FieldClass = FlowField;
         }
@@ -1778,7 +1803,7 @@ Table 51371 "Loans Register"
         field(53188; "Appraisal Fee Paid"; Decimal)
         {
             CalcFormula = sum("Cust. Ledger Entry"."Amount Posted" where("Customer No." = field("Client Code"), "Loan No" = field("Loan  No."),
-                                                                  "Transaction Type" = filter("Mwanangu Savings"),
+                                                                  "Transaction Type" = filter("Loan Application Fee Paid"),
                                                                   "Posting Date" = field("Date filter")));
             Editable = false;
             FieldClass = FlowField;
@@ -2579,7 +2604,7 @@ Table 51371 "Loans Register"
         field(68071; "Outstanding Balance to Date"; Decimal)
         {
             CalcFormula = sum("Cust. Ledger Entry"."Amount Posted" where("Customer No." = field("Client Code"),
-                                                                  "Transaction Type" = filter("Shares Capital" | "Interest Paid"),
+                                                                  "Transaction Type" = filter("Share Capital" | "Interest Paid"),
                                                                   "Loan No" = field("Loan  No."),
                                                                   "Posting Date" = field("Date filter")));
             Editable = false;
@@ -2709,7 +2734,7 @@ Table 51371 "Loans Register"
         field(69008; "Loan Count"; Integer)
         {
             CalcFormula = count("Cust. Ledger Entry" where("Customer No." = field("Client Code"),
-                                                             "Transaction Type" = filter("Shares Capital"),
+                                                             "Transaction Type" = filter("Share Capital"),
                                                              "Loan No" = field("Loan  No.")));
             FieldClass = FlowField;
         }
@@ -2893,7 +2918,7 @@ Table 51371 "Loans Register"
         field(69044; "Total Loans Outstanding"; Decimal)
         {
             CalcFormula = sum("Cust. Ledger Entry"."Amount Posted" where("Customer No." = field("Client Code"),
-                                                                  "Transaction Type" = filter("Shares Capital" | "Interest Paid"),
+                                                                  "Transaction Type" = filter("Share Capital" | "Interest Paid"),
                                                                   "Loan Type" = filter(<> 'ADV' | 'ASSET' | 'B/L' | 'FL' | 'IPF')));
             FieldClass = FlowField;
         }
@@ -3098,7 +3123,7 @@ Table 51371 "Loans Register"
         field(69078; "Totals Loan Outstanding"; Decimal)
         {
             CalcFormula = sum("Cust. Ledger Entry"."Amount Posted" where("Customer No." = field("Client Code"),
-                                                                  "Transaction Type" = filter("Shares Capital" | "Interest Paid"),
+                                                                  "Transaction Type" = filter("Share Capital" | "Interest Paid"),
                                                                   "Posting Date" = field("Date filter")));
             FieldClass = FlowField;
         }

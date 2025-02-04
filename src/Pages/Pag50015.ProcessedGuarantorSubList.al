@@ -95,6 +95,6 @@ page 50015 "Processed Guarantor Sub List"
     }
 
     var
-        cust: Record 51364;
+        cust: Record Customer;
 }
 

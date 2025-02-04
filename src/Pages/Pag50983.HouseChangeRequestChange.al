@@ -305,7 +305,7 @@ page 50983 "House Change Request Change"
         CanCancelApprovalForRecord: Boolean;
         ApprovalsMgmt: Codeunit "Approvals Mgmt.";
         EnabledApprovalWorkflowsExist: Boolean;
-        ObjCust: Record 51364;
+        ObjCust: Record Customer;
         MemberNoEditable: Boolean;
         DestinationHouseEditable: Boolean;
         ReasonforChangeEditable: Boolean;

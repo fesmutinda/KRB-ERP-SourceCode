@@ -19,7 +19,7 @@ Codeunit 50027 "IPRS Details"
         Loans: Integer;
         LoansRegister: Record 51371;
         LoanProductsSetup: Record 51381;
-        Members: Record 51364;
+        Members: Record Customer;
         dateExpression: Text[20];
         GenJournalLine: Record "Gen. Journal Line";
         GenBatches: Record "Gen. Journal Batch";

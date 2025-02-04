@@ -32,12 +32,12 @@ page 50367 "Member Account Card"
                     Editable = false;
                     Style = StrongAccent;
                 }
-                field(SecondName; Rec."Name 2")
-                {
-                    ApplicationArea = Basic;
-                    Style = StrongAccent;
-                    Editable = false;
-                }
+                // field(SecondName; Rec."Name 2")
+                // {
+                //     ApplicationArea = Basic;
+                //     Style = StrongAccent;
+                //     Editable = false;
+                // }
                 // field(LastName; Rec.Surname)
                 // {
                 //     ApplicationArea = Basic;

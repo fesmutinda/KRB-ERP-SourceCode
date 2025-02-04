@@ -291,7 +291,7 @@ Table 51376 "Loan Offset Details"
         }
         field(9; "Interest Paid"; Decimal)
         {
-            CalcFormula = - sum("Member Ledger Entry".Amount where("Customer No." = field("Client Code"),
+            CalcFormula = - sum("Cust. Ledger Entry"."Amount Posted" where("Customer No." = field("Client Code"),
                                                                    "Loan No" = field("Loan Top Up"),
                                                                    "Transaction Type" = filter("Interest Paid")));
             FieldClass = FlowField;

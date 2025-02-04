@@ -7,7 +7,7 @@ page 50876 "Member Signature-Uploaded"
     InsertAllowed = false;
     ModifyAllowed = false;
     PageType = CardPart;
-    SourceTable = 51364;
+    SourceTable = Customer;
 
     layout
     {
@@ -48,7 +48,7 @@ page 50876 "Member Signature-Uploaded"
         Rec.TestField("No.");
         //TESTFIELD(Description);
 
-        if Rec.Signature.Count > 0 then
+        if Rec.Signature.HasValue then
             if not Confirm(OverrideImageQst) then
                 Error('');
 
