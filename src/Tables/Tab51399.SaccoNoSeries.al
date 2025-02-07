@@ -93,7 +93,7 @@ Table 51399 "Sacco No. Series"
         {
             TableRelation = "G/L Account"."No.";
         }
-        field(16; "PV No."; Code[20])
+        field(16; "Junior Account No."; Code[20])
         {
             TableRelation = "No. Series";
         }

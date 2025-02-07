@@ -44,6 +44,10 @@ page 50413 "Sacco No. Series"
                 {
                     ApplicationArea = Basic;
                 }
+                field("Junior Account No."; Rec."Junior Account No.")
+                {
+                    ApplicationArea = Basic;
+                }
                 field("BOSA Loans Nos"; Rec."BOSA Loans Nos")
                 {
                     ApplicationArea = Basic;

@@ -826,14 +826,20 @@ page 56110 "Member Application Card"
                             Cust.SetRange(Cust."ID No.", Rec."ID No.");
                             Cust.SetRange(Cust."Customer Type", Cust."customer type"::Member);
                             if Cust.Find('-') then begin
-                                if (Cust."No." <> Rec."No.") and (Cust."Account Category" = Cust."account category"::Individual) then
+                                if (Cust."No." <> Rec."No.") and (Cust."Account Category" = Cust."account category"::"Regular Account") then
                                     Error('Member has already been created. Kindly Confirm the ID Number to proceed.');
                             end;
                         end;
 
                         //*******************Check ID no.******************************
-                        if (Rec."ID No." = '') then
-                            Error('You must specify ID No for the applicant');
+                        if Rec."Account Category" = Rec."Account Category"::"Regular Account" then begin
+                            if (Rec."ID No." = '') then
+                                Error('You must specify ID No for the applicant');
+                        end;
+                        if Rec."Account Category" = Rec."Account Category"::"Junior Account" then begin
+                            if (Rec."Birth Certficate No." = '') then
+                                Error('You must enter the Birth Cert. No');
+                        end;
                         //*******************Check ID no.******************************
 
 
@@ -915,8 +921,14 @@ page 56110 "Member Application Card"
 
                         end;
                         Cust.Reset;
-                        Cust.SetRange(Cust."ID No.", Rec."ID No.");
                         Cust.SetRange(Cust."Customer Type", Cust."customer type"::Member);
+
+                        if Rec."Account Category" = Rec."Account Category"::"Regular Account" then begin
+                            Cust.SetRange(Cust."ID No.", Rec."ID No.");
+                        end;
+                        if Rec."Account Category" = Rec."Account Category"::"Junior Account" then begin
+                            Cust.SetRange(Cust."Birth Certficate No.", Rec."Birth Certficate No.");
+                        end;
                         if Cust.Find('-') then begin
                             if (Cust."No." <> Rec."No.") then
                                 Error('Member has already been created');
@@ -928,14 +940,6 @@ page 56110 "Member Application Card"
                             dialogBox.Open('Creating New BOSA Account for applicant ' + Format(MembApp.Name));
                             FnCreateBOSAMemberAccounts();
                             dialogBox.Close();
-
-
-                            GenSetUp.Get;
-                            // if GenSetUp."Auto Open FOSA Savings Acc." = true then begin
-                            //     dialogBox.Open('Creating New BOSA Account for applicant ' + Format(MembApp.Name));
-                            //     FnCreateFOSAMemberAccounts();
-                            //     dialogBox.Close();
-                            // end;
 
                             dialogBox.Open('Registering Next Of Kin for ' + Format(MembApp.Name));
                             FnCreateNextOfKinDetails(Cust."No.");
@@ -1597,21 +1601,29 @@ page 56110 "Member Application Card"
         Companyinfo: Record "Company Information";
     begin
 
-        Emailaddress := Rec."E-Mail (Personal)";
-        EmailSubject := 'KRB Membership Application';
+        if Rec."Account Category" = Rec."Account Category"::"Junior Account" then begin
+            //Send Email to the Guardian
+        end else begin
 
-        // EMailBody := 'Dear <b>' + Name + '</b>,</br></br>' +
-        // 'On behalf of KRB Sacco am pleased to inform you that your application for membership has been accepted. Your Membership Number is' + MemberNumber + '<br></br>' +
-        // 'Thank You For Choosing to Save With Us' +'</br>' +
-        // 'Kind regards,'+ '<br></br>' +
-        // 'KRB Sacco' ;
-        EMailBody := 'Dear <b>' + Rec.Name + '</b>,</br></br>' +
-       'On behalf of KRB Sacco am pleased to inform you that your application for membership has been accepted.' + '<br></br>' +
-       'Congratulations';
-        //     Companyinfo.Name + '</br>' + Companyinfo.Address + '</br>' + Companyinfo.City + '</br>' +
-        //    Companyinfo."Post Code" + '</br>' + Companyinfo."Country/Region Code" + '</br>' +
-        //     Companyinfo."Phone No." + '</br>' + Companyinfo."E-Mail";
-        EmailCodeunit.SendMail(Emailaddress, EmailSubject, EmailBody);
+            Emailaddress := Rec."E-Mail (Personal)";
+
+
+
+            EmailSubject := 'KRB Membership Application';
+
+            // EMailBody := 'Dear <b>' + Name + '</b>,</br></br>' +
+            // 'On behalf of KRB Sacco am pleased to inform you that your application for membership has been accepted. Your Membership Number is' + MemberNumber + '<br></br>' +
+            // 'Thank You For Choosing to Save With Us' +'</br>' +
+            // 'Kind regards,'+ '<br></br>' +
+            // 'KRB Sacco' ;
+            EMailBody := 'Dear <b>' + Rec.Name + '</b>,</br></br>' +
+                        'On behalf of KRB Sacco am pleased to inform you that your application for membership has been accepted.' + '<br></br>' +
+                        'Congratulations' +
+                        Companyinfo.Name + '</br>' + Companyinfo.Address + '</br>' + Companyinfo.City + '</br>' +
+                        Companyinfo."Post Code" + '</br>' + Companyinfo."Country/Region Code" + '</br>' +
+                        Companyinfo."Phone No." + '</br>' + Companyinfo."E-Mail";
+            EmailCodeunit.SendMail(Emailaddress, EmailSubject, EmailBody);
+        end;
     end;
 
     local procedure FnCreateBOSAMemberAccounts()
@@ -1621,20 +1633,28 @@ page 56110 "Member Application Card"
     begin
         Saccosetup.Get();
 
-
         //Getting the next Member Number
-        NewMembNo := NoSeriesMgt.TryGetNextNo(ObjNoSeries."Members Nos", today);
-        NoSeriesLine.RESET;
-        NoSeriesLine.SETRANGE(NoSeriesLine."Series Code", ObjNoSeries."Members Nos");
-        IF NoSeriesLine.FINDSET THEN BEGIN
-            NoSeriesLine."Last No. Used" := INCSTR(NoSeriesLine."Last No. Used");
-            NoSeriesLine."Last Date Used" := TODAY;
-            NoSeriesLine.MODIFY;
-        END;
+        if Rec."Account Category" = Rec."Account Category"::"Junior Account" then begin
+            NewMembNo := NoSeriesMgt.TryGetNextNo(ObjNoSeries."Junior Account No.", today);
+            NoSeriesLine.RESET;
+            NoSeriesLine.SETRANGE(NoSeriesLine."Series Code", ObjNoSeries."Junior Account No.");
+            IF NoSeriesLine.FINDSET THEN BEGIN
+                NoSeriesLine."Last No. Used" := INCSTR(NoSeriesLine."Last No. Used");
+                NoSeriesLine."Last Date Used" := TODAY;
+                NoSeriesLine.MODIFY;
+            END;
+        end else begin
 
+            NewMembNo := NoSeriesMgt.TryGetNextNo(ObjNoSeries."Members Nos", today);
+            NoSeriesLine.RESET;
+            NoSeriesLine.SETRANGE(NoSeriesLine."Series Code", ObjNoSeries."Members Nos");
+            IF NoSeriesLine.FINDSET THEN BEGIN
+                NoSeriesLine."Last No. Used" := INCSTR(NoSeriesLine."Last No. Used");
+                NoSeriesLine."Last Date Used" := TODAY;
+                NoSeriesLine.MODIFY;
+            END;
 
-        //NewMembNo := Saccosetup."Last Memb No.";
-
+        end;
 
 
         //Create BOSA account

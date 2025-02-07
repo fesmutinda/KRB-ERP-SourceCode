@@ -429,43 +429,6 @@ Codeunit 50039 "SwizzsoftApprovalsCodeUnit"
     end;
     //..................................................................................................
 
-    procedure SendCEEPChangeRequestForApproval(DocNo: Code[40]; var "Change Request": Record "CEEP Change Request")
-    begin
-        if FnCheckIfCEEPChangeRequestApprovalsWorkflowEnabled("Change Request") then begin
-            FnOnSendCEEPChangeRequestForApproval("Change Request");
-        end;
-    end;
-
-    local procedure FnCheckIfCEEPChangeRequestApprovalsWorkflowEnabled(var "Change Request": Record "CEEP Change Request"): Boolean;
-    begin
-        if not IsCEEPChangeRequestApprovalsWorkflowEnabled("Change Request") then
-            Error(NoWorkflowEnabledErr);
-        exit(true);
-    end;
-
-    //.
-    procedure CancelCEEPChangeRequestRequestForApproval(ChangeRequest: Code[40]; var "Change Request": Record "CEEP Change Request")
-    begin
-        FnOnCancelCEEPChangeRequestApprovalRequest("Change Request");
-    end;
-
-    local procedure IsCEEPChangeRequestApprovalsWorkflowEnabled(var ChangeRequest: Record "CEEP Change Request"): Boolean
-    begin
-        exit(WorkflowManagement.CanExecuteWorkflow(ChangeRequest, Psalmkitswfevents.RunWorkflowOnSendCEEPChangeRequestForApprovalCode));
-    end;
-
-
-    [IntegrationEvent(false, false)]
-
-    procedure FnOnSendCEEPChangeRequestForApproval(var ChangeRequest: Record "CEEP Change Request")
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-
-    procedure FnOnCancelCEEPChangeRequestApprovalRequest(var ChangeRequest: Record "CEEP Change Request")
-    begin
-    end;
     //..................................................................................................
     //10)--------------------------------------------------------------------Send Teller request For Approval start
     // procedure SendTellerTransactionsRequestForApproval(TellerTransactions: Code[40]; var Transactions: Record Transactions)

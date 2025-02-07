@@ -5,7 +5,7 @@ Table 50022 "Change Request New Signatories"
     {
         field(1; "Document No"; Code[20])
         {
-            TableRelation = "CEEP Change Request".No;
+            // TableRelation = "CEEP Change Request".No;
         }
         field(2; Names; Text[50])
         {

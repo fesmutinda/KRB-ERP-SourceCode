@@ -197,7 +197,6 @@ codeunit 50041 "Custom Workflow Responses"
         PettyCashReimbersement: Record "Funds Transfer Header";
         FOSAProductApplication: Record "Accounts Applications Details";
         LoanRecoveryApplication: Record "Loan Recovery Header";
-        CEEPChangeRequest: Record "CEEP Change Request";
         MembershipExist: Record "Membership Exist";
         MemberReapplication: Record "Member Reapplication";
 
@@ -292,14 +291,6 @@ codeunit 50041 "Custom Workflow Responses"
                     LoanTopUp.Modify(true);
                     Handled := true;
                 end;
-            //CEEP Change Request
-            Database::"CEEP Change Request":
-                begin
-                    RecRef.SetTable(CEEPChangeRequest);
-                    CEEPChangeRequest.status := CEEPChangeRequest.status::Open;
-                    CEEPChangeRequest.Modify(true);
-                    Handled := true;
-                end;
             //Change Request
             Database::"Change Request":
                 begin
@@ -344,7 +335,6 @@ codeunit 50041 "Custom Workflow Responses"
         PettyCashReimbersement: Record "Funds Transfer Header";
         FOSAProductApplication: Record "Accounts Applications Details";
         LoanRecoveryApplication: Record "Loan Recovery Header";
-        CEEPChangeRequest: Record "CEEP Change Request";
         MembershipExist: Record "Membership Exist";
         MemberReapplication: Record "Member Reapplication";
     begin
@@ -449,14 +439,6 @@ codeunit 50041 "Custom Workflow Responses"
                     LoanTopUp.Modify(true);
                     IsHandled := true;
                 end;
-            //CEEP Change Request
-            Database::"CEEP Change Request":
-                begin
-                    RecRef.SetTable(CEEPChangeRequest);
-                    CEEPChangeRequest.Validate(Status, CEEPChangeRequest.Status::Pending);
-                    CEEPChangeRequest.Modify(true);
-                    IsHandled := true;
-                end;
             //Change Request
             Database::"Change Request":
                 begin
@@ -494,7 +476,6 @@ codeunit 50041 "Custom Workflow Responses"
         PettyCashReimbersement: Record "Funds Transfer Header";
         FOSAProductApplication: Record "Accounts Applications Details";
         LoanRecoveryApplication: Record "Loan Recovery Header";
-        CEEPChangeRequest: Record "CEEP Change Request";
         MembershipExist: Record "Membership Exist";
         MemberReapplication: Record "Member Reapplication";
     begin
@@ -605,14 +586,6 @@ codeunit 50041 "Custom Workflow Responses"
                     ChangeRequest.Modify(true);
                     Variant := ChangeRequest;
                 end;
-            //CEEP Change Request
-            Database::"CEEP Change Request":
-                begin
-                    RecRef.SetTable(CEEPChangeRequest);
-                    CEEPChangeRequest.Validate(status, CEEPChangeRequest.Status::Pending);
-                    CEEPChangeRequest.Modify(true);
-                    Variant := CEEPChangeRequest;
-                end;
             //Loan Recovery Application
             Database::"Loan Recovery Header":
                 begin
@@ -640,7 +613,6 @@ codeunit 50041 "Custom Workflow Responses"
         PettyCashReimbersement: Record "Funds Transfer Header";
         FOSAProductApplication: Record "Accounts Applications Details";
         LoanRecoveryApplication: Record "Loan Recovery Header";
-        CEEPChangeRequest: Record "CEEP Change Request";
         MembershipExist: Record "Membership Exist";
         MemberReapplication: Record "Member Reapplication";
     begin
@@ -742,16 +714,6 @@ codeunit 50041 "Custom Workflow Responses"
                     RecRef.SetTable(ChangeRequest);
                     ChangeRequest.Status := ChangeRequest.Status::Approved;
                     ChangeRequest.Modify(true);
-                    Handled := true;
-                end;
-            //CEEP Change Request
-            DATABASE::"CEEP Change Request":
-                begin
-                    RecRef.SetTable(CEEPChangeRequest);
-                    CEEPChangeRequest.Status := CEEPChangeRequest.Status::Approved;
-                    CEEPChangeRequest."Approved by" := UserId;
-                    CEEPChangeRequest."Approval Date" := Today;
-                    CEEPChangeRequest.Modify(true);
                     Handled := true;
                 end;
             //Loan Recovery applications

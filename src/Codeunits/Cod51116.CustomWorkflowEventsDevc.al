@@ -65,12 +65,6 @@ codeunit 51116 "Custom Workflow Events Devc"
                                     Database::"Change Request", 'An Approval request for  Change Request is canceled.', 0, false);
 
         //-------------------------------------------End Approval Events-------------------------------------------------------------
-        //CEEP Change Request
-        WFHandler.AddEventToLibrary(RunWorkflowOnSendCEEPChangeRequestForApprovalCode,
-                            Database::"CEEP Change Request", 'Approval of CEEP Change Request is Requested.', 0, false);
-        WFHandler.AddEventToLibrary(RunWorkflowOnCancelCEEPChangeRequestApprovalRequestCode,
-                                    Database::"CEEP Change Request", 'An Approval request for CEEP Change Request is canceled.', 0, false);
-
         //Leave Application
         // WFHandler.AddEventToLibrary(RunWorkflowOnSendLeaveApplicationForApprovalCode,
         //                     Database::"HR Leave Application", 'Approval of Leave Application is Requested.', 0, false);
@@ -210,12 +204,6 @@ codeunit 51116 "Custom Workflow Events Devc"
         WFHandler.AddEventPredecessor(WFHandler.RunWorkflowOnRejectApprovalRequestCode, RunWorkflowOnSendLoanRecoveryApplicationForApprovalCode);
 
         WFHandler.AddEventPredecessor(WFHandler.RunWorkflowOnDelegateApprovalRequestCode, RunWorkflowOnSendLoanRecoveryApplicationForApprovalCode);
-        //12. Change Request
-        WFHandler.AddEventPredecessor(WFHandler.RunWorkflowOnApproveApprovalRequestCode, RunWorkflowOnSendCEEPChangeRequestForApprovalCode);
-
-        WFHandler.AddEventPredecessor(WFHandler.RunWorkflowOnRejectApprovalRequestCode, RunWorkflowOnSendCEEPChangeRequestForApprovalCode);
-
-        WFHandler.AddEventPredecessor(WFHandler.RunWorkflowOnDelegateApprovalRequestCode, RunWorkflowOnSendCEEPChangeRequestForApprovalCode);
         //---------------------------------------End Approval,Rejection,Delegation Predecessors---------------------------------------------
     end;
     //...............................................................................................................................................................................
@@ -555,31 +543,6 @@ codeunit 51116 "Custom Workflow Events Devc"
         WorkflowManagement.HandleEvent(RunWorkflowOnCancelLoanRecoveryApplicationApprovalRequestCode, LoanRecoveryApplication);
     end;
     //...................................................................
-    //12.CEEP Change Request
-    procedure RunWorkflowOnSendCEEPChangeRequestForApprovalCode(): Code[128]//
-    begin
-        exit(UpperCase('RunWorkflowOnSendCEEPChangeRequestForApproval'));
-    end;
-
-
-    procedure RunWorkflowOnCancelCEEPChangeRequestApprovalRequestCode(): Code[128]
-    begin
-        exit(UpperCase('RunWorkflowOnCancelCEEPChangeRequestApprovalRequest'));
-    end;
-
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::SurestepApprovalsCodeUnit, 'FnOnSendCEEPChangeRequestForApproval', '', false, false)]
-
-    procedure RunWorkflowOnSendCEEPChangeRequestForApproval(var ChangeRequest: Record "CEEP Change Request")
-    begin
-        WorkflowManagement.HandleEvent(RunWorkflowOnSendCEEPChangeRequestForApprovalCode, ChangeRequest);
-    end;
-
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::SurestepApprovalsCodeUnit, 'FnOnCancelCEEPChangeRequestApprovalRequest', '', false, false)]
-
-    procedure RunWorkflowOnCancelCEEPChangeRequestApprovalRequest(var ChangeRequest: Record "CEEP Change Request")
-    begin
-        WorkflowManagement.HandleEvent(RunWorkflowOnCancelCEEPChangeRequestApprovalRequestCode, ChangeRequest);
-    end;
 
     //13)Member Re-application
     procedure RunWorkflowOnSendMemberReapplicationForApprovalCode(): Code[128]

@@ -543,44 +543,7 @@ codeunit 51115 "SurestepApprovalsCodeUnit"
     begin
     end;
     //...............................................................................
-    //6)--------------------------------------------------------------------Send Change request For Approval start
-    procedure SendCEEPChangeRequestForApproval(DocNo: Code[40]; var "Change Request": Record "CEEP Change Request")
-    begin
-        if FnCheckIfCEEPChangeRequestApprovalsWorkflowEnabled("Change Request") then begin
-            FnOnSendCEEPChangeRequestForApproval("Change Request");
-        end;
-    end;
-
-    local procedure FnCheckIfCEEPChangeRequestApprovalsWorkflowEnabled(var "Change Request": Record "CEEP Change Request"): Boolean;
-    begin
-        if not IsCEEPChangeRequestApprovalsWorkflowEnabled("Change Request") then
-            Error(NoWorkflowEnabledErr);
-        exit(true);
-    end;
-
-    //.
-    procedure CancelCEEPChangeRequestRequestForApproval(ChangeRequest: Code[40]; var "Change Request": Record "CEEP Change Request")
-    begin
-        FnOnCancelCEEPChangeRequestApprovalRequest("Change Request");
-    end;
 
 
-    local procedure IsCEEPChangeRequestApprovalsWorkflowEnabled(var ChangeRequest: Record "CEEP Change Request"): Boolean
-    begin
-        exit(WorkflowManagement.CanExecuteWorkflow(ChangeRequest, Psalmkitswfevents.RunWorkflowOnSendCEEPChangeRequestForApprovalCode));
-    end;
-
-
-    [IntegrationEvent(false, false)]
-
-    procedure FnOnSendCEEPChangeRequestForApproval(var ChangeRequest: Record "CEEP Change Request")
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-
-    procedure FnOnCancelCEEPChangeRequestApprovalRequest(var ChangeRequest: Record "CEEP Change Request")
-    begin
-    end;
 }
 

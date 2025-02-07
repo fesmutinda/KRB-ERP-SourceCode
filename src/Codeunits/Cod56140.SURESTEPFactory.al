@@ -180,7 +180,7 @@ codeunit 56140 "SURESTEP Factory"
             end;
 
             ObjGenSetUp.Get;
-            if (ObjMember."Account Category" = ObjMember."account category"::Individual)
+            if (ObjMember."Account Category" = ObjMember."account category"::"Regular Account")
             and (VarMemberMonthlyContribution < ObjGenSetUp."Min. Contribution") then
                 VarMemberMonthlyContribution := ObjGenSetUp."Min. Contribution";
             // if (ObjMember."Account Category" <> ObjMember."account category"::Individual)
