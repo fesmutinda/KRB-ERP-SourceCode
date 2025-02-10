@@ -862,6 +862,57 @@ page 56110 "Member Application Card"
                                 Error('Please Insert Next 0f kin Information');
                             end;
                         end;
+
+                        if (Rec."Account Category" = Rec."Account Category"::"Regular Account") then begin
+                            nominee.Reset();
+                            nominee.SetRange(nominee."Account No", Rec."No.");
+
+                            // Check if there is any nominee for the account
+                            if not nominee.FindFirst() then begin
+                                Error('Please Insert Nominee Information');
+                            end else begin
+                                // Check if there is a nominee under 18
+                                nominee.Reset();
+                                nominee.SetRange(nominee."Account No", Rec."No.");
+
+                                if nominee.FindFirst() then begin
+                                    repeat
+                                        AgeText := nominee.Age; // Get the Age text
+                                        YearPart := CopyStr(AgeText, 1, StrPos(AgeText, ' Years') - 1); // Extract the number before " Years"
+
+                                        if YearPart <> '' then begin
+                                            Evaluate(IntegerAge, YearPart); // Convert extracted text to integer
+
+                                            if IntegerAge < 18 then begin
+
+
+                                                // If a nominee under 18 exists, check for at least one guardian nominee above 18
+                                                nominee.Reset();
+                                                nominee.SetRange(nominee."Account No", Rec."No.");
+                                                GuardianFound := false; // Flag to check for a valid guardian
+
+                                                if nominee.FindFirst() then begin
+                                                    repeat
+                                                        AgeText := nominee.Age;
+                                                        YearPart := CopyStr(AgeText, 1, StrPos(AgeText, ' Years') - 1);
+                                                        Evaluate(IntegerAge, YearPart);
+
+                                                        if (IntegerAge > 18) and (nominee."Next Of Kin Type" = nominee."Next Of Kin Type"::"Guardian/Trustee") then
+                                                            GuardianFound := true;
+                                                    until (nominee.Next() = 0) or GuardianFound; // Exit if we find a guardian
+                                                end;
+
+                                                if not GuardianFound then begin
+                                                    Error('Please Insert at least one guardian nominee (Age > 18) since a nominee under 18 exists.');
+                                                end;
+                                            end;
+                                        end;
+                                    until nominee.Next() = 0;
+                                end;
+                            end;
+                        end
+
+
                         if Rec.Status <> Rec.Status::Open then
                             Error(Text001);
 
