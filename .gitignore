@@ -1,0 +1,4 @@
+*.app
+.vscode/.alcache/
+.vscode/.alcache/cache_*.json
+.alpackages/

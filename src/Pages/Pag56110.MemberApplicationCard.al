@@ -864,20 +864,20 @@ page 56110 "Member Application Card"
                         end;
 
                         if (Rec."Account Category" = Rec."Account Category"::"Regular Account") then begin
-                            nominee.Reset();
-                            nominee.SetRange(nominee."Account No", Rec."No.");
+                            nomineeApp.Reset();
+                            nomineeApp.SetRange(nomineeApp."Account No", Rec."No.");
 
                             // Check if there is any nominee for the account
-                            if not nominee.FindFirst() then begin
+                            if not nomineeApp.FindFirst() then begin
                                 Error('Please Insert Nominee Information');
                             end else begin
                                 // Check if there is a nominee under 18
-                                nominee.Reset();
-                                nominee.SetRange(nominee."Account No", Rec."No.");
+                                nomineeApp.Reset();
+                                nomineeApp.SetRange(nomineeApp."Account No", Rec."No.");
 
-                                if nominee.FindFirst() then begin
+                                if nomineeApp.FindFirst() then begin
                                     repeat
-                                        AgeText := nominee.Age; // Get the Age text
+                                        AgeText := nomineeApp.Age; // Get the Age text
                                         YearPart := CopyStr(AgeText, 1, StrPos(AgeText, ' Years') - 1); // Extract the number before " Years"
 
                                         if YearPart <> '' then begin
@@ -887,19 +887,19 @@ page 56110 "Member Application Card"
 
 
                                                 // If a nominee under 18 exists, check for at least one guardian nominee above 18
-                                                nominee.Reset();
-                                                nominee.SetRange(nominee."Account No", Rec."No.");
+                                                nomineeApp.Reset();
+                                                nomineeApp.SetRange(nomineeApp."Account No", Rec."No.");
                                                 GuardianFound := false; // Flag to check for a valid guardian
 
-                                                if nominee.FindFirst() then begin
+                                                if nomineeApp.FindFirst() then begin
                                                     repeat
-                                                        AgeText := nominee.Age;
+                                                        AgeText := nomineeApp.Age;
                                                         YearPart := CopyStr(AgeText, 1, StrPos(AgeText, ' Years') - 1);
                                                         Evaluate(IntegerAge, YearPart);
 
-                                                        if (IntegerAge > 18) and (nominee."Next Of Kin Type" = nominee."Next Of Kin Type"::"Guardian/Trustee") then
+                                                        if (IntegerAge > 18) and (nomineeApp."Next Of Kin Type" = nomineeApp."Next Of Kin Type"::"Guardian/Trustee") then
                                                             GuardianFound := true;
-                                                    until (nominee.Next() = 0) or GuardianFound; // Exit if we find a guardian
+                                                    until (nomineeApp.Next() = 0) or GuardianFound; // Exit if we find a guardian
                                                 end;
 
                                                 if not GuardianFound then begin
@@ -907,10 +907,10 @@ page 56110 "Member Application Card"
                                                 end;
                                             end;
                                         end;
-                                    until nominee.Next() = 0;
+                                    until nomineeApp.Next() = 0;
                                 end;
                             end;
-                        end
+                        end;
 
 
                         if Rec.Status <> Rec.Status::Open then
@@ -1319,6 +1319,13 @@ page 56110 "Member Application Card"
         CoveragePercentStyle: Text;
         SwizzsoftFactory: Codeunit "Swizzsoft Factory";
         EmailCodeunit: Codeunit Emailcodeunit;
+
+        IntegerAge: Integer;
+        GuardianFound: Boolean;
+        AgeText: Text[50];
+        YearPart: Text[10];
+
+        nomineeApp: Record "Member App Nominee";
 
 
     procedure UpdateControls()
@@ -1864,7 +1871,7 @@ page 56110 "Member Application Card"
     local procedure FnCreateNomineeDetails(MemberNo: text[70])
     var
         // NextofKinBOSA: Record "Members Next Kin Details";
-        nomineeApp: Record "Member App Nominee";
+        //nomineeApp: Record "Member App Nominee";
         membersNominee: Record "Members Nominee";
     begin
 
