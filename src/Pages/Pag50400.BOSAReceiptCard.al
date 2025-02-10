@@ -70,7 +70,7 @@ page 50400 "BOSA Receipt Card"
                 field("Employer No."; Rec."Employer No.")
                 {
                     ApplicationArea = Basic;
-                    Caption = 'Teller Till / Bank  No.';
+                    Caption = 'Bank Account No.';
                 }
                 field("Cheque No."; Rec."Cheque No.")
                 {

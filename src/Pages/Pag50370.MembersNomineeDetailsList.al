@@ -71,5 +71,16 @@ page 50370 "Members Nominee Details List"
     actions
     {
     }
+    trigger OnOpenPage()
+    begin
+        StatusPermissions.Reset;
+        StatusPermissions.SetRange(StatusPermissions."User Id", UserId);
+        StatusPermissions.SetRange(StatusPermissions."Function", StatusPermissions."function"::Nominee);
+        if StatusPermissions.Find('-') = false then
+            Error('You do not have permissions to View This information.');
+    end;
+
+    var
+        StatusPermissions: Record "Status Change Permision";
 }
 
