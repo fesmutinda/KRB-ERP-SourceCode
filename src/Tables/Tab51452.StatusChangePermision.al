@@ -4,28 +4,9 @@ Table 51452 "Status Change Permision"
 
     fields
     {
-        field(1; "User ID"; Code[50])
+        field(1; "User Id"; Code[50])
         {
-            Caption = 'User ID';
-            NotBlank = true;
-            TableRelation = User."User Name";
-            //This property is currently not supported
-            //TestTableRelation = false;
-            ValidateTableRelation = false;
-
-            trigger OnLookup()
-            var
-                UserMgt: Codeunit "User Management";
-            begin
-                //UserMgt.LookupUserID("Account No");
-            end;
-
-            trigger OnValidate()
-            var
-                UserMgt: Codeunit "User Management";
-            begin
-                //UserMgt.ValidateUserID("Account No");
-            end;
+            TableRelation = "User Setup"."User ID";
         }
         field(2; "Function"; Option)
         {
