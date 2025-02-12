@@ -74,6 +74,7 @@ Report 50223 "Member Detailed Statement"
             column(Outstanding_Balance; "Outstanding Balance") { }
             column(Outstanding_Interest; "Outstanding Interest") { }
             column(Current_Shares; "Current Shares") { }
+            column(Withdrawable_Savings; "Withdrawable Savings") { }
             dataitem(Loans; "Loans Register")
             {
                 DataItemLink = "Client Code" = field("No."), "Loan Product Type" = field("Loan Product Filter"), "Date filter" = field("Date Filter");
@@ -424,124 +425,6 @@ Report 50223 "Member Detailed Statement"
                 end;
             }
 
-            // dataitem(PepeaShares; "Cust. Ledger Entry")//
-            // {
-            //     DataItemLink = "Customer No." = field("No."), "Posting Date" = field("Date Filter");
-            //     DataItemTableView = sorting("Transaction Type", "Loan No", "Posting Date") where("Transaction Type" = const("pepea Shares"), Reversed = filter(false));
-
-            //     column(OpenBalancesPepeaShares; OpenBalancesPepeaShares)
-            //     {
-            //     }
-            //     column(CLosingBalancesPepeaShares; ClosingBalancePepeaShares)
-            //     {
-            //     }
-            //     column(Description_PepeaShares; PepeaShares.Description)
-            //     {
-            //     }
-            //     column(DocumentNo_PepeaShares; PepeaShares."Document No.")
-            //     {
-            //     }
-            //     column(PostingDate_PepeaShares; PepeaShares."Posting Date")
-            //     {
-            //     }
-            //     column(CreditAmount_PepeaShares; PepeaShares."Credit Amount")
-            //     {
-            //     }
-            //     column(DebitAmount_PepeaShares; PepeaShares."Debit Amount")
-            //     {
-            //     }
-            //     column(Amount_PepeaShares; PepeaShares.Amount)
-            //     {
-            //     }
-            //     column(TransactionType_PepeaShares; PepeaShares."Transaction Type")
-            //     {
-            //     }
-            //     column(BalAccountNo_PepeaShares; PepeaShares."Bal. Account No.")
-            //     {
-            //     }
-            //     column(BankCodePepeaShares; BankCodePepeaShares)
-            //     {
-            //     }
-
-            //     trigger OnAfterGetRecord()
-            //     begin
-            //         ClosingBalancePepeaShares := ClosingBalancePepeaShares - PepeaShares.Amount;
-            //         BankCodePepeaShares := GetBankCode(PepeaShares);
-            //         //............................................................
-            //         if PepeaShares.Amount < 0 then begin
-            //             PepeaShares."Credit Amount" := (PepeaShares.Amount * -1);
-            //         end else
-            //             if PepeaShares.Amount > 0 then begin
-            //                 PepeaShares."Debit Amount" := (PepeaShares.Amount);
-            //             end
-            //     end;
-
-            //     trigger OnPreDataItem()
-            //     begin
-            //         // ClosingBalancePepeaShares := PepeaSharesBF;
-            //         // OpenBalancePepeaShares := PepeaSharesBF * -1;
-            //     end;
-            // }
-
-            // dataitem(FOSAShares; "Cust. Ledger Entry")//
-            // {
-            //     DataItemLink = "Customer No." = field("No."), "Posting Date" = field("Date Filter");
-            //     DataItemTableView = sorting("Transaction Type", "Loan No", "Posting Date") where("Transaction Type" = const("FOSA Shares"), Reversed = filter(false));
-
-            //     column(OpenBalancesFOSAShares; OpenBalanceFOSAShares)
-            //     {
-            //     }
-            //     column(CLosingBalancesFOSAShares; ClosingBalanceFOSAShares)
-            //     {
-            //     }
-            //     column(Description_FOSAShares; FOSAShares.Description)
-            //     {
-            //     }
-            //     column(DocumentNo_FOSAShares; FOSAShares."Document No.")
-            //     {
-            //     }
-            //     column(PostingDate_FOSAShares; FOSAShares."Posting Date")
-            //     {
-            //     }
-            //     column(CreditAmount_FOSAShares; FOSAShares."Credit Amount")
-            //     {
-            //     }
-            //     column(DebitAmount_FOSAShares; FOSAShares."Debit Amount")
-            //     {
-            //     }
-            //     column(Amount_FOSAShares; FOSAShares.Amount)
-            //     {
-            //     }
-            //     column(TransactionType_FOSAShares; FOSAShares."Transaction Type")
-            //     {
-            //     }
-            //     column(BalAccountNo_FOSAShares; FOSAShares."Bal. Account No.")
-            //     {
-            //     }
-            //     column(BankCodeFOSAShares; BankCodeFOSAShares)
-            //     {
-            //     }
-
-            //     trigger OnAfterGetRecord()
-            //     begin
-            //         ClosingBalanceFOSAShares := ClosingBalanceFOSAShares - FOSAShares.Amount;
-            //         BankCodeFOSAShares := GetBankCode(FOSAShares);
-            //         //............................................................
-            //         if FOSAShares.Amount < 0 then begin
-            //             FOSAShares."Credit Amount" := (FOSAShares.Amount * -1);
-            //         end else
-            //             if FOSAShares.Amount > 0 then begin
-            //                 FOSAShares."Debit Amount" := (FOSAShares.Amount);
-            //             end
-            //     end;
-
-            //     trigger OnPreDataItem()
-            //     begin
-            //         ClosingBalanceDividend := DividendBF;
-            //         OpenBalanceDividend := DividendBF * -1;
-            //     end;
-            // }
-
             dataitem(Deposits; "Cust. Ledger Entry")
             {
                 DataItemLink = "Customer No." = field("No."), "Posting Date" = field("Date Filter");
@@ -597,6 +480,70 @@ Report 50223 "Member Detailed Statement"
                     end else
                         if Deposits.Amount > 0 then begin
                             Deposits."Debit Amount" := (Deposits.Amount);
+                        end
+                end;
+
+                trigger OnPreDataItem()
+                begin
+                    ClosingBal := SharesBF;
+                    OpeningBal := SharesBF;
+                end;
+            }
+            dataitem(WithdrawableSavings; "Cust. Ledger Entry")
+            {
+                DataItemLink = "Customer No." = field("No."), "Posting Date" = field("Date Filter");
+                DataItemTableView = sorting("Posting Date") where("Transaction Type" = const("Withdrawable Savings"), Reversed = filter(false));
+                column(OpeningBalw; OpeningBal)
+                {
+                }
+                column(ClosingBalw; ClosingBal)
+                {
+                }
+                column(TransactionType_Depositsw; WithdrawableSavings."Transaction Type")
+                {
+                }
+                column(Amount_Depositsw; WithdrawableSavings.Amount)
+                {
+                }
+                column(Description_Depositsw; WithdrawableSavings.Description)
+                {
+                }
+                column(DocumentNo_Depositsw; WithdrawableSavings."Document No.")
+                {
+                }
+                column(PostingDate_Depositsw; WithdrawableSavings."Posting Date")
+                {
+                }
+                column(DebitAmount_Depositsw; WithdrawableSavings."Debit Amount")
+                {
+                }
+                column(CreditAmount_Depositsw; WithdrawableSavings."Credit Amount")
+                {
+                }
+                column(Deposits_Descriptionw; WithdrawableSavings.Description)
+                {
+                }
+                column(BalAccountNo_Depositsw; WithdrawableSavings."Bal. Account No.")
+                {
+                }
+                column(BankCodeDepositsw; BankCodeDeposits)
+                {
+                }
+                column(USER2w; WithdrawableSavings."User ID")
+                {
+                }
+
+                trigger OnAfterGetRecord()
+                begin
+
+                    ClosingBal := ClosingBal - WithdrawableSavings.Amount;
+                    BankCodeDeposits := GetBankCode(WithdrawableSavings);
+                    //........................
+                    if WithdrawableSavings.Amount < 0 then begin
+                        WithdrawableSavings."Credit Amount" := (WithdrawableSavings.Amount * -1);
+                    end else
+                        if WithdrawableSavings.Amount > 0 then begin
+                            WithdrawableSavings."Debit Amount" := (WithdrawableSavings.Amount);
                         end
                 end;
 
@@ -849,4 +796,5 @@ Report 50223 "Member Detailed Statement"
         exit('');
     end;
 }
+
 

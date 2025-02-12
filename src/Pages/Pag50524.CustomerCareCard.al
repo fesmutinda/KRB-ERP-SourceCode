@@ -246,7 +246,7 @@ page 50524 "Customer Care Card"
                     ApplicationArea = Basic;
                     Caption = 'Member Ledger Entries';
                     Image = CustomerLedger;
-                    RunObject = Page "Member Ledger Entries";
+                    RunObject = Page "Customer Ledger Entries";
                     RunPageLink = "Customer No." = field("No.");
                     RunPageView = sorting("Customer No.");
                 }
