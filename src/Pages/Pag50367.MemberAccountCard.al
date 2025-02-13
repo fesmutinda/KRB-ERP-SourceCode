@@ -1327,6 +1327,19 @@ page 50367 "Member Account Card"
                     end;
                 }
 
+                action(editCard)
+                {
+                    ApplicationArea = basic;
+                    Promoted = true;
+                    Caption = 'Edit';
+                    PromotedCategory = "Report";
+                    RunObject = Page "Member Account Card - Editable";
+                    RunPageView = where("No." = filter('CUST_0004 '));
+                    // trigger OnAction()
+                    // begin
+                    //     Page.Run("Member Account Card - Editable");
+                    // end;
+                }
 
             }
         }
