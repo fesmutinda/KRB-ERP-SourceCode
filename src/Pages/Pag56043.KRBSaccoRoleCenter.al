@@ -905,21 +905,21 @@ Page 56043 "KRB Sacco Role Center"
                     //     ApplicationArea = All;
                     //     // RunObject = report MemberWithoutNextOfKin;
                     // }
-                    action("Member shares Report")
-                    {
-                        ApplicationArea = all;
-                        RunObject = report "Member Share Capital Statement";
-                    }
-                    action("Member Deposits Report")
-                    {
-                        ApplicationArea = all;
-                        RunObject = report "Members Deposits Statement";
-                    }
-                    action("Member Detailed Statement")
-                    {
-                        ApplicationArea = all;
-                        RunObject = report "Member Detailed Statement";
-                    }
+                    // action("Member shares Report")
+                    // {
+                    //     ApplicationArea = all;
+                    //     RunObject = report "Member Share Capital Statement";
+                    // }
+                    // action("Member Deposits Report")
+                    // {
+                    //     ApplicationArea = all;
+                    //     RunObject = report "Members Deposits Statement";
+                    // }
+                    // action("Member Detailed Statement")
+                    // {
+                    //     ApplicationArea = all;
+                    //     RunObject = report "Member Detailed Statement";
+                    // }
 
                     action("Membership Closure Report")
                     {

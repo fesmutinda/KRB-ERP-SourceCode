@@ -903,16 +903,16 @@ Page 50002 "Finance Role Center"
                     //     ApplicationArea = All;
                     //     // RunObject = report MemberWithoutNextOfKin;
                     // }
-                    action("Member shares Report")
-                    {
-                        ApplicationArea = all;
-                        RunObject = report "Member Share Capital Statement";
-                    }
-                    action("Member Deposits Report")
-                    {
-                        ApplicationArea = all;
-                        RunObject = report "Members Deposits Statement";
-                    }
+                    // action("Member shares Report")
+                    // {
+                    //     ApplicationArea = all;
+                    //     RunObject = report "Member Share Capital Statement";
+                    // }
+                    // action("Member Deposits Report")
+                    // {
+                    //     ApplicationArea = all;
+                    //     RunObject = report "Members Deposits Statement";
+                    // }
 
                     action("Membership Closure Report")
                     {
