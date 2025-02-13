@@ -53,13 +53,13 @@ Report 50052 MemberReport
             trigger OnAfterGetRecord();
             var
             begin
-                TbMembRegister.SetFilter(TbMembRegister."Date Filter", Datefilter);
-                if TbMembRegister.get(TbMembRegister."No.") then begin
-                    TbMembRegister.SetAutoCalcFields(TbMembRegister."Current Shares");
-                    Deposits := TbMembRegister."Current Shares";
-                    //ShareCapital := TbMembRegister."Shares Capital";
-                    LoanBalance := TbMembRegister."Outstanding Balance";
-                end;
+                // TbMembRegister.SetFilter(TbMembRegister."Date Filter", Datefilter);
+
+                TbMembRegister.SetAutoCalcFields(TbMembRegister."Current Shares");
+                Deposits := TbMembRegister."Current Shares";
+                //ShareCapital := TbMembRegister."Shares Capital";
+                LoanBalance := TbMembRegister."Outstanding Balance";
+
                 EntryNo := EntryNo + 1;
             end;
 

@@ -835,53 +835,53 @@ Page 50002 "Finance Role Center"
                         Visible = true;
 
                     }
-                    action("Member Account Balances Report")
-                    {
-                        ApplicationArea = all;
-                        RunObject = report "Member Account  balances";
-                        ToolTip = 'Member Account Summary Report.';
-                    }
-                    action(MembersavingReport)
-                    {
-                        ApplicationArea = all;
-                        Caption = 'Member savings columnar report.';
-                        // RunObject = report "Member savings report";
+                    // action("Member Account Balances Report")
+                    // {
+                    //     ApplicationArea = all;
+                    //     RunObject = report "Member Detailed Statement";
+                    //     ToolTip = 'Member Account Summary Report.';
+                    // }
+                    // action(MembersavingReport)
+                    // {
+                    //     ApplicationArea = all;
+                    //     Caption = 'Member savings columnar report.';
+                    //     // RunObject = report "Member savings report";
 
-                    }
-                    action(memberwithoutsharecapitalReport)
-                    {
-                        ApplicationArea = all;
-                        Caption = 'Members without minimum share capital report.';
-                        // RunObject = report MemberwithoutMinshapitalreport;
+                    // }
+                    // action(memberwithoutsharecapitalReport)
+                    // {
+                    //     ApplicationArea = all;
+                    //     Caption = 'Members without minimum share capital report.';
+                    //     // RunObject = report MemberwithoutMinshapitalreport;
 
-                    }
+                    // }
 
-                    action(MemberwithoutPassportReport)
-                    {
-                        ApplicationArea = all;
-                        Caption = 'Members without passports report.';
-                        // RunObject = report Memberswithoutpassportsreport;
+                    // action(MemberwithoutPassportReport)
+                    // {
+                    //     ApplicationArea = all;
+                    //     Caption = 'Members without passports report.';
+                    //     // RunObject = report Memberswithoutpassportsreport;
 
-                    }
-                    action(MemberwithoutSignatureReport)
-                    {
-                        ApplicationArea = all;
-                        Caption = ' Members without signature report.';
-                        // RunObject = report Memberwithoutsignaturereport;
+                    // }
+                    // action(MemberwithoutSignatureReport)
+                    // {
+                    //     ApplicationArea = all;
+                    //     Caption = ' Members without signature report.';
+                    //     // RunObject = report Memberwithoutsignaturereport;
 
-                    }
-                    action(MemberApplicationReport)
-                    {
-                        ApplicationArea = all;
-                        Caption = 'Member application report';
-                        // RunObject = report MembershipApplicationReport;
-                    }
-                    action(MemberswithoutLoanReport)
-                    {
-                        ApplicationArea = all;
-                        Caption = 'Members Without Loan report';
-                        // RunObject = report MemberwithoutLoanReport;
-                    }
+                    // }
+                    // action(MemberApplicationReport)
+                    // {
+                    //     ApplicationArea = all;
+                    //     Caption = 'Member application report';
+                    //     // RunObject = report MembershipApplicationReport;
+                    // }
+                    // action(MemberswithoutLoanReport)
+                    // {
+                    //     ApplicationArea = all;
+                    //     Caption = 'Members Without Loan report';
+                    //     // RunObject = report MemberwithoutLoanReport;
+                    // }
                     action(MembersReport)
                     {
                         ApplicationArea = all;
@@ -889,27 +889,20 @@ Page 50002 "Finance Role Center"
                         RunObject = report MemberReport;
                         ToolTip = 'Members Report Contains all Members status';
                     }
-                    action("Membership Closure Report")
-                    {
-                        ApplicationArea = all;
-                        Caption = 'Membership Exit Reports';
-                        RunObject = report "Membership Closure Report";
-
-                    }
 
 
                     //
-                    action("Member Next Of Kin Details")
-                    {
-                        ApplicationArea = All;
-                        Caption = 'Benificiary Report';
-                        RunObject = report "Next of Kin Details Report";
-                    }
-                    action("Members Without Next of Kin")
-                    {
-                        ApplicationArea = All;
-                        // RunObject = report MemberWithoutNextOfKin;
-                    }
+                    // action("Member Next Of Kin Details")
+                    // {
+                    //     ApplicationArea = All;
+                    //     Caption = 'Benificiary Report';
+                    //     RunObject = report "Next of Kin Details Report";
+                    // }
+                    // action("Members Without Next of Kin")
+                    // {
+                    //     ApplicationArea = All;
+                    //     // RunObject = report MemberWithoutNextOfKin;
+                    // }
                     action("Member shares Report")
                     {
                         ApplicationArea = all;
@@ -920,16 +913,25 @@ Page 50002 "Finance Role Center"
                         ApplicationArea = all;
                         RunObject = report "Members Deposits Statement";
                     }
-                    action("Member Detailed Statement")
+
+                    action("Membership Closure Report")
                     {
                         ApplicationArea = all;
-                        RunObject = report "Member Detailed Statement";
+                        Caption = 'Membership Exit Reports';
+                        RunObject = report "Membership Closure Report";
+
                     }
-                    action("Member Accounts Statement")
-                    {
-                        ApplicationArea = all;
-                        RunObject = report "Members Deposits Statement";// "Member Account Statement";
-                    }
+
+                    // action("Member Detailed Statement")
+                    // {
+                    //     ApplicationArea = all;
+                    //     RunObject = report "Member Detailed Statement";
+                    // }
+                    // action("Member Accounts Statement")
+                    // {
+                    //     ApplicationArea = all;
+                    //     RunObject = report "Members Deposits Statement";// "Member Account Statement";
+                    // }
                 }
 
             }
