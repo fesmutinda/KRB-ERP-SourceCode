@@ -246,9 +246,6 @@ Table 51376 "Loan Offset Details"
                 //END;
                 "Total Top Up" := "Principle Top Up" + "Interest Top Up";
 
-
-                "Total Top Up" := "Principle Top Up" + "Interest Top Up";
-
             end;
         }
         field(6; "Interest Top Up"; Decimal)

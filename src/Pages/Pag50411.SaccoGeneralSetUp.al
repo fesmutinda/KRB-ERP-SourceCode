@@ -89,10 +89,7 @@ page 50411 "Sacco General Set-Up"
                 {
                     ApplicationArea = Basic;
                 }
-                field("Top up Account"; Rec."Top up Account")
-                {
-                    ApplicationArea = basic;
-                }
+
                 field("Max. Contactual Shares"; Rec."Max. Contactual Shares")
                 {
                     ApplicationArea = Basic;
@@ -264,6 +261,20 @@ page 50411 "Sacco General Set-Up"
                 field("GO Live Date"; Rec."GO Live Date") { ApplicationArea = Basic; }
                 field("Share Capital Period"; Rec."Share Capital Period") { ApplicationArea = Basic; }
                 // field("Retained Shares"; Rec."Retained Shares") { ApplicationArea = Basic; }
+            }
+            group("Loan Refinancing")
+            {
+                Visible = true;//
+                field("Loan Top Up Commision(%)"; Rec."Loan Top Up Commision(%)")
+                {
+                    Caption = 'Refinancing Commision(%)';
+                    ApplicationArea = Basic;
+                }
+                field("Top up Account"; Rec."Top up Account")
+                {
+                    Caption = 'Refinancing Commision Account';
+                    ApplicationArea = basic;
+                }
             }
             group(Numbering)
             {

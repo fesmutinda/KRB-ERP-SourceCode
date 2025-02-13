@@ -994,7 +994,7 @@ Page 56043 "KRB Sacco Role Center"
                 }
                 group("Loans Appeals")
                 {
-                    // Visible = false;
+                    Visible = false;
                     Caption = 'Loan Restructure';
                     action("Loan Appeal List")
                     {

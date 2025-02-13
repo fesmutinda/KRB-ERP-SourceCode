@@ -72,7 +72,7 @@ page 50389 "Loan Offset Detail List"
                 field(Commision; Rec.Commision)
                 {
                     ApplicationArea = Basic;
-                    Caption = 'Fee';
+                    Caption = 'Refinancing Fee';
                 }
                 field("Interest Due at Clearance"; Rec."Interest Due at Clearance")
                 {
