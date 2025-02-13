@@ -10,6 +10,7 @@ Report 50052 MemberReport
         {
             DataItemTableView = sorting("No.") order(descending);
             RequestFilterFields = "No.", "Date Filter", Status;
+            // TbMembRegister.CalcFields("Current Shares", "Shares Retained", "Outstanding Balance");
             column(CompanyName; CompanyInfo.Name)
             {
             }
@@ -36,8 +37,8 @@ Report 50052 MemberReport
             { }
             column(Monthly_Contribution; "Monthly Contribution")
             { }
-            column(Deposits; Deposits) { }
-            column(ShareCapital; ShareCapital) { }
+            column(Deposits; "Current Shares") { }
+            column(ShareCapital; "Shares Retained") { }
             column(LoanBalance; LoanBalance) { }
             column(Status; Status) { }
             column(Address; Address) { }
@@ -53,13 +54,18 @@ Report 50052 MemberReport
             trigger OnAfterGetRecord();
             var
             begin
+                // TbMembRegister.CalcFields("Current Shares", "Shares Retained", "Outstanding Balance");
                 // TbMembRegister.SetFilter(TbMembRegister."Date Filter", Datefilter);
-
-                TbMembRegister.SetAutoCalcFields(TbMembRegister."Current Shares");
-                Deposits := TbMembRegister."Current Shares";
-                //ShareCapital := TbMembRegister."Shares Capital";
-                LoanBalance := TbMembRegister."Outstanding Balance";
-
+                if TbMembRegister.get(TbMembRegister."No.") then begin
+                    repeat
+                        TbMembRegister.CalcFields("Current Shares", "Shares Retained", "Outstanding Balance");
+                    until TbMembRegister.NEXT = 0;
+                    // TbMembRegister.SetAutoCalcFields(TbMembRegister."Current Shares");
+                    // TbMembRegister.CalcFields("Current Shares", "Shares Retained", "Outstanding Balance");
+                    // Deposits := TbMembRegister."Current Shares";
+                    // ShareCapital := TbMembRegister."Shares Retained";
+                    // LoanBalance := TbMembRegister."Outstanding Balance";
+                end;
                 EntryNo := EntryNo + 1;
             end;
 
@@ -87,7 +93,12 @@ Report 50052 MemberReport
     begin
         CompanyInfo.Get();
         CompanyInfo.CALCFIELDS(CompanyInfo.Picture);
+
         Datefilter := TbMembRegister.GetFilter("Date Filter");
+
+        repeat
+            TbMembRegister.CalcFields("Current Shares", "Shares Retained", "Outstanding Balance");
+        until TbMembRegister.NEXT = 0;
     end;
 
     var
