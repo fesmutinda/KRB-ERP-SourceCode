@@ -1468,7 +1468,7 @@ Page 56043 "KRB Sacco Role Center"
                         {
                             Caption = 'Post Monthly Interest';
                             Image = Setup;
-                            // RunObject = report "Post Monthly Interest.";
+                            RunObject = report "Post Monthly Interest.";
                             ToolTip = 'Used to process Loans Monthly Interest';
                         }
                     }
@@ -2584,6 +2584,11 @@ Page 56043 "KRB Sacco Role Center"
             }
             group("Audit Trails")
             {
+                action("System Log Trails List")
+                {
+                    ApplicationArea = Basic, Suite;
+                    RunObject = page "System Log Trails List";
+                }
                 action("Session Tracker")
                 {
                     ApplicationArea = Basic, Suite;

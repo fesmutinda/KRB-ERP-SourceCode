@@ -919,8 +919,8 @@ Table 51371 "Loans Register"
             trigger OnValidate()
             begin
                 if "Max. Loan Amount" <> 0 then begin
-                    if "Approved Amount" > "Max. Loan Amount" then
-                        Error('Approved amount cannot be greater than the Maximum Amount. %1', "Loan  No.");
+                    if "Requested Amount" > "Max. Loan Amount" then
+                        Error('Requested amount cannot be greater than the Maximum Amount. %1', "Loan  No.");
                 end;
 
                 if "Loan Status" <> "loan status"::Application then begin
