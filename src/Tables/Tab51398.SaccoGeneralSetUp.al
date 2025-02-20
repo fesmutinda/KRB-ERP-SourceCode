@@ -802,7 +802,7 @@ Table 51398 "Sacco General Set-Up"
         {
             DataClassification = ToBeClassified;
         }
-        field(222; "Top up Account"; Code[20]) { }//"Banks Charges"
+        field(222; "Top up Account"; Code[20]) { TableRelation = "G/L Account"; }//"Banks Charges"
         field(223; "Banks Charges"; Code[20]) { }//"Banks Charges"
         field(932; "Form Fee"; Decimal)
         {

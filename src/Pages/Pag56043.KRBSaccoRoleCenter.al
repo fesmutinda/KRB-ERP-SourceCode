@@ -325,7 +325,7 @@ Page 56043 "KRB Sacco Role Center"
                 {
                     Caption = 'SASRA Reports';
                     ToolTip = 'which highlights the operations and performance of the SACCO industry during the year ended';
-                    Visible = true;
+                    Visible = false;
                     action("Capital Adequacy Return")
                     {
                         ApplicationArea = Basic, Suite;
@@ -647,6 +647,7 @@ Page 56043 "KRB Sacco Role Center"
                 //.......................................................................................................................................
                 group("Mkopo Reports")
                 {
+                    Visible = false;
                     Caption = 'Mkopo Reports';
                     action(SaccoInformationReport)
                     {
@@ -1469,7 +1470,7 @@ Page 56043 "KRB Sacco Role Center"
                         {
                             Caption = 'Post Monthly Interest';
                             Image = Setup;
-                            // RunObject = report "Post Monthly Interest.";
+                            RunObject = report "Post Monthly Interest.";
                             ToolTip = 'Used to process Loans Monthly Interest';
                         }
                     }
@@ -2585,6 +2586,11 @@ Page 56043 "KRB Sacco Role Center"
             }
             group("Audit Trails")
             {
+                action("System Log Trails List")
+                {
+                    ApplicationArea = Basic, Suite;
+                    RunObject = page "System Log Trails List";
+                }
                 action("Session Tracker")
                 {
                     ApplicationArea = Basic, Suite;

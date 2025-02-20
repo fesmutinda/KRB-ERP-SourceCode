@@ -11,11 +11,11 @@ pageextension 50619 "UserSetUpExt" extends "User Setup"
             }
             field("Payroll User"; Rec."Payroll User")
             {
-
+                Visible = false;
             }
             field("View Cashier Report"; Rec."View Cashier Report")
             {
-
+                Visible = false;
             }
             field("Reversal Right"; Rec."Reversal Right")
             {
@@ -31,6 +31,7 @@ pageextension 50619 "UserSetUpExt" extends "User Setup"
             }
             field("Post Leave Days Allocations"; Rec."Post Leave Days Allocations")
             {
+                Visible = false;
 
             }
             field(Branch; Rec.Branch)
@@ -52,6 +53,9 @@ pageextension 50619 "UserSetUpExt" extends "User Setup"
             field("Can POST Loans"; Rec."Can POST Loans")
             {
 
+            }
+            field("Role Centre"; Rec."Role Centre")
+            {
             }
 
 
