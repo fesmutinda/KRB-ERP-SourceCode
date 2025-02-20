@@ -177,12 +177,12 @@ page 56110 "Member Application Card"
                     Editable = IDNoEditable;
                     ShowMandatory = true;
                 }
-                field("Passport No."; Rec."Passport No.")
-                {
-                    ApplicationArea = all;
+                // field("Passport No."; Rec."Passport No.")
+                // {
+                //     ApplicationArea = all;
 
-                    Editable = IDNoEditable;
-                }
+                //     Editable = IDNoEditable;
+                // }
                 field("Date of Birth"; Rec."Date of Birth")
                 {
                     ApplicationArea = Basic;
@@ -240,7 +240,7 @@ page 56110 "Member Application Card"
                 {
                     ApplicationArea = Basic;
                     Editable = EmailEdiatble;
-                    ShowMandatory = false;
+                    ShowMandatory = true;
                 }
                 field(Location; Rec.Location)
                 {
@@ -497,16 +497,16 @@ page 56110 "Member Application Card"
                     ApplicationArea = Basic;
                     Editable = false;
                 }
-                field(Department; Rec.Department)
-                {
-                    ApplicationArea = Basic;
-                    Editable = NameEditable;
-                }
-                field("Office Branch"; Rec."Office Branch")
-                {
-                    ApplicationArea = Basic;
-                    Editable = NameEditable;
-                }
+                // field(Department; Rec.Department)
+                // {
+                //     ApplicationArea = Basic;
+                //     Editable = NameEditable;
+                // }
+                // field("Office Branch"; Rec."Office Branch")
+                // {
+                //     ApplicationArea = Basic;
+                //     Editable = NameEditable;
+                // }
                 field("Official Designation"; Rec."Official Designation")
                 {
                     ApplicationArea = Basic;
@@ -662,6 +662,7 @@ page 56110 "Member Application Card"
                 {
                     ApplicationArea = Basic;
                     Editable = GlobalDim2Editable;
+                    ShowMandatory = true;
                 }
                 field("Sms Notification"; Rec."Sms Notification")
                 {
@@ -859,7 +860,7 @@ page 56110 "Member Application Card"
                             NOkApp.Reset;
                             NOkApp.SetRange(NOkApp."Account No", Rec."No.");
                             if NOkApp.Find('-') = false then begin
-                                Error('Please Insert Next 0f kin Information');
+                                Error('Please Insert Next Of Kin Information');
                             end;
                         end;
 

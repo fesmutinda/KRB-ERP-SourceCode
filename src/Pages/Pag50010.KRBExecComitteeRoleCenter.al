@@ -1,4 +1,4 @@
-Page 500010 "KRBExecComitteeRoleCenter"
+Page 50010 "KRBExecComitteeRoleCenter"
 {
     Caption = 'KRB SACCO Executive Committee';
     PageType = RoleCenter;

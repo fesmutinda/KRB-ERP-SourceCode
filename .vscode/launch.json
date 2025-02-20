@@ -8,7 +8,7 @@
             "environmentType": "OnPrem",
             "server": "http://localhost:8080/BC250/",
             "serverInstance": "BC250",
-            "authentication": "Windows",
+            "authentication": "UserPassword",
             "startupObjectId": 56043,
             "startupObjectType": "Page",
             "port": 7049,
