@@ -579,7 +579,7 @@ Table 51371 "Loans Register"
                     "Member Deposits" := CustomerRecord."Current Shares";
                     "Group Shares" := CustomerRecord."Shares Retained";
                     "Oustanding Interest" := (LoanApp."Oustanding Interest" + LoanApp."Oustanding Interest to Date");
-                    Insurance := (Rec."Approved Amount") * (5.03 * Rec.Installments + 21.15) / 6000 * 0.6;
+                    Insurance := (Rec."Requested Amount") * (5.03 * Rec.Installments + 21.15) / 6000 * 0.6;
                     "Pension No" := "Pension No";
                     "Monthly Contribution" := CustomerRecord."Monthly Contribution";
 
@@ -800,12 +800,11 @@ Table 51371 "Loans Register"
                     end;
                 end;
 
-
-                // "Approved Amount" := "Recommended Amount";// 0;
-                if ("Recommended Amount" > "Requested Amount") then begin
+                if "Recommended Amount" > "Requested Amount" then begin
                     "Approved Amount" := "Requested Amount";
                     "Net Payment to FOSA" := "Requested Amount";
                 end;
+
                 Validate("Approved Amount");
 
                 CalcFields("Total Loans Outstanding");
@@ -823,8 +822,11 @@ Table 51371 "Loans Register"
                 //Repayments for amortised method
 
                 if "Repayment Method" = "repayment method"::Amortised then begin
+                    // LBalance := "Requested Amount";
+                    // Message('InterestRate: %1, LBalance: %2, Calculated Interest: %3', InterestRate, LBalance, (InterestRate / 100.0) * LBalance / 12);
                     TotalMRepay := ROUND((InterestRate / 12 / 100) / (1 - Power((1 + (InterestRate / 12 / 100)), -Installments)) * "Requested Amount", 1, '=');
-                    LInterest := ROUND(LBalance / 100 / 12 * InterestRate, 1, '=');
+                    // LInterest := ROUND(LBalance / 100 / 12 * InterestRate, 1, '=');
+                    LInterest := ROUND((InterestRate / 100.0) * LBalance / 12, 1, '=');
 
                     //IF "Repayment Method"="Repayment Method"::"Reducing Balance" THEN
                     //  LInterest:=ROUND(("Approved Amount"*InterestRate/1200),1,'=');
@@ -916,7 +918,7 @@ Table 51371 "Loans Register"
 
                 //insurance
                 "Loan Insurance" := (Rec."Requested Amount") * (5.03 * Rec.Installments + 21.15) / 6000 * 0.6;
-                Insurance := (Rec."Requested Amount") * (5.03 * Rec.Installments + 21.15) / 6000 * 0.6;
+                Insurance := ((Rec."Requested Amount") * (5.03 * Rec.Installments + 21.15) / 6000) * 0.6;
             end;
         }
         field(9; "Approved Amount"; Decimal)
@@ -960,7 +962,7 @@ Table 51371 "Loans Register"
                 InterestRate := Interest;
                 LoanAmount := "Approved Amount";
                 RepayPeriod := Installments;
-                LBalance := "Approved Amount";
+                LBalance := "Requested Amount";// "Approved Amount";
 
 
                 if "Repayment Method" = "repayment method"::"Straight Line" then begin
@@ -1041,11 +1043,14 @@ Table 51371 "Loans Register"
 
 
                 if "Repayment Method" = "repayment method"::Amortised then begin
+                    // LBalance := "Requested Amount";
                     //TESTFIELD(Interest);
                     //TESTFIELD(Installments);
 
                     TotalMRepay := ROUND((InterestRate / 12 / 100) / (1 - Power((1 + (InterestRate / 12 / 100)), -RepayPeriod)) * LoanAmount, 1, '=');
-                    LInterest := ROUND(LBalance / 100 / 12 * InterestRate, 1, '=');
+                    // LInterest := ROUND(LBalance / 100 / 12 * InterestRate, 1, '=');
+                    LInterest := ROUND((InterestRate / 100.0) * LBalance / 12, 1, '=');
+
                     LPrincipal := TotalMRepay - LInterest;
                     "Loan Principle Repayment" := LPrincipal;
                     "Loan Interest Repayment" := LInterest;
@@ -4171,13 +4176,15 @@ Table 51371 "Loans Register"
                 InterestRate := Interest;
                 CalcFields("Outstanding Balance");
 
-                LBalance := "Outstanding Balance";
+                LBalance := "Requested Amount";
+
 
                 //Repayments for amortised method
 
                 if "Repayment Method" = "repayment method"::Amortised then begin
                     TotalMRepay := ROUND((InterestRate / 12 / 100) / (1 - Power((1 + (InterestRate / 12 / 100)), -"Loan Reschedule Instalments")) * LBalance, 1, '=');
-                    LInterest := ROUND(LBalance / 100 / 12 * InterestRate, 1, '=');
+                    // LInterest := ROUND(LBalance / 100 / 12 * InterestRate, 1, '='); 
+                    LInterest := ROUND((InterestRate / 100.0) * LBalance / 12, 1, '=');
 
                     //IF "Repayment Method"="Repayment Method"::"Reducing Balance" THEN
                     //  LInterest:=ROUND(("Approved Amount"*InterestRate/1200),1,'=');
