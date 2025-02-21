@@ -801,9 +801,11 @@ Table 51371 "Loans Register"
                 end;
 
 
-                "Approved Amount" := "Recommended Amount";// 0;
-                "Net Payment to FOSA" := "Requested Amount";
-
+                // "Approved Amount" := "Recommended Amount";// 0;
+                if ("Recommended Amount" > "Requested Amount") then begin
+                    "Approved Amount" := "Requested Amount";
+                    "Net Payment to FOSA" := "Requested Amount";
+                end;
                 Validate("Approved Amount");
 
                 CalcFields("Total Loans Outstanding");
@@ -913,8 +915,8 @@ Table 51371 "Loans Register"
 
 
                 //insurance
-                "Loan Insurance" := (Rec."Approved Amount") * (5.03 * Rec.Installments + 21.15) / 6000 * 0.6;
-                Insurance := (Rec."Approved Amount") * (5.03 * Rec.Installments + 21.15) / 6000 * 0.6;
+                "Loan Insurance" := (Rec."Requested Amount") * (5.03 * Rec.Installments + 21.15) / 6000 * 0.6;
+                Insurance := (Rec."Requested Amount") * (5.03 * Rec.Installments + 21.15) / 6000 * 0.6;
             end;
         }
         field(9; "Approved Amount"; Decimal)
