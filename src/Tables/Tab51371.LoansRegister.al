@@ -579,7 +579,7 @@ Table 51371 "Loans Register"
                     "Member Deposits" := CustomerRecord."Current Shares";
                     "Group Shares" := CustomerRecord."Shares Retained";
                     "Oustanding Interest" := (LoanApp."Oustanding Interest" + LoanApp."Oustanding Interest to Date");
-                    //Insurance:=((5.03*RepayPeriod+3.03)*LoanAmount)/12000;
+                    Insurance := (Rec."Approved Amount") * (5.03 * Rec.Installments + 21.15) / 6000 * 0.6;
                     "Pension No" := "Pension No";
                     "Monthly Contribution" := CustomerRecord."Monthly Contribution";
 
@@ -910,6 +910,11 @@ Table 51371 "Loans Register"
                 //  END;
                 "Loan Interest Repayment" := LInterest;
                 "top fee" := ("Requested Amount" - "Top Up Amount") * 0.1;
+
+
+                //insurance
+                "Loan Insurance" := (Rec."Approved Amount") * (5.03 * Rec.Installments + 21.15) / 6000 * 0.6;
+                Insurance := (Rec."Approved Amount") * (5.03 * Rec.Installments + 21.15) / 6000 * 0.6;
             end;
         }
         field(9; "Approved Amount"; Decimal)
@@ -4580,6 +4585,39 @@ Table 51371 "Loans Register"
         {
             DataClassification = ToBeClassified;
         }
+        //....................................................................New For Help In Loan Classification
+
+        field(9968097; "Scheduled Principle Payments"; Decimal)
+        {
+            CalcFormula = sum("Loan Repayment Schedule"."Principal Repayment" where("Loan No." = field("Loan  No."),
+                                                                                     "Repayment Date" = field("Date filter")));
+            FieldClass = FlowField;
+        }
+        field(9968098; "Schedule Loan Amount Issued"; Decimal)
+        {
+            CalcFormula = lookup("Loan Repayment Schedule"."Loan Amount" where("Loan No." = field("Loan  No.")));
+            FieldClass = FlowField;
+        }
+        field(9968099; "Schedule Installments"; Integer)
+        {
+            CalcFormula = count("Loan Repayment Schedule" where("Loan No." = field("Loan  No.")));
+            FieldClass = FlowField;
+        }
+        field(99680960; "Scheduled Interest Payments"; Decimal)
+        {
+            CalcFormula = sum("Loan Repayment Schedule"."Monthly Interest" where("Loan No." = field("Loan  No."),
+                                                                                     "Repayment Date" = field("Date filter")));
+            FieldClass = FlowField;
+        }
+        field(99680961; "Loan Last Pay Date"; Date)
+        {
+            CalcFormula = max("Cust. Ledger Entry"."Posting Date" where("Loan No" = field("Loan  No."),
+                                                                          "Transaction Type" = filter("Loan Repayment" | "Interest Paid"),
+                                                                   Reversed = const(false)));
+            Editable = false;
+            FieldClass = FlowField;
+        }
+
     }
 
     keys
