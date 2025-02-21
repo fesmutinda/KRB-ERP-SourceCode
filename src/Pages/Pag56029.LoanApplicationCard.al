@@ -247,6 +247,11 @@ Page 56029 "Loan Application Card"
                     ApplicationArea = Basic;
                     Editable = false;
                 }
+                field("Loan Insurance"; Rec."Loan Insurance")
+                {
+                    ApplicationArea = Basic;
+                    Editable = false;
+                }
                 field(Repayment; Rec.Repayment)
                 {
                     ApplicationArea = Basic;
