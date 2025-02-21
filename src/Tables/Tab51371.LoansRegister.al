@@ -50,7 +50,7 @@ Table 51371 "Loans Register"
                     Error('Application date can not be in the future.');
             end;
         }
-        field(31111; "Loan Product Type111"; Code[250])
+        field(3; "Loan Product Type"; Code[250])
         {
             Editable = true;
             TableRelation = if (Source = const(BOSA)) "Loan Products Setup".Code where(Source = const(BOSA));
@@ -383,327 +383,6 @@ Table 51371 "Loans Register"
                 // loans Multiplier
             end;
         }
-        field(3; "Loan Product Type"; Code[250])
-        {
-            Editable = true;
-            TableRelation = if (Source = const(BOSA)) "Loan Products Setup".Code where(Source = const(BOSA));
-
-            trigger OnValidate()
-            var
-                LoanBal_: Decimal;
-                TrusteeLn: Decimal;
-                KHLLn: Decimal;
-                RefDate: Date;
-            begin
-                LoanApp.Reset;
-                LoanApp.SetRange("Client Code", "Client Code");
-                LoanApp.SetRange(Posted, true);
-                LoanApp.SetRange("Loan Product Type", "Loan Product Type");
-                LoanApp.SetFilter("Outstanding Balance", '>0');
-                if LoanApp.Find('-') then begin
-                    repeat
-                        if ProdFac.Get("Loan Product Type") then begin
-                            if ProdFac."Allow Multiple Running Loans" = false then
-                                Message('Member already has an existing Loan %1 of same product which needs bridging', LoanApp."Loan  No.")
-                            else
-                                Message('Member already has an existing Loan %1 of same product', LoanApp."Loan  No.");
-                        end;
-                    until LoanApp.Next = 0;
-                end;
-                // GenSetUp.GET();
-                // IF Cust.GET("Client Code") THEN BEGIN
-                //  IF Cust."Registration Date"<>0D THEN
-                //  RefDate:=CALCDATE('<+'+GenSetUp."Shares Capital Period"+'>',Cust."Registration Date");
-                //  IF RefDate>TODAY THEN BEGIN
-                //    IF "Loan Product Type"<>'KARIBU' THEN
-                //    ERROR('Member has not finished 6 Months in the sacco to qualify for this loan!');
-                //  END;
-                // END;
-
-                //Check if member has unpaid Sukuma Mwezi Loan
-
-                GenSetUp.Get();
-                if Cust.Get("Client Code") then begin
-                    LoanApp.Reset;
-                    LoanApp.SetRange(LoanApp."Client Code", "Client Code");
-                    //LoanApp.SETRANGE(LoanApp."Loan Product Type",'SUKUMA');
-                    LoanApp.SetRange(LoanApp.Posted, true);
-                    if LoanApp.Find('-') then begin
-                        LoanApp.CalcFields(LoanApp."Outstanding Balance");
-                        if LoanApp."Outstanding Balance" > 0 then begin
-                            if LoanApp."Expected Date of Completion" < Today then begin
-                                //IF "Loan Product Type"<>'TRUSTEE' THEN
-                                //ERROR('Member has an outstanding Sukuma Mwezi Loan that is overdue!');
-                            end;
-                        end;
-                    end;
-                end;
-
-                Cust.Reset;
-                Cust.SetRange(Cust."No.", "Client Code");
-                if Cust.FindFirst then begin
-                    //MESSAGE('01021 %1',"Client Code");
-                    Cust.CalcFields("Shares Retained", "Current Shares");
-                    //IF "Loan Product Type"<>'QUICK' THEN BEGIN
-                    if (Cust."Shares Retained" < GenSetUp."Retained Shares") and ("Loan Product Type" <> 'QUICK') then
-                        Error(Err, "Client Code", Cust."Shares Retained");
-
-                    //END;
-                end;
-
-                /*LoanTyped.RESET;
-                LoanTyped.SETRANGE(Code,"Loan Product Type");
-                IF LoanTyped.FINDFIRST THEN BEGIN
-                
-                   LoanApp.RESET;
-                   LoanApp.SETRANGE(LoanApp."Loan  No.","Loan  No.");
-                   LoanApp.SETRANGE(Posted,TRUE);
-                   IF LoanApp.FINDFIRST THEN BEGIN
-                      LoanApp.CALCFIELDS("Outstanding Balance");
-                      IF LoanApp."Outstanding Balance">0 THEN  BEGIN
-                         IF LoanTyped.Code="Loan Product Type" THEN
-                         ERROR(Text0007,"Client Code","Loan Product Type");
-                
-                      END;
-                
-                   END;
-                
-                END;
-                */
-                /*LoanTyped.GET("Loan Product Type");
-                IF Posted=FALSE THEN BEGIN
-                IF LoanTyped.Code="Loan Product Type" THEN
-                
-                ERROR(Text0007,"Client Code","Loan Product Type");
-                END;
-                */
-
-
-
-                sHARES := 0;
-                LoanApp.Reset;
-                LoanApp.SetRange(LoanApp."Client Code", "Client Code");
-                //LoanApp.SETRANGE(LoanApp."Loan Product Type",'TRUSTEE');
-                LoanApp.SetRange(LoanApp.Posted, true);
-                if LoanApp.Find('-') then begin
-                    repeat
-                        LoanApp.CalcFields(LoanApp."Outstanding Balance");
-                        TrusteeLn := TrusteeLn + LoanApp."Outstanding Balance"
-                    until LoanApp.Next = 0;
-                end;
-
-                LoanApp.Reset;
-                LoanApp.SetRange(LoanApp."Client Code", "Client Code");
-                LoanApp.SetRange(LoanApp."Loan Product Type", 'KHL');
-                LoanApp.SetRange(LoanApp.Posted, true);
-                if LoanApp.Find('-') then begin
-                    repeat
-                        LoanApp.CalcFields(LoanApp."Outstanding Balance");
-                        KHLLn := KHLLn + LoanApp."Outstanding Balance"
-                  until LoanApp.Next = 0;
-                end;
-
-                LoansRec.Reset;
-                LoansRec.SetRange(LoansRec."Client Code", "Client Code");
-                //LoansRec.SETRANGE(LoansRec."Loan Product Type",'VISION');
-                LoansRec.SetRange(LoansRec.Posted, true);
-                if LoansRec.Find('-') then begin
-                    LoansRec.CalcFields("Outstanding Balance");
-                    Cust.Reset;
-                    Cust.SetRange(Cust."No.", "Client Code");
-                    if Cust.Find('-') then begin
-                        Cust.CalcFields(Cust."Current Shares", "Outstanding Balance");
-                        sHARES := -3 * Cust."Current Shares" * -1;
-                        LoanBal_ := Cust."Outstanding Balance";
-                        if sHARES = 0 then
-                            Error('Shares' + Format(sHARES));
-                    end;
-
-                    if not Bridging then begin
-                        //  IF (LoanBal_-TrusteeLn-KHLLn)>sHARES THEN
-                        //    ERROR('You cannot apply for any loan until your Vision Loan balance is below '+FORMAT(sHARES));
-                    end;
-                end;
-                LoanType.Reset;
-                if LoanType.Get("Loan Product Type") then begin
-
-                    LoansRec.Reset;
-                    LoansRec.SetRange(LoansRec."Client Code", "Client Code");
-                    LoansRec.SetRange(LoansRec."Loan Product Type", LoanType.Code);
-                    if LoansRec.Find('-') then begin
-                        totalLn := 0;
-                        LoanCount := 0;
-                        repeat
-                            LoanCount := LoanCount + 1;
-                            LoansRec.CalcFields(LoansRec."Outstanding Balance");
-                            totalLn := totalLn + LoansRec."Outstanding Balance";
-                        until LoansRec.Next = 0;
-                        //      IF (NOT LoansRec.Bridging) AND (NOT LoansRec.Consolidation) AND (NOT LoansRec.Refinancing) THEN BEGIN
-                        //        IF (totalLn>0) AND (LoanCount>LoanType."Maximum No. Of Runing Loans") THEN BEGIN
-                        //        ERROR('The Member can only have a maximum of '+FORMAT(LoanType."Maximum No. Of Runing Loans")+' %1',LoanType."Product Description");
-                        //      END;//JOEl
-                        //    END;
-                    end;
-
-
-                    "Type Of Loan Duration" := LoanType."Type Of Loan";
-
-                    if (LoanType."Loan Product Expiry Date" = 0D) or (LoanType."Loan Product Expiry Date" > Today) then begin
-                        sHARES := 0;
-                        MonthlyRepayT := 0;
-
-
-                        if (Source = Source::BOSA) then begin
-                            //NEW SACCO
-                            //Evaluate if the member does not have shares
-                            Cust.Reset;
-                            Cust.SetRange(Cust."No.", "Client Code");
-                            if Cust.Find('-') then begin
-                                Cust.CalcFields(Cust."Current Shares");
-                                sHARES := Cust."Current Shares" * -1;
-                                if sHARES = 0 then
-                                    Error('This member does not have shares, therefore cannot qualify for any Loan');
-                            end;
-                        end;
-
-                        //**********************************Find Similar Products**************************//
-                        LoanApp.Reset;
-                        LoanApp.SetRange(LoanApp."Client Code", "Client Code");
-                        LoanApp.SetRange(LoanApp."Loan Product Type", "Loan Product Type");
-                        LoanApp.SetRange(LoanApp.Posted, true);
-                        if LoanApp.Find('-') then begin
-                            repeat
-                                LoanApp.CalcFields(LoanApp."Outstanding Balance");
-                                if LoanApp."Outstanding Balance" > 0 then begin
-                                    loannums := loannums + 1;
-                                end;
-                            until LoanApp.Next = 0;
-                        end;
-
-                        //MESSAGE(FORMAT(loannums));
-                        //**********************************Find Similar Products**************************//
-
-
-                        //**********************************Compute Loan Repayments**************************//
-                        MonthlyRepayT := 0;
-                        LoanApp.Reset;
-                        LoanApp.SetRange(LoanApp."Client Code", "Client Code");
-                        LoanApp.SetRange(LoanApp.Posted, true);
-                        if LoanApp.Find('-') then begin
-                            repeat
-                                LoanApp.CalcFields(LoanApp."Outstanding Balance");
-                                if (LoanApp."Outstanding Balance" > 0) then begin
-                                    if LoanApp."Outstanding Balance" < LoanApp."Loan Principle Repayment" then begin
-                                        MonthlyRepayT := MonthlyRepayT + (LoanApp."Loan Principle Repayment");//+LoanApp."Loan Interest Repayment");
-                                    end else begin
-                                        MonthlyRepayT := MonthlyRepayT + (LoanApp."Loan Principle Repayment");//+LoanApp."Loan Interest Repayment");
-                                    end
-                                end;
-                            //MESSAGE('Monthly Repayment %1 Loan No %2 Total %3',LoanApp."Loan Principle Repayment",MonthlyRepayT,LoanApp."Loan  No.");
-                            until LoanApp.Next = 0;
-                        end;
-
-                        //**********************************Compute Loan Repayments**************************//
-
-
-                        //**********************************Populate Parameters*****************************//
-                        if LoanType.Get("Loan Product Type") then begin
-                            "Loan Product Type Name" := LoanType."Product Description";
-                            //MESSAGE('Test Interest %1',LoanType."Interest rate");
-                            Interest := LoanType."Interest rate";
-                            "Instalment Period" := LoanType."Instalment Period"; //Cyrus
-                            "Grace Period" := LoanType."Grace Period";
-                            "Grace Period - Principle (M)" := LoanType."Grace Period - Principle (M)";
-                            "Grace Period - Interest (M)" := LoanType."Grace Period - Interest (M)";
-                            "Loan to Share Ratio" := LoanType."Loan to Share Ratio";
-                            "Interest Calculation Method" := LoanType."Interest Calculation Method";
-                            "Repayment Method" := LoanType."Repayment Method";
-                            "Product Currency Code" := LoanType."Product Currency Code";
-                            Installments := LoanType."Default Installements";
-                            "Max. Installments" := LoanType."No of Installment";
-                            "Max. Loan Amount" := LoanType."Max. Loan Amount";
-                            "Repayment Frequency" := LoanType."Repayment Frequency";
-                            "Amortization Interest Rate" := LoanType."Amortization Interest Rate(SI)";
-                            "Loan Deposit Multiplier" := LoanType."Deposits Multiplier";
-                            //"Recovery Mode":=LoanType."Recovery Method";
-
-                            //Where repayment is by employer
-
-                            if LoanType."Use Cycles" = false then begin
-                                "Loan Cycle" := 0;
-                                "Max. Installments" := LoanType."No of Installment";
-                                "Max. Loan Amount" := LoanType."Max. Loan Amount";
-                                Installments := LoanType."Default Installements";
-                                "Product Code" := LoanType."Source of Financing";
-                                "Paying Bank Account No" := LoanType."BacK Code";
-
-                            end;
-
-                            if LoanType."Use Cycles" = true then begin
-                                LoanApp.Reset;
-                                LoanApp.SetRange(LoanApp."Client Code", "Client Code");
-                                LoanApp.SetRange(LoanApp."Loan Product Type", "Loan Product Type");
-                                LoanApp.SetRange(LoanApp.Posted, true);
-                                if LoanApp.Find('-') then
-                                    MemberCycle := LoanApp.Count + 1
-                                else
-                                    MemberCycle := 1;
-
-
-
-                                ProdCycles.Reset;
-                                ProdCycles.SetRange(ProdCycles."Product Code", "Loan Product Type");
-                                if ProdCycles.Find('-') then begin
-                                    repeat
-                                        if MemberCycle = ProdCycles.Cycle then begin
-                                            "Loan Cycle" := ProdCycles.Cycle;
-                                            "Max. Installments" := ProdCycles."Max. Installments";
-                                            "Max. Loan Amount" := ProdCycles."Max. Amount";
-                                            Installments := ProdCycles."Max. Installments";
-                                        end;
-                                    until ProdCycles.Next = 0;
-                                    if "Loan Cycle" = 0 then begin
-                                        "Loan Cycle" := ProdCycles.Cycle;
-                                        "Max. Installments" := ProdCycles."Max. Installments";
-                                        "Max. Loan Amount" := ProdCycles."Max. Amount";
-                                        Installments := ProdCycles."Max. Installments";
-                                    end;
-                                end;
-
-
-                            end;
-                        end;
-                        if LoanType.Get("Loan Product Type") then begin
-                            if "Approved Amount" <> 0 then
-                                Validate("Approved Amount");
-                        end else
-                            Error('Loan product has been suspended');
-                    end;
-                    //END;
-                end else
-                    exit;
-
-                if LoanType.Get("Loan Product Type") then begin
-                    if "Shares Balance" < LoanType."Minimum Deposit For Loan Appl" then begin
-                        // ERROR('The member needs to have a minimum of %1 deposit contribution for application of a %2 Product',LoanType."Minimum Deposit For Loan Appl",LoanType."Product Description");
-                    end;
-                end;
-
-                //**************************Dividend Advance **************************************//
-                if LoanType.Get("Loan Product Type") then begin
-                    if "Loan Product Type" = 'DIVIDENDADV' then begin
-                        FirstDateOfYear := CalcDate('-CY', Today);
-                        LastDateIssue := CalcDate('2M-1D', FirstDateOfYear);
-                        if (Today < FirstDateOfYear) or (Today > LastDateIssue) then
-                            Error(Text00002, "Loan Product Type", Format(FirstDateOfYear), Format(LastDateIssue));
-                    end;
-                end;
-                //**************************Dividend Advance **************************************//
-                if "Requested Amount" <> 0 then
-                    Validate("Requested Amount");
-
-            end;
-        }
         field(411111; "Client Code11111"; Code[50])
         {
             TableRelation = if (Source = const(BOSA)) Customer."No." where(Status = filter(Active))
@@ -900,7 +579,7 @@ Table 51371 "Loans Register"
                     "Member Deposits" := CustomerRecord."Current Shares";
                     "Group Shares" := CustomerRecord."Shares Retained";
                     "Oustanding Interest" := (LoanApp."Oustanding Interest" + LoanApp."Oustanding Interest to Date");
-                    Insurance := ROUND(((Rec."Requested Amount") * (5.03 * Rec.Installments + 21.15) / 6000) * 0.6, 1, '<>');
+                    Insurance := ROUND(((Rec."Requested Amount") * (5.03 * Rec.Installments + 21.15) / 6000) * 0.6, 1, '=');
                     "Pension No" := "Pension No";
                     "Monthly Contribution" := CustomerRecord."Monthly Contribution";
 
@@ -1354,6 +1033,19 @@ Table 51371 "Loans Register"
                     "Bank Name" := CustomerRecord."Bank Account Name";
                 end;
 
+                // Loans Multiplier
+                Cust.SetRange(Cust."No.", "Client Code");
+                if Cust.FindSet then begin
+                    if Cust."Employment Info" = Cust."Employment Info"::"KRB Employee" then begin
+                        "Loan Deposit Multiplier" := 3;
+                    end else begin
+                        "Loan Deposit Multiplier" := 2;
+                    end;
+
+                    "Recommended Amount" := "Loan Deposit Multiplier" * "Member Deposits";
+                end;
+                // loans Multiplier
+
                 //Clear Offset Records when a client Code is Changed.
                 ObjLoanOffsets.Reset;
                 ObjLoanOffsets.SetRange("Loan No.", "Loan  No.");
@@ -1561,8 +1253,8 @@ Table 51371 "Loans Register"
 
 
                 //insurance
-                "Loan Insurance" := ROUND(((Rec."Requested Amount") * (5.03 * Rec.Installments + 21.15) / 6000) * 0.6, 1, '<>');
-                Insurance := ROUND(((Rec."Requested Amount") * (5.03 * Rec.Installments + 21.15) / 6000) * 0.6, 1, '<>');
+                "Loan Insurance" := ROUND(((Rec."Requested Amount") * (5.03 * Rec.Installments + 21.15) / 6000) * 0.6, 1, '=');
+                Insurance := ROUND(((Rec."Requested Amount") * (5.03 * Rec.Installments + 21.15) / 6000) * 0.6, 1, '=');
             end;
         }
         field(9; "Approved Amount"; Decimal)
