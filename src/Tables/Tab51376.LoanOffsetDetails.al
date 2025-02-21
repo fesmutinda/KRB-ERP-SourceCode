@@ -316,7 +316,7 @@ Table 51376 "Loan Offset Details"
                 GenSetUp.Get;
 
                 // Commision:=("Principle Top Up")*GenSetUp."Loan Top Up Commision(%)"/100;
-                Commision := ROUND(((("Total Top Up" - LoanApp."Requested Amount")) * GenSetUp."Loan Top Up Commision(%)" / 100), 1, '=');
+                Commision := ROUND(((LoanApp."Requested Amount") * GenSetUp."Loan Top Up Commision(%)" / 100), 1, '=');
             end;
         }
         field(14; "Partial Bridged"; Boolean)
