@@ -719,6 +719,7 @@ Page 56029 "Loan Application Card"
             offsetTable.SETFILTER(offsetTable."Total Top Up", '>0');//>0, 0);
             if offsetTable.find('-') then begin
                 Rec."Is Top Up" := true;
+                rec.Bridging := true;
             end else begin
                 Rec."Is Top Up" := false;
             end;
