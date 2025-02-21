@@ -994,7 +994,7 @@ Page 51007 "BOSA Loans Disbursement Card"
         LineNo := LineNo + 10000;
         insurancePremium := ((Rec."Requested Amount") * (5.03 * Rec.Installments + 21.15) / 6000) * 0.6;
         SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, LoanApps."Loan  No.", LineNo, GenJournalLine."Transaction Type"::" ", GenJournalLine."Account Type"::"G/L Account", GenSetUp."Insurance Retension Account", DirbursementDate, insurancePremium, 'BOSA', Rec."Batch No.", 'Loan Insurance Amount ' + Format(LoanApps."Loan  No."), '');
-        // VarAmounttoDisburse := VarAmounttoDisburse - insurancePremium;
+        VarAmounttoDisburse := VarAmounttoDisburse - insurancePremium;
 
         //.....Valuation
         VarAmounttoDisburse := VarAmounttoDisburse - (Rec."Loan Processing Fee" + Rec."Loan Dirbusement Fee" + Rec."Loan Insurance");
