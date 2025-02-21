@@ -1,4 +1,4 @@
-Page 50002 "Finance Role Center"
+Page 50011 "Finance Role Center"
 {
     Caption = 'KRB SACCO Finance';
     PageType = RoleCenter;
