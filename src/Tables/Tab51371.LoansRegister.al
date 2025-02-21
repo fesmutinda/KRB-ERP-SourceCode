@@ -1075,44 +1075,12 @@ Table 51371 "Loans Register"
                 LoanBal: Decimal;
                 Amtt: Decimal;
             begin
-                //******************************Karibu Loan***********************************//
-                if "Loan Product Type" = 'KARIBU' then begin
-                    Cust.Reset;
-                    Cust.SetRange(Cust."No.", "Client Code");
-                    if Cust.Find('-') then begin
-                        Cust.CalcFields("Current Shares");
-                        if "Requested Amount" > Cust."Current Shares" then
-                            Error('Member can only apply for a maximum of ksh ' + Format(Cust."Current Shares"));
-                    end;
-                end;
                 if "Is Top Up" = false then begin
                     if "Affidavit - Estimated Value 2" > 0 then begin
                         Error('Member Has Pending Arrear,kindly sort out with CEO');
                     end;
                 end;
-                //******************************Karibu Loan***********************************//
-                //  IF Bridging THEN BEGIN
-                //  ObjLoanOffsets.RESET;
-                //  ObjLoanOffsets.SETRANGE(ObjLoanOffsets."Loan No.","Loan  No.");
-                //  IF ObjLoanOffsets.FIND('-') THEN BEGIN
-                //    Loan.RESET;
-                //    Loan.SETRANGE("Loan  No.",ObjLoanOffsets."Loan Top Up");
-                //    IF Loan.FIND('-') THEN BEGIN
-                //      Loan.CALCFIELDS("Outstanding Balance");
-                //      GenSetUp.GET();
-                //      IF Loan."Outstanding Balance"<(Loan."Amount Disbursed"/2) THEN BEGIN
-                //        Amtt:=GenSetUp."Loan Top Up Commision(%)"*Loan."Outstanding Balance"/100;
-                //       "Total TopUp Commission":=Amtt;
-                //      END ELSE BEGIN
-                //       Amtt:=GenSetUp."Loan Top Up Commision2(%)"*Loan."Outstanding Balance"/100;
-                //       "Total TopUp Commission":=Amtt;
-                //      END;
-                //      IF Loan."Outstanding Balance"+Amtt>"Requested Amount" THEN
-                //        ERROR('Amount Requested cannot be less than '+FORMAT(Loan."Outstanding Balance"+Amtt));
-                //    END;
-                //  END;
-                //  END;
-                //.....................................cj
+
                 if LoanType.Get("Loan Product Type") then begin
                     if LoanType."Maximum No. Of Runing Loans" > 1 then begin
                         LoansRec.Reset;
@@ -1120,12 +1088,7 @@ Table 51371 "Loans Register"
                         LoansRec.SetRange(LoansRec."Client Code", Rec."Client Code");
                         //LoansRec.SETFILTER(LoansRec."Outstanding Balance",'>%1',0);
                         LoansRec.SetRange(LoansRec.Posted, true);
-                        //LoansRec.SETFILTER(LoansRec."Loan  No.",'<>%1',Rec."Loan  No.");
-                        //    IF LoansRec.FINDFIRST() THEN BEGIN
-                        //      LoanBal:=SwizzsoftFactory.KnGetLoanBalanceOneLoan(LoansRec."Loan  No.");
-                        //        IF "Requested Amount">(LoanType."Max. Loan Amount"-LoanBal) THEN
-                        //        ERROR('You cannot request more than the Loan Allowable limit of %1',LoanType."Max. Loan Amount"-LoanBal);
-                        //    END;
+
                     end else
                         if "Requested Amount" > LoanType."Max. Loan Amount" then begin
                             Error('You cannot request more than the Loan Allowable limit of %1', LoanType."Max. Loan Amount");

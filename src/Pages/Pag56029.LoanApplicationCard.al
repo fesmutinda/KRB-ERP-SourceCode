@@ -504,6 +504,7 @@ Page 56029 "Loan Application Card"
                 }
                 action("Loan Appraisal Salary Details")
                 {
+                    Visible = false;
                     ApplicationArea = Basic;
                     Caption = 'Loan Appraisal Salary Details';
                     Image = AddAction;
