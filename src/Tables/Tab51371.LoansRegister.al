@@ -579,7 +579,7 @@ Table 51371 "Loans Register"
                     "Member Deposits" := CustomerRecord."Current Shares";
                     "Group Shares" := CustomerRecord."Shares Retained";
                     "Oustanding Interest" := (LoanApp."Oustanding Interest" + LoanApp."Oustanding Interest to Date");
-                    Insurance := (Rec."Requested Amount") * (5.03 * Rec.Installments + 21.15) / 6000 * 0.6;
+                    Insurance := ROUND(((Rec."Requested Amount") * (5.03 * Rec.Installments + 21.15) / 6000) * 0.6, 1, '<>');
                     "Pension No" := "Pension No";
                     "Monthly Contribution" := CustomerRecord."Monthly Contribution";
 
@@ -917,8 +917,8 @@ Table 51371 "Loans Register"
 
 
                 //insurance
-                "Loan Insurance" := (Rec."Requested Amount") * (5.03 * Rec.Installments + 21.15) / 6000 * 0.6;
-                Insurance := ((Rec."Requested Amount") * (5.03 * Rec.Installments + 21.15) / 6000) * 0.6;
+                "Loan Insurance" := ROUND(((Rec."Requested Amount") * (5.03 * Rec.Installments + 21.15) / 6000) * 0.6, 1, '<>');
+                Insurance := ROUND(((Rec."Requested Amount") * (5.03 * Rec.Installments + 21.15) / 6000) * 0.6, 1, '<>');
             end;
         }
         field(9; "Approved Amount"; Decimal)
@@ -4177,7 +4177,7 @@ Table 51371 "Loans Register"
                 CalcFields("Outstanding Balance");
 
                 LBalance := "Requested Amount";
-                
+
 
                 //Repayments for amortised method
 

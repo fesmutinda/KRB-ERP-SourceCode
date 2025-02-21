@@ -359,7 +359,7 @@ page 50411 "Sacco General Set-Up"
                 field("Insurance Retension Account"; Rec."Insurance Retension Account")
                 {
                     ApplicationArea = Basic;
-                    Visible = false;
+                    Visible = true;
 
                 }
                 field("Shares Retension Account"; Rec."Shares Retension Account")
