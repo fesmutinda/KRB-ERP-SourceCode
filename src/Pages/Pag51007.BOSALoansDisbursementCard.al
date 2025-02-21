@@ -467,6 +467,7 @@ Page 51007 "BOSA Loans Disbursement Card"
         ClientCode: Code[40];
         DirbursementDate: Date;
         VarAmounttoDisburse: Decimal;
+        insurancePremium: Decimal;
         LoanGuar: Record "Loans Guarantee Details";
         SMSMessages: Record "SMS Messages";
         i: Integer;
@@ -890,6 +891,7 @@ Page 51007 "BOSA Loans Disbursement Card"
         Sfactorycode.FnGenerateRepaymentSchedule(Rec."Loan  No.");
         DirbursementDate := Rec."Loan Disbursement Date";
         VarAmounttoDisburse := Rec."Approved Amount";
+        insurancePremium := 0;
         //....................PRORATED DAYS
         EndMonth := CALCDATE('-1D', CALCDATE('1M', DMY2DATE(1, DATE2DMY(Today, 2), DATE2DMY(Today, 3))));
         RemainingDays := (EndMonth - Today) + 1;
@@ -982,6 +984,13 @@ Page 51007 "BOSA Loans Disbursement Card"
             UNTIL PCharges.NEXT = 0;
         END;
         //end of code
+        //....Insuarance
+        // PREMIUM = LOAN AMOUNT x (5.03 x PERIOD +21.15)/6000 x 0.6
+        LineNo := LineNo + 10000;
+        insurancePremium := (Rec."Approved Amount") * (5.03 * Rec.Installments + 21.15) / 6000 * 0.6;
+        SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, LoanApps."Loan  No.", LineNo, GenJournalLine."Transaction Type"::" ", GenJournalLine."Account Type"::"G/L Account", GenSetUp."Insurance Retension Account", DirbursementDate, insurancePremium, 'BOSA', Rec."Batch No.", 'Loan Insurance Amount ' + Format(LoanApps."Loan  No."), '');
+        // VarAmounttoDisburse := VarAmounttoDisburse - insurancePremium;
+
         //.....Valuation
         VarAmounttoDisburse := VarAmounttoDisburse - (Rec."Loan Processing Fee" + Rec."Loan Dirbusement Fee" + Rec."Loan Insurance");
         LineNo := LineNo + 10000;
