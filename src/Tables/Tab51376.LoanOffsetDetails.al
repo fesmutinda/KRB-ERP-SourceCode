@@ -314,9 +314,13 @@ Table 51376 "Loan Offset Details"
                 // "Total Top Up":="Principle Top Up" +"Interest Top Up";
                 Commision := 0;
                 GenSetUp.Get;
-
-                // Commision:=("Principle Top Up")*GenSetUp."Loan Top Up Commision(%)"/100;
-                Commision := ROUND(((LoanApp."Requested Amount") * GenSetUp."Loan Top Up Commision(%)" / 100), 1, '=');
+                LoanApp.Reset();
+                LoanApp.SetRange(LoanApp."Loan  No.", "Loan No.");
+                if (LoanApp.Find('-')) then begin
+                    Commision := ROUND(((LoanApp."Requested Amount") * GenSetUp."Loan Top Up Commision(%)" / 100), 1, '=');
+                end else begin
+                    Error('Please enter Requested Amount before selecting a loan to Refinance');
+                end;
             end;
         }
         field(14; "Partial Bridged"; Boolean)
