@@ -709,10 +709,25 @@ Page 56029 "Loan Application Card"
         RecordApproved: Boolean;
         SrestepApprovalsCodeUnit: Codeunit SurestepApprovalsCodeUnit;
         CanCancelApprovalForRecord: Boolean;
+        offsetTable: Record "Loan Offset Details";
 
+    procedure updateLoanInfo()
+    begin
+        begin
+            offsetTable.reset();
+            offsetTable.setrange(offsetTable."Loan No.", Rec."Loan  No.");
+            offsetTable.SETFILTER(offsetTable."Total Top Up", '>0');//>0, 0);
+            if offsetTable.find('-') then begin
+                Rec."Is Top Up" := true;
+            end else begin
+                Rec."Is Top Up" := false;
+            end;
+        end;
+    end;
 
     procedure UpdateControl()
     begin
+        updateLoanInfo();
         MNoEditable := true;
         if Rec."Loan Status" = Rec."loan status"::Application then begin
             RecordApproved := false;
