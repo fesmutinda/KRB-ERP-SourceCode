@@ -351,6 +351,7 @@ Page 56029 "Loan Application Card"
             }
             part(Control1000000005; "Loan Collateral Security")
             {
+                Visible = false;
                 Caption = 'Other Securities';
                 ApplicationArea = Basic;
                 SubPageLink = "Loan No" = field("Loan  No.");
