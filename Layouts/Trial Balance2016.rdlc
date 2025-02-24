@@ -1827,6 +1827,7 @@
                 <Style>Solid</Style>
                 <Width>1pt</Width>
               </RightBorder>
+              <FontSize>8pt</FontSize>
             </Style>
           </Tablix>
           <Textbox Name="G_L_Account__TABLECAPTION__________GLFilter">

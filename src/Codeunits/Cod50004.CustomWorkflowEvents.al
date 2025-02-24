@@ -42,6 +42,11 @@ codeunit 50004 "Custom Workflow Events"
                             Database::"Loans Register", 'Approval of Loan Application is Requested.', 0, false);
         WFHandler.AddEventToLibrary(RunWorkflowOnCancelLoanApplicationApprovalRequestCode,
                                     Database::"Loans Register", 'An Approval request for  Loan Application is canceled.', 0, false);
+        //Instant Loans Application
+        WFHandler.AddEventToLibrary(RunWorkflowOnSendInstantLoanApplicationForApprovalCode,
+                            Database::"Loans Register", 'Approval of Instant Loan Application is Requested.', 0, false);
+        WFHandler.AddEventToLibrary(RunWorkflowOnCancelInstantLoanApplicationApprovalRequestCode,
+                                    Database::"Loans Register", 'An Approval request for Instant Loan Application is canceled.', 0, false);
         //-------------------------------------------End Approval Events-------------------------------------------------------------
         //BOSA Transfers
         WFHandler.AddEventToLibrary(RunWorkflowOnSendBOSATransForApprovalCode,
@@ -138,6 +143,12 @@ codeunit 50004 "Custom Workflow Events"
         WFHandler.AddEventPredecessor(WFHandler.RunWorkflowOnRejectApprovalRequestCode, RunWorkflowOnSendLoanApplicationForApprovalCode);
 
         WFHandler.AddEventPredecessor(WFHandler.RunWorkflowOnDelegateApprovalRequestCode, RunWorkflowOnSendLoanApplicationForApprovalCode);
+        //2.1 Instant Loan Application
+        WFHandler.AddEventPredecessor(WFHandler.RunWorkflowOnApproveApprovalRequestCode, RunWorkflowOnSendInstantLoanApplicationForApprovalCode);
+
+        WFHandler.AddEventPredecessor(WFHandler.RunWorkflowOnRejectApprovalRequestCode, RunWorkflowOnSendInstantLoanApplicationForApprovalCode);
+
+        WFHandler.AddEventPredecessor(WFHandler.RunWorkflowOnDelegateApprovalRequestCode, RunWorkflowOnSendInstantLoanApplicationForApprovalCode);
 
         //3. BOSA Transfers
         WFHandler.AddEventPredecessor(WFHandler.RunWorkflowOnApproveApprovalRequestCode, RunWorkflowOnSendBOSATransForApprovalCode);
@@ -284,6 +295,32 @@ codeunit 50004 "Custom Workflow Events"
     procedure RunWorkflowOnCancelLoanApplicationApprovalRequest(var LoansRegister: Record "Loans Register")
     begin
         WorkflowManagement.HandleEvent(RunWorkflowOnCancelLoanApplicationApprovalRequestCode, LoansRegister);
+    end;
+    //...................................................................................................
+    //2.1 Instant Loan Applications
+    procedure RunWorkflowOnSendInstantLoanApplicationForApprovalCode(): Code[128]//
+    begin
+        exit(UpperCase('RunWorkflowOnSendInstantLoanApplicationForApproval'));
+    end;
+
+
+    procedure RunWorkflowOnCancelInstantLoanApplicationApprovalRequestCode(): Code[128]
+    begin
+        exit(UpperCase('RunWorkflowOnCancelInstantLoanApplicationApprovalRequest'));
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::SurestepApprovalsCodeUnit, 'FnOnSendInstantLoanApplicationForApproval', '', false, false)]
+
+    procedure RunWorkflowOnSendInstantLoanApplicationForApproval(var LoansRegister: Record "Loans Register")
+    begin
+        WorkflowManagement.HandleEvent(RunWorkflowOnSendInstantLoanApplicationForApprovalCode, LoansRegister);
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::SurestepApprovalsCodeUnit, 'FnOnCancelInstantLoanApplicationApprovalRequest', '', false, false)]
+
+    procedure RunWorkflowOnCancelInstantLoanApplicationApprovalRequest(var LoansRegister: Record "Loans Register")
+    begin
+        WorkflowManagement.HandleEvent(RunWorkflowOnCancelInstantLoanApplicationApprovalRequestCode, LoansRegister);
     end;
     //...................................................................................................
 

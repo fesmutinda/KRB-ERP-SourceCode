@@ -373,7 +373,7 @@ Page 56175 "Bosa Receipts H Card-Checkoff."
             LoanApp.Reset;
             LoanApp.SetCurrentkey(Source, "Issued Date", "Loan Product Type", "Client Code", "Staff No");
             LoanApp.SetRange(LoanApp."Client Code", ObjRcptBuffer."Member No");
-            LoanApp.SetRange(LoanApp."Recovery Mode", LoanApp."recovery mode"::Checkoff);
+            LoanApp.SetRange(LoanApp."Recovery Mode", LoanApp."recovery mode"::"Payroll Deduction");
             //LoanApp.SETFILTER(LoanApp."Date filter",Datefilter); //Deduct all interest outstanding regardless of date
             //LoanApp.SETRANGE(LoanApp."Issued Date",startDate,IssueDate);
             if LoanApp.FindSet() then begin
@@ -438,7 +438,7 @@ Page 56175 "Bosa Receipts H Card-Checkoff."
             LoanApp.Reset;
             LoanApp.SetCurrentkey(Source, "Issued Date", "Loan Product Type", "Client Code", "Staff No");
             LoanApp.SetRange(LoanApp."Client Code", ObjRcptBuffer."Member No");
-            LoanApp.SetRange(LoanApp."Recovery Mode", LoanApp."recovery mode"::Checkoff);
+            LoanApp.SetRange(LoanApp."Recovery Mode", LoanApp."recovery mode"::"Payroll Deduction");
             //LoanApp.SETRANGE(LoanApp."Issued Date",startDate,IssueDate);
             if LoanApp.Findset then begin
 

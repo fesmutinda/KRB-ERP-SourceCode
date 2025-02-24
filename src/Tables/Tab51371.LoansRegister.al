@@ -3011,19 +3011,15 @@ Table 51371 "Loans Register"
             TableRelation = Banks;
 
             trigger OnValidate()
+            var
+                Banks: Record Banks;
             begin
-                /*banks.RESET;
-                banks.SETRANGE(banks.Code,"Bank code");
-                
-                IF  banks.FIND('-') THEN BEGIN
-                
-                "Bank code":=banks.Code;
-                "Bank Name":=banks."Bank Name";
-                "Bank Branch":=banks.Branch;
-                
-                Loan.MODIFY;
-                END;*/
 
+                Banks.Reset;
+                Banks.SetRange(Banks.Code, "Bank Code");
+                if Banks.Find('-') then
+                    "Bank Name" := Banks."Bank Name";
+                "Bank Branch" := Banks.Branch;
             end;
         }
         field(69005; "Bank Name"; Text[80])
@@ -3125,9 +3121,8 @@ Table 51371 "Loans Register"
         }
         field(69024; "Recovery Mode"; Option)
         {
-            InitValue = Checkoff;
-            OptionCaption = ',Checkoff,MPESA,Standing Order,Cash Deposit';
-            OptionMembers = ,Checkoff,MPESA,"Standing Order","Cash Deposit";
+            InitValue = "Payroll Deduction";
+            OptionMembers = ,"Payroll Deduction",MPESA,"Bank Deposit";
 
             trigger OnValidate()
             begin
@@ -5053,7 +5048,7 @@ Table 51371 "Loans Register"
 
         "Application Date" := Today;
         Advice := true;
-        "Recovery Mode" := "recovery mode"::Checkoff;
+        "Recovery Mode" := "recovery mode"::"Payroll Deduction";
         "Captured By" := UpperCase(UserId);
 
         "Paying Bank Account No" := 'BNK_0001';
