@@ -178,22 +178,36 @@ Page 56010 "Loans Calculator"
 
                                 Evaluate(RepayCode, Format(InstalNo));
 
+                                if rec."Loan Product Type" = 'LT008' then begin
+                                    RSchedule.Init;
+                                    RSchedule."Repayment Code" := RepayCode;
+                                    RSchedule."Loan Amount" := LoanAmount;
+                                    RSchedule."Instalment No" := InstalNo;
+                                    RSchedule."Repayment Date" := CalcDate('CM', RunDate);
+                                    RSchedule."Loan Category" := Rec."Loan Product Type";
+                                    RSchedule."Monthly Repayment" := LInterest + LPrincipal + Rec."Administration Fee";
+                                    RSchedule."Monthly Interest" := LInterest;
+                                    RSchedule."Principal Repayment" := LPrincipal;
+                                    RSchedule.Insert;
 
 
-                                RSchedule.Init;
-                                RSchedule."Repayment Code" := RepayCode;
-                                RSchedule."Loan Amount" := LoanAmount;
-                                RSchedule."Instalment No" := InstalNo;
-                                RSchedule."Repayment Date" := CalcDate('CM', RunDate);
-                                RSchedule."Loan Category" := Rec."Loan Product Type";
-                                RSchedule."Monthly Repayment" := LInterest + LPrincipal + Rec."Administration Fee";
-                                RSchedule."Monthly Interest" := LInterest;
-                                RSchedule."Principal Repayment" := LPrincipal;
-                                RSchedule.Insert;
+                                    RunDate := CalcDate('1M', RunDate);
+                                end else begin
+
+                                    RSchedule.Init;
+                                    RSchedule."Repayment Code" := RepayCode;
+                                    RSchedule."Loan Amount" := LoanAmount;
+                                    RSchedule."Instalment No" := InstalNo;
+                                    RSchedule."Repayment Date" := CalcDate('CM', RunDate);
+                                    RSchedule."Loan Category" := Rec."Loan Product Type";
+                                    RSchedule."Monthly Repayment" := LInterest + LPrincipal + Rec."Administration Fee";
+                                    RSchedule."Monthly Interest" := LInterest;
+                                    RSchedule."Principal Repayment" := LPrincipal;
+                                    RSchedule.Insert;
 
 
-                                RunDate := CalcDate('1M', RunDate);
-
+                                    RunDate := CalcDate('1M', RunDate);
+                                end;
                             until LBalance < 1;
 
                         end;

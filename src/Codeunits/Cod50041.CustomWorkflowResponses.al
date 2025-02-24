@@ -7,18 +7,10 @@ codeunit 50041 "Custom Workflow Responses"
 
     var
         WFEventHandler: Codeunit "Workflow Event Handling";
-        SurestepWFEvents: Codeunit "Custom Workflow Events";
         WFResponseHandler: Codeunit "Workflow Response Handling";
         MsgToSend: Text[250];
         CompanyInfo: Record "Company Information";
         SwizzsoftWFEvents: Codeunit "Custom Workflow Events";
-
-
-    /* procedure AddResponsesToLib()
-    begin
-        OnAddWorkflowResponsePredecessorsToLibrary();
-    end; */
-
 
     [EventSubscriber(ObjectType::Codeunit, 1521, 'OnAddWorkflowResponsePredecessorsToLibrary', '', false, false)]
 
@@ -35,6 +27,17 @@ codeunit 50041 "Custom Workflow Responses"
                                                  SwizzsoftWFEvents.RunWorkflowOnCancelMembershipApplicationApprovalRequestCode);
         WFResponseHandler.AddResponsePredecessor(WFResponseHandler.CancelAllApprovalRequestsCode,
                                                  SwizzsoftWFEvents.RunWorkflowOnCancelMembershipApplicationApprovalRequestCode);
+        //InstantLoan Application
+        WFResponseHandler.AddResponsePredecessor(WFResponseHandler.SetStatusToPendingApprovalCode,
+                                                 SwizzsoftWFEvents.RunWorkflowOnSendInstantLoanApplicationForApprovalCode);
+        WFResponseHandler.AddResponsePredecessor(WFResponseHandler.CreateApprovalRequestsCode,
+                                                 SwizzsoftWFEvents.RunWorkflowOnSendInstantLoanApplicationForApprovalCode);
+        WFResponseHandler.AddResponsePredecessor(WFResponseHandler.SendApprovalRequestForApprovalCode,
+                                                 SwizzsoftWFEvents.RunWorkflowOnSendInstantLoanApplicationForApprovalCode);
+        WFResponseHandler.AddResponsePredecessor(WFResponseHandler.OpenDocumentCode,
+                                                 SwizzsoftWFEvents.RunWorkflowOnCancelInstantLoanApplicationApprovalRequestCode);
+        WFResponseHandler.AddResponsePredecessor(WFResponseHandler.CancelAllApprovalRequestsCode,
+                                                 SwizzsoftWFEvents.RunWorkflowOnCancelInstantLoanApplicationApprovalRequestCode);
 
         //-----------------------------End AddOn--------------------------------------------------------------------------------------
     end;

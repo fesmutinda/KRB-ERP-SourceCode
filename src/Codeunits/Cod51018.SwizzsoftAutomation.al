@@ -276,7 +276,7 @@ codeunit 51018 "SwizzsoftAutomation"
             LoanApp.Reset;
             LoanApp.SetCurrentkey(Source, "Issued Date", "Loan Product Type", "Client Code", "Staff No", "Employer Code");
             LoanApp.SetRange(LoanApp."Client Code", BNumber);
-            LoanApp.SetRange(LoanApp."Recovery Mode", LoanApp."recovery mode"::Checkoff);
+            LoanApp.SetRange(LoanApp."Recovery Mode", LoanApp."recovery mode"::"Payroll Deduction");
             LoanApp.SetFilter(LoanApp."Repayment Start Date", '<=%1', Today); //Repayment Must have Started!!
             if LoanApp.Find('-') then begin
                 repeat

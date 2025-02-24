@@ -975,7 +975,38 @@ Page 56043 "KRB Sacco Role Center"
                         ToolTip = 'Open the list of Approved Loans Pending Disbursement.';
                     }
                 }
+                group("Instant Loan")
+                {
+                    Caption = 'Instant Loan Management';
+                    ToolTip = 'Instant Loans'' Management Module';
+                    action("Instant Loan Application")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Instant Loan Application List';
+                        Image = Loaners;
+                        RunObject = Page "Loan List Application Instant";
+                        ToolTip = 'Open Instant Loan Applications List';
+                        RunPageView = where(Posted = const(false), "Loan Status" = const(Application));
+                    }
+                    action("Instant BOSA Loan Application")
+                    {
+                        ApplicationArea = Basic, Suite;
+                        Caption = 'Instant Loans Pending Approval';
+                        Image = CreditCard;
+                        RunObject = Page "Loans-Pending Approval Instant";
 
+                        ToolTip = 'Open the list of Instant Loans Pending Approval';
+
+                    }
+                    action("Approved Instant Loans")
+                    {
+                        ApplicationArea = Basic, Suite;
+                        Caption = 'Instant Loans Pending Disbursement.';
+                        RunObject = Page "Instant Loans Applied-Approved";
+                        ToolTip = 'Open the list of Approved Instant Loans Pending Disbursement.';
+                    }
+
+                }
                 group("Loan Batching")
                 {
 

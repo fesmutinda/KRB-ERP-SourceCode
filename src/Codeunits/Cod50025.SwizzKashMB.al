@@ -4367,7 +4367,7 @@ Codeunit 50025 SwizzKashMB
                   LoansRegister."Loan Product Type Name":=LoanProductsSetup."Product Description";
                   LoansRegister."Loan Disbursement Date":=Today;
                   LoansRegister."Repayment Start Date":=Today;
-                  LoansRegister."Recovery Mode":=LoansRegister."recovery mode"::Checkoff;
+                  LoansRegister."Recovery Mode":=LoansRegister."recovery mode"::"Payroll Deduction";
                   LoansRegister."Disburesment Type":=LoansRegister."disburesment type"::"Full/Single disbursement";
                   LoansRegister."Requested Amount":=amount;
                   LoansRegister."Approved Amount":=AmountDispursed;

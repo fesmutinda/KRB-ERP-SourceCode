@@ -80,11 +80,32 @@ codeunit 51115 "SurestepApprovalsCodeUnit"
             Error(NoWorkflowEnabledErr);
         exit(true);
     end;
+    //3)--------------------------------------------------------------------Send Instant Loan Applications request For Approval start
+    procedure SendInstantLoanApplicationsRequestForApproval(LoanNo: Code[40]; var "Loans Register": Record "Loans Register"): Boolean;
+    begin
+        if FnCheckIfInstantLoanApplicationApprovalsWorkflowEnabled("Loans Register") then begin
+            FnOnSendInstantLoanApplicationForApproval("Loans Register");
+        end;
+        exit(true);
+    end;
+
+    local procedure FnCheckIfInstantLoanApplicationApprovalsWorkflowEnabled(var "Loans Register": Record "Loans Register"): Boolean;
+    begin
+        if not IsInstantLoanApplicationApprovalsWorkflowEnabled("Loans Register") then
+            Error(NoWorkflowEnabledErr);
+        exit(true);
+    end;
 
     //.
     procedure CancelLoanApplicationsRequestForApproval(LoansRegister: Code[40]; var "Loans Register": Record "Loans Register"): Boolean;
     begin
         FnOnCancelLoanApplicationApprovalRequest("Loans Register");
+        exit(true);
+    end;
+    //.
+    procedure CancelInstantLoanApplicationsRequestForApproval(LoansRegister: Code[40]; var "Loans Register": Record "Loans Register"): Boolean;
+    begin
+        FnOnCancelInstantLoanApplicationApprovalRequest("Loans Register");
         exit(true);
     end;
 
@@ -94,6 +115,10 @@ codeunit 51115 "SurestepApprovalsCodeUnit"
         exit(WorkflowManagement.CanExecuteWorkflow(LoansRegister, Psalmkitswfevents.RunWorkflowOnSendLoanApplicationForApprovalCode));
     end;
 
+    local procedure IsInstantLoanApplicationApprovalsWorkflowEnabled(var LoansRegister: Record "Loans Register"): Boolean
+    begin
+        exit(WorkflowManagement.CanExecuteWorkflow(LoansRegister, Psalmkitswfevents.RunWorkflowOnSendInstantLoanApplicationForApprovalCode));
+    end;
 
     [IntegrationEvent(false, false)]
 
@@ -102,8 +127,19 @@ codeunit 51115 "SurestepApprovalsCodeUnit"
     end;
 
     [IntegrationEvent(false, false)]
+    procedure FnOnSendInstantLoanApplicationForApproval(var LoansRegister: Record "Loans Register")
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
 
     procedure FnOnCancelLoanApplicationApprovalRequest(var LoansRegister: Record "Loans Register")
+    begin
+    end;
+    //Instant
+    [IntegrationEvent(false, false)]
+
+    procedure FnOnCancelInstantLoanApplicationApprovalRequest(var LoansRegister: Record "Loans Register")
     begin
     end;
     //------------------------------------------------------------------------------------------------------

@@ -317,7 +317,7 @@ Page 56128 "Loans Pending Approval"
                         if Confirm('Send Approval Request For Loan Application of Ksh. ' + Format(Rec."Approved Amount") + ' applied by ' + Format(Rec."Client Name") + ' ?', false) = false then begin
                             exit;
                         end else begin
-                            SrestepApprovalsCodeUnit.SendLoanApplicationsRequestForApproval(rec."Loan  No.", Rec);
+                            SrestepApprovalsCodeUnit.SendInstantLoanApplicationsRequestForApproval(rec."Loan  No.", Rec);
                             FnSendLoanApprovalNotifications();
                             CurrPage.close();
                         end;
