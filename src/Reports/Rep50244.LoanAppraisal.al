@@ -31,8 +31,13 @@ Report 50244 "Loan Appraisal"
             }
             column(CompanyInfo__Phone_No__; CompanyInfo."Phone No.")
             {
-            }
+            } 
             column(CompanyInfo__E_Mail_; CompanyInfo."E-Mail")
+            {
+            }
+            column(CompanyInfo_City; CompanyInfo.City)
+            {
+            } column(CompanyInfo_Picture; CompanyInfo.Picture)
             {
             }
             column(Loans__Application_Date_; "Application Date")
