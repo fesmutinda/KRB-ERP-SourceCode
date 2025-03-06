@@ -15,7 +15,7 @@ page 50476 "Credit Processor Role"
                 field("Application Loans"; Rec."Application Loans")
                 {
                     ApplicationArea = Basic;
-                    DrillDownPageID = "Employee Common Activities";
+                    // DrillDownPageID = "Employee Common Activities";
                 }
                 field("Appraisal Loans"; Rec."Appraisal Loans")
                 {
@@ -58,7 +58,7 @@ page 50476 "Credit Processor Role"
             action("Bosa Loans")
             {
                 ApplicationArea = Basic;
-                RunObject = Page "HR Job Responsibilities";
+                // RunObject = Page "HR Job Responsibilities";
             }
         }
     }

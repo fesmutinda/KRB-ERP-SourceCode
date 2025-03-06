@@ -1,10 +1,14 @@
-#pragma warning disable AA0005, AA0008, AA0018, AA0021, AA0072, AA0137, AA0201, AA0204, AA0206, AA0218, AA0228, AL0254, AL0424, AS0011, AW0006 // ForNAV settings
-Page 56175 "Bosa Receipts H Card-Checkoff."
-{
+namespace KRBERPSourceCode.KRBERPSourceCode;
+using Microsoft.Sales.Customer;
+using Microsoft.Purchases.Vendor;
+using System.Security.AccessControl;
+using Microsoft.Finance.GeneralLedger.Journal;
 
+page 57006 "KRB Checkoff Card"
+{
     DeleteAllowed = false;
     PageType = Card;
-    SourceTable = "ReceiptsProcessing_H-Checkoff";
+    SourceTable = "KRB Checkoff Header";
     SourceTableView = where(Posted = const(false));
 
     layout
@@ -82,29 +86,35 @@ Page 56175 "Bosa Receipts H Card-Checkoff."
                 {
                     ApplicationArea = Basic;
                 }
+                field("Total Amount"; Rec."Total Amount")
+                {
+                    ApplicationArea = Basic;
+                }
             }
-            part("Bosa receipt lines"; "Bosa Receipt line-Checkoff")
+            part("Bosa receipt lines"; "KRB CheckoffLines")
             {
                 SubPageLink = "Receipt Header No" = field(No);
             }
         }
     }
-
     actions
     {
         area(processing)
         {
-            action("<XMLport Import receipts>")
+            action(ImportItems)
             {
-                ApplicationArea = Basic;
-                Caption = 'Import Checkoff';
-                Image = Import;
+                Caption = 'Import Items';
                 Promoted = true;
                 PromotedCategory = Process;
-                PromotedIsBig = true;
-                RunObject = XMLport "Import Checkoff Block";
+                Image = Import;
+                ApplicationArea = All;
+
+                RunObject = xmlport "KRB Checkoff Import";
             }
             group(ActionGroup1102755021)
+            {
+            }
+            group(ActionGroup1102755019)
             {
             }
             action("Validate Receipts")
@@ -118,8 +128,6 @@ Page 56175 "Bosa Receipts H Card-Checkoff."
 
                 trigger OnAction()
                 begin
-
-
                     RcptBufLines.Reset;
                     RcptBufLines.SetRange(RcptBufLines."Receipt Header No", Rec.No);
                     if RcptBufLines.Find('-') then begin
@@ -133,23 +141,6 @@ Page 56175 "Bosa Receipts H Card-Checkoff."
                                 RcptBufLines."Member No" := Memb."No.";
                                 RcptBufLines.Name := Memb.Name;
                                 RcptBufLines."ID No." := Memb."ID No.";
-                                // RcptBufLines."FOSA Account" := Memb."FOSA Account";
-
-                                // Vendor.Reset;
-                                // Vendor.SetRange(Vendor."Staff No", Memb."Payroll/Staff No");
-                                // Vendor.SetRange(Vendor."Account Type", 'CHRISTMAS');
-                                // if Vendor.Find('-') then begin
-
-                                //     RcptBufLines."Xmas Account" := Vendor."No.";
-
-                                //     RcptBufLines."Xmas Contribution" := Vendor."Monthly Contribution";
-                                //     RcptBufLines.Modify;
-                                // end;
-
-
-
-
-
                                 RcptBufLines."Member Found" := true;
                                 RcptBufLines.Modify;
                             end;
@@ -157,9 +148,6 @@ Page 56175 "Bosa Receipts H Card-Checkoff."
                     end;
                     Message('Successfully validated');
                 end;
-            }
-            group(ActionGroup1102755019)
-            {
             }
             action("Post check off")
             {
@@ -176,6 +164,7 @@ Page 56175 "Bosa Receipts H Card-Checkoff."
                     FundsUSer: Record "Funds User Setup";
                     GenJnlManagement: Codeunit GenJnlManagement;
                     GenBatch: Record "Gen. Journal Batch";
+                    dialogBox: Dialog;
                 begin
 
                     genstup.Get();
@@ -241,21 +230,92 @@ Page 56175 "Bosa Receipts H Card-Checkoff."
                     RcptBufLines.SetRange(RcptBufLines.Posted, false);
                     if RcptBufLines.Find('-') then begin
                         repeat
-                            RunBal := 0;
-                            RunBal := RcptBufLines.Amount;
-                            RunBal := FnRunInterest(RcptBufLines, RunBal, Rec."Loan CutOff Date");
-                            RunBal := FnRunPrinciple(RcptBufLines, RunBal, Rec."Loan CutOff Date");
-                            RunBal := FnRunEntranceFee(RcptBufLines, RunBal);
-                            RunBal := FnRunShareCapital(RcptBufLines, RunBal);
-                            RunBal := FnRunDepositContribution(RcptBufLines, RunBal);
-                            RunBal := FnRunHolidayContribution(RcptBufLines, RunBal);
-                            RunBal := FnRunAlphaContribution(RcptBufLines, RunBal);
-                            // RunBal := FnRunHousingContribution(RcptBufLines, RunBal);
-                            RunBal := FnRunjuniorContribution(RcptBufLines, RunBal);
-                            // RunBal := FnRunjuniortwoContribution(RcptBufLines, RunBal);
-                            // RunBal := FnRunjuniorThreeContribution(RcptBufLines, RunBal);
-                            //  RunBal := FnRecoverPrincipleFromExcess(RcptBufLines, RunBal);
-                            FnTransferExcessToUnallocatedFunds(RcptBufLines, RunBal);
+                            LineN := 10000;
+                            //Co_op_Shares;
+                            dialogBox.Open('Processing deposit contribution for ' + Format(RcptBufLines."Member No") + '...');
+
+                            FnInsertDepositContribution(Jtemplate, Jbatch,
+                            RcptBufLines."Member No", RcptBufLines."Receipt Header No",
+                            'Deposit Contribution KRB Employer Remittance',
+                            RcptBufLines."Co-op - Shares");
+
+                            dialogBox.Close();
+
+                            //Co_op_Devt_Loan;
+                            dialogBox.Open('Processing Co_op_Devt_Loan for ' + Format(RcptBufLines."Member No") + '...');
+                            dialogBox.Close();
+
+                            //Flexi;
+                            dialogBox.Open('Processing Flexi for ' + Format(RcptBufLines."Member No") + '...');
+                            dialogBox.Close();
+
+                            //Muslim_Loan; 
+                            dialogBox.Open('Processing Muslim_Loan for ' + Format(RcptBufLines."Member No") + '...');
+                            dialogBox.Close();
+
+                            //Co_op_Emergency_Loan;
+                            dialogBox.Open('Processing Co_op_Emergency_Loan for ' + Format(RcptBufLines."Member No") + '...');
+                            dialogBox.Close();
+
+                            //Co_op_Investment_Loan;
+                            dialogBox.Open('Processing Co_op_Investment_Loan for ' + Format(RcptBufLines."Member No") + '...');
+                            dialogBox.Close();
+
+                            //Co_op_School_Fees_Loan; 
+                            dialogBox.Open('Processing Co_op_School_Fees_Loan for ' + Format(RcptBufLines."Member No") + '...');
+                            dialogBox.Close();
+
+                            //Instant; 
+                            dialogBox.Open('Processing Instant for ' + Format(RcptBufLines."Member No") + '...');
+                            dialogBox.Close();
+
+                            //Childrens_Savings;
+                            dialogBox.Open('Processing Children Savings for ' + Format(RcptBufLines."Member No") + '...');
+
+                            FnInsertChildrenSavings(Jtemplate, Jbatch,
+                            RcptBufLines."Member No", RcptBufLines."Receipt Header No",
+                            'Children Savings KRB Employer Remittance',
+                            RcptBufLines."Childrens Savings");
+
+                            dialogBox.Close();
+                            //Withdrwable_svgs;
+                            dialogBox.Open('Processing Withdrawable Savings for ' + Format(RcptBufLines."Member No") + '...');
+
+                            FnInsertWithdrawableSavings(Jtemplate, Jbatch,
+                            RcptBufLines."Member No", RcptBufLines."Receipt Header No",
+                            'Withdrawable Savings KRB Employer Remittance',
+                            RcptBufLines."Withdrwable svgs");
+
+                            dialogBox.Close();
+                            //merry_goround; 
+                            //Dev2; 
+                            dialogBox.Open('Processing Dev2 for ' + Format(RcptBufLines."Member No") + '...');
+                            dialogBox.Close();
+
+                            //Share_cap; 
+                            dialogBox.Open('Processing Share Capital for ' + Format(RcptBufLines."Member No") + '...');
+
+                            FnInsertShareCapital(Jtemplate, Jbatch,
+                            RcptBufLines."Member No", RcptBufLines."Receipt Header No",
+                            'Share Capital KRB Employer Remittance',
+                            RcptBufLines."Share cap");
+
+                            dialogBox.Close();
+
+                            //Entrance; 
+                            dialogBox.Open('Processing Registration Fee for ' + Format(RcptBufLines."Member No") + '...');
+
+                            FnInsertRegistrationFee(Jtemplate, Jbatch,
+                            RcptBufLines."Member No", RcptBufLines."Receipt Header No",
+                            'Registration Fee KRB Employer Remittance',
+                            RcptBufLines."Co-op - Shares");
+
+                            dialogBox.Close();
+                            //Insurance; 
+                            //Refinance;
+                            dialogBox.Open('Processing Refinance for ' + Format(RcptBufLines."Member No") + '...');
+                            dialogBox.Close();
+
                         until RcptBufLines.Next = 0;
                     end;
 
@@ -271,24 +331,78 @@ Page 56175 "Bosa Receipts H Card-Checkoff."
                         Page.Run(page::"General Journal", Gnljnline);
 
 
-                    // Gnljnline.SetRange("Journal Template Name", Jtemplate);
-                    // Gnljnline.SetRange("Journal Batch Name", Jbatch);
-                    // if Gnljnline.Find('-') then
-                    // GenJnlManagement.TemplateSelectionFromBatch(GenBatch);
-                    //Post New  //To be Uncommented after thorough tests
-                    /*Gnljnline.RESET;
-                    Gnljnline.SETRANGE("Journal Template Name",Jtemplate);
-                    Gnljnline.SETRANGE("Journal Batch Name",Jbatch);
-                    IF Gnljnline.FIND('-') THEN BEGIN
-                    CODEUNIT.RUN(CODEUNIT::"Gen. Jnl.-Post",Gnljnline);
-                    END;
-                    Posted:=True;
-                    MODIFY;*/
-
-                    //Posted:=TRUE;
-
                 end;
             }
+
+            action(ProcessCheckoffLines)
+            {
+                ApplicationArea = Basic;
+                Caption = 'Process Checkoff Lines';
+                Image = Post;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+
+                trigger OnAction()
+                var
+                    RcptBufLines: Record "KRB CheckoffLines";
+                    dialogBox: Dialog;
+                begin
+                    // Open a progress dialog box
+                    dialogBox.Open('Processing Checkoff Lines...');
+
+                    // Retrieve all unposted checkoff lines
+                    RcptBufLines.SetRange(Posted, false);
+                    if RcptBufLines.FindSet() then
+                        repeat
+                            dialogBox.Open('Processing member: ' + Format(RcptBufLines."Member No") + '...');
+
+                            // Validate Member
+                            if RcptBufLines."Member No" = '' then begin
+                                Error('Member No missing for Line No %1', RcptBufLines."Receipt Line No");
+                            end;
+
+                            // Process each transaction type one by one
+                            if RcptBufLines."Co-op - Shares" <> 0 then
+                                FnInsertDepositContribution('TEMPLATE_NAME', 'BATCH_NAME',
+                                    RcptBufLines."Member No", RcptBufLines."Receipt Header No",
+                                    'Deposit Contribution KRB Employer Remittance',
+                                    RcptBufLines."Co-op - Shares");
+
+                            if RcptBufLines."Co-op - Devt Loan" <> 0 then
+                                FnInsertLoanRepayment('TEMPLATE_NAME', 'BATCH_NAME',
+                                    RcptBufLines."Member No", RcptBufLines."Receipt Header No",
+                                    'Development Loan Repayment',
+                                    RcptBufLines."Co-op - Devt Loan");
+
+                            if RcptBufLines.Flexi <> 0 then
+                                FnInsertLoanRepayment('TEMPLATE_NAME', 'BATCH_NAME',
+                                    RcptBufLines."Member No", RcptBufLines."Receipt Header No",
+                                    'Flexi Loan Repayment',
+                                    RcptBufLines.Flexi);
+
+                            if RcptBufLines."Muslim Loan" <> 0 then
+                                FnInsertLoanRepayment('TEMPLATE_NAME', 'BATCH_NAME',
+                                    RcptBufLines."Member No", RcptBufLines."Receipt Header No",
+                                    'Muslim Loan Repayment',
+                                    RcptBufLines."Muslim Loan");
+
+                            // Add similar logic for other transaction types...
+
+                            // Mark record as posted
+                            RcptBufLines.Posted := true;
+                            RcptBufLines.Modify();
+
+                            dialogBox.Close();
+                        until RcptBufLines.Next() = 0;
+
+                    // Close dialog box
+                    dialogBox.Close();
+
+                    Message('Processing completed successfully.');
+                end;
+            }
+
             action("Processed Checkoff")
             {
                 ApplicationArea = Basic;
@@ -319,7 +433,7 @@ Page 56175 "Bosa Receipts H Card-Checkoff."
         PDate: Date;
         DocNo: Code[20];
         RunBal: Decimal;
-        ReceiptsProcessingLines: Record "ReceiptsProcessing_L-Checkoff";
+        ReceiptsProcessingLines: Record "KRB CheckoffLines";
         LineNo: Integer;
         LBatches: Record "Loan Disburesment-Batching";
         Jtemplate: Code[30];
@@ -327,12 +441,12 @@ Page 56175 "Bosa Receipts H Card-Checkoff."
         "Cheque No.": Code[20];
         DActivityBOSA: Code[20];
         DBranchBOSA: Code[20];
-        ReptProcHeader: Record "ReceiptsProcessing_H-Checkoff";
+        ReptProcHeader: Record "KRB Checkoff Header";
         Cust: Record Customer;
         MembPostGroup: Record "Customer Posting Group";
         Loantable: Record "Loans Register";
         LRepayment: Decimal;
-        RcptBufLines: Record "ReceiptsProcessing_L-Checkoff";
+        RcptBufLines: Record "KRB CheckoffLines";
         LoanType: Record "Loan Products Setup";
         LoanApp: Record "Loans Register";
         Interest: Decimal;
@@ -350,7 +464,7 @@ Page 56175 "Bosa Receipts H Card-Checkoff."
         INSURANCE: Decimal;
         GenBatches: Record "Gen. Journal Batch";
         Datefilter: Text[50];
-        ReceiptLine: Record "ReceiptsProcessing_L-Checkoff";
+        ReceiptLine: Record "KRB CheckoffLines";
         XMAS: Decimal;
         MemberRec: Record Customer;
         Vendor: Record Vendor;
@@ -364,60 +478,161 @@ Page 56175 "Bosa Receipts H Card-Checkoff."
         Lschedule: Record "Loan Repayment Schedule";
         ScheduleRepayment: Decimal;
 
-    local procedure FnRunInterest(ObjRcptBuffer: Record "ReceiptsProcessing_L-Checkoff"; RunningBalance: Decimal; LoanCutoffDate: Date): Decimal
+    local procedure FnInsertDepositContribution(Jtemplate: Code[30]; Jbatch: code[30]; memberNo: Code[15]; documentNo: code[30];
+    transDescription: Code[30]; transAmount: Decimal): Code[50]
     var
-        AmountToDeduct: Decimal;
-        InterestToRecover: Decimal;
     begin
-        if RunningBalance > 0 then begin
-            LoanApp.Reset;
-            LoanApp.SetCurrentkey(Source, "Issued Date", "Loan Product Type", "Client Code", "Staff No");
-            LoanApp.SetRange(LoanApp."Client Code", ObjRcptBuffer."Member No");
-            LoanApp.SetRange(LoanApp."Recovery Mode", LoanApp."recovery mode"::"Payroll Deduction");
-            //LoanApp.SETFILTER(LoanApp."Date filter",Datefilter); //Deduct all interest outstanding regardless of date
-            //LoanApp.SETRANGE(LoanApp."Issued Date",startDate,IssueDate);
-            if LoanApp.FindSet() then begin
-                repeat
-                    LoanApp.CalcFields(LoanApp."Oustanding Interest");
-                    if (LoanApp."Oustanding Interest" > 0) and (LoanApp."Issued Date" <= LoanCutoffDate) then begin
-                        if RunningBalance > 0 then //300
-                          begin
-                            AmountToDeduct := 0;
-                            InterestToRecover := (LoanApp."Oustanding Interest");//100
-                            if RunningBalance >= InterestToRecover then
-                                AmountToDeduct := InterestToRecover
-                            else
-                                AmountToDeduct := RunningBalance;
+        LineN := LineN + 10000;
+        Gnljnline.Init;
+        Gnljnline."Journal Template Name" := Jtemplate;
+        Gnljnline."Journal Batch Name" := Jbatch;
+        Gnljnline."Line No." := LineN;
+        Gnljnline."Account Type" := Gnljnline."bal. account type"::Customer;
+        Gnljnline."Account No." := memberNo;
+        Gnljnline.Validate(Gnljnline."Account No.");
+        Gnljnline."Document No." := documentNo;
+        Gnljnline."Posting Date" := Today;
+        Gnljnline.Description := transDescription;
+        Gnljnline.Amount := transAmount;
+        Gnljnline.Validate(Gnljnline.Amount);
+        Gnljnline."Transaction Type" := Gnljnline."transaction type"::"Deposit Contribution";
+        Gnljnline."Shortcut Dimension 1 Code" := 'BOSA';
+        Gnljnline."Shortcut Dimension 2 Code" := FnGetMemberBranch(memberNo);
+        Gnljnline.Validate(Gnljnline."Shortcut Dimension 1 Code");
+        Gnljnline.Validate(Gnljnline."Shortcut Dimension 2 Code");
+        if Gnljnline.Amount <> 0 then
+            Gnljnline.Insert();
+    end;
 
-                            LineN := LineN + 10000;
-                            Gnljnline.Init;
-                            Gnljnline."Journal Template Name" := Jtemplate;
-                            Gnljnline."Journal Batch Name" := Jbatch;
-                            Gnljnline."Line No." := LineN;
-                            Gnljnline."Account Type" := Gnljnline."bal. account type"::Customer;
-                            Gnljnline."Account No." := LoanApp."Client Code";
-                            Gnljnline.Validate(Gnljnline."Account No.");
-                            Gnljnline."Document No." := Rec."Document No";
-                            Gnljnline."Posting Date" := Rec."Posting date";
-                            Gnljnline.Description := LoanApp."Loan Product Type" + '-Loan Interest Paid ';
-                            Gnljnline.Amount := -1 * AmountToDeduct;
-                            Gnljnline.Validate(Gnljnline.Amount);
-                            Gnljnline."Transaction Type" := Gnljnline."transaction type"::"Interest Paid";
-                            Gnljnline."Loan No" := LoanApp."Loan  No.";
+    local procedure FnInsertShareCapital(Jtemplate: Code[30]; Jbatch: code[30]; memberNo: Code[15]; documentNo: code[30];
+transDescription: Code[30]; transAmount: Decimal): Code[50]
+    var
+    begin
+        LineN := LineN + 10000;
+        Gnljnline.Init;
+        Gnljnline."Journal Template Name" := Jtemplate;
+        Gnljnline."Journal Batch Name" := Jbatch;
+        Gnljnline."Line No." := LineN;
+        Gnljnline."Account Type" := Gnljnline."bal. account type"::Customer;
+        Gnljnline."Account No." := memberNo;
+        Gnljnline.Validate(Gnljnline."Account No.");
+        Gnljnline."Document No." := documentNo;
+        Gnljnline."Posting Date" := Today;
+        Gnljnline.Description := transDescription;
+        Gnljnline.Amount := transAmount;
+        Gnljnline.Validate(Gnljnline.Amount);
+        Gnljnline."Transaction Type" := Gnljnline."transaction type"::"Share Capital";
+        Gnljnline."Shortcut Dimension 1 Code" := 'BOSA';
+        Gnljnline."Shortcut Dimension 2 Code" := FnGetMemberBranch(memberNo);
+        Gnljnline.Validate(Gnljnline."Shortcut Dimension 1 Code");
+        Gnljnline.Validate(Gnljnline."Shortcut Dimension 2 Code");
+        if Gnljnline.Amount <> 0 then
+            Gnljnline.Insert();
+    end;
 
-                            Gnljnline."Shortcut Dimension 1 Code" := 'BOSA';
-                            Gnljnline."Shortcut Dimension 2 Code" := FnGetMemberBranch(LoanApp."Client Code");
-                            Gnljnline.Validate(Gnljnline."Shortcut Dimension 1 Code");
-                            Gnljnline.Validate(Gnljnline."Shortcut Dimension 2 Code");
-                            if Gnljnline.Amount <> 0 then
-                                Gnljnline.Insert;
-                            RunningBalance := RunningBalance - Abs(Gnljnline.Amount);
-                        end;
-                    end;
-                until LoanApp.Next = 0;
-            end;
-            exit(RunningBalance);
-        end;
+    local procedure FnInsertWithdrawableSavings(Jtemplate: Code[30]; Jbatch: code[30]; memberNo: Code[15]; documentNo: code[30];
+        transDescription: Code[30]; transAmount: Decimal): Code[50]
+    var
+    begin
+        LineN := LineN + 10000;
+        Gnljnline.Init;
+        Gnljnline."Journal Template Name" := Jtemplate;
+        Gnljnline."Journal Batch Name" := Jbatch;
+        Gnljnline."Line No." := LineN;
+        Gnljnline."Account Type" := Gnljnline."bal. account type"::Customer;
+        Gnljnline."Account No." := memberNo;
+        Gnljnline.Validate(Gnljnline."Account No.");
+        Gnljnline."Document No." := documentNo;
+        Gnljnline."Posting Date" := Today;
+        Gnljnline.Description := transDescription;
+        Gnljnline.Amount := transAmount;
+        Gnljnline.Validate(Gnljnline.Amount);
+        Gnljnline."Transaction Type" := Gnljnline."transaction type"::"Withdrawable Savings";
+        Gnljnline."Shortcut Dimension 1 Code" := 'BOSA';
+        Gnljnline."Shortcut Dimension 2 Code" := FnGetMemberBranch(memberNo);
+        Gnljnline.Validate(Gnljnline."Shortcut Dimension 1 Code");
+        Gnljnline.Validate(Gnljnline."Shortcut Dimension 2 Code");
+        if Gnljnline.Amount <> 0 then
+            Gnljnline.Insert();
+    end;
+
+    local procedure FnInsertChildrenSavings(Jtemplate: Code[30]; Jbatch: code[30]; memberNo: Code[15]; documentNo: code[30];
+    transDescription: Code[30]; transAmount: Decimal): Code[50]
+    var
+    begin
+        LineN := LineN + 10000;
+        Gnljnline.Init;
+        Gnljnline."Journal Template Name" := Jtemplate;
+        Gnljnline."Journal Batch Name" := Jbatch;
+        Gnljnline."Line No." := LineN;
+        Gnljnline."Account Type" := Gnljnline."bal. account type"::Customer;
+        Gnljnline."Account No." := memberNo;
+        Gnljnline.Validate(Gnljnline."Account No.");
+        Gnljnline."Document No." := documentNo;
+        Gnljnline."Posting Date" := Today;
+        Gnljnline.Description := transDescription;
+        Gnljnline.Amount := transAmount;
+        Gnljnline.Validate(Gnljnline.Amount);
+        Gnljnline."Transaction Type" := Gnljnline."transaction type"::"Junior Savings";
+        Gnljnline."Shortcut Dimension 1 Code" := 'BOSA';
+        Gnljnline."Shortcut Dimension 2 Code" := FnGetMemberBranch(memberNo);
+        Gnljnline.Validate(Gnljnline."Shortcut Dimension 1 Code");
+        Gnljnline.Validate(Gnljnline."Shortcut Dimension 2 Code");
+        if Gnljnline.Amount <> 0 then
+            Gnljnline.Insert();
+    end;
+
+    local procedure FnInsertRegistrationFee(Jtemplate: Code[30]; Jbatch: code[30]; memberNo: Code[15]; documentNo: code[30];
+    transDescription: Code[30]; transAmount: Decimal): Code[50]
+    var
+    begin
+        LineN := LineN + 10000;
+        Gnljnline.Init;
+        Gnljnline."Journal Template Name" := Jtemplate;
+        Gnljnline."Journal Batch Name" := Jbatch;
+        Gnljnline."Line No." := LineN;
+        Gnljnline."Account Type" := Gnljnline."bal. account type"::Customer;
+        Gnljnline."Account No." := memberNo;
+        Gnljnline.Validate(Gnljnline."Account No.");
+        Gnljnline."Document No." := documentNo;
+        Gnljnline."Posting Date" := Today;
+        Gnljnline.Description := transDescription;
+        Gnljnline.Amount := transAmount;
+        Gnljnline.Validate(Gnljnline.Amount);
+        Gnljnline."Transaction Type" := Gnljnline."transaction type"::"Registration Fee";
+        Gnljnline."Shortcut Dimension 1 Code" := 'BOSA';
+        Gnljnline."Shortcut Dimension 2 Code" := FnGetMemberBranch(memberNo);
+        Gnljnline.Validate(Gnljnline."Shortcut Dimension 1 Code");
+        Gnljnline.Validate(Gnljnline."Shortcut Dimension 2 Code");
+        if Gnljnline.Amount <> 0 then
+            Gnljnline.Insert();
+    end;
+
+    local procedure FnInsertLoanRepayment(Jtemplate: Code[30]; Jbatch: Code[30]; memberNo: Code[15]; documentNo: Code[30];
+        transDescription: Code[50]; transAmount: Decimal)
+    var
+    begin
+        LineN := LineN + 10000;
+        Gnljnline.Init;
+        Gnljnline."Journal Template Name" := Jtemplate;
+        Gnljnline."Journal Batch Name" := Jbatch;
+        Gnljnline."Line No." := LineN;
+        Gnljnline."Account Type" := Gnljnline."bal. account type"::Customer;
+        Gnljnline."Account No." := memberNo;
+        Gnljnline.Validate(Gnljnline."Account No.");
+        Gnljnline."Document No." := documentNo;
+        Gnljnline."Posting Date" := Today;
+        Gnljnline.Description := transDescription;
+        Gnljnline.Amount := transAmount;
+        Gnljnline.Validate(Gnljnline.Amount);
+        Gnljnline."Transaction Type" := Gnljnline."transaction type"::"Loan Repayment";
+        Gnljnline."Shortcut Dimension 1 Code" := 'BOSA';
+        Gnljnline."Shortcut Dimension 2 Code" := FnGetMemberBranch(memberNo);
+        Gnljnline.Validate(Gnljnline."Shortcut Dimension 1 Code");
+        Gnljnline.Validate(Gnljnline."Shortcut Dimension 2 Code");
+
+        if Gnljnline.Amount <> 0 then
+            Gnljnline.Insert();
     end;
 
     local procedure FnRunPrinciple(ObjRcptBuffer: Record "ReceiptsProcessing_L-Checkoff"; RunningBalance: Decimal; LoanCutoffDate: Date): Decimal
@@ -941,4 +1156,3 @@ Page 56175 "Bosa Receipts H Card-Checkoff."
         end;
     end;
 }
-

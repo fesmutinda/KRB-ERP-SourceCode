@@ -10,6 +10,19 @@ report 50245 InstantLoanAppraisal
         {
             DataItemTableView = sorting("Loan  No.");
             RequestFilterFields = "Loan  No.";
+            column(Client_Name; "Client Name") { }
+            column(Bank_Name; "Bank Name") { }
+            column(Bank_Account; "Bank Account") { }
+            column(Bank_Branch; "Bank Branch") { }
+            column(Mode_of_Disbursement; "Mode of Disbursement") { }
+            column(Recovery_Mode; "Recovery Mode") { }
+            column(CompanyEmail; CompanyEmail) { }
+            column(Requested_Amount; "Requested Amount") { }
+            column(CompanyAddress; CompanyAddress) { }
+            column(Amount_in_words; System.Format(Requested_Amount, 0, '###,###.00')) { }
+            column(NumberText_1_; NumberText[1])
+            {
+            }
             column(ReportForNavId_4645; 4645)
             {
             }
@@ -26,6 +39,9 @@ report 50245 InstantLoanAppraisal
             {
             }
             column(CompanyInfo_Address; CompanyInfo.Address)
+            {
+            }
+            column(CompanyInfo_Address2; CompanyInfo."Address 2")
             {
             }
             column(CompanyInfo__Phone_No__; CompanyInfo."Phone No.")
@@ -803,472 +819,26 @@ report 50245 InstantLoanAppraisal
 
             trigger OnAfterGetRecord()
             begin
-
                 Cshares := 0;
                 MAXAvailable := 0;
                 LOANBALANCE := 0;
                 TotalTopUp := 0;
-                Ptopup := 0;
                 TotalIntPayable := 0;
                 GTotals := 0;
                 AmountGuaranteed := 0;
                 TotLoans := 0;
-                CollCharge := 0;
-                // LoanProcessingFee := 0;
-                // LoanInsurance := 0;
-                // DisbursementFee := 0;
-                TotalSec := 0;
-                TShares := 0;
-                TLoans := 0;
-                Earnings := 0;
-                Deductions := 0;
-                NetSalary := 0;
-                LoanPrincipal := 0;
-                loanInterest := 0;
-                Psalary := 0;
-                TotalLoanBal := 0;
-                TotalBand := 0;
-                CollateralGuarantee := 0;
-                TotalRepay := 0;
 
 
-                LoanType.Get("Loans Register"."Loan Product Type");
 
-                //  Deposits analysis
-                if Cust.Get("Loans Register"."Client Code") then begin
-                    Cust.CalcFields(Cust."Current Shares");
-                    Cshares := Cust."Current Shares" * 1;
+                CheckReport.InitTextVariable();
+                CheckReport.FormatNoText(NumberText, "Requested Amount", ' ');
+            end;
 
-                    DEpMultiplier := (Cshares * LoanType."Deposits Multiplier") + DeboosterAmount;
-                    // Prembal := 0;
-                    // LoanApp.Reset;
-                    // LoanApp.SetRange(LoanApp."Client Code", "Client Code");
-                    // LoanApp.SetRange(LoanApp."Loan Product Type", 'PREMIUM');
-                    // LoanApp.SetRange(LoanApp.Posted, true);
+            trigger OnPreDataItem()
+            begin
 
-                    // if LoanApp.Find('-') then begin
-                    //     repeat
-                    //         LoanApp.CalcFields(LoanApp."Outstanding Balance");
-                    //         if LoanApp."Outstanding Balance" > 0 then begin
-                    //             Prembal := Prembal + LoanApp."Outstanding Balance";
-                    //         end
-                    //     until LoanApp.Next = 0;
-                    // end;
-
-                    // if ("Loan Product Type" <> 'PREMIUM') and (Prembal > 10) then begin
-
-                    //     DEpMultiplier := (Cshares) * 4;
-                    // end;
-                    TotalRepayments := 0;
-
-                    BridgedRepayment := 0;
-                    TotalRepayments := 0;
-                    //Outtasnding Balances
-                    LoanApp.Reset;
-                    LoanApp.SetRange(LoanApp."Client Code", "Client Code");
-                    LoanApp.SetRange(LoanApp.Source, LoanApp.Source::" ");
-                    LoanApp.SetRange(LoanApp.Posted, true);
-                    if LoanApp.Find('-') then begin
-                        repeat
-                            LoanApp.CalcFields(LoanApp."Outstanding Balance");
-                            if LoanApp."Outstanding Balance" > 0 then begin
-                                LOANBALANCE := LOANBALANCE + LoanApp."Outstanding Balance";
-                                TotalRepayments := TotalRepayments + LoanApp.Repayment;
-                                //
-
-                                //END;
-                            end;
-                        until LoanApp.Next = 0;
-                    end;
-                    //end;
-
-                    TopUpFee := 0;
-                    LoanTopUp.Reset;
-                    LoanTopUp.SetRange(LoanTopUp."Loan No.", "Loans Register"."Loan  No.");
-                    LoanTopUp.SetRange(LoanTopUp."Client Code", "Loans Register"."Client Code");
-                    if LoanTopUp.Find('-') then begin
-                        repeat
-                            BRIGEDAMOUNT := ROUND(BRIGEDAMOUNT + LoanTopUp."Principle Top Up", 0.01, '>');
-                            TotalBridgeAmount := ROUND(TotalBridgeAmount + LoanTopUp."Total Top Up", 0.01, '>');
-                            TopUpFee += ROUND(LoanTopUp.Commision, 0.01, '>');
-                        until LoanTopUp.Next = 0;
-                    end;
-
-
-
-                    TotalRepayments := 0;
-                    SalDetails.Reset;
-                    SalDetails.SetRange(SalDetails."Loan No", "Loans Register"."Loan  No.");
-                    SalDetails.SetRange(SalDetails."Client Code", "Loans Register"."Client Code");
-                    SalDetails.SetFilter(SalDetails.Code, 'KRB');
-                    if SalDetails.Find('-') then begin
-                        TotalRepayments := SalDetails.Amount;
-
-                    end;
-
-                    LoanTopUp.Reset;
-                    LoanTopUp.SetRange(LoanTopUp."Loan No.", "Loans Register"."Loan  No.");
-                    LoanTopUp.SetRange(LoanTopUp."Client Code", "Loans Register"."Client Code");
-                    if LoanTopUp.Find('-') then begin
-
-                        repeat
-
-                            if LoanTopUp."Partial Bridged" = false then begin
-
-                                BridgedRepayment := ROUND(BridgedRepayment + LoanTopUp."Monthly Repayment", 0.01, '>');
-                                FinalInst := FinalInst + LoanTopUp."Finale Instalment";
-                            end;
-                        until LoanTopUp.Next = 0;
-                    end;
-
-
-
-
-                    TotalLoanBal := (LOANBALANCE + "Loans Register"."Approved Amount") - BRIGEDAMOUNT;
-
-
-                    LBalance := LOANBALANCE - BRIGEDAMOUNT;
-
-
-
-                    //**Guarantors Loan Balances
-                    "Loans Guarantee Details".Reset;
-                    "Loans Guarantee Details".SetRange("Loans Guarantee Details"."Member No", "Client Code");
-                    if "Loans Guarantee Details".Find('-') then begin
-                        CalcFields("Outstanding Balance");
-                        GuarOutstanding := "Outstanding Balance";
-                    end;
-
-
-                    //qualification as per salary
-                    //compute Earnings
-                    SalDetails.Reset;
-                    SalDetails.SetRange(SalDetails."Client Code", "Loans Register"."Client Code");
-                    SalDetails.SetRange(SalDetails."Loan No", "Loans Register"."Loan  No.");
-                    SalDetails.SetRange(SalDetails.Type, SalDetails.Type::Earnings);
-                    if SalDetails.Find('-') then begin
-                        repeat
-                            Earnings := Earnings + SalDetails.Amount;
-                        until SalDetails.Next = 0;
-                    end;
-                    /*
-                    //compute Earnings
-                    //compute Deduction
-                    SalDetails.RESET;
-                    SalDetails.SETRANGE(SalDetails."Client Code",Loans."Client Code");
-                    SalDetails.SETRANGE(SalDetails.Type,SalDetails.Type::Deductions);
-
-                    IF SalDetails.FIND('-') THEN BEGIN
-                    REPEAT
-                     Deductions:=Deductions+SalDetails.Amount;
-                    UNTIL SalDetails.NEXT=0;
-                    END;
-                    MESSAGE('StatDeductions is %1',StatDeductions);
-
-                        */
-
-                    //  Statutory Ded
-                    SalDetails.Reset;
-                    SalDetails.SetRange(SalDetails."Client Code", "Loans Register"."Client Code");
-                    SalDetails.SetRange(SalDetails."Loan No", "Loans Register"."Loan  No.");
-                    SalDetails.SetRange(SalDetails.Type, SalDetails.Type::Deductions);
-                    // SalDetails.SetRange(SalDetails.Statutory, true);
-                    if SalDetails.Find('-') then begin
-                        repeat
-                            StatDeductions := StatDeductions + SalDetails.Amount;
-                        until SalDetails.Next = 0;
-                    end;
-
-                    StatDeductions := StatDeductions;//+"Loans Register".Repayment;
-
-                    //  Statutory Ded End
-
-                    //  Long Term Ded
-                    SalDetails.Reset;
-                    SalDetails.SetRange(SalDetails."Client Code", "Loans Register"."Client Code");
-                    SalDetails.SetRange(SalDetails."Loan No", "Loans Register"."Loan  No.");
-                    SalDetails.SetRange(SalDetails.Type, SalDetails.Type::Deductions);
-                    // SalDetails.SetRange(SalDetails.Statutory, false);
-                    if SalDetails.Find('-') then begin
-                        repeat
-                            OTHERDEDUCTIONS := OTHERDEDUCTIONS + SalDetails.Amount;
-                        until SalDetails.Next = 0;
-                    end;
-
-
-
-                    //  Long Term Ded End
-
-
-
-
-
-
-
-
-
-                    //**2Thirds
-
-                    TwoThirds := ROUND((Earnings) * 2 / 3, 0.05, '>');
-                    ATHIRD := ROUND((Earnings) * 1 / 3, 0.05, '>');
-
-                    NtTakeHome := TwoThirds - (TotalRepayments + "Loans Register".Repayment + Band);
-
-
-                    NetSalary := Earnings - StatDeductions - Band - Repayment + LoanTopUp."Remaining Installments" - OTHERDEDUCTIONS;     //changed
-                                                                                                                                          //NetSalary:=Earnings-StatDeductions-TotalRepayments-Band-Repayment+LoanTopUp."Remaining Installments"-OTHERDEDUCTIONS;
-                    salary := ROUND(((Earnings - Deductions) * 2 / 3) - Band - TotalRepayments, 0.05, '>');
-                    //Psalary:=TwoThirds-(TotalRepayments+Band+OTHERDEDUCTIONS);
-                    Psalary := TwoThirds - (Deductions + OTHERDEDUCTIONS + Band);
-                    // MESSAGE(FORMAT(StatDeductions));
-                    // MESSAGE(FORMAT(OTHERDEDUCTIONS));
-                    //changed
-
-
-                    //collateral
-                    Collateral.RESET;
-                    Collateral.SETRANGE(Collateral."Loan No", "Loan  No.");
-                    IF Collateral.FIND('-') THEN BEGIN
-                        REPEAT
-                            CollCharge += Collateral."Guarantee Value";
-                        UNTIL Collateral.NEXT = 0;
-                        // "Net Loan Disbursed" := CollCharge;
-                        MODIFY;
-                    END;
-
-
-
-
-                    //Total amount guaranteed
-                    //AmountofFreeShares := 0;
-                    AvailableG := 0;
-                    LoanG.Reset;
-                    LoanG.SetRange(LoanG."Loan No", "Loan  No.");
-                    if LoanG.Find('-') then begin
-                        repeat
-
-                            GShares1 := LoanG.Shares;
-                            GShares := GShares + LoanG."Amont Guaranteed";
-                        until LoanG.Next = 0;
-                    end;
-                    // AvailableG := GShares1 * 4;
-                    // AmountofFreeShares := AvailableG - LoanG."Amont Guaranteed";
-
-                    CollateralGuarantee := CollCharge + GShares;
-                    DepX := (DEpMultiplier) - (LBalance - FinalInst);
-                    StatDeductions := StatDeductions + "Loans Register".Repayment;
-                    if (Psalary > Repayment) or (Psalary = Repayment) then
-                        Msalary := "Requested Amount"
-
-                    else
-                        Message('The utilixable salary %1 is less than Repayment %2', Psalary, Repayment);
-                end;
-                if "Deboost Loan Applied" = false then begin
-                    if (Depx < "Loans Register"."Requested Amount") and ("Loans Register"."Requested Amount" <= CollateralGuarantee) then
-                        Recomm := CollateralGuarantee else
-                        If (Depx >= "Loans Register"."Requested Amount") and ("Loans Register"."Requested Amount" <= CollateralGuarantee) then
-                            Recomm := ROUND(Msalary, 100, '<');
-                    if (Recomm > "Loans Register"."Requested Amount") then
-                        Recomm := ROUND("Loans Register"."Requested Amount", 100, '<');
-                    if Recomm < 0 then begin
-                        Recomm := ROUND(Recomm, 100, '<');
-                    end;
-                end else
-                    DepX := "Requested Amount";
-                Recomm := "Requested Amount";
-
-
-                //Recomm:=ROUND(DepX,100,'<');
-
-                Riskamount := "Loans Register"."Requested Amount" - MAXAvailable;
-                "Recommended Amount" := Recomm;
-                "Approved Amount" := Recomm;
-                "Loans Register".Modify;
-                //Recommended Amount
-
-                //*************************Charges*********************************//
-                ProccessingFee := 0;
-                DisbursementFee := 0;
-                InsuranceFee := 0;
-                LegalFee := 0;
-                LoanInsurance := 0;
-                ValuationFee := 0;
-                PREMATURE := 0;
-                //**********added************
-                LegalFee := "Loans Register"."Legal Cost";
-                ValuationFee := "Loans Register"."Valuation Cost";
-                TotalFee := LegalFee + ValuationFee;
-                //****************end********************
-
-                IF BRIGEDAMOUNT > 0 THEN BEGIN
-                    IF ObjProductType.GET("Loans Register"."Loan Product Type") THEN BEGIN
-                        TopUpFee := (ObjProductType."Top Up Commision" * BRIGEDAMOUNT) / 100;
-                    END;
-                END;
-
-
-                Booster := 0;
-                if LoanAp.Get("Loans Register"."Loan  No.") then begin
-
-                    MaxDepositQualification := DEpMultiplier - (LOANBALANCE - BRIGEDAMOUNT);
-                end;
-                //End Update Amount for Deboosting**********************
-
-                //Identify Defaulters
-                LoanApp.Reset;
-                LoanApp.SetRange(LoanApp."Client Code", "Client Code");
-                LoanApp.SetRange(LoanApp.Posted, true);
-                if LoanApp.Find('-') then begin
-                    repeat
-                        // LoanApp.CalcFields(LoanApp."Outstanding Balance",LoanApp."Total Repayments",LoanApp."Total Interest",LoanApp."Topup Commission");
-
-                        if LoanApp."Outstanding Balance" > 0 then begin
-                            if (LoanApp."Loans Category-SASRA" = LoanApp."Loans Category-SASRA"::Substandard) or
-                            (LoanApp."Loans Category-SASRA" = LoanApp."Loans Category-SASRA"::Doubtful) or (LoanApp."Loans Category-SASRA" = LoanApp."Loans Category-SASRA"::Loss)
-                            then begin
-                                DefaultInfo := 'The member is a defaulter' + '. ' + 'Loan No' + ' ' + LoanApp."Loan  No." + ' ' + 'is in loan category' + ' ' +
-                                Format(LoanApp."Loans Category-SASRA");
-                            end;
-                        end;
-                    until LoanApp.Next = 0;
-                end;
-                //End Identify Defaulters
-
-
-                //Compute monthly Repayments based on repay method
-
-                TotalMRepay := 0;
-                LPrincipal := 0;
-                LInterest := 0;
-                LoanAmount := 0;
-                InterestRate := Interest;
-                LoanAmount := "Approved Amount";
-                RepayPeriod := Installments;
-                LBalance := "Approved Amount";
-
-                if "Repayment Method" = "repayment method"::Amortised then begin
-                    TestField(Interest);
-                    TestField(Installments);
-
-                    TotalMRepay := ROUND((InterestRate / 12 / 100) / (1 - Power((1 + (InterestRate / 12 / 100)), -RepayPeriod)) * LoanAmount, 1, '>');
-                    LInterest := ROUND(LBalance / 100 / 12 * InterestRate, 0.05, '>');
-
-                    LPrincipal := TotalMRepay - LInterest;
-                    Repayment := TotalMRepay;
-                    "Loan Principle Repayment" := LPrincipal;
-                    "Loan Interest Repayment" := LInterest;
-
-                end;
-                if "Repayment Method" = "repayment method"::"Straight Line" then begin
-                    TestField(Installments);
-                    LPrincipal := ROUND(LoanAmount / RepayPeriod, 1, '>');
-                    LInterest := ROUND((InterestRate / 100) * LoanAmount, 1, '>');
-                    Repayment := LPrincipal + LInterest;
-                    "Loan Principle Repayment" := LPrincipal;
-                    "Loan Interest Repayment" := LInterest;
-                end;
-                //END;
-
-                //IF "Loan Product Type"<>'BBL' THEN BEGIN
-                if "Repayment Method" = "repayment method"::"Reducing Balance" then begin
-                    TestField(Installments);
-                    LPrincipal := ROUND(LoanAmount / RepayPeriod, 1, '>');
-                    LInterest := ROUND((InterestRate / 100) / 12 * LoanAmount, 1, '>');
-                    Repayment := LPrincipal + LInterest;
-                    "Loan Principle Repayment" := LPrincipal;
-                    "Loan Interest Repayment" := LInterest;
-
-                end;
-                //END;
-                //end of uncommenting
-
-
-                "Loans Guarantee Details".Reset;
-                "Loans Guarantee Details".SetRange("Loans Guarantee Details"."Loan No", "Loans Register"."Loan  No.");
-                if "Loans Guarantee Details".Find('-') then begin
-                    "Loans Guarantee Details".CalcSums("Loans Guarantee Details"."Amont Guaranteed");
-                    TGAmount := "Loans Guarantee Details"."Amont Guaranteed";
-                end;
-
-                LoanApp.Reset;
-                LoanApp.SetRange(LoanApp."Loan  No.", "Loan  No.");
-                if LoanApp.Find('-') then begin
-                    LoanApp.CalcFields(LoanApp."Topup Commission");
-                end;
-
-
-                GenSetUp.Get();
-                if LoanType.Get("Loan Product Type") then begin
-                    //JazaLevy:=ROUND("Jaza Deposits"*0.15,1,'>');
-                    BridgeLevy := ROUND(LoanApp."Topup Commission", 1, '>');
-
-                    if LoanApp."Top Up Amount" > 0 then begin
-                        if BridgeLevy < 500 then begin
-                            BridgeLevy := 5 / 100 * LOANBALANCE;
-                        end else begin
-                            BridgeLevy := ROUND(5 / 100 * LOANBALANCE, 1, '>');
-                        end;
-                    end;
-
-                    if Netdisbursed < 0 then
-                        Message('Net Disbursed cannot be 0 or Negative');
-
-                    if MAXAvailable < 0 then
-                        WarnDeposits := UpperCase('WARNING: Insufficient Deposits to cover the loan applied: Risk %1')
-                    else
-                        WarnDeposits := '';
-                    if MAXAvailable < 0 then
-                        RiskDeposits := "Loans Register"."Requested Amount" - MAXAvailable;
-
-
-                    // IF  Msalary<"Loans Register"."Requested Amount" THEN
-                    // WarnSalary:=UPPERCASE('WARNING: Salary is Insufficient to cover the loan applied: Risk')
-                    // ELSE
-                    // WarnSalary:='';
-                    if Msalary < "Loans Register"."Requested Amount" then
-                        Riskamount := "Loans Register"."Requested Amount" - Msalary;
-
-
-
-                    if GShares < "Loans Register"."Requested Amount" then
-                        WarnGuarantor := UpperCase('WARNING: Guarantors do not sufficiently cover the loan: Risk')
-                    else
-                        WarnGuarantor := '';
-                    if GShares < "Loans Register"."Requested Amount" then
-                        RiskGshares := "Loans Register"."Requested Amount" - GShares;
-                    //MESSAGE('WARNING: Insufficient Deposits to cover the loan applied: Risk %1',Riskamount)
-                    //END;
-
-
-
-                    //LoanProcessingFee := 0;
-                    Modify;
-
-
-
-                    //LOAN Charges
-
-                    LoanProcessingFee := SFactory.FnGetChargeFee("Loans Register"."Loan Product Type", "Loans Register"."Approved Amount", 'PROCESSING');
-                    LoanInsurance := SFactory.FnGetChargeFee("Loans Register"."Loan Product Type", "Loans Register"."Approved Amount", 'INSURANCE');
-
-                    Upfronts := LoanProcessingFee + LoanInsurance + LegalFee + DisbursementFee + "Deboost Commision" + "Deboost Amount" + ValuationFee + TopUpFee + TopUpComm + BRIGEDAMOUNT;
-                    Netdisbursed := ("Approved Amount" - Upfronts);
-                    DisbursementFee := SFactory.FnGetChargeFee("Loans Register"."Loan Product Type", Netdisbursed, 'DISBURSEMENT');
-
-                    if "Approved Amount" > 0 then begin
-                        Upfronts := LoanProcessingFee + LoanInsurance + "Deboost Commision" + "Deboost Amount" + LegalFee + DisbursementFee + ValuationFee + TopUpFee + TopUpComm + BRIGEDAMOUNT;
-                        Netdisbursed := ("Approved Amount" - Upfronts);
-                        //"Loan Disbursed Amount" := Netdisbursed;
-                        "Loan Processing Fee" := LoanProcessingFee;
-                        "Loan Dirbusement Fee" := DisbursementFee;
-                        "Loan Insurance" := LoanInsurance;
-                        // "Net Amount" := Netdisbursed;
-                        Appraised := true;
-                        Modify;
-                    end
-
-
-                end;
+                CompanyInfo.Get();
+                CompanyInfo.CalcFields(CompanyInfo.Picture);
             end;
         }
     }
@@ -1296,6 +866,9 @@ report 50245 InstantLoanAppraisal
     end;
 
     var
+        Requested_Amount: Decimal;
+        NumberText: array[2] of Text[80];
+        CheckReport: Report Check;
         CollateralGuarantee: Decimal;
         LegalFee: Decimal;
         TotalFee: Decimal;

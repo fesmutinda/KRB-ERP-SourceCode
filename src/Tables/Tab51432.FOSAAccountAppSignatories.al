@@ -9,7 +9,7 @@ Table 51432 "FOSA Account App Signatories"
         field(1; "Account No"; Code[20])
         {
             NotBlank = true;
-            TableRelation = "Mwanangu Savings Application"."No.";
+            // TableRelation = "Mwanangu Savings Application"."No.";
         }
         field(2; Names; Text[50])
         {

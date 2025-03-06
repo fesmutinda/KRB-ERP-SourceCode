@@ -785,7 +785,7 @@ tableextension 56000 VendorExt2 extends Vendor
         }
         field(69112; "Employer Code2"; Code[20])
         {
-            TableRelation = "HR Asset Transfer Header";
+            // TableRelation = "HR Asset Transfer Header";
 
             trigger OnValidate()
             begin
@@ -1045,7 +1045,7 @@ tableextension 56000 VendorExt2 extends Vendor
         }
         field(69172; "Employer Code3"; Code[20])
         {
-            TableRelation = "HR Asset Transfer Header";
+            // TableRelation = "HR Asset Transfer Header";
 
             trigger OnValidate()
             begin

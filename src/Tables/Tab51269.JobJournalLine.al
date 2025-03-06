@@ -539,13 +539,13 @@ Table 51269 "Job-Journal Line"
         field(1000; "Job Task No."; Code[20])
         {
             Caption = 'Job Task No.';
-            TableRelation = "Job-Task"."Grant Task No." where("Grant No." = field("Job No."));
+            // TableRelation = "Job-Task"."Grant Task No." where("Grant No." = field("Job No."));
 
-            trigger OnValidate()
-            var
-            begin
+            // trigger OnValidate()
+            // var
+            // begin
 
-            end;
+            // end;
         }
         field(1001; "Total Cost"; Decimal)
         {

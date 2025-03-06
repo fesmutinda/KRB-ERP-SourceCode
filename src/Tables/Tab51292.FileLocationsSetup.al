@@ -12,7 +12,7 @@ Table 51292 "File Locations Setup"
         }
         field(3; "Custodian Code"; Code[20])
         {
-            TableRelation = "HR Employees"."No.";
+            TableRelation = "Payroll Employee."."No.";
         }
         field(4; "Custodian Name"; Text[50])
         {

@@ -40,7 +40,7 @@ Report 50251 "Dividends Payments"
                             LineNo := LineNo + 10000;
                             SFactory.FnCreateGnlJournalLineBalanced(BATCH_TEMPLATE, BATCH_NAME, DOCUMENT_NO, LineNo, GenJournalLine."Transaction Type"::Dividend,
                             GenJournalLine."Account Type"::Customer, "No.", PostingDate, DivTotal, 'BOSA', '',
-                            'Dividends Payments- ' + FORMAT(PostingDate), '', GenJournalLine."Account Type"::"Bank Account", '' /* ObjGensetup."Dividends Paying Bank Account" */);
+                            'Dividends Payments- ' + FORMAT(PostingDate), '', GenJournalLine."Account Type"::"Bank Account", ObjGensetup."Dividends Paying Bank Account");
 
                         until Cust.Next = 0;
 

@@ -64,18 +64,17 @@ table 50096 "Loans Calculator"
                 //Repayments for Straight line method
 
                 if "Repayment Method" = "repayment method"::"Straight Line" then begin
-                    TestField("Interest rate");
-                    TestField(Installments);
-                    LPrincipal := ROUND(LoanAmount / RepayPeriod, 0.05, '>');
-                    LInterest := ROUND((InterestRate / 12 / 100) * LoanAmount, 0.05, '>');
-                    //Grace Period Interest
-                    //LInterest:=ROUND((LInterest*InitialInstal)/(InitialInstal-InitialGraceInt),0.05,'>');
-                    Repayment := LPrincipal + LInterest;
-                    "Principle Repayment" := LPrincipal;
-                    "Interest Repayment" := LInterest;
-                    "Total Monthly Repayment" := "Principle Repayment" + "Interest Repayment" + "Administration Fee";
-                    "Average Repayment" := "Total Monthly Repayment" * RepayPeriod / RepayPeriod;
-
+                    if Rec."Loan Product Type" = 'LT008' then begin
+                        // Rec.TestField(Rec.Interest);
+                        Rec.TestField(Rec.Installments);
+                        LPrincipal := LoanAmount / RepayPeriod;
+                        LInterest := 0;
+                    end else begin
+                        Rec.TestField(Rec."Interest rate");
+                        Rec.TestField(Rec.Installments);
+                        LPrincipal := LoanAmount / RepayPeriod;
+                        LInterest := (InterestRate / 12 / 100) * LoanAmount / RepayPeriod;
+                    end;
                 end;
 
                 //End Repayments for Straight Line method
@@ -153,18 +152,17 @@ table 50096 "Loans Calculator"
                 //Repayments for Straight line method
 
                 if "Repayment Method" = "repayment method"::"Straight Line" then begin
-                    TestField("Interest rate");
-                    TestField(Installments);
-                    LPrincipal := ROUND(LoanAmount / RepayPeriod, 0.05, '>');
-                    LInterest := ROUND((InterestRate / 12 / 100) * LoanAmount, 0.05, '>');
-                    //Grace Period Interest
-                    //LInterest:=ROUND((LInterest*InitialInstal)/(InitialInstal-InitialGraceInt),0.05,'>');
-                    Repayment := LPrincipal + LInterest;
-                    "Principle Repayment" := LPrincipal;
-                    "Interest Repayment" := LInterest;
-                    "Total Monthly Repayment" := "Principle Repayment" + "Interest Repayment" + "Administration Fee";
-                    "Average Repayment" := "Total Monthly Repayment" * RepayPeriod / RepayPeriod;
-
+                    if Rec."Loan Product Type" = 'LT008' then begin
+                        // Rec.TestField(Rec.Interest);
+                        Rec.TestField(Rec.Installments);
+                        LPrincipal := LoanAmount / RepayPeriod;
+                        LInterest := 0;
+                    end else begin
+                        Rec.TestField(Rec."Interest rate");
+                        Rec.TestField(Rec.Installments);
+                        LPrincipal := LoanAmount / RepayPeriod;
+                        LInterest := (InterestRate / 12 / 100) * LoanAmount / RepayPeriod;
+                    end;
                 end;
 
                 //End Repayments for Straight Line method
@@ -226,18 +224,17 @@ table 50096 "Loans Calculator"
                 //Repayments for Straight line method
 
                 if "Repayment Method" = "repayment method"::"Straight Line" then begin
-                    TestField("Interest rate");
-                    TestField(Installments);
-                    LPrincipal := ROUND(LoanAmount / RepayPeriod, 0.05, '>');
-                    LInterest := ROUND((InterestRate / 12 / 100) * LoanAmount, 0.05, '>');
-                    //Grace Period Interest
-                    //LInterest:=ROUND((LInterest*InitialInstal)/(InitialInstal-InitialGraceInt),0.05,'>');
-                    Repayment := LPrincipal + LInterest;
-                    "Principle Repayment" := LPrincipal;
-                    "Interest Repayment" := LInterest;
-                    "Total Monthly Repayment" := "Principle Repayment" + "Interest Repayment" + "Administration Fee";
-                    "Average Repayment" := "Total Monthly Repayment" * RepayPeriod / RepayPeriod;
-
+                    if Rec."Loan Product Type" = 'LT008' then begin
+                        // Rec.TestField(Rec.Interest);
+                        Rec.TestField(Rec.Installments);
+                        LPrincipal := LoanAmount / RepayPeriod;
+                        LInterest := 0;
+                    end else begin
+                        Rec.TestField(Rec."Interest rate");
+                        Rec.TestField(Rec.Installments);
+                        LPrincipal := LoanAmount / RepayPeriod;
+                        LInterest := (InterestRate / 12 / 100) * LoanAmount / RepayPeriod;
+                    end;
                 end;
 
                 //End Repayments for Straight Line method

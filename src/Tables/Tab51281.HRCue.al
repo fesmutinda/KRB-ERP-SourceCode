@@ -73,7 +73,7 @@ Table 51281 "HR Cue"
         }
         field(11; "Employee -Active"; Integer)
         {
-            CalcFormula = count("HR Employees" where(Status = filter(Active)));
+            CalcFormula = count("Payroll Employee." where(Status = filter(Active)));
             Caption = 'Customers - Blocked';
             FieldClass = FlowField;
         }
@@ -104,7 +104,7 @@ Table 51281 "HR Cue"
         }
         field(25; "Employee Requisitions"; Integer)
         {
-            CalcFormula = count("HR Employee Requisitions");
+            // CalcFormula = count("HR Employee Requisitions");
             FieldClass = FlowField;
         }
     }

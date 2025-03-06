@@ -13,7 +13,6 @@ Codeunit 50039 "SwizzsoftApprovalsCodeUnit"
         FOSAAccountsApp: record "Product Applications Details";
         LoanBatches: Record "Loan Disburesment-Batching";
         GuarantorSubstitution: Record "Guarantorship Substitution H";
-        LeaveApplications: Record "HR Leave Application";
         FundsTransferHeader: Record "Funds Transfer Header";
 
 
@@ -274,45 +273,7 @@ Codeunit 50039 "SwizzsoftApprovalsCodeUnit"
     begin
     end;
     //------------------------------------------------------------------------------------------------------
-    //7)--------------------------------------------------------------------Send Membership Applications request For Approval start
-    procedure SendLeaveApplicationsRequestForApproval(LeaveApplicationNo: Code[40]; var "HR Leave Application": Record "HR Leave Application")
-    begin
-        if FnCheckIfLeaveApplicationApprovalsWorkflowEnabled("HR Leave Application") then begin
-            FnOnSendLeaveApplicationForApproval("HR Leave Application");
-        end;
-    end;
-
-    local procedure FnCheckIfLeaveApplicationApprovalsWorkflowEnabled(var "HR Leave Application": Record "HR Leave Application"): Boolean;
-    begin
-        if not IsLeaveApplicationApprovalsWorkflowEnabled("HR Leave Application") then
-            Error(NoWorkflowEnabledErr);
-        exit(true);
-    end;
-
-    //.
-    procedure CancelLeaveApplicationsRequestForApproval(LeaveApplicationNo: Code[40]; var "HR Leave Application": Record "HR Leave Application")
-    begin
-        FnOnCancelLeaveApplicationApprovalRequest("HR Leave Application");
-    end;
-
-
-    local procedure IsLeaveApplicationApprovalsWorkflowEnabled(var LeaveApplication: Record "HR Leave Application"): Boolean
-    begin
-        exit(WorkflowManagement.CanExecuteWorkflow(LeaveApplication, Psalmkitswfevents.RunWorkflowOnSendLeaveApplicationForApprovalCode));
-    end;
-
-
-    [IntegrationEvent(false, false)]
-
-    procedure FnOnSendLeaveApplicationForApproval(var LeaveApplication: Record "HR Leave Application")
-    begin
-    end;
-
-    [IntegrationEvent(false, false)]
-
-    procedure FnOnCancelLeaveApplicationApprovalRequest(var LeaveApplication: Record "HR Leave Application")
-    begin
-    end;
+    
     //8)--------------------------------------------------------------------Guarantor Substitution request For Approval start
     procedure SendGuarantorSubRequestForApproval(GuarantorSubNo: Code[40]; var "Guarantorship Substitution H": Record "Guarantorship Substitution H")
     begin

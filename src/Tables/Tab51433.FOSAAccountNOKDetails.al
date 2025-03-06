@@ -68,6 +68,6 @@ Table 51433 "FOSA Account NOK Details"
 
     var
         TOTALALLO: Decimal;
-        NextKin: Record "FOSA Account App Kin Details";
+        // NextKin: Record "FOSA Account App Kin Details";
 }
 

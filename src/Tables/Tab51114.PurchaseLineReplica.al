@@ -1348,7 +1348,7 @@ Table 51114 "Purchase Line Replica"
         ReturnReason: Record "Return Reason";
         ItemVend: Record "Item Vendor";
         CalChange: Record "Customized Calendar Change";
-        JobJnlLine: Record "HR Appraisal Lines" temporary;
+        // JobJnlLine: Record "HR Appraisal Lines" temporary;
         Reservation: Page Reservation;
         SalesTaxCalculate: Codeunit "Sales Tax Calculate";
         ReservEngineMgt: Codeunit "Reservation Engine Mgt.";

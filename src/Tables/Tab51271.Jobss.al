@@ -627,12 +627,12 @@ Table 51271 Jobss
         field(50041; "PI Name"; Text[100])
         {
             Caption = 'PI At Collaborative Institution';
-            TableRelation = "PI Master";
+            // TableRelation = "PI Master";
 
-            trigger OnValidate()
-            begin
+            // trigger OnValidate()
+            // begin
 
-            end;
+            // end;
         }
         field(50042; "PI Address"; Text[30])
         {
@@ -744,7 +744,7 @@ Table 51271 Jobss
         }
         field(50072; "Responsible Officer"; Code[50])
         {
-            TableRelation = "HR Employees"."No." where("Grant/Compliance Officer" = const(true));
+            // TableRelation = "Payroll Employee."."No." where("Grant/Compliance Officer" = const(true));
         }
         field(50073; "RFA/A Receipt Date"; Date)
         {

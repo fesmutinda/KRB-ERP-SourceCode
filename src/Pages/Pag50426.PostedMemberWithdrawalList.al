@@ -61,23 +61,7 @@ page 50426 "Posted Member Withdrawal List"
             group("Function")
             {
                 Caption = 'Function';
-                action(Approvals)
-                {
-                    ApplicationArea = Basic;
-                    Caption = 'Approvals';
-                    Image = Approval;
-                    Promoted = true;
-                    PromotedCategory = Category4;
-
-                    trigger OnAction()
-                    var
-                        ApprovalEntries: Page "Approval Entries";
-                    begin
-                        DocumentType := Documenttype::"Member Closure";
-                        ApprovalEntries.SetRecordFilters(Database::"HR Leave Register", DocumentType, Rec."No.");
-                        ApprovalEntries.Run;
-                    end;
-                }
+              
                 action("Account closure Slip")
                 {
                     ApplicationArea = Basic;

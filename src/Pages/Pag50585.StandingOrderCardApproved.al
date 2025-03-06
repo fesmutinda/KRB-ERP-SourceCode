@@ -293,14 +293,14 @@ page 50585 "Standing Order Card Approved"
                     Promoted = true;
                     PromotedCategory = Category4;
 
-                    trigger OnAction()
-                    var
-                        ApprovalEntries: Page "Approval Entries";
-                    begin
-                        DocumentType := Documenttype::STO;
-                        ApprovalEntries.SetRecordFilters(Database::"HR Commitee Members", DocumentType, Rec."No.");
-                        ApprovalEntries.Run;
-                    end;
+                    // trigger OnAction()
+                    // var
+                    //     ApprovalEntries: Page "Approval Entries";
+                    // begin
+                    //     DocumentType := Documenttype::STO;
+                    //     ApprovalEntries.SetRecordFilters(Database::"HR Commitee Members", DocumentType, Rec."No.");
+                    //     ApprovalEntries.Run;
+                    // end;
                 }
                 action("Send Approval Request")
                 {

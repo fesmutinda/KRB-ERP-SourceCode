@@ -204,7 +204,6 @@ page 50847 "Funeral Expenses."
     }
 
     var
-        LoanUserSetup: Record 51167;
         LoanManager: Codeunit "POST ATM Transactions";
         Txt000: label 'User ID:%1 has not been setup for posting, Contact System Administrator';
         ApprovalsMgmt: Codeunit "Approvals Mgmt.";

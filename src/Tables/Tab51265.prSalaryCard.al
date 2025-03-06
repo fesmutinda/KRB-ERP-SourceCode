@@ -6,7 +6,7 @@ Table 51265 "prSalary Card"
     {
         field(1; "Employee Code"; Code[20])
         {
-            TableRelation = "HR Employees"."No.";
+            TableRelation = "Payroll Employee."."No.";
         }
         field(2; "Basic Pay"; Decimal)
         {
@@ -208,16 +208,16 @@ Table 51265 "prSalary Card"
         {
             TableRelation = Vendor."No.";
         }
-        field(34; "Sacco Paying Bank"; Code[20])
-        {
-            CalcFormula = lookup("HR Employees"."Sacco Paying Bank Code" where("No." = field("Employee Code")));
-            FieldClass = FlowField;
-        }
-        field(35; "Cheque No"; Code[20])
-        {
-            CalcFormula = lookup("HR Employees"."Cheque No" where("No." = field("Employee Code")));
-            FieldClass = FlowField;
-        }
+        // field(34; "Sacco Paying Bank"; Code[20])
+        // {
+        //     CalcFormula = lookup("Payroll Employee."."Sacco Paying Bank Code" where("No." = field("Employee Code")));
+        //     FieldClass = FlowField;
+        // }
+        // field(35; "Cheque No"; Code[20])
+        // {
+        //     CalcFormula = lookup("Payroll Employee."."Cheque No" where("No." = field("Employee Code")));
+        //     FieldClass = FlowField;
+        // }
         field(51516008; test; Boolean)
         {
         }
@@ -242,6 +242,6 @@ Table 51265 "prSalary Card"
     end;
 
     var
-        Employee: Record "HR Employees";
-        HREmp: Record "HR Employees";
+        Employee: Record "Payroll Employee.";
+        HREmp: Record "Payroll Employee.";
 }

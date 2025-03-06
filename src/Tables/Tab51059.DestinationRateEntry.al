@@ -43,7 +43,7 @@ Table 51059 "Destination Rate Entry"
         {
             Editable = true;
             NotBlank = true;
-            TableRelation = "HR Lookup Values".Code where(Type = const(Grade));
+            // TableRelation = "HR Lookup Values".Code where(Type = const(Grade));
         }
         field(7; "Destination Name"; Text[50])
         {

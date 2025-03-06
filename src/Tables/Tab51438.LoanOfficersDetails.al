@@ -9,7 +9,7 @@ Table 51438 "Loan Officers Details"
         }
         field(2; "Sales Code"; Code[10])
         {
-            TableRelation = if ("Sales Code Type" = const(Staff)) "HR Employees"
+            TableRelation = if ("Sales Code Type" = const(Staff)) "Payroll Employee."
             else if ("Sales Code Type" = const(Others)) Customer;
 
             trigger OnValidate()
@@ -81,7 +81,7 @@ Table 51438 "Loan Officers Details"
         field(13; "Account No."; Code[20])
         {
             Caption = 'Account No.';
-            TableRelation = if ("Account Type" = const(Staff)) "HR Employees"
+            TableRelation = if ("Account Type" = const(Staff)) "Payroll Employee."
             else if ("Account Type" = const(Customer)) Customer
             else if ("Account Type" = const(Member)) Customer
             else if ("Account Type" = const(Vendor)) Vendor;
@@ -111,7 +111,7 @@ Table 51438 "Loan Officers Details"
                         "account type"::Staff:
                             begin
                                 HR.Get("Account No.");
-                                "Account Name" := HR.FullName;
+                                // "Account Name" := HR.FullName;
                             end;
 
 
@@ -167,7 +167,7 @@ Table 51438 "Loan Officers Details"
     }
 
     var
-        HR: Record "HR Employees";
+        HR: Record "Payroll Employee.";
         Custs: Record Customer;
         GLAcc: Record "G/L Account";
         Cust: Record Customer;

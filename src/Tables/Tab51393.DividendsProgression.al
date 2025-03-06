@@ -34,6 +34,13 @@ Table 51393 "Dividends Progression"
         field(51516152; "Gross Interest On Deposit"; Decimal)
         {
         }
+        field(51516153; "Gross Interest On Sharecapital"; Decimal)
+        {
+        }
+        field(51516154; "Current Shares"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+        }
     }
 
     keys

@@ -9,17 +9,17 @@ Table 51284 "HR Training Attendees"
         }
         field(2; "Emp No"; Code[10])
         {
-            TableRelation = "HR Employees"."No.";
+            TableRelation = "Payroll Employee."."No.";
 
             trigger OnValidate()
             begin
                 HREmp.Reset;
                 HREmp.SetRange(HREmp."No.", "Emp No");
                 if HREmp.Find('-') then begin
-                    "Emp Name" := HREmp."First Name" + ' ' + HREmp."Middle Name" + ' ' + HREmp."Last Name";
-                    "E-mail Address" := HREmp."E-Mail";
-                    "Cell Phone Number" := HREmp."Cellular Phone Number";
-                    "Job Tittle" := HREmp."Job Title";
+                    "Emp Name" := HREmp."First Name" + ' ' + HREmp."Middle Name" ;//+ ' ' + HREmp."Last Name";
+                    "E-mail Address" := HREmp."Employee Email";
+                    // "Cell Phone Number" := HREmp.co;
+                    // "Job Tittle" := HREmp."Job Title";
                 end;
             end;
         }
@@ -60,6 +60,6 @@ Table 51284 "HR Training Attendees"
     }
 
     var
-        HREmp: Record "HR Employees";
+        HREmp: Record "Payroll Employee.";
 }
 

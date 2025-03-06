@@ -6,7 +6,7 @@ Table 51321 "Payroll Employee P9."
     {
         field(10; "Employee Code"; Code[20])
         {
-            TableRelation = "HR Job Occupations";
+            TableRelation = "Payroll Employee.";
         }
         field(11; "Basic Pay"; Decimal)
         {
