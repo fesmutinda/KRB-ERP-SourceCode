@@ -3,6 +3,9 @@ page 50387 "Loans Guarantee Details"
 {
     PageType = ListPart;
     RefreshOnActivate = false;
+    InsertAllowed = true;
+    DeleteAllowed = true;
+    Editable = true;
     SourceTable = "Loans Guarantee Details";
 
     layout
@@ -28,15 +31,17 @@ page 50387 "Loans Guarantee Details"
                 {
                     ApplicationArea = Basic;
                     Caption = 'Deposits';
-                    Visible = true;
+                    Visible = false;
                 }
                 field("Amont Guaranteed"; Rec."Amont Guaranteed")
                 {
                     ApplicationArea = Basic;
+                    Visible = false;
                 }
                 field("Self Guarantee"; Rec."Self Guarantee")
                 {
                     ApplicationArea = Basic;
+                    // Visible = false;
                 }
                 field(Date; Rec.Date)
                 {
@@ -47,6 +52,7 @@ page 50387 "Loans Guarantee Details"
                 {
                     ApplicationArea = Basic;
                     Caption = 'Guarantorship Liability';
+                    Visible = false;
                 }
                 field(CStatus; CStatus)
                 {
@@ -57,6 +63,7 @@ page 50387 "Loans Guarantee Details"
                 field("free Share"; Rec."free Share")
                 {
                     ApplicationArea = Basic;
+                    Visible = false;
                 }
             }
         }

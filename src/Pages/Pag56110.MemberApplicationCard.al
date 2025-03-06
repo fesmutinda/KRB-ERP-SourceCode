@@ -512,15 +512,15 @@ page 56110 "Member Application Card"
                     ApplicationArea = Basic;
                     Editable = NameEditable;
                 }
-                field(Station; Rec.Section)
-                {
-                    Caption = 'Station';
-                    ApplicationArea = Basic;
-                }
-                field("Station Name"; Rec."Station Name")
-                {
-                    ApplicationArea = all;
-                }
+                // field(Station; Rec.Section)
+                // {
+                //     Caption = 'Station';
+                //     ApplicationArea = Basic;
+                // }
+                // field("Station Name"; Rec."Station Name")
+                // {
+                //     ApplicationArea = all;
+                // }
                 field("Date Employed"; Rec."Date Employed")
                 {
                     ApplicationArea = Basic;
@@ -551,30 +551,30 @@ page 56110 "Member Application Card"
                     ApplicationArea = Basic;
                     Editable = false;
                 }
-                field("Ex-Department"; Rec.Department)
-                {
-                    ApplicationArea = Basic;
-                    Editable = NameEditable;
-                }
-                field("Ex-Office Branch"; Rec."Office Branch")
-                {
-                    ApplicationArea = Basic;
-                    Editable = NameEditable;
-                }
+                // field("Ex-Department"; Rec.Department)
+                // {
+                //     ApplicationArea = Basic;
+                //     Editable = NameEditable;
+                // }
+                // field("Ex-Office Branch"; Rec."Office Branch")
+                // {
+                //     ApplicationArea = Basic;
+                //     Editable = NameEditable;
+                // }
                 field("Ex-Official Designation"; Rec."Official Designation")
                 {
                     ApplicationArea = Basic;
                     Editable = NameEditable;
                 }
-                field("Ex-Station"; Rec.Section)
-                {
-                    Caption = 'Station';
-                    ApplicationArea = Basic;
-                }
-                field("Ex-Station Name"; Rec."Station Name")
-                {
-                    ApplicationArea = all;
-                }
+                // field("Ex-Station"; Rec.Section)
+                // {
+                //     Caption = 'Station';
+                //     ApplicationArea = Basic;
+                // }
+                // field("Ex-Station Name"; Rec."Station Name")
+                // {
+                //     ApplicationArea = all;
+                // }
                 field("Ex-Terms of Employment"; Rec."Terms of Employment")
                 {
                     ApplicationArea = Basic;
