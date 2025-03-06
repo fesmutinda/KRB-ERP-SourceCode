@@ -1723,7 +1723,7 @@ page 56110 "Member Application Card"
         Cust."Home Postal Code2" := Rec."Home Postal Code2";
         Cust."Home Town2" := Rec."Home Town2";
         Cust."Payroll/Staff No2" := Rec."Payroll/Staff No2";
-        Cust."Employer Code2" := Rec."Employer Code2";
+        // Cust."Employer Code2" := Rec."Employer Code2";
         Cust."Share Of Ownership Two" := Rec."Share Of Ownership Two";
         Cust."Employer Name2" := Rec."Employer Name2";
         Cust."Source of IncomeMember Two" := Rec."Source of IncomeMember Two";

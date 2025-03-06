@@ -220,7 +220,7 @@ Table 51360 "Membership Applications"
         }
         field(68006; "Station/Department"; Code[20])
         {
-            TableRelation = "HR Leave Attachments"."Employee No" where("Document Link" = field("Employer Code"));
+            // TableRelation = "HR Leave Attachments"."Employee No" where("Document Link" = field("Employer Code"));
         }
         field(68007; "Home Address"; Text[50])
         {
@@ -507,7 +507,7 @@ Table 51360 "Membership Applications"
                 HREmployee.Reset;
                 HREmployee.SetRange(HREmployee."No.", "Recruited By");
                 if HREmployee.Find('-') then begin
-                    "Recruiter Name" := HREmployee."First Name" + ' ' + HREmployee."Middle Name" + ' ' + HREmployee."Last Name";
+                    "Recruiter Name" := HREmployee."First Name" + ' ' + HREmployee."Middle Name";// + ' ' + HREmployee."Last Name";
                 end;
 
             end;
@@ -700,16 +700,16 @@ Table 51360 "Membership Applications"
         field(68090; "Payroll/Staff No2"; Code[20])
         {
         }
-        field(68100; "Employer Code2"; Code[20])
-        {
-            TableRelation = "HR Asset Transfer Header";
+        // field(68100; "Employer Code2"; Code[20])
+        // {
+        //     TableRelation = "HR Asset Transfer Header";
 
-            trigger OnValidate()
-            begin
-                Employer.Get("Employer Code");
-                "Employer Name" := Employer.Description;
-            end;
-        }
+        //     trigger OnValidate()
+        //     begin
+        //         Employer.Get("Employer Code");
+        //         "Employer Name" := Employer.Description;
+        //     end;
+        // }
         field(68101; "Employer Name2"; Code[30])
         {
         }
@@ -1596,7 +1596,7 @@ Table 51360 "Membership Applications"
         UsersRec: Record "User Setup";
         Dates: Codeunit "Dates Calculation";
         DAge: DateFormula;
-        HREmployee: Record "HR Employees";
+        HREmployee: Record "Payroll Employee.";
         DimValue: Record "Dimension Value";
         CustMember: Record Customer;
         ObjMemberApplication: Record "Membership Applications";

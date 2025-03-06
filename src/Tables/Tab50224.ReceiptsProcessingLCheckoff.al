@@ -149,7 +149,7 @@ table 50224 "ReceiptsProcessing_L-Checkoff"
         }
         field(28; "Receipt Line No"; Integer)
         {
-
+            // AutoIncrement = true;
         }
         field(29; "Account Type"; Option)
         {
@@ -168,6 +168,22 @@ table 50224 "ReceiptsProcessing_L-Checkoff"
         field(33; "Xmas Contribution"; Decimal)
         {
         }
+        field(34; "Co-op - Shares"; Decimal) { }
+        field(35; "Co-op - Devt Loan"; Decimal) { }
+        field(36; "Flexi"; Decimal) { }
+        field(37; "Muslim Loan"; Decimal) { }
+        field(38; "Co-op Emergency Loan"; Decimal) { }
+        field(39; "Co-op - Investment Loan"; Decimal) { }
+        field(40; "Co-op School Fees Loan"; Decimal) { }
+        field(41; "Instant"; Decimal) { }
+        field(42; "Childrens Savings"; Decimal) { }
+        field(43; "Withdrwable svgs"; Decimal) { }
+        field(44; "merry goround"; Decimal) { }
+        field(45; "Dev2"; Decimal) { }
+        field(46; "Share cap"; Decimal) { }
+        field(47; "Entrance"; Decimal) { }
+        field(48; "Insurance"; Decimal) { }
+        field(49; "Refinance"; Decimal) { }
     }
 
     keys
@@ -177,9 +193,9 @@ table 50224 "ReceiptsProcessing_L-Checkoff"
             Clustered = true;
             SumIndexFields = Amount;
         }
-        key(Key2; "Receipt Line No")
-        {
-        }
+        // key(Key2; "Receipt Line No")
+        // {
+        // }
         key(Key3; "Staff/Payroll No")
         {
         }

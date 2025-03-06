@@ -323,7 +323,7 @@ Table 51102 "Store Requistion Header"
         Text001: label 'Your identification is set up to process from %1 %2 only.';
         Dimval: Record "Dimension Value";
         ReqLines: Record "Store Requistion Lines";
-        HrEmp: Record "HR Employees";
+        HrEmp: Record "Payroll Employee.";
 
 
     procedure GetNoSeriesRelCode(NoSeriesCode: Code[20]): Code[10]

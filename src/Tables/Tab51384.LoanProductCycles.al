@@ -7,7 +7,7 @@ Table 51384 "Loan Product Cycles"
         field(1; "Product Code"; Code[20])
         {
             NotBlank = true;
-            TableRelation = "HR 360 Appraisal Eval Areas"."Line No.";
+            // TableRelation = "HR 360 Appraisal Eval Areas"."Line No.";
         }
         field(2; Cycle; Integer)
         {

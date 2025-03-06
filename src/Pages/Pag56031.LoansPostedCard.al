@@ -307,6 +307,7 @@ Page 56031 "Loans Posted Card"
             }
             part(Control1000000002; "Loan Appraisal Salary Details")
             {
+                Visible = false;
                 Caption = 'Salary Details';
                 SubPageLink = "Loan No" = field("Loan  No."),
                               "Client Code" = field("Client Code");
@@ -315,9 +316,11 @@ Page 56031 "Loans Posted Card"
             {
                 Caption = 'Guarantors  Detail';
                 SubPageLink = "Loan No" = field("Loan  No.");
+                Editable = false;
             }
             part(Control1000000005; "Loan Collateral Security")
             {
+                Visible = false;
                 Caption = 'Other Securities';
                 SubPageLink = "Loan No" = field("Loan  No.");
             }

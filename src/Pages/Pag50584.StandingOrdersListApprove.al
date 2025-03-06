@@ -206,9 +206,9 @@ page 50584 "Standing Orders - List Approve"
                     var
                         ApprovalEntries: Page "Approval Entries";
                     begin
-                        DocumentType := Documenttype::STO;
-                        ApprovalEntries.SetRecordFilters(Database::"HR Commitee Members", DocumentType, Rec."No.");
-                        ApprovalEntries.Run;
+                        // DocumentType := Documenttype::STO;
+                        // ApprovalEntries.SetRecordFilters(Database::"HR Commitee Members", DocumentType, Rec."No.");
+                        // ApprovalEntries.Run;
                     end;
                 }
                 action("Send Approval Request")

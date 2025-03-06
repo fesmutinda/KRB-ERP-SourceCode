@@ -1408,6 +1408,19 @@ Page 56043 "KRB Sacco Role Center"
                 group(BOSAPeriodicActivities)
                 {
                     Caption = 'Periodic Activities';
+                    action("Test Check off Data")
+                    {
+                        Caption = 'KRB Employer Remittance';
+                        Image = Setup;
+                        RunObject = page "KRB Receipts List-Checkoff";
+                        Visible = true;
+                    }
+                    action("Update Member Dormancy")
+                    {
+                        RunObject = report "Update Member Dormancy";
+                        ApplicationArea = all;
+                        Visible = false;
+                    }
                     group(LoanDefaulter)
                     {
                         Caption = 'Loan Defaulter Notices';
@@ -1430,23 +1443,6 @@ Page 56043 "KRB Sacco Role Center"
                             RunObject = report "Loan Defaulter Final Notice";
                         }
 
-                    }
-                    group(CheckOffDistributed)
-                    {
-                        Caption = 'Checkoff Processing-Distributed';
-                        Visible = false;
-                        action("Checkoff Processing List")
-                        {
-                            Caption = 'Checkoff Processing List';
-                            Image = Setup;
-                            RunObject = page "Checkoff Processing-D List";
-                        }
-                        action(CheckoffProcessingDistributed)
-                        {
-                            Caption = 'Checkoff Processing-Distributed';
-                            Image = Setup;
-                            RunObject = page "Transfer Schedule";
-                        }
                     }
                     group(CheckOffBlocked)
                     {
@@ -1477,12 +1473,12 @@ Page 56043 "KRB Sacco Role Center"
                         action("Check off Adivice-Breakdown")
                         {
                             Image = Setup;
-                            // RunObject = report "Check Off Advice";
+                            RunObject = report "Check Off Advice";
                         }
                         action("Check off Adivice-Lumpsum")
                         {
                             Image = Setup;
-                            // RunObject = report "Check Off Advice-Lumpsum";
+                            RunObject = report "Check Off Advice-Lumpsum";
                         }
 
                     }
@@ -1500,6 +1496,7 @@ Page 56043 "KRB Sacco Role Center"
                     group(Dividends)
                     {
                         Caption = 'Dividends';
+
                         group(Prorated)
                         {
                             Caption = 'Prorated';
@@ -1507,25 +1504,25 @@ Page 56043 "KRB Sacco Role Center"
                             {
                                 Caption = 'Dividends Processing-Prorated';
                                 Image = Setup;
-                                // RunObject = report "Dividend Processing-Prorated";
+                                RunObject = report "Dividend Processing-Prorated";
                             }
                             action("Dividends Register")
                             {
                                 Caption = 'Dividends Register';
                                 Image = Setup;
-                                // RunObject = report "Dividend Register";
+                                RunObject = report "Dividend Register";
                             }
                             action(DividendProgressionSlip)
                             {
                                 Caption = 'Dividend Progression Slip';
                                 Image = Setup;
-                                // RunObject = report "Dividends Progressionslip";
+                                RunObject = report "Dividends Progressionslip";
                                 Visible = false;
                             }
                             action("Dividends Payments Report")
                             {
                                 ApplicationArea = all;
-                                // RunObject = Report "Dividends Payments";
+                                RunObject = Report "Dividends Payments";
 
                             }
                         }
@@ -1536,7 +1533,7 @@ Page 56043 "KRB Sacco Role Center"
                                 Image = ReceiveLoaner;
                                 ApplicationArea = all;
                                 Caption = 'Recover Sharecapital from Deposits';
-                                // RunObject = report "Share Capital Recovery";
+                                RunObject = report "Share Capital Recovery";
                             }
                             group(SharecapitalTrading)
                             {
@@ -1897,144 +1894,6 @@ Page 56043 "KRB Sacco Role Center"
                     RunObject = Page "FA Journal Batches";
                     RunPageView = WHERE(Recurring = CONST(true));
                     ToolTip = 'Post recurring fixed asset transactions, such as acquisition and depreciation book without integration to the general ledger.';
-                }
-            }
-            group("Human Resources")
-            {
-                Visible = false;
-                group("Employee Management")
-                {
-                    action("EmployeesList")
-                    {
-                        Caption = 'Employees List';
-                        ApplicationArea = basic, suite;
-                        Image = Employee;
-                        RunObject = page "HR Employee List";
-                    }
-                }
-
-                // group("HR Leave Management1")
-                // {
-                //     Caption = 'HR Leave Management';
-                //     action("HR Leave Application")
-                //     {
-                //         RunObject = page "HR Leave Applications List";
-                //         ApplicationArea = All;
-                //     }
-                //     action("Escalated Leave Application List")
-                //     {
-                //         RunObject = page " Escalated HR Leave App List";
-                //         ApplicationArea = all;
-                //     }
-                //     // action("Approved Leave Applications")
-                //     // {
-                //     //     RunObject = page "HR Leave Approved List";
-                //     //     ApplicationArea = All;
-                //     // }
-                //     action("Posted Leave Applications")
-                //     {
-                //         RunObject = page "Hr Leave Posted List";
-
-                //         ApplicationArea = All;
-                //     }
-                //     action("HR Leave Reimbursment List")
-                //     {
-                //         RunObject = page "HR Leave Reimbursment List";
-                //         ApplicationArea = All;
-                //         Visible = false;
-                //     }
-                //     action("HR Leave Journal Lines")
-                //     {
-                //         RunObject = page "HR Leave Journal Lines";
-                //         ApplicationArea = All;
-                //     }
-                // }
-
-                group("HR Setup")
-                {
-                    Caption = 'HR Setup';
-
-                    action("General Setup")
-                    {
-                        Caption = 'General Setup';
-                        ApplicationArea = All;
-                        RunObject = page "HR Setup";
-                    }
-
-                    action("HR Leave Types")
-                    {
-                        RunObject = page "HR Leave Types";
-                        ApplicationArea = All;
-                    }
-                    action("HR Leave Period Lists")
-                    {
-                        Caption = 'HR Leave Period Lists';
-                        ApplicationArea = All;
-                        RunObject = page "HR Leave Period List";
-                        Visible = false;
-                    }
-                    action("HR Leave Batches")
-                    {
-                        Caption = 'HR Leave Batches';
-                        ApplicationArea = All;
-                        RunObject = page "HR Leave Batches";
-                    }
-                }
-
-                group("EmployeeRecruitment")
-
-                {
-                    Caption = 'Employees Recruitment';
-                    Visible = false;
-                    action(EmployeeRequisitionsList)
-                    {
-                        Caption = 'Employee Requisition';
-                        ApplicationArea = basic, suite;
-                        Image = Employee;
-                        RunObject = page "HR Employee Requisitions List";
-
-                    }
-
-                    action("JobApplicationList")
-                    {
-                        Caption = 'Job Application List';
-                        ApplicationArea = basic, suite;
-                        Image = Employee;
-                        // RunObject = page "HR Job Applications List";
-                    }
-
-                    action("JobShortlisting")
-                    {
-                        Caption = 'Job Shortlisting';
-                        ApplicationArea = basic, suite;
-                        Image = Employee;
-                        RunObject = page "HR Shortlisting List";
-                    }
-
-                    action("QualifiedJobApplicants")
-                    {
-                        Caption = 'Qualified Job Applicants';
-                        ApplicationArea = basic, suite;
-                        Image = Employee;
-                        // RunObject = page "HR Job Applicants Qualified";
-                    }
-
-                    action("UnQualifiedJobApplicants")
-                    {
-                        Caption = 'UnQualified Job Applicants';
-                        ApplicationArea = basic, suite;
-                        Image = Employee;
-                        // RunObject = page "HR Applicants UnQualified List";
-                    }
-
-                    action("ApplicantToEmployee")
-                    {
-                        Caption = 'New Employees Registration';
-                        ApplicationArea = basic, suite;
-                        Image = Employee;
-
-                    }
-
                 }
             }
 

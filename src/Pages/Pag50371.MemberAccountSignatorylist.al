@@ -90,15 +90,15 @@ page 50371 "Member Account Signatory list"
             group(Signatory)
             {
                 Caption = 'Signatory';
-                action("Page Account Signatories Card")
-                {
-                    ApplicationArea = Basic;
-                    Caption = 'Card';
-                    Image = EditLines;
-                    RunObject = Page "HR Employment History";
-                    RunPageLink = "No." = field("Account No"),
-                                  "First Name" = field(Names);
-                }
+                // action("Page Account Signatories Card")
+                // {
+                //     ApplicationArea = Basic;
+                //     Caption = 'Card';
+                //     Image = EditLines;
+                //     RunObject = Page "HR Employment History";
+                //     RunPageLink = "No." = field("Account No"),
+                //                   "First Name" = field(Names);
+                // }
             }
         }
     }

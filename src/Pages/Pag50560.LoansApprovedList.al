@@ -1078,33 +1078,7 @@ page 50560 "Loans Approved List"
             group(Approvals)
             {
                 Caption = 'Approvals';
-                action(Approval)
-                {
-                    ApplicationArea = Basic;
-                    Caption = 'Approvals';
-                    Image = Approval;
-                    Promoted = true;
-                    PromotedCategory = Category4;
-
-                    trigger OnAction()
-                    var
-                        ApprovalEntries: Page "Approval Entries";
-                    begin
-                        /*
-                        LBatches.RESET;
-                        LBatches.SETRANGE(LBatches."Loan  No.","Loan  No.");
-                        IF LBatches.FIND('-') THEN BEGIN
-                            ApprovalEntries.Setfilters(DATABASE::Loans,17,LBatches."Loan  No.");
-                              ApprovalEntries.RUN;
-                        END;
-                        */
-
-                        DocumentType := Documenttype::Loan;
-                        ApprovalEntries.SetRecordFilters(Database::"Salary Step/Notch Transactions", DocumentType, Rec."Loan  No.");
-                        ApprovalEntries.Run;
-
-                    end;
-                }
+              
                 action("Send Approval Request")
                 {
                     ApplicationArea = Basic;

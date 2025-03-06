@@ -60,7 +60,7 @@ Table 51434 "Witness Details"
         }
         field(13; "Company Code"; Code[20])
         {
-            TableRelation = "HR Asset Transfer Header"."No.";
+            // TableRelation = "HR Asset Transfer Header"."No.";
         }
         field(14; "BOSA No."; Code[30])
         {

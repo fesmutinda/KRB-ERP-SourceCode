@@ -171,23 +171,7 @@ page 50427 "Posted Member Withdrawal Card"
             group("Function")
             {
                 Caption = 'Function';
-                action(Approvals)
-                {
-                    ApplicationArea = Basic;
-                    Caption = 'Approvals';
-                    Image = Approval;
-                    Promoted = true;
-                    PromotedCategory = Category4;
-
-                    trigger OnAction()
-                    var
-                        ApprovalEntries: Page "Approval Entries";
-                    begin
-                        DocumentType := Documenttype::"Member Closure";
-                        ApprovalEntries.SetRecordFilters(Database::"HR Leave Register", DocumentType, Rec."No.");
-                        ApprovalEntries.Run;
-                    end;
-                }
+               
                 action("Print Cheque")
                 {
                     ApplicationArea = Basic;

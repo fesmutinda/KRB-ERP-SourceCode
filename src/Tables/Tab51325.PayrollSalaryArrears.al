@@ -6,7 +6,7 @@ Table 51325 "Payroll Salary Arrears."
     {
         field(10; "Employee Code"; Code[20])
         {
-            TableRelation = "HR Job Occupations";
+            TableRelation = "Payroll Employee.";
         }
         field(11; "Transaction Code"; Code[20])
         {

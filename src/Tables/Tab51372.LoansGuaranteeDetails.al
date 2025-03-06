@@ -36,12 +36,6 @@ Table 51372 "Loans Guarantee Details"
                     end;
                 end;
 
-                /*ObjWithApp.RESET;
-                ObjWithApp.SETRANGE(ObjWithApp."Member No.","Member No");
-                IF ObjWithApp.FINDSET=TRUE THEN BEGIN
-                 ERROR('The Member has a pending Withdrawal Application');
-                 END;*/
-
                 MemberCust.Reset;
                 MemberCust.SetRange(MemberCust."No.", "Member No");
                 if MemberCust.Find('-') then begin
@@ -65,16 +59,6 @@ Table 51372 "Loans Guarantee Details"
                 SelfGuaranteedA := 0;
                 Date := Date;
 
-                LoanApps.Reset;
-                LoanApps.SetRange(LoanApps."Client Code", "Member No");
-                LoanApps.SetRange(LoanApps."Loan Product Type", 'SUKUMA');
-                LoanApps.SetRange(LoanApps.Posted, true);
-                if LoanApps.Find('-') then begin
-                    repeat
-                        LoanApps.CalcFields(LoanApps."Outstanding Balance");
-                    until LoanApps.Next = 0;
-                end;
-
 
                 MemberCust.Reset;
                 MemberCust.SetRange(MemberCust."No.", "Member No");
@@ -92,22 +76,7 @@ Table 51372 "Loans Guarantee Details"
                     "Loan Balance" := Cust."Outstanding Balance";
                     Shares := Cust."Current Shares" * 1;
                     Amont := 0;
-                    //    IF Self THEN BEGIN
-                    //      Amont:=Shares-SwizzsoftFactory.FnGetMemberLiability("Member No");
-                    //    END ELSE BEGIN
-                    //      SelfGuaranteeAmount:=SwizzsoftFactory.FnGetMemberSelfLiability("Member No");
-                    //        IF SelfGuaranteeAmount<=0 THEN BEGIN
-                    //          Amont:=Shares*3-SwizzsoftFactory.FnGetMemberLiability("Member No");
-                    //          IF Amont>Shares THEN
-                    //            Amont:=Shares;
-                    //        END ELSE BEGIN
-                    //          Amont:=Shares-SwizzsoftFactory.FnGetMemberLiability("Member No");
-                    //          END;
-                    //    END;
-                    //    "Amont Guaranteed":="Amont Guaranteed";
-                    //
-                    //  "TotalLoan Guaranteed":=Cust.TLoansGuaranteed;
-                    //  "Free Shares":=(Shares*3)-"TotalLoan Guaranteed";
+                    
                     //***********************************************************************************************
                     "Free Shares" := 0;
                     if "Self Guarantee" = true then begin

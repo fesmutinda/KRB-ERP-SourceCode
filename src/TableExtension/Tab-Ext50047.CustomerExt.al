@@ -2050,7 +2050,7 @@ tableextension 50047 "CustomerExt" extends Customer
         }
         field(69397; "Employer Code3"; Code[10])
         {
-            TableRelation = "HR Asset Transfer Header";
+            // TableRelation = "HR Asset Transfer Header";
 
             trigger OnValidate()
             var

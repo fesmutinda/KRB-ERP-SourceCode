@@ -6,7 +6,7 @@ Table 51267 "prEmployee Transactions"
     {
         field(1; "Employee Code"; Code[30])
         {
-            TableRelation = "HR Employees"."No.";
+            TableRelation = "Payroll Employee."."No.";
         }
         field(2; "Transaction Code"; Code[30])
         {
@@ -102,7 +102,7 @@ Table 51267 "prEmployee Transactions"
         }
         field(26; "Emp Count"; Integer)
         {
-            CalcFormula = count("HR Employees" where("No." = field("Employee Code"),
+            CalcFormula = count("Payroll Employee." where("No." = field("Employee Code"),
                                                       Status = filter(Active)));
             FieldClass = FlowField;
         }
@@ -112,7 +112,7 @@ Table 51267 "prEmployee Transactions"
         }
         field(28; "Emp Status"; Option)
         {
-            CalcFormula = lookup("HR Employees".Status where("No." = field("Employee Code")));
+            CalcFormula = lookup("Payroll Employee.".Status where("No." = field("Employee Code")));
             FieldClass = FlowField;
             OptionCaption = 'Normal,Resigned,Discharged,Retrenched,Pension,Disabled';
             OptionMembers = Normal,Resigned,Discharged,Retrenched,Pension,Disabled;
@@ -147,7 +147,7 @@ Table 51267 "prEmployee Transactions"
         blnIsLoan: Boolean;
         objEmpTrans: Record "prEmployee Transactions";
         transType: Text[30];
-        objOcx: Codeunit prPayrollProcessingXX;
+        // objOcx: Codeunit prPayrollProcessingXX;
         strExtractedFrml: Text[30];
         curTransAmount: Decimal;
         empCode: Text[30];

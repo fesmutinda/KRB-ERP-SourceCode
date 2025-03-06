@@ -2,8 +2,8 @@
 Table 51340 "prTransaction Codes"
 {
     DataCaptionFields = "Transaction Name";
-    DrillDownPageID = "HR Leave Types Card";
-    LookupPageID = "HR Leave Types Card";
+    // DrillDownPageID = "HR Leave Types Card";
+    // LookupPageID = "HR Leave Types Card";
 
     fields
     {
@@ -171,7 +171,7 @@ Table 51340 "prTransaction Codes"
 
     procedure TestNoEntriesExist(CurrentFieldName: Text[100])
     var
-        PeriodTrans: Record "prPension Details";
+        // PeriodTrans: Record "prPension Details";
     begin
         /*
           //To prevent change of field

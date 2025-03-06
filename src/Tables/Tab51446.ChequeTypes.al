@@ -56,7 +56,7 @@ Table 51446 "Cheque Types"
         }
         field(14; "Clearing Charge Code"; Code[20])
         {
-            TableRelation = "HR E-Mail Parameters";
+            // TableRelation = "HR E-Mail Parameters";
         }
         field(15; Type; Option)
         {

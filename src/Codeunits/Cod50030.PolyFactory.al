@@ -2013,13 +2013,13 @@ Codeunit 50030 "Poly Factory"
 
     procedure KnAccrueLeaveDays()
     var
-        HRSetup: Record 51181;
-        LeaveGjline: Record 51228;
-        HREmailParameters: Record 51208;
-        HRLeavePeriods: Record 51189;
-        HRJournalBatch: Record 51188;
-        HRLeaveEntries: Record 51227;
-        HREmp: Record 51160;
+        // HRSetup: Record 51181;
+        // LeaveGjline: Record 51228;
+        // HREmailParameters: Record 51208;
+        // HRLeavePeriods: Record 51189;
+        // HRJournalBatch: Record 51188;
+        // HRLeaveEntries: Record 51227;
+        // HREmp: Record 51160;
         LineNo: Integer;
     begin
         /*HRSetup.RESET;
@@ -2179,11 +2179,11 @@ Codeunit 50030 "Poly Factory"
 
     procedure KnNotifyExpiringInsuranceScheme()
     var
-        ObjMedicalSchemeMembers: Record 51285;
+        // ObjMedicalSchemeMembers: Record 51285;
         Date: Date;
         // SMTPSetup: Record "SMTP Mail Setup";
         iEntryNo: Integer;
-        HRSetup: Record 51181;
+        // HRSetup: Record 51181;
         // SMTPMail: Codeunit "SMTP Mail";
         EmailMessage: Text;
     begin
@@ -2548,7 +2548,7 @@ Codeunit 50030 "Poly Factory"
 
     procedure FnSendEmail(EmpCode: Code[20]; TrainigSubject: Text)
     var
-        HrEmployee: Record 51160;
+        // HrEmployee: Record 51160;
         // SMTPMail: Codeunit "SMTP Mail";
         // SMTPSetup: Record "SMTP Mail Setup";
         FileName: Text[100];
