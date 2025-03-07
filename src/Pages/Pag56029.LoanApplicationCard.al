@@ -390,8 +390,7 @@ Page 56029 "Loan Application Card"
             {
                 Caption = 'Loan';
                 Image = AnalysisView;
-
-                action("Loan Appraisal")
+                action("Loan Appraisal Edit")
                 {
                     ApplicationArea = Basic;
                     Caption = 'Loan Appraisal';
@@ -399,16 +398,44 @@ Page 56029 "Loan Application Card"
                     Image = Aging;
                     Promoted = true;
                     PromotedCategory = Process;
+                    PromotedIsBig = true;
+                    PromotedOnly = true;
 
                     trigger OnAction()
+                    var
+                        LoanApp: Record "Loans Register";
+                        EntryNos: Integer;
+                        Audit: Record "Audit Entries";
                     begin
+                        //Audit Entries
+                        if (UserId <> '') then begin
+                            EntryNos := 0;
+                            if Audit.FindLast then
+                                EntryNos := 1 + Audit."Entry No";
+                            Audit.Init;
+                            Audit."Entry No" := EntryNos;
+                            Audit."Transaction Type" := 'Loan Appraisal';
+                            Audit."Loan Number" := Rec."Loan  No.";
+                            Audit."Document Number" := Rec."Loan  No.";
+                            Audit.UsersId := UserId;
+                            Audit.Amount := Rec."Requested Amount";
+                            Audit.Date := Today;
+                            Audit.Time := Time;
+                            Audit.Source := 'LOAN APPLICATION';
+                            Audit.Insert;
+                            Commit;
+                        end;
+                        //End Audit Entries
+
                         LoanApp.Reset;
                         LoanApp.SetRange(LoanApp."Loan  No.", Rec."Loan  No.");
                         if LoanApp.Find('-') then begin
-                            Report.Run(50244, true, false, LoanApp);
+                            Report.Run(56384, true, false, LoanApp);
                         end;
+
                     end;
                 }
+
                 action("Send Approvals")
                 {
                     Caption = 'Send For Approval';
@@ -430,6 +457,7 @@ Page 56029 "Loan Application Card"
                             exit;
                         end else begin
                             SrestepApprovalsCodeUnit.SendLoanApplicationsRequestForApproval(rec."Loan  No.", Rec);
+                            Rec."Approval Status" := Rec."Approval Status"::Pending;
                             FnSendLoanApprovalNotifications();
                             CurrPage.close();
                         end;

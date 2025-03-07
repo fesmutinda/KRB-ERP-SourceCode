@@ -257,6 +257,7 @@ Page 56128 "Loans Pending Approval"
                 Caption = 'Other Securities';
                 SubPageLink = "Loan No" = field("Loan  No.");
                 Editable = MNoEditable;
+                Visible = false;
             }
             part(Control1000000002; "Loan Appraisal Salary Details")
             {
@@ -264,6 +265,7 @@ Page 56128 "Loans Pending Approval"
                 Editable = MNoEditable;
                 SubPageLink = "Loan No" = field("Loan  No."),
                               "Client Code" = field("Client Code");
+                Visible = false;
             }
 
         }
