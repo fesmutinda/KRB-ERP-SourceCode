@@ -243,7 +243,7 @@ page 57006 "KRB Checkoff Card"
                             dialogBox.Open('Processing deposit contribution for ' + Format(RcptBufLines."Member No") + '...');
 
                             FnInsertDepositContribution(Jtemplate, Jbatch,
-                            RcptBufLines."Member No", RcptBufLines."Receipt Header No",
+                            RcptBufLines."Member No", Rec."Document No",
                             'Deposits KRB Checkoff',
                             RcptBufLines."Co-op - Shares");
 
@@ -281,7 +281,7 @@ page 57006 "KRB Checkoff Card"
                             dialogBox.Open('Processing Children Savings for ' + Format(RcptBufLines."Member No") + '...');
 
                             FnInsertChildrenSavings(Jtemplate, Jbatch,
-                            RcptBufLines."Member No", RcptBufLines."Receipt Header No",
+                            RcptBufLines."Member No", Rec."Document No",
                             'Children Savings KRB Checkoff',
                             RcptBufLines."Childrens Savings");
 
@@ -290,7 +290,7 @@ page 57006 "KRB Checkoff Card"
                             dialogBox.Open('Processing Withdrawable Savings for ' + Format(RcptBufLines."Member No") + '...');
 
                             FnInsertWithdrawableSavings(Jtemplate, Jbatch,
-                            RcptBufLines."Member No", RcptBufLines."Receipt Header No",
+                            RcptBufLines."Member No", Rec."Document No",
                             'Withdrawable Savings Checkoff',
                             RcptBufLines."Withdrwable svgs");
 
@@ -304,7 +304,7 @@ page 57006 "KRB Checkoff Card"
                             dialogBox.Open('Processing Share Capital for ' + Format(RcptBufLines."Member No") + '...');
 
                             FnInsertShareCapital(Jtemplate, Jbatch,
-                            RcptBufLines."Member No", RcptBufLines."Receipt Header No",
+                            RcptBufLines."Member No", Rec."Document No",
                             'Share Capital KRB Checkoff',
                             RcptBufLines."Share cap");
 
@@ -314,7 +314,7 @@ page 57006 "KRB Checkoff Card"
                             dialogBox.Open('Processing Registration Fee for ' + Format(RcptBufLines."Member No") + '...');
 
                             FnInsertRegistrationFee(Jtemplate, Jbatch,
-                            RcptBufLines."Member No", RcptBufLines."Receipt Header No",
+                            RcptBufLines."Member No", Rec."Document No",
                             'Registration Fee KRB Checkoff',
                             RcptBufLines."Co-op - Shares");
 
@@ -370,25 +370,25 @@ page 57006 "KRB Checkoff Card"
                             // Process each transaction type one by one
                             if RcptBufLines."Co-op - Shares" <> 0 then
                                 FnInsertDepositContribution('TEMPLATE_NAME', 'BATCH_NAME',
-                                    RcptBufLines."Member No", RcptBufLines."Receipt Header No",
+                                    RcptBufLines."Member No", Rec."Document No",
                                     'Deposit Contribution KRB Employer Remittance',
                                     RcptBufLines."Co-op - Shares");
 
                             if RcptBufLines."Co-op - Devt Loan" <> 0 then
                                 FnInsertLoanRepayment('TEMPLATE_NAME', 'BATCH_NAME',
-                                    RcptBufLines."Member No", RcptBufLines."Receipt Header No",
+                                    RcptBufLines."Member No", Rec."Document No",
                                     'Development Loan Repayment',
                                     RcptBufLines."Co-op - Devt Loan");
 
                             if RcptBufLines.Flexi <> 0 then
                                 FnInsertLoanRepayment('TEMPLATE_NAME', 'BATCH_NAME',
-                                    RcptBufLines."Member No", RcptBufLines."Receipt Header No",
+                                    RcptBufLines."Member No", Rec."Document No",
                                     'Flexi Loan Repayment',
                                     RcptBufLines.Flexi);
 
                             if RcptBufLines."Muslim Loan" <> 0 then
                                 FnInsertLoanRepayment('TEMPLATE_NAME', 'BATCH_NAME',
-                                    RcptBufLines."Member No", RcptBufLines."Receipt Header No",
+                                    RcptBufLines."Member No", Rec."Document No",
                                     'Muslim Loan Repayment',
                                     RcptBufLines."Muslim Loan");
 
