@@ -3,7 +3,6 @@ page 50387 "Loans Guarantee Details"
 {
     PageType = ListPart;
     RefreshOnActivate = false;
-<<<<<<< HEAD
     InsertAllowed = true;
     DeleteAllowed = true;
     Editable = true;
