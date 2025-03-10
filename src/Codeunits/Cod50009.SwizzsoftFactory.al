@@ -200,7 +200,7 @@ Codeunit 50009 "Swizzsoft Factory"
 
         Commit;
     end;
-
+    //this calclates the loan schedule...
     procedure FnGenerateRepaymentSchedule(LoanNumber: Code[50]): Boolean
     var
         ObjLoans: Record "Loans Register";
@@ -333,7 +333,7 @@ Codeunit 50009 "Swizzsoft Factory"
 
                             ObjLoans.Repayment := VarLPrincipal + VarLInterest;
                             ObjLoans."Loan Principle Repayment" := VarLPrincipal;
-                            ObjLoans."Loan Interest Repayment" :=0;// VarLInterest;
+                            ObjLoans."Loan Interest Repayment" := 0;// VarLInterest;
                             ObjLoans.Modify;
                         end else begin
                             ObjLoans.TestField(ObjLoans.Installments);

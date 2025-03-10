@@ -20,6 +20,9 @@ Report 50244 "Loan Appraisal"
             column(CurrReport_PAGENO; CurrReport.PageNo)
             {
             }
+            column(Company_Picture; CompanyInfo.Picture)
+            {
+            }
             column(USERID; UserId)
             {
             }
@@ -31,13 +34,14 @@ Report 50244 "Loan Appraisal"
             }
             column(CompanyInfo__Phone_No__; CompanyInfo."Phone No.")
             {
-            } 
+            }
             column(CompanyInfo__E_Mail_; CompanyInfo."E-Mail")
             {
             }
             column(CompanyInfo_City; CompanyInfo.City)
             {
-            } column(CompanyInfo_Picture; CompanyInfo.Picture)
+            }
+            column(CompanyInfo_Picture; CompanyInfo.Picture)
             {
             }
             column(Loans__Application_Date_; "Application Date")
@@ -89,7 +93,7 @@ Report 50244 "Loan Appraisal"
             {
             }
             column(AmountRemainingAfterTopup; (LOANBALANCE - BRIGEDAMOUNT)) { }
-            column(LoanInsurance; LoanInsurance)
+            column(LoanInsurance; "Loans Register"."Loan Insurance")
             {
             }
             column(LoanProcessingFee; LoanProcessingFee)
@@ -1255,7 +1259,7 @@ Report 50244 "Loan Appraisal"
                     //LOAN Charges
 
                     LoanProcessingFee := SFactory.FnGetChargeFee("Loans Register"."Loan Product Type", "Loans Register"."Approved Amount", 'PROCESSING');
-                    LoanInsurance := SFactory.FnGetChargeFee("Loans Register"."Loan Product Type", "Loans Register"."Approved Amount", 'INSURANCE');
+                    // LoanInsurance := SFactory.FnGetChargeFee("Loans Register"."Loan Product Type", "Loans Register"."Approved Amount", 'INSURANCE');
 
                     Upfronts := LoanProcessingFee + LoanInsurance + LegalFee + DisbursementFee + "Deboost Commision" + "Deboost Amount" + ValuationFee + TopUpFee + TopUpComm + BRIGEDAMOUNT;
                     Netdisbursed := ("Approved Amount" - Upfronts);
@@ -1267,7 +1271,7 @@ Report 50244 "Loan Appraisal"
                         //"Loan Disbursed Amount" := Netdisbursed;
                         "Loan Processing Fee" := LoanProcessingFee;
                         "Loan Dirbusement Fee" := DisbursementFee;
-                        "Loan Insurance" := LoanInsurance;
+                        // "Loan Insurance" := LoanInsurance;
                         // "Net Amount" := Netdisbursed;
                         Appraised := true;
                         Modify;

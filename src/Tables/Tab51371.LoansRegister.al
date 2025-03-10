@@ -4920,6 +4920,16 @@ Table 51371 "Loans Register"
             Editable = false;
             FieldClass = FlowField;
         }
+        field(69268; "Net Utilizable"; Decimal)
+        {
+            // trigger OnValidate()
+            // begin
+            //     FnUpdateLoaneeSalaryDetails();
+            // end;
+        }
+        field(69269; "Loan Cash Clearance fees"; Decimal)
+        {
+        }
 
     }
 
