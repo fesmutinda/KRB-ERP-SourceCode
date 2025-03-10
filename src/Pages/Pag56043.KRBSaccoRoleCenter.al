@@ -1408,7 +1408,7 @@ Page 56043 "KRB Sacco Role Center"
                         Caption = 'KRB Employer Remittance';
                         Image = Setup;
                         RunObject = page "KRB Receipts List-Checkoff";
-                        Visible = true;
+                        Visible =false;// true;
                     }
                     action("Update Member Dormancy")
                     {
@@ -1443,10 +1443,14 @@ Page 56043 "KRB Sacco Role Center"
                     {
                         Caption = 'Checkoff Processing-Blocked';
                         action("Checkoff Processing List Blocked")
-                        {
-                            Caption = 'Employer Checkoff Remittance';
-                            Image = Setup;
-                            RunObject = page "Bosa Receipts H List-Checkoff";
+                        {Caption = 'KRB Employer Remittance';
+                        Image = Setup;
+                        RunObject = page "KRB Receipts List-Checkoff";
+                        Visible = true;
+
+                            // Caption = 'Employer Checkoff Remittance';
+                            // Image = Setup;
+                            // RunObject = page "Bosa Receipts H List-Checkoff";
                         }
                         action("Posted Employer Checkoff Remittance")
                         {
@@ -1464,9 +1468,11 @@ Page 56043 "KRB Sacco Role Center"
                     }
                     group(CheckOffAdvice)
                     {
+                        // Visible = false;
                         Caption = 'Check-Off Advice';
                         action("Check off Adivice-Breakdown")
                         {
+                            Visible = false;
                             Image = Setup;
                             RunObject = report "Check Off Advice";
                         }
