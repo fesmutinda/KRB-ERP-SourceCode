@@ -615,8 +615,8 @@ Table 51441 Transactions
                 Cust.SetRange(Cust."No.", "BOSA Account No");
                 if Cust.Find('-') then begin
                     Payee := Cust.Name;
-                    "Reference No" := Cust."Personal No";
-                    "Staff/Payroll No" := Cust."Personal No";
+                    "Reference No" := Cust."Payroll/Staff No";
+                    "Staff/Payroll No" := Cust."Payroll/Staff No";
                     "ID No" := Cust."ID No.";
 
                 end;

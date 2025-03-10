@@ -26,7 +26,7 @@ Table 51399 "Sacco No. Series"
 
             end;
         }
-        field(4; "BOSA Loans Nos"; Code[10])
+        field(4; "BOSA Loans Nos"; Code[20])
         {
             TableRelation = "No. Series";
 

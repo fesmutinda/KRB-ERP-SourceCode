@@ -56,12 +56,19 @@ page 57006 "KRB Checkoff Card"
                 }
                 field("Account Type"; Rec."Account Type")
                 {
+                    Editable = false;
                     ApplicationArea = Basic;
+                    Visible = false;
                 }
                 field("Account No"; Rec."Account No")
                 {
-
+                    Caption = 'Receiving Bank';
                     ApplicationArea = Basic;
+                }
+                field("Account Name"; Rec."Account Name")
+                {
+                    ApplicationArea = Basic;
+                    Editable = false;
                 }
                 field("Employer Code"; Rec."Employer Code")
                 {
@@ -80,6 +87,7 @@ page 57006 "KRB Checkoff Card"
 
                 field(Amount; Rec.Amount)
                 {
+                    Caption = 'Cheque Amount';
                     ApplicationArea = Basic;
                 }
                 field("Scheduled Amount"; Rec."Scheduled Amount")
@@ -101,18 +109,18 @@ page 57006 "KRB Checkoff Card"
     {
         area(processing)
         {
+            group(ActionGroup1102755021)
+            {
+            }
             action(ImportItems)
             {
-                Caption = 'Import Items';
+                Caption = 'Import CheckOff';
                 Promoted = true;
                 PromotedCategory = Process;
                 Image = Import;
                 ApplicationArea = All;
 
                 RunObject = xmlport "KRB Checkoff Import";
-            }
-            group(ActionGroup1102755021)
-            {
             }
             group(ActionGroup1102755019)
             {
@@ -134,7 +142,7 @@ page 57006 "KRB Checkoff Card"
                         repeat
 
                             Memb.Reset;
-                            Memb.SetRange(Memb."No.", RcptBufLines."Staff/Payroll No");
+                            Memb.SetRange(Memb."Payroll/Staff No", RcptBufLines."Staff/Payroll No");
                             //Memb.SETRANGE(Memb."Employer Code",RcptBufLines."Employer Code");
                             if Memb.Find('-') then begin
 
@@ -166,7 +174,7 @@ page 57006 "KRB Checkoff Card"
                     GenBatch: Record "Gen. Journal Batch";
                     dialogBox: Dialog;
                 begin
-
+                    Rec.SetRange(Rec.No);
                     genstup.Get();
                     if Rec.Posted = true then
                         Error('This Check Off has already been posted');
@@ -208,7 +216,7 @@ page 57006 "KRB Checkoff Card"
                     Gnljnline."Journal Template Name" := Jtemplate;
                     Gnljnline."Journal Batch Name" := Jbatch;
                     Gnljnline."Line No." := LineN;
-                    Gnljnline."Account Type" := Rec."Account Type";
+                    Gnljnline."Account Type" := Gnljnline."Account Type"::"Bank Account";// Rec."Account Type";
                     Gnljnline."Account No." := Rec."Account No";
                     Gnljnline.Validate(Gnljnline."Account No.");
                     Gnljnline."Document No." := Rec."Document No";
@@ -230,13 +238,13 @@ page 57006 "KRB Checkoff Card"
                     RcptBufLines.SetRange(RcptBufLines.Posted, false);
                     if RcptBufLines.Find('-') then begin
                         repeat
-                            LineN := 10000;
+                            LineN := LineN + 10000;
                             //Co_op_Shares;
                             dialogBox.Open('Processing deposit contribution for ' + Format(RcptBufLines."Member No") + '...');
 
                             FnInsertDepositContribution(Jtemplate, Jbatch,
                             RcptBufLines."Member No", RcptBufLines."Receipt Header No",
-                            'Deposit Contribution KRB Employer Remittance',
+                            'Deposits KRB Checkoff',
                             RcptBufLines."Co-op - Shares");
 
                             dialogBox.Close();
@@ -274,7 +282,7 @@ page 57006 "KRB Checkoff Card"
 
                             FnInsertChildrenSavings(Jtemplate, Jbatch,
                             RcptBufLines."Member No", RcptBufLines."Receipt Header No",
-                            'Children Savings KRB Employer Remittance',
+                            'Children Savings KRB Checkoff',
                             RcptBufLines."Childrens Savings");
 
                             dialogBox.Close();
@@ -283,7 +291,7 @@ page 57006 "KRB Checkoff Card"
 
                             FnInsertWithdrawableSavings(Jtemplate, Jbatch,
                             RcptBufLines."Member No", RcptBufLines."Receipt Header No",
-                            'Withdrawable Savings KRB Employer Remittance',
+                            'Withdrawable Savings Checkoff',
                             RcptBufLines."Withdrwable svgs");
 
                             dialogBox.Close();
@@ -297,7 +305,7 @@ page 57006 "KRB Checkoff Card"
 
                             FnInsertShareCapital(Jtemplate, Jbatch,
                             RcptBufLines."Member No", RcptBufLines."Receipt Header No",
-                            'Share Capital KRB Employer Remittance',
+                            'Share Capital KRB Checkoff',
                             RcptBufLines."Share cap");
 
                             dialogBox.Close();
@@ -307,7 +315,7 @@ page 57006 "KRB Checkoff Card"
 
                             FnInsertRegistrationFee(Jtemplate, Jbatch,
                             RcptBufLines."Member No", RcptBufLines."Receipt Header No",
-                            'Registration Fee KRB Employer Remittance',
+                            'Registration Fee KRB Checkoff',
                             RcptBufLines."Co-op - Shares");
 
                             dialogBox.Close();
@@ -320,22 +328,19 @@ page 57006 "KRB Checkoff Card"
                     end;
 
                     //Post control
-
-                    Message('CheckOff Successfully Generated');
-
-
                     Gnljnline.Reset;
                     Gnljnline.SetRange("Journal Template Name", Jtemplate);
                     Gnljnline.SetRange("Journal Batch Name", Jbatch);
                     if Gnljnline.Find('-') then
                         Page.Run(page::"General Journal", Gnljnline);
 
-
+                    Message('CheckOff Successfully Generated');
                 end;
             }
 
             action(ProcessCheckoffLines)
             {
+                Visible = false;
                 ApplicationArea = Basic;
                 Caption = 'Process Checkoff Lines';
                 Image = Post;
@@ -434,7 +439,7 @@ page 57006 "KRB Checkoff Card"
         DocNo: Code[20];
         RunBal: Decimal;
         ReceiptsProcessingLines: Record "KRB CheckoffLines";
-        LineNo: Integer;
+        // LineNo: Integer;
         LBatches: Record "Loan Disburesment-Batching";
         Jtemplate: Code[30];
         JBatch: Code[30];
@@ -493,7 +498,7 @@ page 57006 "KRB Checkoff Card"
         Gnljnline."Document No." := documentNo;
         Gnljnline."Posting Date" := Today;
         Gnljnline.Description := transDescription;
-        Gnljnline.Amount := transAmount;
+        Gnljnline.Amount := transAmount * -1;
         Gnljnline.Validate(Gnljnline.Amount);
         Gnljnline."Transaction Type" := Gnljnline."transaction type"::"Deposit Contribution";
         Gnljnline."Shortcut Dimension 1 Code" := 'BOSA';
@@ -505,7 +510,7 @@ page 57006 "KRB Checkoff Card"
     end;
 
     local procedure FnInsertShareCapital(Jtemplate: Code[30]; Jbatch: code[30]; memberNo: Code[15]; documentNo: code[30];
-transDescription: Code[30]; transAmount: Decimal): Code[50]
+        transDescription: Code[30]; transAmount: Decimal): Code[50]
     var
     begin
         LineN := LineN + 10000;
@@ -519,7 +524,7 @@ transDescription: Code[30]; transAmount: Decimal): Code[50]
         Gnljnline."Document No." := documentNo;
         Gnljnline."Posting Date" := Today;
         Gnljnline.Description := transDescription;
-        Gnljnline.Amount := transAmount;
+        Gnljnline.Amount := transAmount * -1;
         Gnljnline.Validate(Gnljnline.Amount);
         Gnljnline."Transaction Type" := Gnljnline."transaction type"::"Share Capital";
         Gnljnline."Shortcut Dimension 1 Code" := 'BOSA';
@@ -545,7 +550,7 @@ transDescription: Code[30]; transAmount: Decimal): Code[50]
         Gnljnline."Document No." := documentNo;
         Gnljnline."Posting Date" := Today;
         Gnljnline.Description := transDescription;
-        Gnljnline.Amount := transAmount;
+        Gnljnline.Amount := transAmount * -1;
         Gnljnline.Validate(Gnljnline.Amount);
         Gnljnline."Transaction Type" := Gnljnline."transaction type"::"Withdrawable Savings";
         Gnljnline."Shortcut Dimension 1 Code" := 'BOSA';
@@ -571,7 +576,7 @@ transDescription: Code[30]; transAmount: Decimal): Code[50]
         Gnljnline."Document No." := documentNo;
         Gnljnline."Posting Date" := Today;
         Gnljnline.Description := transDescription;
-        Gnljnline.Amount := transAmount;
+        Gnljnline.Amount := transAmount * -1;
         Gnljnline.Validate(Gnljnline.Amount);
         Gnljnline."Transaction Type" := Gnljnline."transaction type"::"Junior Savings";
         Gnljnline."Shortcut Dimension 1 Code" := 'BOSA';
@@ -597,7 +602,7 @@ transDescription: Code[30]; transAmount: Decimal): Code[50]
         Gnljnline."Document No." := documentNo;
         Gnljnline."Posting Date" := Today;
         Gnljnline.Description := transDescription;
-        Gnljnline.Amount := transAmount;
+        Gnljnline.Amount := transAmount * -1;
         Gnljnline.Validate(Gnljnline.Amount);
         Gnljnline."Transaction Type" := Gnljnline."transaction type"::"Registration Fee";
         Gnljnline."Shortcut Dimension 1 Code" := 'BOSA';
@@ -608,7 +613,7 @@ transDescription: Code[30]; transAmount: Decimal): Code[50]
             Gnljnline.Insert();
     end;
 
-    local procedure FnInsertLoanRepayment(Jtemplate: Code[30]; Jbatch: Code[30]; memberNo: Code[15]; documentNo: Code[30];
+    local procedure FnInsertLoanRepayment(Jtemplate: Code[30]; Jbatch: Code[30]; memberNo: code[30]; documentNo: Code[30];
         transDescription: Code[50]; transAmount: Decimal)
     var
     begin
@@ -623,7 +628,7 @@ transDescription: Code[30]; transAmount: Decimal): Code[50]
         Gnljnline."Document No." := documentNo;
         Gnljnline."Posting Date" := Today;
         Gnljnline.Description := transDescription;
-        Gnljnline.Amount := transAmount;
+        Gnljnline.Amount := transAmount * -1;
         Gnljnline.Validate(Gnljnline.Amount);
         Gnljnline."Transaction Type" := Gnljnline."transaction type"::"Loan Repayment";
         Gnljnline."Shortcut Dimension 1 Code" := 'BOSA';
@@ -731,213 +736,6 @@ transDescription: Code[30]; transAmount: Decimal): Code[50]
         end;
     end;
 
-    local procedure FnRunEntranceFee(ObjRcptBuffer: Record "ReceiptsProcessing_L-Checkoff"; RunningBalance: Decimal): Decimal
-    var
-        varTotalRepay: Decimal;
-        varMultipleLoan: Decimal;
-        varLRepayment: Decimal;
-        ObjMember: Record Customer;
-        AmountToDeduct: Decimal;
-    begin
-        if RunningBalance > 0 then begin
-            ObjMember.Reset;
-            ObjMember.SetRange(ObjMember."No.", ObjRcptBuffer."Member No");
-            ObjMember.SetRange(ObjMember."Payroll/Staff No", ObjRcptBuffer."Staff/Payroll No");
-            ObjMember.SetRange(ObjMember."Employer Code", ObjRcptBuffer."Employer Code");
-            ObjMember.SetFilter(ObjMember."Registration Date", '>%1', 20230115D); //To Ensure deduction is for New Members Only
-            if ObjMember.Find('-') then begin
-                repeat
-                    ObjMember.CalcFields(ObjMember."Registration Fee Paid");
-                    if Abs(ObjMember."Registration Fee Paid") < 500 then begin
-                        if ObjMember."Registration Date" <> 0D then begin
-
-                            AmountToDeduct := 0;
-                            AmountToDeduct := genstup."Registration Fee" - Abs(ObjMember."Registration Fee Paid");
-                            if RunningBalance <= AmountToDeduct then
-                                AmountToDeduct := RunningBalance;
-
-                            LineN := LineN + 10000;
-                            Gnljnline.Init;
-                            Gnljnline."Journal Template Name" := Jtemplate;
-                            Gnljnline."Journal Batch Name" := Jbatch;
-                            Gnljnline."Line No." := LineN;
-                            Gnljnline."Account Type" := Gnljnline."account type"::Customer;
-                            Gnljnline."Account No." := RcptBufLines."Member No";
-                            Gnljnline.Validate(Gnljnline."Account No.");
-                            Gnljnline."Document No." := Rec."Document No";
-                            Gnljnline."Posting Date" := Rec."Posting date";
-                            Gnljnline.Description := 'Registration Fee ' + Rec.Remarks;
-                            Gnljnline.Amount := AmountToDeduct * -1;
-                            Gnljnline."Transaction Type" := Gnljnline."transaction type"::"Registration Fee";
-                            Gnljnline."Shortcut Dimension 1 Code" := 'BOSA';
-                            Gnljnline."Shortcut Dimension 2 Code" := ObjMember."Global Dimension 2 Code";
-                            Gnljnline.Validate(Gnljnline."Shortcut Dimension 1 Code");
-                            Gnljnline.Validate(Gnljnline."Shortcut Dimension 2 Code");
-                            Gnljnline.Validate(Gnljnline.Amount);
-                            if Gnljnline.Amount <> 0 then
-                                Gnljnline.Insert;
-                            RunningBalance := RunningBalance - Abs(Gnljnline.Amount);
-                        end;
-                    end;
-                until Cust.Next = 0;
-            end;
-            exit(RunningBalance);
-        end;
-    end;
-
-    local procedure FnRunShareCapital(ObjRcptBuffer: Record "ReceiptsProcessing_L-Checkoff"; RunningBalance: Decimal): Decimal
-    var
-        varTotalRepay: Decimal;
-        varMultipleLoan: Decimal;
-        varLRepayment: Decimal;
-        ObjMember: Record Customer;
-        AmountToDeduct: Decimal;
-    begin
-        if RunningBalance > 0 then begin
-            ObjMember.Reset;
-            ObjMember.SetRange(ObjMember."No.", ObjRcptBuffer."Member No");
-            // ObjMember.SETRANGE(ObjMember."Employer Code",ObjRcptBuffer."Employer Code");
-            ObjMember.SetRange(ObjMember."Customer Type", ObjMember."customer type"::Member);
-            if ObjMember.Find('-') then begin
-                //REPEAT Deducted once unless otherwise advised
-                ObjMember.CalcFields(ObjMember."Shares Retained");
-                // if ObjMember."Shares Retained" < genstup."Retained Shares" then begin
-                //     SHARESCAP := genstup."Retained Shares";
-                DIFF := ObjMember."Monthly ShareCap Cont.";
-
-                if DIFF > 1 then begin
-                    if RunningBalance > 0 then begin
-                        AmountToDeduct := 0;
-                        AmountToDeduct := DIFF;
-                        // if DIFF > 500 then
-                        //     AmountToDeduct := 500;
-                        if RunningBalance <= AmountToDeduct then
-                            AmountToDeduct := RunningBalance;
-
-                        LineN := LineN + 10000;
-                        Gnljnline.Init;
-                        Gnljnline."Journal Template Name" := Jtemplate;
-                        Gnljnline."Journal Batch Name" := Jbatch;
-                        Gnljnline."Line No." := LineN;
-                        Gnljnline."Account Type" := Gnljnline."account type"::Customer;
-                        Gnljnline."Account No." := ObjRcptBuffer."Member No";
-                        Gnljnline.Validate(Gnljnline."Account No.");
-                        Gnljnline."Document No." := Rec."Document No";
-                        Gnljnline."Posting Date" := Rec."Posting date";
-                        Gnljnline.Description := 'Share Capital';
-                        Gnljnline.Amount := AmountToDeduct * -1;
-                        Gnljnline.Validate(Gnljnline.Amount);
-                        Gnljnline."Transaction Type" := Gnljnline."transaction type"::"Share Capital";
-                        Gnljnline."Shortcut Dimension 1 Code" := 'BOSA';
-                        Gnljnline."Shortcut Dimension 2 Code" := ObjMember."Global Dimension 2 Code";
-                        Gnljnline.Validate(Gnljnline."Shortcut Dimension 1 Code");
-                        Gnljnline.Validate(Gnljnline."Shortcut Dimension 2 Code");
-                        if Gnljnline.Amount <> 0 then
-                            Gnljnline.Insert;
-                        RunningBalance := RunningBalance - Abs(Gnljnline.Amount);
-                    end;
-                end;
-                // end;
-                //UNTIL RcptBufLines.NEXT=0;
-            end;
-
-            exit(RunningBalance);
-        end;
-    end;
-
-    local procedure FnRunDepositContribution(ObjRcptBuffer: Record "ReceiptsProcessing_L-Checkoff"; RunningBalance: Decimal): Decimal
-    var
-        varTotalRepay: Decimal;
-        varMultipleLoan: Decimal;
-        varLRepayment: Decimal;
-        ObjMember: Record Customer;
-        AmountToDeduct: Decimal;
-    begin
-        if RunningBalance > 0 then begin
-            ObjMember.Reset;
-            ObjMember.SetRange(ObjMember."No.", ObjRcptBuffer."Member No");
-            //ObjMember.SETRANGE(ObjMember."Employer Code",ObjRcptBuffer."Employer Code");
-            ObjMember.SetRange(ObjMember."Customer Type", ObjMember."customer type"::Member);
-            if ObjMember.Find('-') then begin
-                AmountToDeduct := 0;
-                AmountToDeduct := (ObjMember."Monthly Contribution");
-                if RunningBalance <= AmountToDeduct then
-                    AmountToDeduct := RunningBalance;
-
-                LineN := LineN + 10000;
-                Gnljnline.Init;
-                Gnljnline."Journal Template Name" := Jtemplate;
-                Gnljnline."Journal Batch Name" := Jbatch;
-                Gnljnline."Line No." := LineN;
-                Gnljnline."Account Type" := Gnljnline."account type"::Customer;
-                Gnljnline."Account No." := ObjRcptBuffer."Member No";
-                Gnljnline.Validate(Gnljnline."Account No.");
-                Gnljnline."Document No." := Rec."Document No";
-                Gnljnline."Posting Date" := Rec."Posting date";
-                Gnljnline.Description := 'Deposits Contribution';
-                Gnljnline.Amount := AmountToDeduct * -1;
-                Gnljnline.Validate(Gnljnline.Amount);
-                Gnljnline."Transaction Type" := Gnljnline."transaction type"::"Deposit Contribution";
-                Gnljnline."Shortcut Dimension 1 Code" := 'BOSA';
-                Gnljnline."Shortcut Dimension 2 Code" := ObjMember."Global Dimension 2 Code";
-                Gnljnline.Validate(Gnljnline."Shortcut Dimension 1 Code");
-                Gnljnline.Validate(Gnljnline."Shortcut Dimension 2 Code");
-                if Gnljnline.Amount <> 0 then
-                    Gnljnline.Insert;
-                RunningBalance := RunningBalance - Abs(Gnljnline.Amount * -1);
-            end;
-
-            exit(RunningBalance);
-        end;
-    end;
-
-    local procedure FnRunHolidayContribution(ObjRcptBuffer: Record "ReceiptsProcessing_L-Checkoff"; RunningBalance: Decimal): Decimal
-    var
-        varTotalRepay: Decimal;
-        varMultipleLoan: Decimal;
-        varLRepayment: Decimal;
-        ObjMember: Record Customer;
-        AmountToDeduct: Decimal;
-    begin
-        if RunningBalance > 0 then begin
-            ObjMember.Reset;
-            ObjMember.SetRange(ObjMember."No.", ObjRcptBuffer."Member No");
-            //ObjMember.SETRANGE(ObjMember."Employer Code",ObjRcptBuffer."Employer Code");
-            ObjMember.SetRange(ObjMember."Customer Type", ObjMember."customer type"::Member);
-            if ObjMember.Find('-') then begin
-                AmountToDeduct := 0;
-                AmountToDeduct := (ObjMember."Likizo Contribution");
-                if RunningBalance <= AmountToDeduct then
-                    AmountToDeduct := RunningBalance;
-
-                LineN := LineN + 10000;
-                Gnljnline.Init;
-                Gnljnline."Journal Template Name" := Jtemplate;
-                Gnljnline."Journal Batch Name" := Jbatch;
-                Gnljnline."Line No." := LineN;
-                Gnljnline."Account Type" := Gnljnline."account type"::Customer;
-                Gnljnline."Account No." := ObjRcptBuffer."Member No";
-                Gnljnline.Validate(Gnljnline."Account No.");
-                Gnljnline."Document No." := Rec."Document No";
-                Gnljnline."Posting Date" := Rec."Posting date";
-                Gnljnline.Description := 'Withdrawable Savings';
-                Gnljnline.Amount := AmountToDeduct * -1;
-                Gnljnline.Validate(Gnljnline.Amount);
-                Gnljnline."Transaction Type" := Gnljnline."transaction type"::"Withdrawable Savings";
-                Gnljnline."Shortcut Dimension 1 Code" := 'BOSA';
-                Gnljnline."Shortcut Dimension 2 Code" := ObjMember."Global Dimension 2 Code";
-                Gnljnline.Validate(Gnljnline."Shortcut Dimension 1 Code");
-                Gnljnline.Validate(Gnljnline."Shortcut Dimension 2 Code");
-                if Gnljnline.Amount <> 0 then
-                    Gnljnline.Insert;
-                RunningBalance := RunningBalance - Abs(Gnljnline.Amount * -1);
-            end;
-
-            exit(RunningBalance);
-        end;
-    end;
-
-
     local procedure FnRecoverPrincipleFromExcess(ObjRcptBuffer: Record "ReceiptsProcessing_L-Checkoff"; RunningBalance: Decimal): Decimal
     var
         varTotalRepay: Decimal;
@@ -988,8 +786,6 @@ transDescription: Code[30]; transAmount: Decimal): Code[50]
             exit(RunningBalance);
         end;
     end;
-
-
 
     local procedure FnGetMemberBranch(MemberNo: Code[50]): Code[100]
     var
@@ -1045,114 +841,5 @@ transDescription: Code[30]; transAmount: Decimal): Code[50]
         end;
     end;
 
-    local procedure FnRecoverWelfare(ObjRcptBuffer: Record "ReceiptsProcessing_L-Checkoff"; RunningBalance: Decimal): Decimal
-    var
-        AmountToDeduct: Decimal;
-        ObjVendor: Record Vendor;
-    begin
-        if RunningBalance > 0 then begin
-            if Rec."Employer Code" = 'MMHSACCO' then begin
-                AmountToDeduct := RunningBalance;
-                if RunningBalance >= 200 then
-                    AmountToDeduct := 200;
-                TotalWelfareAmount := TotalWelfareAmount + AmountToDeduct;
-                RunningBalance := RunningBalance - Abs(AmountToDeduct);
-            end;
-            exit(RunningBalance);
-        end;
-    end;
 
-    local procedure FnRunAlphaContribution(ObjRcptBuffer: Record "ReceiptsProcessing_L-Checkoff"; RunningBalance: Decimal): Decimal
-    var
-        varTotalRepay: Decimal;
-        varMultipleLoan: Decimal;
-        varLRepayment: Decimal;
-        ObjMember: Record Customer;
-        AmountToDeduct: Decimal;
-    begin
-        if RunningBalance > 0 then begin
-            ObjMember.Reset;
-            ObjMember.SetRange(ObjMember."No.", ObjRcptBuffer."Member No");
-            //ObjMember.SETRANGE(ObjMember."Employer Code",ObjRcptBuffer."Employer Code");
-            ObjMember.SetRange(ObjMember."Customer Type", ObjMember."customer type"::Member);
-            if ObjMember.Find('-') then begin
-                AmountToDeduct := 0;
-                AmountToDeduct := (ObjMember."Alpha Savings");
-                if RunningBalance <= AmountToDeduct then
-                    AmountToDeduct := RunningBalance;
-
-                LineN := LineN + 10000;
-                Gnljnline.Init;
-                Gnljnline."Journal Template Name" := Jtemplate;
-                Gnljnline."Journal Batch Name" := Jbatch;
-                Gnljnline."Line No." := LineN;
-                Gnljnline."Account Type" := Gnljnline."account type"::Customer;
-                Gnljnline."Account No." := ObjRcptBuffer."Member No";
-                Gnljnline.Validate(Gnljnline."Account No.");
-                Gnljnline."Document No." := Rec."Document No";
-                Gnljnline."Posting Date" := Rec."Posting date";
-                Gnljnline.Description := 'Alpha Savings';
-                Gnljnline.Amount := AmountToDeduct * -1;
-                Gnljnline.Validate(Gnljnline.Amount);
-                Gnljnline."Transaction Type" := Gnljnline."transaction type"::Alpha_savings;
-                Gnljnline."Shortcut Dimension 1 Code" := 'BOSA';
-                Gnljnline."Shortcut Dimension 2 Code" := ObjMember."Global Dimension 2 Code";
-                Gnljnline.Validate(Gnljnline."Shortcut Dimension 1 Code");
-                Gnljnline.Validate(Gnljnline."Shortcut Dimension 2 Code");
-                if Gnljnline.Amount <> 0 then
-                    Gnljnline.Insert;
-                RunningBalance := RunningBalance - Abs(Gnljnline.Amount * -1);
-            end;
-
-            exit(RunningBalance);
-        end;
-    end;
-
-
-
-    local procedure FnRunjuniorContribution(ObjRcptBuffer: Record "ReceiptsProcessing_L-Checkoff"; RunningBalance: Decimal): Decimal
-    var
-        varTotalRepay: Decimal;
-        varMultipleLoan: Decimal;
-        varLRepayment: Decimal;
-        ObjMember: Record Customer;
-        AmountToDeduct: Decimal;
-    begin
-        if RunningBalance > 0 then begin
-            ObjMember.Reset;
-            ObjMember.SetRange(ObjMember."No.", ObjRcptBuffer."Member No");
-            //ObjMember.SETRANGE(ObjMember."Employer Code",ObjRcptBuffer."Employer Code");
-            ObjMember.SetRange(ObjMember."Customer Type", ObjMember."customer type"::Member);
-            if ObjMember.Find('-') then begin
-                AmountToDeduct := 0;
-                AmountToDeduct := (ObjMember."Alpha Savings");
-                if RunningBalance <= AmountToDeduct then
-                    AmountToDeduct := RunningBalance;
-
-                LineN := LineN + 10000;
-                Gnljnline.Init;
-                Gnljnline."Journal Template Name" := Jtemplate;
-                Gnljnline."Journal Batch Name" := Jbatch;
-                Gnljnline."Line No." := LineN;
-                Gnljnline."Account Type" := Gnljnline."account type"::Customer;
-                Gnljnline."Account No." := ObjRcptBuffer."Member No";
-                Gnljnline.Validate(Gnljnline."Account No.");
-                Gnljnline."Document No." := Rec."Document No";
-                Gnljnline."Posting Date" := Rec."Posting date";
-                Gnljnline.Description := 'Junior Savings';
-                Gnljnline.Amount := AmountToDeduct * -1;
-                Gnljnline.Validate(Gnljnline.Amount);
-                Gnljnline."Transaction Type" := Gnljnline."transaction type"::"Junior Savings";
-                Gnljnline."Shortcut Dimension 1 Code" := 'BOSA';
-                Gnljnline."Shortcut Dimension 2 Code" := ObjMember."Global Dimension 2 Code";
-                Gnljnline.Validate(Gnljnline."Shortcut Dimension 1 Code");
-                Gnljnline.Validate(Gnljnline."Shortcut Dimension 2 Code");
-                if Gnljnline.Amount <> 0 then
-                    Gnljnline.Insert;
-                RunningBalance := RunningBalance - Abs(Gnljnline.Amount * -1);
-            end;
-
-            exit(RunningBalance);
-        end;
-    end;
 }

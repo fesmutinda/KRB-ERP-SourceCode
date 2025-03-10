@@ -192,10 +192,10 @@ page 50654 "Checkoff Processing Headerx"
                     if ReceiptLine.Find('-') then begin
                         repeat
                             Memb.Reset;
-                            Memb.SetCurrentkey(Memb."Personal No");
+                            Memb.SetCurrentkey(Memb."Payroll/Staff No");
                             Memb.SetRange(Memb."Customer Type", Cust."customer type"::Member);
                             Memb.SetRange(Memb."Customer Posting Group", 'BOSA');
-                            Memb.SetRange("Personal No", ReceiptLine."Staff/Payroll No");
+                            Memb.SetRange("Payroll/Staff No", ReceiptLine."Staff/Payroll No");
                             if Memb.Find('-') then begin
                                 ReceiptLine."Account No." := Memb."No.";
                                 ReceiptLine."Account Name" := Memb.Name;

@@ -27,7 +27,7 @@ Table 51462 "Loan GuarantorsFOSA"
                     Members.CalcFields(Members."Current Shares");
                     //"Amount Guaranted":=Members."Current Shares";
                     Names := Members.Name;
-                    "Staff/Payroll No." := Members."Personal No";
+                    "Staff/Payroll No." := Members."Payroll/Staff No";
                     "Current Shares" := Members."Current Shares";
                     "Amount Guaranted" := Members."Current Shares";
                 end;

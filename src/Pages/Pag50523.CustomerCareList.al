@@ -36,7 +36,7 @@ page 50523 "Customer Care List"
                 {
                     ApplicationArea = Basic;
                 }
-                field("Personal No"; Rec."Personal No")
+                field("Payroll/Staff No"; Rec."Payroll/Staff No")
                 {
                     ApplicationArea = Basic;
                     Caption = 'Payroll No.';

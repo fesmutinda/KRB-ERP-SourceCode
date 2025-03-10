@@ -59,7 +59,7 @@ Table 51564 "Guarantorship Substitution L"
                 if Cust.Get("Member No") then begin
                     "Member Name" := Cust.Name;
                     "ID. NO" := Cust."ID No.";
-                    "Staff No" := Cust."Personal No";
+                    "Staff No" := Cust."Payroll/Staff No";
                 end;
             end;
         }

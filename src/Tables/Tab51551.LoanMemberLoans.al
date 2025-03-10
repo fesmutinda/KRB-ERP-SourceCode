@@ -38,7 +38,7 @@ Table 51551 "Loan Member Loans"
                         "Loan Type" := Loans."Loan Product Type";
                         if Cust.Get(Loans."Client Code") then begin
                             "Staff No" := Cust."ID No.";
-                            "Staff No" := Cust."Personal No";
+                            "Staff No" := Cust."Payroll/Staff No";
                         end;
 
                         "Approved Loan Amount" := Loans."Outstanding Balance";

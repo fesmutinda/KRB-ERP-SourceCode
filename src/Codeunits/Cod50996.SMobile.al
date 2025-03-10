@@ -486,8 +486,8 @@ Codeunit 50996 "S-Mobile"
                                     Cust."Customer Type" := Cust."customer type"::FOSA;
                                     Cust."Customer Posting Group" := 'MEMBER';
                                     Cust."FOSA Account No." := Vendor."No.";
-                                    if Cust."Personal No" <> '' then
-                                        Cust."Personal No" := Vendor."Personal No.";
+                                    if Cust."Payroll/Staff No" <> '' then
+                                        Cust."Payroll/Staff No" := Vendor."Personal No.";
                                     Cust."ID No." := Vendor."ID No.";
                                     Cust.Insert;
                                 end;

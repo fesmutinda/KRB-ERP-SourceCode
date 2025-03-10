@@ -220,7 +220,7 @@ page 50841 "Change Request Card"
                     Caption = 'Email(New Value)';
                     Editable = EmailEditable;
                 }
-                field("Personal No"; Rec."Personal No")
+                field("Payroll/Staff No"; Rec."Payroll/Staff No")
                 {
                     ApplicationArea = Basic;
                     Editable = false;
@@ -604,8 +604,8 @@ page 50841 "Change Request Card"
                             if Rec."ID No(New Value)" <> '' then
                                 Memb."ID No." := Rec."ID No(New Value)";
                             if Rec."Personal No(New Value)" <> '' then begin
-                                Memb."Personal No" := Rec."Personal No(New Value)";
-                                Memb.Validate("Personal No");
+                                Memb."Payroll/Staff No" := Rec."Personal No(New Value)";
+                                Memb.Validate("Payroll/Staff No");
                             end;
                             if Rec."City(New Value)" <> '' then
                                 Memb.City := Rec."City(New Value)";

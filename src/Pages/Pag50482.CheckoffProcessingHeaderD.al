@@ -257,7 +257,7 @@ page 50482 "Checkoff Processing Header-D"
 
                         repeat
                             Vend.Reset;
-                            Vend.SetRange("Personal No", ReceiptLine."Staff/Payroll No");
+                            Vend.SetRange("Payroll/Staff No", ReceiptLine."Staff/Payroll No");
                             if Vend.Find('-') then begin
                                 //MESSAGE('"Staff/Payroll No" %1',ReceiptLine."Staff/Payroll No");
 
@@ -822,7 +822,7 @@ page 50482 "Checkoff Processing Header-D"
         ObjMembersReg: Record Customer;
     begin
         ObjMembersReg.Reset;
-        // ObjMembersReg.SetRange(ObjMembersReg."Personal No", PayrollNo);
+        // ObjMembersReg.SetRange(ObjMembersReg."Payroll/Staff No", PayrollNo);
         // ObjMembersReg.SetRange(ObjMembersReg."Employer Code", EmployerCode);
         // if ObjMembersReg.Find('-') then begin
         //     MemberNo := ObjMembersReg."No.";

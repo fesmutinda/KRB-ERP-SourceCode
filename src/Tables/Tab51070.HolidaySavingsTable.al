@@ -33,7 +33,7 @@ Table 51070 "Holiday Savings Table"
         }
         field(7; "Payroll No"; Code[100])
         {
-            CalcFormula = lookup(Customer."Personal No" where("No." = field("Member No")));
+            CalcFormula = lookup(Customer."Payroll/Staff No" where("No." = field("Member No")));
             FieldClass = FlowField;
         }
     }

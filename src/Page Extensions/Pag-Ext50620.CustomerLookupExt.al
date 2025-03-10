@@ -9,7 +9,7 @@ pageextension 50620 "CustomerLookupExt" extends "Customer Lookup"
             {
 
             }
-            field("FOSA Account"; Rec."FOSA Account")
+            field("Payroll/Staff No"; Rec."Payroll/Staff No")
             {
 
             }

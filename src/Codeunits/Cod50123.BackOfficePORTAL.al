@@ -141,7 +141,7 @@ Codeunit 50123 BackOfficePORTAL
         sms := smsport + NewPassword;
 
         objMember.Reset;
-        objMember.SetRange(objMember."Personal No", MemberNo);
+        objMember.SetRange(objMember."Payroll/Staff No", MemberNo);
         objMember.SetRange(objMember."ID No.", idNo);
         if objMember.Find('-') then begin
 
@@ -170,7 +170,7 @@ Codeunit 50123 BackOfficePORTAL
             end
             else begin
                 objMember.Reset;
-                objMember.SetRange(objMember."Personal No", MemberNo);
+                objMember.SetRange(objMember."Payroll/Staff No", MemberNo);
                 objMember.SetRange(objMember."ID No.", idNo);
                 if objMember.Find('-') then begin
 
@@ -197,7 +197,7 @@ Codeunit 50123 BackOfficePORTAL
         begin
             MiniStmt := '';
             objMember.Reset;
-            objMember.SetRange("Personal No", MemberNo);
+            objMember.SetRange("Payroll/Staff No", MemberNo);
             //  Vendor.RESET;
             //  Vendor.SETRANGE("BOSA Account No",MemberNo);
             //  Vendor.SETRANGE("No.", Fosano);
@@ -250,7 +250,7 @@ Codeunit 50123 BackOfficePORTAL
     // begin
 
     //     objMember.Reset;
-    //     objMember.SetRange(objMember."Personal No", MemberNo);
+    //     objMember.SetRange(objMember."Payroll/Staff No", MemberNo);
 
 
     //     if objMember.Find('-') then begin
@@ -387,7 +387,7 @@ Codeunit 50123 BackOfficePORTAL
     //     Outputstream: OutStream;
     // begin
     //     objMember.Reset;
-    //     objMember.SetRange(objMember."Personal No", MemberNo);
+    //     objMember.SetRange(objMember."Payroll/Staff No", MemberNo);
     //     if objMember.Find('-') then begin
     //         objMember.SetFilter("Date Filter", filter);
     //         Filename := Path.GetTempPath() + Path.GetRandomFileName();
@@ -433,7 +433,7 @@ Codeunit 50123 BackOfficePORTAL
     // begin
 
     //     objMember.Reset;
-    //     objMember.SetRange(objMember."Personal No", MemberNo);
+    //     objMember.SetRange(objMember."Payroll/Staff No", MemberNo);
 
 
     //     if objMember.Find('-') then begin
@@ -523,7 +523,7 @@ Codeunit 50123 BackOfficePORTAL
     // begin
 
     //     objMember.Reset;
-    //     objMember.SetRange(objMember."Personal No", MemberNo);
+    //     objMember.SetRange(objMember."Payroll/Staff No", MemberNo);
 
 
     //     if objMember.Find('-') then begin
@@ -596,7 +596,7 @@ Codeunit 50123 BackOfficePORTAL
         sms := 'You have successfully updated your password.';
         updated := false;
         objMember.Reset;
-        objMember.SetRange(objMember."Personal No", memberNumber);
+        objMember.SetRange(objMember."Payroll/Staff No", memberNumber);
         objMember.SetRange(objMember.Password, currentPass);
         if objMember.Find('-') then
             objMember.Password := newPass;
@@ -612,7 +612,7 @@ Codeunit 50123 BackOfficePORTAL
     procedure fnTotalRepaidGraph(Mno: Code[10]; year: Code[10]) total: Decimal
     begin
         objMember.Reset;
-        objMember.SetRange("Personal No", Mno);
+        objMember.SetRange("Payroll/Staff No", Mno);
         if objMember.Find('-') then begin
 
             objMember.SetFilter("Date Filter", '0101' + year + '..1231' + year);
@@ -626,7 +626,7 @@ Codeunit 50123 BackOfficePORTAL
     procedure fnCurrentShareGraph(Mno: Code[10]; year: Code[10]) total: Decimal
     begin
         objMember.Reset;
-        objMember.SetRange("Personal No", Mno);
+        objMember.SetRange("Payroll/Staff No", Mno);
         if objMember.Find('-') then begin
 
             objMember.SetFilter("Date Filter", '0101' + year + '..1231' + year);
@@ -640,7 +640,7 @@ Codeunit 50123 BackOfficePORTAL
     procedure fnTotalDepositsGraph(Mno: Code[10]; year: Code[10]) total: Decimal
     begin
         objMember.Reset;
-        objMember.SetRange("Personal No", Mno);
+        objMember.SetRange("Payroll/Staff No", Mno);
         if objMember.Find('-') then begin
 
             objMember.SetFilter("Date Filter", '0101' + year + '..1231' + year);
@@ -721,7 +721,7 @@ Codeunit 50123 BackOfficePORTAL
                 glamount := 0;
 
                 objMember.Reset;
-                objMember.SetRange(objMember."Personal No", "Member No");
+                objMember.SetRange(objMember."Payroll/Staff No", "Member No");
                 if objMember.Find('-') then begin
                     objMember.CalcFields("Current Shares");
                     LoansGuaranteeDetails.Reset;
@@ -777,7 +777,7 @@ Codeunit 50123 BackOfficePORTAL
     procedure FnUpdateMonthlyContrib("Member No": Code[30]; "Updated Fig": Decimal)
     begin
         objMember.Reset;
-        objMember.SetRange(objMember."Personal No", "Member No");
+        objMember.SetRange(objMember."Payroll/Staff No", "Member No");
 
         if objMember.Find('-') then begin
             phoneNumber := objMember."Phone No.";
@@ -913,7 +913,7 @@ Codeunit 50123 BackOfficePORTAL
     //     //Filename2:=FILEPATHMEM+path;
 
     //     objMember.Reset;
-    //     objMember.SetRange(objMember."Personal No", MemberNo);
+    //     objMember.SetRange(objMember."Payroll/Staff No", MemberNo);
 
     //     Filename := Path.GetTempPath() + Path.GetRandomFileName();
     //     if objMember.Find('-') then begin
@@ -951,7 +951,7 @@ Codeunit 50123 BackOfficePORTAL
         if Exists(Filename) then
             Erase(Filename);
         objMember.Reset;
-        objMember.SetRange(objMember."Personal No", "Account No");
+        objMember.SetRange(objMember."Payroll/Staff No", "Account No");
 
         if objMember.Find('-') then begin
             Report.SaveAsPdf(51516354, Filename, objMember);
@@ -972,7 +972,7 @@ Codeunit 50123 BackOfficePORTAL
     //     Outputstream: OutStream;
     // begin
     //     objMember.Reset;
-    //     objMember.SetRange(objMember."Personal No", MemberNo);
+    //     objMember.SetRange(objMember."Payroll/Staff No", MemberNo);
     //     if objMember.Find('-') then begin
     //         objMember.SetFilter("Date Filter", filter);
     //         Filename := Path.GetTempPath() + Path.GetRandomFileName();
@@ -1007,7 +1007,7 @@ Codeunit 50123 BackOfficePORTAL
     procedure Fnlogin(username: Code[20]; password: Text) status: Boolean
     begin
         objMember.Reset;
-        objMember.SetRange(objMember."Personal No", username);
+        objMember.SetRange(objMember."Payroll/Staff No", username);
         objMember.SetRange(Password, password);
         if objMember.Find('-') then begin
             status := true;
@@ -1020,7 +1020,7 @@ Codeunit 50123 BackOfficePORTAL
     procedure FnmemberInfo(MemberNo: Code[20]) info: Text
     begin
         objMember.Reset;
-        objMember.SetRange(objMember."Personal No", MemberNo);
+        objMember.SetRange(objMember."Payroll/Staff No", MemberNo);
         if objMember.Find('-') then begin
             info := objMember."No." + '.' + ':' + objMember.Name + '.' + ':' + objMember."E-Mail" + '.' + ':' + Format(objMember.Status) + '.' + ':' + Format(objMember."Account Category") + '.' + ':' + objMember."Mobile Phone No"
             + '.' + ':' + objMember."ID No." + '.' + ':' + objMember."FOSA Account No.";
@@ -1041,7 +1041,7 @@ Codeunit 50123 BackOfficePORTAL
         FOSAbal: Text;
     begin
         objMember.Reset;
-        objMember.SetRange(objMember."Personal No", Memberno);
+        objMember.SetRange(objMember."Payroll/Staff No", Memberno);
 
         if objMember.Find('-') then begin
 
@@ -1060,7 +1060,7 @@ Codeunit 50123 BackOfficePORTAL
     procedure fnloaninfo(Memberno: Code[20]) info: Text
     begin
         objMember.Reset;
-        objMember.SetRange(objMember."Personal No", Memberno);
+        objMember.SetRange(objMember."Payroll/Staff No", Memberno);
         if objMember.Find('-') then begin
             objMember.CalcFields("Outstanding Balance");
             objMember.CalcFields("Outstanding Interest");
@@ -2318,7 +2318,7 @@ Codeunit 50123 BackOfficePORTAL
         faccount: Code[1024];
     begin
         objMember.Reset;
-        objMember.SetRange(objMember."Personal No", memberno);
+        objMember.SetRange(objMember."Payroll/Staff No", memberno);
         if objMember.Find('-') then
             objLoanRegister.Reset;
         objLoanRegister.SetRange(objLoanRegister."Staff No", memberno);
@@ -2410,7 +2410,7 @@ Codeunit 50123 BackOfficePORTAL
 
         updated := false;
         objMember.Reset;
-        objMember.SetRange(objMember."Personal No", MemberNo);
+        objMember.SetRange(objMember."Payroll/Staff No", MemberNo);
         objMember.SetRange(objMember.Password, OTP);
         if objMember.Find('-') then
             // objMember.Password:=NewPassword;
@@ -2430,7 +2430,7 @@ Codeunit 50123 BackOfficePORTAL
     begin
         sms := OTP + ' is your One Time Password. Please keep your password secret at all times.';
         objMember.Reset;
-        objMember.SetRange(objMember."Personal No", memberNo);
+        objMember.SetRange(objMember."Payroll/Staff No", memberNo);
         objMember.SetRange(objMember."ID No.", IDNo);
         if objMember.Find('-') then begin
             //objMember.INSERT(TRUE);

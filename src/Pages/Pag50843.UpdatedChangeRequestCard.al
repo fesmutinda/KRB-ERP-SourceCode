@@ -221,7 +221,7 @@ page 50843 "Updated Change Request Card"
                     Caption = 'Email(New Value)';
                     Editable = EmailEditable;
                 }
-                field("Personal No"; Rec."Personal No")
+                field("Payroll/Staff No"; Rec."Payroll/Staff No")
                 {
                     ApplicationArea = Basic;
                     Editable = false;
@@ -608,7 +608,7 @@ page 50843 "Updated Change Request Card"
                             Memb."E-Mail" := Rec."Email(New Value)";
                             Memb."Mobile Phone No" := Rec."Mobile No(New Value)";
                             Memb."ID No." := Rec."ID No(New Value)";
-                            Memb."Personal No" := Rec."Personal No(New Value)";
+                            Memb."Payroll/Staff No" := Rec."Personal No(New Value)";
                             Memb.City := Rec."City(New Value)";
                             Memb.Section := Rec."Section(New Value)";
                             Memb."Marital Status" := Rec."Marital Status(New Value)";

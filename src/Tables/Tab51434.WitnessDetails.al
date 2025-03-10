@@ -74,7 +74,7 @@ Table 51434 "Witness Details"
                     Names := ObjMembers.Name;
                     "Mobile No" := ObjMembers."Mobile Phone No";
                     "Date Of Birth" := ObjMembers."Date of Birth";
-                    "Staff/Payroll" := ObjMembers."Personal No";
+                    "Staff/Payroll" := ObjMembers."Payroll/Staff No";
                     "ID No." := ObjMembers."ID No.";
                 end;
             end;

@@ -37,7 +37,7 @@ Table 51550 "Loan Recovery Header"
                     Cust.CalcFields(Cust."Current Shares", "Shares Retained");
                     "Member Name" := Cust.Name;
                     //"FOSA Account No":=Cust."FOSA Account No.";
-                    "Personal No" := Cust."Personal No";
+                    "Payroll/Staff No" := Cust."Payroll/Staff No";
 
                     "Current Shares" := Cust."Current Shares";
 
@@ -107,7 +107,7 @@ Table 51550 "Loan Recovery Header"
         field(14; "Posted By"; Code[20])
         {
         }
-        field(15; "Personal No"; Code[100])
+        field(15; "Payroll/Staff No"; Code[100])
         {
         }
         field(16; "Recovery Type"; Option)

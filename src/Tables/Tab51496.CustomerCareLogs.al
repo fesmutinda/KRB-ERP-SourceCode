@@ -30,7 +30,7 @@ Table 51496 "Customer Care Logs"
                         Cust.CalcFields(Cust."Outstanding Balance", Cust."Current Shares", Cust."Insurance Fund", Cust."Un-allocated Funds",
                         Cust."Shares Retained");
                         "Member Name" := Cust.Name;
-                        "Payroll No" := Cust."Personal No";
+                        "Payroll No" := Cust."Payroll/Staff No";
                         "Loan Balance" := Cust."Outstanding Balance";
                         "Current Deposits" := Cust."Current Shares";
                         "ID No" := Cust."ID No.";

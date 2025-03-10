@@ -56,7 +56,7 @@ Table 51508 "Account Agent Details"
                     Names := CUST.Name;
                     "Mobile No." := CUST."Mobile Phone No";
                     "Date Of Birth" := CUST."Date of Birth";
-                    "Staff/Payroll" := CUST."Personal No";
+                    "Staff/Payroll" := CUST."Payroll/Staff No";
                     "ID No." := CUST."ID No.";
                     //Picture:=CUST.Picture;
                     //Signature:=CUST.Signature;

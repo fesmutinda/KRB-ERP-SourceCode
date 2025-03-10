@@ -62,7 +62,7 @@ Table 51654 "Checkoff Lines-Distributed2"
                 Cust.SetRange(Cust."No.", "Member No.");
                 if Cust.Find('-') then begin
                     Name := Cust.Name;
-                    "Staff/Payroll No" := Cust."Personal No";
+                    "Staff/Payroll No" := Cust."Payroll/Staff No";
                 end;
             end;
         }

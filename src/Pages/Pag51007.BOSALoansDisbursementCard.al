@@ -34,6 +34,7 @@ Page 51007 "BOSA Loans Disbursement Card"
                     ApplicationArea = Basic;
                     Editable = AccountNoEditable;
                     Style = StrongAccent;
+                    Visible = false;
                 }
                 field("Client Name"; Rec."Client Name")
                 {
@@ -246,6 +247,32 @@ Page 51007 "BOSA Loans Disbursement Card"
                     Editable = false;
                 }
             }
+            group("Bank Details")
+            {
+                field("Bank Code"; Rec."Bank Code")
+                {
+                    ApplicationArea = Basic;
+                    Caption = 'Bank Code';
+                    ShowMandatory = true;
+                    NotBlank = true;
+                }
+                field("Bank Name"; Rec."Bank Name")
+                {
+                    ApplicationArea = Basic;
+                    Caption = 'Bank Name';
+                    Editable = false;
+                }
+                field("Bank Branch"; Rec."Bank Branch")
+                {
+                    ApplicationArea = Basic;
+                    Editable = false;
+                }
+                field("Bank Account No"; Rec."Bank Account")
+                {
+                    ApplicationArea = Basic;
+                }
+            }
+
             part(Control1000000004; "Loans Guarantee Details")
             {
                 Caption = 'Guarantors  Detail';

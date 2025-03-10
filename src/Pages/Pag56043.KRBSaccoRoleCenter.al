@@ -1362,10 +1362,7 @@ Page 56043 "KRB Sacco Role Center"
 
                 }
 
-
                 //.......................................End of Defaulter Management .................................
-
-
 
                 //...............................................Start of BOSA Reports.........................
                 group("BOSA Reports")
@@ -1403,9 +1400,7 @@ Page 56043 "KRB Sacco Role Center"
                 }
                 //.....................................End Of BOSA
 
-
                 //..............................................................................................
-
                 group(BOSAPeriodicActivities)
                 {
                     Caption = 'Periodic Activities';

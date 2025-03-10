@@ -109,7 +109,7 @@ Table 51413 "Paybill Processing Lines"
                 memb.Reset;
                 memb.SetRange(memb."No.", "Member No");
                 if memb.Find('-') then begin
-                    "Staff/Payroll No" := memb."Personal No";
+                    "Staff/Payroll No" := memb."Payroll/Staff No";
                     "ID No." := memb."ID No.";
                     Name := memb.Name;
                     "Employer Code" := memb."Employer Code";

@@ -132,6 +132,7 @@ Page 56029 "Loan Application Card"
                 }
                 field("Deboost Loan"; Rec."Deboost Loan Applied")
                 {
+                    Visible = false;
                     ApplicationArea = all;
                     trigger OnValidate()
                     var
@@ -161,12 +162,14 @@ Page 56029 "Loan Application Card"
                 }
                 field("Deboost Amount"; Rec."Deboost Amount")
                 {
+                    Visible = false;
                     ApplicationArea = all;
                     Editable = true;
 
                 }
                 field("Deboost Commision"; Rec."Deboost Commision")
                 {
+                    Visible = false;
                     ApplicationArea = all;
                     Editable = true;
                 }
@@ -178,7 +181,6 @@ Page 56029 "Loan Application Card"
                     Editable = false;
                     ShowMandatory = true;
                     Visible = false;
-
 
                     trigger OnValidate()
                     begin
@@ -338,6 +340,32 @@ Page 56029 "Loan Application Card"
                 {
                     ApplicationArea = Basic;
                     Editable = false;
+                }
+            }
+            group("Bank Details")
+            {
+
+                field("Bank Code"; Rec."Bank Code")
+                {
+                    ApplicationArea = Basic;
+                    Caption = 'Bank Code';
+                    ShowMandatory = true;
+                    NotBlank = true;
+                }
+                field("Bank Name"; Rec."Bank Name")
+                {
+                    ApplicationArea = Basic;
+                    Caption = 'Bank Name';
+                    Editable = false;
+                }
+                field("Bank Branch"; Rec."Bank Branch")
+                {
+                    ApplicationArea = Basic;
+                    Editable = false;
+                }
+                field("Bank Account No"; Rec."Bank Account")
+                {
+                    ApplicationArea = Basic;
                 }
             }
             part(Control1000000003; "Loans CheckRisk List")

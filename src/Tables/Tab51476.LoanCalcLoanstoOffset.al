@@ -36,7 +36,7 @@ Table 51476 "Loan Calc. Loans to Offset"
                         "Loan Type" := Loans."Loan Product Type";
                         if Cust.Get(Loans."Client Code") then begin
                             "ID. NO" := Cust."ID No.";
-                            "Staff No" := Cust."Personal No";
+                            "Staff No" := Cust."Payroll/Staff No";
                         end;
 
                         "Principle Top Up" := Loans."Outstanding Balance";
