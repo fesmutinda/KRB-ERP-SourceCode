@@ -2,10 +2,10 @@
 page 50406 "Posted Bosa Rcpt List-Checkof"
 {
     ApplicationArea = Basic;
-    CardPageID = "PostedBosa Rcpt HCard-Checkof";
+    CardPageID = "Posted KRB Checkoff";
     Editable = false;
     PageType = List;
-    SourceTable = "ReceiptsProcessing_H-Checkoff";
+    SourceTable = "KRB Checkoff Header";
     SourceTableView = where(Posted = filter(true));
     UsageCategory = Lists;
 
