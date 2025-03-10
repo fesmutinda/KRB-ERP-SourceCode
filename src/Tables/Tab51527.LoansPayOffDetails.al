@@ -37,7 +37,7 @@ Table 51527 "Loans PayOff Details"
                         "Loan Type" := Loans."Loan Product Type";
                         if Cust.Get(Loans."Client Code") then begin
                             "ID. NO" := Cust."ID No.";
-                            "Staff No" := Cust."Personal No";
+                            "Staff No" := Cust."Payroll/Staff No";
                         end;
 
                         "Principle PayOff" := Loans."Outstanding Balance";

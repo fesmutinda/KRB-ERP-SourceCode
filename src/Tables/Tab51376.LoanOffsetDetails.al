@@ -78,7 +78,7 @@ Table 51376 "Loan Offset Details"
 
                         if Cust.Get(Loans."Client Code") then begin
                             "ID. NO" := Cust."ID No.";
-                            "Staff No" := Cust."Personal No";
+                            "Staff No" := Cust."Payroll/Staff No";
                         end;
                         "Interest Rate" := Loans.Interest;
 

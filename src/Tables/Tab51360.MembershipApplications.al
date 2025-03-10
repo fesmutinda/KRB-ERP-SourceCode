@@ -246,7 +246,7 @@ Table 51360 "Membership Applications"
             begin
                 if "Payroll No" <> '' then begin
                     Cust.Reset;
-                    Cust.SetRange(Cust."Personal No", "Payroll No");
+                    Cust.SetRange(Cust."Payroll/Staff No", "Payroll No");
                     Cust.SetRange(Cust."Customer Type", Cust."customer type"::Member);
                     if Cust.Find('-') then begin
                         Error('Payroll No already exists in the Members List');
@@ -976,7 +976,7 @@ Table 51360 "Membership Applications"
                 if CustMember.FindSet then begin
                     //CustMember.CALCFIELDS(CustMember.Picture,CustMember.Signature);
                     Name := CustMember.Name;
-                    "Payroll No" := CustMember."Personal No";
+                    "Payroll No" := CustMember."Payroll/Staff No";
                     "ID No." := CustMember."ID No.";
                     "FOSA Account No." := CustMember."FOSA Account No.";
                     "Account Category" := CustMember."Account Category";

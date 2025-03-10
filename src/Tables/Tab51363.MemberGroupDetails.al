@@ -51,7 +51,7 @@ Table 51363 "Member Group Details"
                     "ID No." := Cust."ID No.";
                     "Email Address" := Cust."E-Mail (Personal)";
                     "Date Of Birth" := Cust."Date of Birth";
-                    "Staff/Payroll" := Cust."Personal No";
+                    "Staff/Payroll" := Cust."Payroll/Staff No";
                     Address := Cust.Address;
                     //Picture:=Cust.Picture;
                     //Signature:=Cust.Signature;

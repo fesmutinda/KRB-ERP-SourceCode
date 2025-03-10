@@ -6,6 +6,7 @@ page 57005 "KRB CheckoffLines"
     Caption = 'KRB CheckoffLines';
     PageType = ListPart;
     SourceTable = "KRB CheckoffLines";
+    RefreshOnActivate = true;
 
     layout
     {

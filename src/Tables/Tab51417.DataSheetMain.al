@@ -22,8 +22,8 @@ Table 51417 "Data Sheet Main"
             trigger OnValidate()
             begin
                 Cust.Reset;
-                Cust.SetCurrentkey(Cust."Personal No");
-                Cust.SetRange(Cust."Personal No", "PF/Staff No");
+                Cust.SetCurrentkey(Cust."Payroll/Staff No");
+                Cust.SetRange(Cust."Payroll/Staff No", "PF/Staff No");
                 Cust.SetRange(Cust."ID No.", "ID NO.");
                 if Cust.Find('-') then begin
                     Name := Cust.Name;
@@ -92,8 +92,8 @@ Table 51417 "Data Sheet Main"
             trigger OnValidate()
             begin
                 Cust.Reset;
-                Cust.SetCurrentkey(Cust."Personal No");
-                Cust.SetRange(Cust."Personal No", "PF/Staff No");
+                Cust.SetCurrentkey(Cust."Payroll/Staff No");
+                Cust.SetRange(Cust."Payroll/Staff No", "PF/Staff No");
                 Cust.SetRange(Cust."ID No.", "ID NO.");
                 if Cust.Find('-') then begin
                     Name := Cust.Name;

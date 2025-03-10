@@ -51,7 +51,7 @@ Page 56027 "Member List"
                     Caption = 'Mobile Phone';
 
                 }
-                field("Payroll No"; Rec."Personal No")
+                field("Payroll No"; Rec."Payroll/Staff No")
                 {
                     Caption = 'Payroll No';
                     ApplicationArea = basic;

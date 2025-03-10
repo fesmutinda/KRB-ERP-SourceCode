@@ -33,7 +33,7 @@ page 50618 "Posted Guar Recovery List"
                 {
                     ApplicationArea = Basic;
                 }
-                field("Personal No"; Rec."Personal No")
+                field("Payroll/Staff No"; Rec."Payroll/Staff No")
                 {
                     ApplicationArea = Basic;
                 }

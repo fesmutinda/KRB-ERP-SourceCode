@@ -1500,21 +1500,21 @@ tableextension 50047 "CustomerExt" extends Customer
             FieldClass = FlowField;
         }
 
-        field(69202; "Personal No"; Code[20])
-        {
+        // field(69202; "Personal No"; Code[20])
+        // {
 
-            trigger OnValidate()
-            var
-                Vend: Record Vendor;
-            begin
-                Vend.Reset;
-                Vend.SetRange("BOSA Account No", "No.");
-                if Vend.Find('-') then begin
-                    Vend."Personal No." := "Personal No";
-                    Vend.Modify;
-                end
-            end;
-        }
+        //     trigger OnValidate()
+        //     var
+        //         Vend: Record Vendor;
+        //     begin
+        //         Vend.Reset;
+        //         Vend.SetRange("BOSA Account No", "No.");
+        //         if Vend.Find('-') then begin
+        //             Vend."Personal No." := "Personal No";
+        //             Vend.Modify;
+        //         end
+        //     end;
+        // }
         field(69203; "Group Account No"; Code[15])
         {
             TableRelation = Customer."No." where("Group Account" = filter(true));
@@ -2197,6 +2197,12 @@ tableextension 50047 "CustomerExt" extends Customer
         field(69513; "Surname"; Code[20]) { }
     }
 
-
+    keys
+    {
+        key(Key1; "Payroll/Staff No")
+        {
+            // Clustered = true;
+        }
+    }
 }
 

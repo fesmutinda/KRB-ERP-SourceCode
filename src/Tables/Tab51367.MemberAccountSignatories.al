@@ -72,7 +72,7 @@ Table 51367 "Member Account Signatories"
                     Names := CUST.Name;
                     "Mobile Phone No" := CUST."Mobile Phone No";
                     "Date Of Birth" := CUST."Date of Birth";
-                    "Staff/Payroll" := CUST."Personal No";
+                    "Staff/Payroll" := CUST."Payroll/Staff No";
                     "ID No." := CUST."ID No.";
                     "Email Address" := CUST."E-Mail (Personal)";
                 end;

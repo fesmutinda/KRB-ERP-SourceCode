@@ -54,7 +54,7 @@ Table 51552 "Change Request"
                         "S-Mobile No" := vend."S-Mobile No";
                         "ATM Collector Name" := vend."ATM Collector Name";
                         "ID No" := vend."ID No.";
-                        "Personal No" := vend."Personal No.";
+                        "Payroll/Staff No" := vend."Personal No.";
                         "Account Type" := vend."Account Type";
                         City := vend.City;
                         Section := vend.Section;
@@ -87,7 +87,7 @@ Table 51552 "Change Request"
                         Email := Memb."E-Mail";
                         "Mobile No" := Memb."Mobile Phone No";
                         "ID No" := Memb."ID No.";
-                        "Personal No" := Memb."Personal No";
+                        "Payroll/Staff No" := Memb."Payroll/Staff No";
                         City := Memb.City;
                         Section := Memb.Section;
                         "Marital Status" := Memb."Marital Status";
@@ -118,7 +118,7 @@ Table 51552 "Change Request"
                             Email := Memb."E-Mail";
                             "Mobile No" := Memb."Mobile Phone No";
                             "ID No" := Memb."ID No.";
-                            "Personal No" := Memb."Personal No";
+                            "Payroll/Staff No" := Memb."Payroll/Staff No";
                             City := Memb.City;
                             Section := Memb.Section;
                             "Marital Status" := Memb."Marital Status";
@@ -164,7 +164,7 @@ Table 51552 "Change Request"
         field(12; "E-mail"; Code[30])
         {
         }
-        field(13; "Personal No"; Code[30])
+        field(13; "Payroll/Staff No"; Code[30])
         {
         }
         field(14; "ID No"; Code[40])

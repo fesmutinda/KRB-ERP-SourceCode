@@ -25,7 +25,7 @@ Table 51526 "Loan PayOff"
                 if Cust.Get("Member No") then begin
                     "Member Name" := Cust.Name;
                     "FOSA Account No" := Cust."FOSA Account No.";
-                    "Personal No" := Cust."Personal No";
+                    "Payroll/Staff No" := Cust."Payroll/Staff No";
                 end;
             end;
         }
@@ -71,7 +71,7 @@ Table 51526 "Loan PayOff"
         field(14; "Posted By"; Code[20])
         {
         }
-        field(15; "Personal No"; Code[30])
+        field(15; "Payroll/Staff No"; Code[30])
         {
         }
         field(22; Status; Option)

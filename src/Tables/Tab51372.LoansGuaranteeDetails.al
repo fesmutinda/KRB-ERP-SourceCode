@@ -72,7 +72,7 @@ Table 51372 "Loans Guarantee Details"
                 if Cust.Get("Member No") then begin
                     Cust.CalcFields(Cust."Outstanding Balance", Cust."Current Shares", Cust.TLoansGuaranteed);
                     Name := Cust.Name;
-                    "Staff/Payroll No." := Cust."Personal No";
+                    "Staff/Payroll No." := Cust."Payroll/Staff No";
                     "Loan Balance" := Cust."Outstanding Balance";
                     Shares := Cust."Current Shares" * 1;
                     Amont := 0;
@@ -358,7 +358,7 @@ Table 51372 "Loans Guarantee Details"
             trigger OnValidate()
             begin
                 Cust.Reset;
-                Cust.SetRange(Cust."Personal No", "Staff/Payroll No.");
+                Cust.SetRange(Cust."Payroll/Staff No", "Staff/Payroll No.");
                 if Cust.Find('-') then begin
                     "Member No" := Cust."No.";
                     Validate("Member No");

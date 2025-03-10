@@ -569,7 +569,7 @@ Table 51371 "Loans Register"
                     Savings := CustomerRecord."Current Shares";
                     "Existing Loan" := CustomerRecord."Outstanding Balance";
                     //"Account No":=CustomerRecord."FOSA Account No.";
-                    "Staff No" := CustomerRecord."Personal No";
+                    "Staff No" := CustomerRecord."Payroll/Staff No";
                     "Registration Date" := CustomerRecord."Registration Date";
                     "Member Share Capital" := CustomerRecord."Shares Retained";
                     //"Membership Duration(Years)":=FORMAT(Dates.DetermineAge("Registration Date",TODAY),2);
@@ -905,7 +905,7 @@ Table 51371 "Loans Register"
                     Savings := CustomerRecord."Current Shares";
                     "Existing Loan" := CustomerRecord."Outstanding Balance";
                     //"Account No":=CustomerRecord."FOSA Account No.";
-                    "Staff No" := CustomerRecord."Personal No";
+                    "Staff No" := CustomerRecord."Payroll/Staff No";
                     "Registration Date" := CustomerRecord."Registration Date";
                     // "Member Shares Capital" := CustomerRecord."Shares Retained";
                     //"Membership Duration(Years)":=FORMAT(Dates.DetermineAge("Registration Date",TODAY),2);
@@ -1665,7 +1665,7 @@ Table 51371 "Loans Register"
 
                 if LoanTypes.Get("Loan Product Type") then begin
                     if Customer.Get("Client Code") then begin
-                        Loan."Staff No" := Customer."Personal No";
+                        Loan."Staff No" := Customer."Payroll/Staff No";
 
                         DataSheet.Init;
                         DataSheet."PF/Staff No" := "Staff No";
@@ -2202,7 +2202,7 @@ Table 51371 "Loans Register"
                 "Existing Loan":=CustomerRecord."Outstanding Balance";
                 
                 //"Account No":=CustomerRecord."FOSA Account";
-                "Staff No":=CustomerRecord."Personal No";
+                "Staff No":=CustomerRecord."Payroll/Staff No";
                 Gender:=CustomerRecord.Gender;
                 "BOSA No":=Vendor."BOSA Account No";
                 "Client Code":=Vendor."BOSA Account No";
@@ -2258,8 +2258,8 @@ Table 51371 "Loans Register"
                 CustR."Customer Type":=CustR."Customer Type"::FOSA;
                 CustR."Customer Posting Group":='FOSA';
                 CustR."FOSA Account No.":="Account No";
-                IF CustR."Personal No" <> '' THEN
-                CustR."Personal No":=Vendor."Personal No.";
+                IF CustR."Payroll/Staff No" <> '' THEN
+                CustR."Payroll/Staff No":=Vendor."Personal No.";
                 CustR."ID No.":=Vendor."ID No.";
                 CustR.Gender:=Vendor.Gender;
                 CustR.INSERT;
@@ -2285,8 +2285,8 @@ Table 51371 "Loans Register"
                 Cust2.SETRANGE(Cust2."FOSA Account No.",Vendor."No.");
                 IF Cust2.FIND('-') THEN BEGIN
                 "BOSA No":=Cust2."No.";
-                IF Cust2."Personal No"<> '' THEN
-                "Staff No":=Cust2."Personal No";
+                IF Cust2."Payroll/Staff No"<> '' THEN
+                "Staff No":=Cust2."Payroll/Staff No";
                 VALIDATE("BOSA No");
                 END;
                 
@@ -2353,7 +2353,7 @@ Table 51371 "Loans Register"
                         "ID NO" := Vendor."ID No.";
                         "ID NO" := Vend."ID No.";
                         //VALIDATE("Client Code");
-                        "Staff No" := Cust."Personal No";
+                        "Staff No" := Cust."Payroll/Staff No";
 
 
                         Cust.Init;
@@ -2365,8 +2365,8 @@ Table 51371 "Loans Register"
                         Cust."Customer Type" := Cust."customer type"::FOSA;
                         Cust."Customer Posting Group" := 'FOSA';
                         Cust."FOSA Account No." := "Account No";
-                        if Cust."Personal No" <> '' then
-                            Cust."Personal No" := Vendor."Personal No.";
+                        if Cust."Payroll/Staff No" <> '' then
+                            Cust."Payroll/Staff No" := Vendor."Personal No.";
                         "ID NO" := Vendor."ID No.";
 
                         Cust.Insert;
@@ -2392,8 +2392,8 @@ Table 51371 "Loans Register"
                     if Cust2.Find('-') then begin
                         "BOSA No" := Cust2."No.";
                         "ID NO" := Cust2."ID No.";
-                        if Cust2."Personal No" <> '' then
-                            "Staff No" := Cust2."Personal No";
+                        if Cust2."Payroll/Staff No" <> '' then
+                            "Staff No" := Cust2."Payroll/Staff No";
                         "ID NO" := Cust2."ID No.";
                         Validate("BOSA No");
                     end;

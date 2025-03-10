@@ -61,7 +61,7 @@ page 50844 "Updated Change Request List"
                 {
                     ApplicationArea = Basic;
                 }
-                field("Personal No"; Rec."Personal No")
+                field("Payroll/Staff No"; Rec."Payroll/Staff No")
                 {
                     ApplicationArea = Basic;
                 }

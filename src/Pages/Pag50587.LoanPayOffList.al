@@ -41,7 +41,7 @@ page 50587 "Loan PayOff List"
                 {
                     ApplicationArea = Basic;
                 }
-                field("Personal No"; Rec."Personal No")
+                field("Payroll/Staff No"; Rec."Payroll/Staff No")
                 {
                     ApplicationArea = Basic;
                 }

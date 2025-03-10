@@ -30,7 +30,7 @@ Table 51557 "General Equiries."
                     ObjCust.CalcFields(ObjCust."Outstanding Balance", ObjCust."Current Shares", ObjCust."Insurance Fund", ObjCust."Un-allocated Funds",
                     ObjCust."Shares Retained");
                     "Member Name" := ObjCust.Name;
-                    "Payroll No" := ObjCust."Personal No";
+                    "Payroll No" := ObjCust."Payroll/Staff No";
                     "Current Deposits" := ObjCust."Current Shares";
                     "ID No" := ObjCust."ID No.";
                     "Phone No" := ObjCust."Mobile Phone No";

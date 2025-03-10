@@ -701,7 +701,7 @@ Codeunit 50025 SwizzKashMB
               Members.SetRange(Members."No.",FnGetMemberNo(Phone));
               if Members.Find('-') then
               begin
-              reginfo:=Members."No."+':::'+Members.Name+':::'+Format(Members."ID No.")+':::'+Format(Members."Personal No")+':::'+ Members."E-Mail";
+              reginfo:=Members."No."+':::'+Members.Name+':::'+Format(Members."ID No.")+':::'+Format(Members."Payroll/Staff No")+':::'+ Members."E-Mail";
               end
           else
           begin

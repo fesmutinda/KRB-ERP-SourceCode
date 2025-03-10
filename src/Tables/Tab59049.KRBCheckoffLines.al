@@ -13,7 +13,7 @@ table 59049 "KRB CheckoffLines"
         }
         field(3; "Staff/Payroll No"; Code[20])
         {
-            TableRelation = Customer."Payroll/Staff No" where("Customer Type" = filter(Member));
+            // TableRelation = Customer."Payroll/Staff No" where("Customer Type" = filter(Member));
         }
         field(4; "Member No"; Code[50])
         {

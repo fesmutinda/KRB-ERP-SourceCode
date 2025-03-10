@@ -56,7 +56,7 @@ Table 51362 "Member App Signatories"
                     "ID No." := Cust."ID No.";
                     "Email Address" := Cust."E-Mail (Personal)";
                     "Date Of Birth" := Cust."Date of Birth";
-                    "Staff/Payroll" := Cust."Personal No";
+                    "Staff/Payroll" := Cust."Payroll/Staff No";
                     Picture := Cust.Image;
                     Signature := Cust.Signature;
                     "Mobile No." := Cust."Mobile Phone No";
