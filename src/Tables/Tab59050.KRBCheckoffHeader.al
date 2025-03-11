@@ -106,9 +106,9 @@ table 59050 "KRB Checkoff Header"
         }
         field(26; "Scheduled Amount"; Decimal)
         {
-            CalcFormula = sum("KRB CheckoffLines"."Co-op - Shares" where("Receipt Header No" = field(No)));
+            // CalcFormula = sum("KRB CheckoffLines"."Co-op - Shares" where("Receipt Header No" = field(No)));
             Editable = false;
-            FieldClass = FlowField;
+            // FieldClass = FlowField;
         }
         field(27; "Total Count"; Integer)
         {
@@ -131,12 +131,12 @@ table 59050 "KRB Checkoff Header"
         field(32; "Loan CutOff Date"; Date)
         {
         }
-        field(50; "Total Amount"; Decimal)
-        {
+        // field(50; "Total Amount"; Decimal)
+        // {
 
-            Editable = false;
-            // FieldClass = FlowField;
-        }
+        //     Editable = false;
+        //     // FieldClass = FlowField;
+        // }
 
     }
 
@@ -215,24 +215,19 @@ table 59050 "KRB Checkoff Header"
 
             repeat
                 Total += KRBCheckoffLines."Co-op - Shares" +
-                         //  KRBCheckoffLines."Co-op - Devt Loan" +
-                         //  KRBCheckoffLines.Flexi +
-                         //  KRBCheckoffLines."Muslim Loan" +
-                         //  KRBCheckoffLines."Co-op Emergency Loan" +
-                         //  KRBCheckoffLines."Co-op - Investment Loan" +
-                         //  KRBCheckoffLines."Co-op School Fees Loan" +
-                         //  KRBCheckoffLines.Instant +
+                          KRBCheckoffLines."Co-op - Devt Loan" +
+                          KRBCheckoffLines.Flexi +
+                          KRBCheckoffLines."Muslim Loan" +
+                          KRBCheckoffLines."Co-op Emergency Loan" +
+                          KRBCheckoffLines."Co-op - Investment Loan" +
+                          KRBCheckoffLines."Co-op School Fees Loan" +
+                          KRBCheckoffLines.Instant +
                          KRBCheckoffLines."Childrens Savings" +
-                         KRBCheckoffLines."Withdrwable svgs" +
-                         //  KRBCheckoffLines."merry goround" +
-                         //  KRBCheckoffLines.Dev2 +
-                         KRBCheckoffLines."Share cap" +
-                         KRBCheckoffLines.Entrance;// +
-                                                   //  KRBCheckoffLines.Insurance +
-                                                   //  KRBCheckoffLines.Refinance;
+                         KRBCheckoffLines."Withdrwable svgs";
             until KRBCheckoffLines.Next() = 0;
 
-        "Total Amount" := Total;
+        // "Total Amount" := Total;
+        "Scheduled Amount" := Total;
     end;
 
     var

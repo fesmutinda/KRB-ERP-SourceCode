@@ -9,8 +9,8 @@ Page 56193 "Member Account Card - Editable"
     PromotedActionCategories = 'New,Process,Reports,Approval,Budgetary Control,Cancellation,Category7_caption,Category8_caption,Category9_caption,Category10_caption';
     RefreshOnActivate = true;
     SourceTable = Customer;
-    SourceTableView = sorting("Employer Code")
-                      where("Customer Type" = const(Member));
+    // SourceTableView = sorting("Employer Code")
+    //                   where("Customer Type" = const(Member));
 
     layout
     {
@@ -23,7 +23,7 @@ Page 56193 "Member Account Card - Editable"
                 field("No."; Rec."No.")
                 {
                     ApplicationArea = Basic;
-                    Editable = false;
+                    Editable = true;
                 }
                 field(Name; Rec.Name)
                 {
@@ -35,28 +35,28 @@ Page 56193 "Member Account Card - Editable"
                     ApplicationArea = Basic;
                     Editable = true;
                 }
-                field("FOSA Account"; Rec."FOSA Account")
-                {
-                    ApplicationArea = Basic;
-                    Editable = true;
+                // field("FOSA Account"; Rec."FOSA Account")
+                // {
+                //     ApplicationArea = Basic;
+                //     Editable = true;
 
-                    trigger OnValidate()
-                    begin
-                        FosaName := '';
+                //     trigger OnValidate()
+                //     begin
+                //         FosaName := '';
 
-                        if Rec."FOSA Account" <> '' then begin
-                            if Vend.Get(Rec."FOSA Account") then begin
-                                FosaName := Vend.Name;
-                            end;
-                        end;
-                    end;
-                }
-                field(FosaName; FosaName)
-                {
-                    ApplicationArea = Basic;
-                    Caption = 'FOSA Account Name';
-                    Editable = true;
-                }
+                //         if Rec."FOSA Account" <> '' then begin
+                //             if Vend.Get(Rec."FOSA Account") then begin
+                //                 FosaName := Vend.Name;
+                //             end;
+                //         end;
+                //     end;
+                // }
+                // field(FosaName; FosaName)
+                // {
+                //     ApplicationArea = Basic;
+                //     Caption = 'FOSA Account Name';
+                //     Editable = true;
+                // }
                 field("Account Category"; Rec."Account Category")
                 {
                     ApplicationArea = Basic;

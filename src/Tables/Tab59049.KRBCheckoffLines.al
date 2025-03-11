@@ -39,12 +39,12 @@ table 59049 "KRB CheckoffLines"
         field(41; "Instant"; Decimal) { }
         field(42; "Childrens Savings"; Decimal) { }
         field(43; "Withdrwable svgs"; Decimal) { }
-        field(44; "merry goround"; Decimal) { }
-        field(45; "Dev2"; Decimal) { }
-        field(46; "Share cap"; Decimal) { }
-        field(47; "Entrance"; Decimal) { }
-        field(48; "Insurance"; Decimal) { }
-        field(49; "Refinance"; Decimal) { }
+        // field(44; "merry goround"; Decimal) { }
+        // field(45; "Dev2"; Decimal) { }
+        // field(46; "Share cap"; Decimal) { }
+        // field(47; "Entrance"; Decimal) { }
+        // field(48; "Insurance"; Decimal) { }
+        // field(49; "Refinance"; Decimal) { }
     }
 
     keys

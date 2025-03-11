@@ -24,12 +24,12 @@ xmlport 50105 "KRB Checkoff Import"
                 fieldelement(Instant; KRBCheckoffLines.Instant) { }
                 fieldelement(Childrens_Savings; KRBCheckoffLines."Childrens Savings") { }
                 fieldelement(Withdrwable_svgs; KRBCheckoffLines."Withdrwable svgs") { }
-                fieldelement(merry_goround; KRBCheckoffLines."merry goround") { }
-                fieldelement(Dev2; KRBCheckoffLines.Dev2) { }
-                fieldelement(Share_cap; KRBCheckoffLines."Share cap") { }
-                fieldelement(Entrance; KRBCheckoffLines.Entrance) { }
-                fieldelement(Insurance; KRBCheckoffLines.Insurance) { }
-                fieldelement(Refinance; KRBCheckoffLines.Refinance) { }
+                // fieldelement(merry_goround; KRBCheckoffLines."merry goround") { }
+                // fieldelement(Dev2; KRBCheckoffLines.Dev2) { }
+                // fieldelement(Share_cap; KRBCheckoffLines."Share cap") { }
+                // fieldelement(Entrance; KRBCheckoffLines.Entrance) { }
+                // fieldelement(Insurance; KRBCheckoffLines.Insurance) { }
+                // fieldelement(Refinance; KRBCheckoffLines.Refinance) { }
 
             }
         }
