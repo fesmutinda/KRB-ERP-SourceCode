@@ -177,18 +177,19 @@ Page 56193 "Member Account Card - Editable"
                 field("Global Dimension 1 Code"; Rec."Global Dimension 1 Code")
                 {
                     ApplicationArea = Basic;
-                    Editable = false;
+                    // Editable = false;
                 }
                 field("Global Dimension 2 Code"; Rec."Global Dimension 2 Code")
                 {
                     ApplicationArea = Basic;
-                    Editable = false;
+                    // Editable = false;
                 }
                 field("Customer Posting Group"; Rec."Customer Posting Group")
                 {
                     ApplicationArea = Basic;
-                    Editable = false;
+                    // Editable = false;
                 }
+                field("Customer Type"; Rec."Customer Type") { ApplicationArea = Basic; }
                 field(Status; Rec.Status)
                 {
                     ApplicationArea = Basic;
