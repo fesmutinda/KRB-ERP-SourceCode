@@ -57,19 +57,19 @@ page 57005 "KRB CheckoffLines"
                 field("Childrens Savings"; Rec."Childrens Savings")
                 { ApplicationArea = Basic; }
                 field("Withdrwable svgs"; Rec."Withdrwable svgs")
-                { ApplicationArea = Basic; }
-                field("merry goround"; Rec."merry goround")
-                { ApplicationArea = Basic; }
-                field(Dev2; Rec.Dev2)
-                { ApplicationArea = Basic; }
-                field("Share cap"; Rec."Share cap")
-                { ApplicationArea = Basic; }
-                field(Entrance; Rec.Entrance)
-                { ApplicationArea = Basic; }
-                field(Insurance; Rec.Insurance)
-                { ApplicationArea = Basic; }
-                field(Refinance; Rec.Refinance)
-                { ApplicationArea = Basic; }
+                { Caption = 'Withdrawable Savings'; ApplicationArea = Basic; }
+                // field("merry goround"; Rec."merry goround")
+                // { ApplicationArea = Basic; }
+                // field(Dev2; Rec.Dev2)
+                // { ApplicationArea = Basic; }
+                // field("Share cap"; Rec."Share cap")
+                // { ApplicationArea = Basic; }
+                // field(Entrance; Rec.Entrance)
+                // { ApplicationArea = Basic; }
+                // field(Insurance; Rec.Insurance)
+                // { ApplicationArea = Basic; }
+                // field(Refinance; Rec.Refinance)
+                // { ApplicationArea = Basic; }
             }
         }
     }

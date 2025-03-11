@@ -66,6 +66,7 @@ page 50428 "Member Statistics FactBox"
                 }
                 field("Outstanding Interest"; Rec."Outstanding Interest")
                 {
+                    Visible = false;
                     ApplicationArea = Basic;
                 }
                 field("Outstanding Balance"; Rec."Outstanding Balance")
@@ -83,6 +84,7 @@ page 50428 "Member Statistics FactBox"
                 {
                     ApplicationArea = Basic;
                     Caption = 'Loan Insurance';
+                    Visible = false;
                 }
                 // field("Group Shares"; Rec."Group Shares")
                 // {

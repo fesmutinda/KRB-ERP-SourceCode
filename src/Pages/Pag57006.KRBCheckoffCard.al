@@ -93,11 +93,12 @@ page 57006 "KRB Checkoff Card"
                 field("Scheduled Amount"; Rec."Scheduled Amount")
                 {
                     ApplicationArea = Basic;
+                    Editable = false;
                 }
-                field("Total Amount"; Rec."Total Amount")
-                {
-                    ApplicationArea = Basic;
-                }
+                // field("Total Amount"; Rec."Total Amount")
+                // {
+                //     ApplicationArea = Basic;
+                // }
             }
             part("Bosa receipt lines"; "KRB CheckoffLines")
             {
@@ -203,14 +204,12 @@ page 57006 "KRB Checkoff Card"
                         Gnljnline.DeleteAll;
                     end;
 
-                    RunBal := 0;
-                    TotalWelfareAmount := 0;
-                    Rec.CalcFields("Scheduled Amount");
+                    // Rec.CalcFields("Scheduled Amount");
                     if Rec."Scheduled Amount" <> Rec.Amount then begin
                         ERROR('Scheduled Amount Is Not Equal To Cheque Amount');
                     end;
 
-                    Rec.CalcFields("Scheduled Amount");
+                    Rec.Validate("Scheduled Amount");
                     LineN := LineN + 10000;
                     Gnljnline.Init;
                     Gnljnline."Journal Template Name" := Jtemplate;
@@ -243,85 +242,112 @@ page 57006 "KRB Checkoff Card"
                             dialogBox.Open('Processing deposit contribution for ' + Format(RcptBufLines."Member No") + '...');
 
                             FnInsertDepositContribution(Jtemplate, Jbatch,
-                            RcptBufLines."Member No", Rec."Document No",
-                            'Deposits KRB Checkoff',
-                            RcptBufLines."Co-op - Shares");
+                                                        RcptBufLines."Member No", Rec."Document No",
+                                                        'Deposits KRB Checkoff',
+                                                        RcptBufLines."Co-op - Shares");
 
                             dialogBox.Close();
 
                             //Co_op_Devt_Loan;
-                            dialogBox.Open('Processing Co_op_Devt_Loan for ' + Format(RcptBufLines."Member No") + '...');
-                            dialogBox.Close();
+                            Co_op_Devt_LoanBalance := 0;
+                            Co_op_Devt_LoanBalance := RcptBufLines."Co-op - Devt Loan";
+                            if Co_op_Devt_LoanBalance > 0 then begin
+                                dialogBox.Open('Processing Co_op_Devt_Loan for ' + Format(RcptBufLines."Member No") + '...');
+
+                                Co_op_Devt_LoanBalance := FnRunInterest(RcptBufLines, Co_op_Devt_LoanBalance, Rec."Loan CutOff Date", 'LT001');
+                                Co_op_Devt_LoanBalance := FnRunPrinciple(RcptBufLines, Co_op_Devt_LoanBalance, Rec."Loan CutOff Date", 'LT001');
+                                FnTransferExcessToUnallocatedFunds(RcptBufLines, Co_op_Devt_LoanBalance, 'Excess Payments for Co-op Development Loan');
+                                dialogBox.Close();
+                            end;
 
                             //Flexi;
-                            dialogBox.Open('Processing Flexi for ' + Format(RcptBufLines."Member No") + '...');
-                            dialogBox.Close();
+                            FlexiBalance := 0;
+                            FlexiBalance := RcptBufLines.Flexi;
+                            if FlexiBalance > 0 then begin
+                                dialogBox.Open('Processing Flexi for ' + Format(RcptBufLines."Member No") + '...');
+
+                                FlexiBalance := FnRunInterest(RcptBufLines, FlexiBalance, Rec."Loan CutOff Date", 'LT006');
+                                FlexiBalance := FnRunPrinciple(RcptBufLines, FlexiBalance, Rec."Loan CutOff Date", 'LT006');
+                                FnTransferExcessToUnallocatedFunds(RcptBufLines, FlexiBalance, 'Excess Payments for Flexi Loan');
+                                dialogBox.Close();
+                            end;
 
                             //Muslim_Loan; 
-                            dialogBox.Open('Processing Muslim_Loan for ' + Format(RcptBufLines."Member No") + '...');
-                            dialogBox.Close();
+                            Muslim_LoanBalance := 0;
+                            Muslim_LoanBalance := RcptBufLines."Muslim Loan";
+                            if Muslim_LoanBalance > 0 then begin
+                                dialogBox.Open('Processing Muslim_Loan for ' + Format(RcptBufLines."Member No") + '...');
+
+                                Muslim_LoanBalance := FnRunInterest(RcptBufLines, Muslim_LoanBalance, Rec."Loan CutOff Date", 'LT008');
+                                Muslim_LoanBalance := FnRunPrinciple(RcptBufLines, Muslim_LoanBalance, Rec."Loan CutOff Date", 'LT008');
+                                FnTransferExcessToUnallocatedFunds(RcptBufLines, Muslim_LoanBalance, 'Excess Payments for SHERIA COMPLIANT LOANS');
+                                dialogBox.Close();
+                            end;
 
                             //Co_op_Emergency_Loan;
-                            dialogBox.Open('Processing Co_op_Emergency_Loan for ' + Format(RcptBufLines."Member No") + '...');
-                            dialogBox.Close();
+                            Co_op_Emergency_LoanBalance := 0;
+                            Co_op_Emergency_LoanBalance := RcptBufLines."Co-op Emergency Loan";
+                            if Co_op_Emergency_LoanBalance > 0 then begin
+                                dialogBox.Open('Processing Co_op_Emergency_Loan for ' + Format(RcptBufLines."Member No") + '...');
+
+                                Co_op_Emergency_LoanBalance := FnRunInterest(RcptBufLines, Co_op_Emergency_LoanBalance, Rec."Loan CutOff Date", 'LT005');
+                                Co_op_Emergency_LoanBalance := FnRunPrinciple(RcptBufLines, Co_op_Emergency_LoanBalance, Rec."Loan CutOff Date", 'LT005');
+                                FnTransferExcessToUnallocatedFunds(RcptBufLines, Co_op_Emergency_LoanBalance, 'Excess Payments for EMERGENCY LOAN');
+                                dialogBox.Close();
+                            end;
 
                             //Co_op_Investment_Loan;
-                            dialogBox.Open('Processing Co_op_Investment_Loan for ' + Format(RcptBufLines."Member No") + '...');
-                            dialogBox.Close();
+                            Co_op_Investment_LoanBalance := 0;
+                            Co_op_Investment_LoanBalance := RcptBufLines."Co-op - Investment Loan";
+                            if Co_op_Investment_LoanBalance > 0 then begin
+                                dialogBox.Open('Processing Co_op_Investment_Loan for ' + Format(RcptBufLines."Member No") + '...');
+
+                                Co_op_Investment_LoanBalance := FnRunInterest(RcptBufLines, Co_op_Investment_LoanBalance, Rec."Loan CutOff Date", 'LT003');
+                                Co_op_Investment_LoanBalance := FnRunPrinciple(RcptBufLines, Co_op_Investment_LoanBalance, Rec."Loan CutOff Date", 'LT003');
+                                FnTransferExcessToUnallocatedFunds(RcptBufLines, Co_op_Investment_LoanBalance, 'Excess Payments for INVESTMENT LOAN');
+                                dialogBox.Close();
+                            end;
 
                             //Co_op_School_Fees_Loan; 
-                            dialogBox.Open('Processing Co_op_School_Fees_Loan for ' + Format(RcptBufLines."Member No") + '...');
-                            dialogBox.Close();
+                            Co_op_School_Fees_LoanBalance := 0;
+                            Co_op_School_Fees_LoanBalance := RcptBufLines."Co-op School Fees Loan";
+                            if Co_op_School_Fees_LoanBalance > 0 then begin
+                                dialogBox.Open('Processing Co_op_School_Fees_Loan for ' + Format(RcptBufLines."Member No") + '...');
+
+                                Co_op_School_Fees_LoanBalance := FnRunInterest(RcptBufLines, Co_op_School_Fees_LoanBalance, Rec."Loan CutOff Date", 'LT004');
+                                Co_op_School_Fees_LoanBalance := FnRunPrinciple(RcptBufLines, Co_op_School_Fees_LoanBalance, Rec."Loan CutOff Date", 'LT004');
+                                FnTransferExcessToUnallocatedFunds(RcptBufLines, Co_op_School_Fees_LoanBalance, 'Excess Payments for SCHOOL FEES');
+                                dialogBox.Close();
+                            end;
 
                             //Instant; 
-                            dialogBox.Open('Processing Instant for ' + Format(RcptBufLines."Member No") + '...');
-                            dialogBox.Close();
+                            InstantBalance := 0;
+                            InstantBalance := RcptBufLines.Instant;
+                            if InstantBalance > 0 then begin
+                                dialogBox.Open('Processing Instant for ' + Format(RcptBufLines."Member No") + '...');
 
+                                InstantBalance := FnRunInterest(RcptBufLines, InstantBalance, Rec."Loan CutOff Date", 'LT007');
+                                InstantBalance := FnRunPrinciple(RcptBufLines, InstantBalance, Rec."Loan CutOff Date", 'LT007');
+                                FnTransferExcessToUnallocatedFunds(RcptBufLines, InstantBalance, 'Excess Payments for INSTANT LOAN');
+                                dialogBox.Close();
+                            end;
                             //Childrens_Savings;
                             dialogBox.Open('Processing Children Savings for ' + Format(RcptBufLines."Member No") + '...');
 
                             FnInsertChildrenSavings(Jtemplate, Jbatch,
-                            RcptBufLines."Member No", Rec."Document No",
-                            'Children Savings KRB Checkoff',
-                            RcptBufLines."Childrens Savings");
+                                                    RcptBufLines."Member No", Rec."Document No",
+                                                    'Children Savings KRB Checkoff',
+                                                    RcptBufLines."Childrens Savings");
 
                             dialogBox.Close();
                             //Withdrwable_svgs;
                             dialogBox.Open('Processing Withdrawable Savings for ' + Format(RcptBufLines."Member No") + '...');
 
                             FnInsertWithdrawableSavings(Jtemplate, Jbatch,
-                            RcptBufLines."Member No", Rec."Document No",
-                            'Withdrawable Savings Checkoff',
-                            RcptBufLines."Withdrwable svgs");
+                                                        RcptBufLines."Member No", Rec."Document No",
+                                                        'Withdrawable Savings Checkoff',
+                                                        RcptBufLines."Withdrwable svgs");
 
-                            dialogBox.Close();
-                            //merry_goround; 
-                            //Dev2; 
-                            dialogBox.Open('Processing Dev2 for ' + Format(RcptBufLines."Member No") + '...');
-                            dialogBox.Close();
-
-                            //Share_cap; 
-                            dialogBox.Open('Processing Share Capital for ' + Format(RcptBufLines."Member No") + '...');
-
-                            FnInsertShareCapital(Jtemplate, Jbatch,
-                            RcptBufLines."Member No", Rec."Document No",
-                            'Share Capital KRB Checkoff',
-                            RcptBufLines."Share cap");
-
-                            dialogBox.Close();
-
-                            //Entrance; 
-                            dialogBox.Open('Processing Registration Fee for ' + Format(RcptBufLines."Member No") + '...');
-
-                            FnInsertRegistrationFee(Jtemplate, Jbatch,
-                            RcptBufLines."Member No", Rec."Document No",
-                            'Registration Fee KRB Checkoff',
-                            RcptBufLines."Co-op - Shares");
-
-                            dialogBox.Close();
-                            //Insurance; 
-                            //Refinance;
-                            dialogBox.Open('Processing Refinance for ' + Format(RcptBufLines."Member No") + '...');
                             dialogBox.Close();
 
                         until RcptBufLines.Next = 0;
@@ -437,7 +463,14 @@ page 57006 "KRB Checkoff Card"
         Gnljnline: Record "Gen. Journal Line";
         PDate: Date;
         DocNo: Code[20];
-        RunBal: Decimal;
+        // RunBal: Decimal;
+        Co_op_Devt_LoanBalance: Decimal;
+        FlexiBalance: Decimal;
+        InstantBalance: Decimal;
+        Co_op_School_Fees_LoanBalance: Decimal;
+        Muslim_LoanBalance: Decimal;
+        Co_op_Emergency_LoanBalance: Decimal;
+        Co_op_Investment_LoanBalance: Decimal;
         ReceiptsProcessingLines: Record "KRB CheckoffLines";
         // LineNo: Integer;
         LBatches: Record "Loan Disburesment-Batching";
@@ -640,7 +673,64 @@ page 57006 "KRB Checkoff Card"
             Gnljnline.Insert();
     end;
 
-    local procedure FnRunPrinciple(ObjRcptBuffer: Record "ReceiptsProcessing_L-Checkoff"; RunningBalance: Decimal; LoanCutoffDate: Date): Decimal
+    local procedure FnRunInterest(ObjRcptBuffer: Record "KRB CheckoffLines"; RunningBalance: Decimal; LoanCutoffDate: Date; loanCode: Code[10]): Decimal
+    var
+        AmountToDeduct: Decimal;
+        InterestToRecover: Decimal;
+    begin
+        if RunningBalance > 0 then begin
+            LoanApp.Reset;
+            LoanApp.SetCurrentkey(Source, "Issued Date", "Loan Product Type", "Client Code", "Staff No");
+            LoanApp.SetRange(LoanApp."Client Code", ObjRcptBuffer."Member No");
+            // LoanApp.SetRange(LoanApp."Recovery Mode", LoanApp."recovery mode"::"Payroll Deduction");//This now will raise issuess
+            LoanApp.SetRange(LoanApp."Loan Product Type", loanCode);
+            //LoanApp.SETFILTER(LoanApp."Date filter",Datefilter); //Deduct all interest outstanding regardless of date
+            //LoanApp.SETRANGE(LoanApp."Issued Date",startDate,IssueDate);
+            if LoanApp.FindSet() then begin
+                repeat
+                    LoanApp.CalcFields(LoanApp."Oustanding Interest");
+                    if (LoanApp."Oustanding Interest" > 0) and (LoanApp."Issued Date" <= LoanCutoffDate) then begin
+                        if RunningBalance > 0 then //300
+                          begin
+                            AmountToDeduct := 0;
+                            InterestToRecover := (LoanApp."Oustanding Interest");//100
+                            if RunningBalance >= InterestToRecover then
+                                AmountToDeduct := InterestToRecover
+                            else
+                                AmountToDeduct := RunningBalance;
+
+                            LineN := LineN + 10000;
+                            Gnljnline.Init;
+                            Gnljnline."Journal Template Name" := Jtemplate;
+                            Gnljnline."Journal Batch Name" := Jbatch;
+                            Gnljnline."Line No." := LineN;
+                            Gnljnline."Account Type" := Gnljnline."bal. account type"::Customer;
+                            Gnljnline."Account No." := LoanApp."Client Code";
+                            Gnljnline.Validate(Gnljnline."Account No.");
+                            Gnljnline."Document No." := Rec."Document No";
+                            Gnljnline."Posting Date" := Rec."Posting date";
+                            Gnljnline.Description := LoanApp."Loan Product Type" + '-Loan Interest Paid ';
+                            Gnljnline.Amount := -1 * AmountToDeduct;
+                            Gnljnline.Validate(Gnljnline.Amount);
+                            Gnljnline."Transaction Type" := Gnljnline."transaction type"::"Interest Paid";
+                            Gnljnline."Loan No" := LoanApp."Loan  No.";
+
+                            Gnljnline."Shortcut Dimension 1 Code" := 'BOSA';
+                            Gnljnline."Shortcut Dimension 2 Code" := FnGetMemberBranch(LoanApp."Client Code");
+                            Gnljnline.Validate(Gnljnline."Shortcut Dimension 1 Code");
+                            Gnljnline.Validate(Gnljnline."Shortcut Dimension 2 Code");
+                            if Gnljnline.Amount <> 0 then
+                                Gnljnline.Insert;
+                            RunningBalance := RunningBalance - Abs(Gnljnline.Amount);
+                        end;
+                    end;
+                until LoanApp.Next = 0;
+            end;
+            exit(RunningBalance);
+        end;
+    end;
+
+    local procedure FnRunPrinciple(ObjRcptBuffer: Record "KRB CheckoffLines"; RunningBalance: Decimal; LoanCutoffDate: Date; loanCode: Code[10]): Decimal
     var
         varTotalRepay: Decimal;
         varMultipleLoan: Decimal;
@@ -658,7 +748,8 @@ page 57006 "KRB Checkoff Card"
             LoanApp.Reset;
             LoanApp.SetCurrentkey(Source, "Issued Date", "Loan Product Type", "Client Code", "Staff No");
             LoanApp.SetRange(LoanApp."Client Code", ObjRcptBuffer."Member No");
-            LoanApp.SetRange(LoanApp."Recovery Mode", LoanApp."recovery mode"::"Payroll Deduction");
+            // LoanApp.SetRange(LoanApp."Recovery Mode", LoanApp."recovery mode"::"Payroll Deduction");//Comment kiasi here..Festus
+            LoanApp.SetRange(LoanApp."Loan Product Type", loanCode);
             //LoanApp.SETRANGE(LoanApp."Issued Date",startDate,IssueDate);
             if LoanApp.Findset then begin
 
@@ -799,7 +890,7 @@ page 57006 "KRB Checkoff Card"
         exit(MemberBranch);
     end;
 
-    local procedure FnTransferExcessToUnallocatedFunds(ObjRcptBuffer: Record "ReceiptsProcessing_L-Checkoff"; RunningBalance: Decimal)
+    local procedure FnTransferExcessToUnallocatedFunds(ObjRcptBuffer: Record "KRB CheckoffLines"; RunningBalance: Decimal; description: Code[50])
     var
         varTotalRepay: Decimal;
         varMultipleLoan: Decimal;
@@ -827,7 +918,7 @@ page 57006 "KRB Checkoff Card"
                 Gnljnline.Validate(Gnljnline."Account No.");
                 Gnljnline."Document No." := Rec."Document No";
                 Gnljnline."Posting Date" := Rec."Posting date";
-                Gnljnline.Description := 'Unallocated Funds';
+                Gnljnline.Description := description;
                 Gnljnline.Amount := AmountToTransfer * -1;
                 Gnljnline.Validate(Gnljnline.Amount);
                 Gnljnline."Transaction Type" := Gnljnline."transaction type"::"Unallocated Funds";

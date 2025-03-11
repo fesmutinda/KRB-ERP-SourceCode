@@ -1,7 +1,7 @@
 tableextension 50047 "CustomerExt" extends Customer
 {
     // DrillDownPageId = "Member List";
-    // LookupPageId = "Member List";
+    LookupPageId = "Member List";
     fields
     {
 
@@ -86,7 +86,7 @@ tableextension 50047 "CustomerExt" extends Customer
         field(68011; "Outstanding Balance"; Decimal)
         {
             CalcFormula = sum("Cust. Ledger Entry"."Amount Posted" where("Customer No." = field("No."),
-                                                                  "Transaction Type" = filter(Loan | "Loan Repayment"), "Posting Date" = field("Date Filter"), Reversed = const(false)));
+                                                                  "Transaction Type" = filter(Loan | "Loan Repayment"|"Interest Paid" | "Interest Due"), "Posting Date" = field("Date Filter"), Reversed = const(false)));
             Editable = false;
             FieldClass = FlowField;
         }

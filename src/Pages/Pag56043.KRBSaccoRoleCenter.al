@@ -735,7 +735,6 @@ Page 56043 "KRB Sacco Role Center"
             group(MembershipManagement)
             {
                 Caption = 'Membership Management';
-
                 action(MembersList)
                 {
                     ApplicationArea = all;
@@ -744,7 +743,14 @@ Page 56043 "KRB Sacco Role Center"
                     ToolTip = 'View Member Accounts';
                     Visible = true;
                 }
-
+                action("Direct Edit")
+                {
+                    ApplicationArea = all;
+                    Caption = 'Edit Member Details';
+                    RunObject = page "Member List Editable";
+                    ToolTip = 'You should not edit member Details here';
+                    Visible = true;//remember to set it false...Feestus
+                }
                 group("Account Opening New")
                 {
                     Caption = 'Membership Registration';
@@ -1409,7 +1415,7 @@ Page 56043 "KRB Sacco Role Center"
                         Caption = 'KRB Employer Remittance';
                         Image = Setup;
                         RunObject = page "KRB Receipts List-Checkoff";
-                        Visible =false;// true;
+                        Visible = false;// true;
                     }
                     action("Update Member Dormancy")
                     {
@@ -1420,6 +1426,7 @@ Page 56043 "KRB Sacco Role Center"
                     group(LoanDefaulter)
                     {
                         Caption = 'Loan Defaulter Notices';
+                        Visible = false;
                         action(LoanDefaulter1st)
                         {
                             Caption = 'Loan Defaulter 1st Notice';
@@ -1442,16 +1449,13 @@ Page 56043 "KRB Sacco Role Center"
                     }
                     group(CheckOffBlocked)
                     {
-                        Caption = 'Checkoff Processing-Blocked';
+                        Caption = 'Checkoff Processing';
                         action("Checkoff Processing List Blocked")
-                        {Caption = 'KRB Employer Remittance';
-                        Image = Setup;
-                        RunObject = page "KRB Receipts List-Checkoff";
-                        Visible = true;
-
-                            // Caption = 'Employer Checkoff Remittance';
-                            // Image = Setup;
-                            // RunObject = page "Bosa Receipts H List-Checkoff";
+                        {
+                            Caption = 'KRB Employer Remittance';
+                            Image = Setup;
+                            RunObject = page "KRB Receipts List-Checkoff";
+                            Visible = true;
                         }
                         action("Posted Employer Checkoff Remittance")
                         {
@@ -1469,7 +1473,7 @@ Page 56043 "KRB Sacco Role Center"
                     }
                     group(CheckOffAdvice)
                     {
-                        // Visible = false;
+                        Visible = false;
                         Caption = 'Check-Off Advice';
                         action("Check off Adivice-Breakdown")
                         {
