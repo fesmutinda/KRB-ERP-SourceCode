@@ -36,10 +36,10 @@ page 57008 "Posted KRB Checkoff"
                 {
                     ApplicationArea = Basic;
                 }
-                field(Remarks; Rec.Remarks)
-                {
-                    ApplicationArea = Basic;
-                }
+                // field(Remarks; Rec.Remarks)
+                // {
+                //     ApplicationArea = Basic;
+                // }
                 field("Total Count"; Rec."Total Count")
                 {
                     ApplicationArea = Basic;
@@ -48,16 +48,18 @@ page 57008 "Posted KRB Checkoff"
                 {
                     ApplicationArea = Basic;
                 }
-                field("Account Type"; Rec."Account Type")
-                {
-                    ApplicationArea = Basic;
-                }
+                // field("Account Type"; Rec."Account Type")
+                // {
+                //     ApplicationArea = Basic;
+                // }
                 field("Account No"; Rec."Account No")
                 {
+                    Caption = 'Bank Account';
                     ApplicationArea = Basic;
                 }
                 field("Employer Code"; Rec."Employer Code")
                 {
+                    Visible = false;
                     ApplicationArea = Basic;
                 }
                 field("Document No"; Rec."Document No")
@@ -71,6 +73,7 @@ page 57008 "Posted KRB Checkoff"
                 }
                 field(Amount; Rec.Amount)
                 {
+                    Caption = 'Cheque Amount';
                     ApplicationArea = Basic;
                 }
                 field("Scheduled Amount"; Rec."Scheduled Amount")

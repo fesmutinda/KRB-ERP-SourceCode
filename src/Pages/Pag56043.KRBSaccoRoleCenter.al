@@ -512,7 +512,6 @@ Page 56043 "KRB Sacco Role Center"
 
                 }
                 //............................................................................................
-
                 group("Other Financials")
                 {
                     action("Trade Creditors")
@@ -605,9 +604,6 @@ Page 56043 "KRB Sacco Role Center"
 
 
                 }
-
-
-
                 //.................................................................................................................................................
 
                 group("Finance Statements")
@@ -619,7 +615,7 @@ Page 56043 "KRB Sacco Role Center"
                     action("KRB Trial Balance")
                     {
                         ApplicationArea = Basic, Suite;
-                        Caption = 'Summarised Trial Balance';
+                        Caption = 'Sacco Trial Balance';
                         RunObject = report "Trial Balance2016";
                         ToolTip = 'Generate Trial Balance for a given period.';
                     }

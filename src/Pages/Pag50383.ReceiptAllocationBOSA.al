@@ -53,6 +53,7 @@ page 50383 "Receipt Allocation-BOSA"
                 {
                     ApplicationArea = Basic;
                 }
+                field(Description; Rec.Description) { }
             }
         }
     }
