@@ -269,18 +269,8 @@ page 50400 "BOSA Receipt Card"
                         GenJournalLine."Line No." := LineNo;
                         if Rec."Account Type" = Rec."account type"::"G/L Account" then
                             GenJournalLine."Account Type" := Rec."Account Type"
-                        else
-                            // if "Account Type" = "account type"::Debtor then
-                            //     GenJournalLine."Account Type" := "Account Type"
-                            // else
-                            if Rec."Account Type" = Rec."account type"::Vendor then
-                                GenJournalLine."Account Type" := Rec."Account Type"
-                            else
-                                if Rec."Account Type" = Rec."account type"::Customer then
-                                    GenJournalLine."Account Type" := Rec."Account Type";
-                        // else
-                        //     if "Account Type" = "account type"::Micro then
-                        //         GenJournalLine."Account Type" := GenJournalLine."account type"::Customer;
+                        else if Rec."Account Type" = Rec."account type"::Customer then
+                            GenJournalLine."Account Type" := Rec."Account Type";
                         GenJournalLine."Account No." := ReceiptAllocations."Member No";
                         GenJournalLine.Validate(GenJournalLine."Account No.");
                         GenJournalLine."Posting Date" := Rec."Cheque Date";
@@ -332,9 +322,6 @@ page 50400 "BOSA Receipt Card"
                                 GenJournalLine."Shortcut Dimension 1 Code" := ReceiptAllocations."Global Dimension 1 Code";
                                 GenJournalLine."Shortcut Dimension 2 Code" := ReceiptAllocations."Global Dimension 2 Code";
                                 GenJournalLine.Validate(GenJournalLine.Amount);
-                                // GenJournalLine.Description := CopyStr(
-                                // Format(ReceiptAllocations."Transaction Type")
-                                // , 1, 50);
                                 GenJournalLine."Transaction Type" := ReceiptAllocations."Transaction Type";
                                 GenJournalLine."Loan No" := ReceiptAllocations."Loan No.";
                                 if GenJournalLine.Amount <> 0 then

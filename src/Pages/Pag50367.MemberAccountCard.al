@@ -542,16 +542,6 @@ page 50367 "Member Account Card"
                     end;
                 }
 
-                // action("Account Page")
-                // {
-                //     ApplicationArea = Basic;
-                //     Image = Planning;
-                //     Promoted = true;
-                //     PromotedCategory = Process;
-                //     PromotedIsBig = true;
-                //     RunObject = Page "Account Card";
-                //     RunPageLink = "No." = field("FOSA Account");
-                // }
                 action("Members Kin Details List")
                 {
                     ApplicationArea = Basic;
@@ -574,26 +564,7 @@ page 50367 "Member Account Card"
                     RunObject = Page "Members Nominee Details List";
                     RunPageLink = "Account No" = field("No.");
                 }
-                action("Group Account Members")
-                {
-                    ApplicationArea = Basic;
-                    Caption = 'Group Account Register';
-                    Image = Group;
-                    Promoted = true;
-                    PromotedCategory = process;
-                    RunObject = Page "Bosa Group Customer List";
-                    RunPageLink = "Account No" = field("No.");
-                    Visible = groupAcc;
-                }
-                action("Account Signatories")
-                {
-                    ApplicationArea = Basic;
-                    Caption = 'Signatories Details';
-                    Promoted = true;
-                    PromotedCategory = Process;
-                    RunObject = Page "Member Account Signatory list";
-                    RunPageLink = "Account No" = field("No.");
-                }
+            
                 action("Members Statistics")
                 {
                     ApplicationArea = Basic;

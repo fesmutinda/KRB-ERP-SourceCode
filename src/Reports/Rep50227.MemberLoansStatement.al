@@ -165,46 +165,27 @@ Report 50227 "Member Loans Statement"
                     column(User7; loan."User ID")
                     {
                     }
-
                     trigger OnAfterGetRecord()
-                    var
-                        postingDateLoans: Date;
-                        transactionType: Text;
-                        docNo: Text;
-                        debitLoans: decimal;
-                        LoanRec: Record "Cust. Ledger Entry";
                     begin
-
-
-                        ClosingBalanceLoan := ClosingBalanceLoan - loan."Amount to Apply"; //
-                        BankCodeLoan := GetBankCode(loan);
-                        //.................................
-                        if loan."Amount to Apply" < 0 then begin
-                            loan."Credit Amount" := (loan."Amount to Apply" * -1);
+                        ClosingBalanceLoan := ClosingBalanceLoan + (loan."Amount Posted");
+                        if loan."Amount Posted" < 0 then begin
+                            loan."Credit Amount" := (loan."Amount Posted" * -1);
                         end else
-                            if loan."Amount to Apply" > 0 then begin
-                                loan."Debit Amount" := (loan."Amount to Apply");
+                            if loan."Amount Posted" > 0 then begin
+                                loan."Debit Amount" := (loan."Amount Posted");
                             end;
-                        //....................................Get Balance Ya corner
-                        RunningBal := RunningBal + loan."Amount to Apply";
-                        // end;
-
-
-                        //-------------------------------------------------------------------
-                        /* LoanRec.reset;
-                        LoanRec.SetFilter(LoanRec."Date filter", DateFilter);
-                        LoanRec.SetRange(LoanRec.Posted, true);
-                        //LoanRec.SetAutoCalcFields(LoanRec."Outstanding Balance");
-                        LoanRec.SetRange(LoanRec."Customer No.", "Loan No");
-                        IF LoanRec.Find('-') then begin
-                            repeat
-
-                            //..................................
-
-                            until LoanRec.Next = 0;
-                        end else
-                            CurrReport.Skip();
-                        VarNo := VarNo + 1; */
+                        if loan."Transaction Type" = loan."transaction type"::"Interest Paid" then begin
+                            InterestPaid := 0;
+                            if loan."Amount Posted" < 0 then begin
+                                InterestPaid := loan."Amount Posted" * -1;
+                            end;
+                            SumInterestPaid := InterestPaid + SumInterestPaid;
+                        end;
+                        if loan."Transaction Type" = loan."transaction type"::"Loan Repayment" then begin
+                            if loan."Amount Posted" < 0 then begin
+                                loan."Credit Amount" := loan."Amount Posted" * -1;
+                            end;
+                        end;
 
                     end;
 
@@ -212,7 +193,6 @@ Report 50227 "Member Loans Statement"
                     begin
                         ClosingBalanceLoan := PrincipleBF;
                         OpenBalanceLoan := PrincipleBF;
-                        OpeningBalInt := InterestBF;
                     end;
                 }
                 dataitem(Interests; "Cust. Ledger Entry")

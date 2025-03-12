@@ -170,15 +170,25 @@ Report 50223 "Member Detailed Statement"
 
                     trigger OnAfterGetRecord()
                     begin
-                        ClosingBalanceLoan := ClosingBalanceLoan - loan.Amount;
-                        BankCodeLoan := GetBankCode(loan);
-                        //.................................
-                        if loan.Amount < 0 then begin
-                            loan."Credit Amount" := (loan.Amount * -1);
+                        ClosingBalanceLoan := ClosingBalanceLoan + (loan."Amount Posted");
+                        if loan."Amount Posted" < 0 then begin
+                            loan."Credit Amount" := (loan."Amount Posted" * -1);
                         end else
-                            if loan.Amount > 0 then begin
-                                loan."Debit Amount" := (loan.Amount);
-                            end
+                            if loan."Amount Posted" > 0 then begin
+                                loan."Debit Amount" := (loan."Amount Posted");
+                            end;
+                        if loan."Transaction Type" = loan."transaction type"::"Interest Paid" then begin
+                            InterestPaid := 0;
+                            if loan."Amount Posted" < 0 then begin
+                                InterestPaid := loan."Amount Posted" * -1;
+                            end;
+                            SumInterestPaid := InterestPaid + SumInterestPaid;
+                        end;
+                        if loan."Transaction Type" = loan."transaction type"::"Loan Repayment" then begin
+                            if loan."Amount Posted" < 0 then begin
+                                loan."Credit Amount" := loan."Amount Posted" * -1;
+                            end;
+                        end;
 
                     end;
 
@@ -186,7 +196,6 @@ Report 50223 "Member Detailed Statement"
                     begin
                         ClosingBalanceLoan := PrincipleBF;
                         OpenBalanceLoan := PrincipleBF;
-                        OpeningBalInt := InterestBF;
                     end;
                 }
                 dataitem(Interests; "Cust. Ledger Entry")
