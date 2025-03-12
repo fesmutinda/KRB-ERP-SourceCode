@@ -618,7 +618,7 @@ Page 50010 "KRBExecComitteeRoleCenter"
                     {
                         ApplicationArea = Basic, Suite;
                         Caption = 'Summarised Trial Balance';
-                        RunObject = report "Trial Balance2016";
+                        RunObject = report "Trial Balance2025";
                         ToolTip = 'Generate Trial Balance for a given period.';
                     }
                     action("Account Schedules")
