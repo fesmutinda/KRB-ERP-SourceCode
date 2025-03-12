@@ -325,16 +325,16 @@ page 50400 "BOSA Receipt Card"
                                 end;
 
                                 GenJournalLine."Posting Date" := Rec."Cheque Date";
-                                GenJournalLine.Description := 'BT-' + '-' + Rec."Account No." + '-' + Rec.Name;
+                                GenJournalLine.Description := ReceiptAllocations.Description;//'BT-' + '-' + Rec."Account No." + '-' + Rec.Name;
                                 ReceiptAllocations."Global Dimension 1 Code" := 'BOSA';
                                 ReceiptAllocations."Global Dimension 2 Code" := SURESTEPFactory.FnGetUserBranch();
                                 GenJournalLine.Amount := -ReceiptAllocations.Amount;
                                 GenJournalLine."Shortcut Dimension 1 Code" := ReceiptAllocations."Global Dimension 1 Code";
                                 GenJournalLine."Shortcut Dimension 2 Code" := ReceiptAllocations."Global Dimension 2 Code";
                                 GenJournalLine.Validate(GenJournalLine.Amount);
-                                GenJournalLine.Description := CopyStr(
-                                Format(ReceiptAllocations."Transaction Type")
-                                , 1, 50);
+                                // GenJournalLine.Description := CopyStr(
+                                // Format(ReceiptAllocations."Transaction Type")
+                                // , 1, 50);
                                 GenJournalLine."Transaction Type" := ReceiptAllocations."Transaction Type";
                                 GenJournalLine."Loan No" := ReceiptAllocations."Loan No.";
                                 if GenJournalLine.Amount <> 0 then
