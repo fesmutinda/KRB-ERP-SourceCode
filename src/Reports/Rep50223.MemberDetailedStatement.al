@@ -133,13 +133,13 @@ Report 50223 "Member Detailed Statement"
                     column(CreditAmount_Loan; loan."Credit Amount")
                     {
                     }
-                    column(Amount_Loan; loan."Amount to Apply") //Amount posted
+                    column(Amount_Loan; loan."Amount Posted")// "Amount to Apply") //Amount posted
                     {
                     }
                     column(openBalance_loan; OpenBalanceLoan)
                     {
                     }
-                    column(CLosingBalance_loan; ClosingBalanceLoan * -1)
+                    column(CLosingBalance_loan; ClosingBalanceLoan)
                     {
                     }
                     column(TransactionType_loan; loan."Transaction Type")
