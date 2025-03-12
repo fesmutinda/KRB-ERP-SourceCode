@@ -616,7 +616,7 @@ Page 56043 "KRB Sacco Role Center"
                     {
                         ApplicationArea = Basic, Suite;
                         Caption = 'Sacco Trial Balance';
-                        RunObject = report "Trial Balance2016";
+                        RunObject = report "Trial Balance2025";
                         ToolTip = 'Generate Trial Balance for a given period.';
                     }
                     action("Account Schedules")
