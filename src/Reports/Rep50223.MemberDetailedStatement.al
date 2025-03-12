@@ -2,7 +2,7 @@
 Report 50223 "Member Detailed Statement"
 {
     ApplicationArea = All;
-    RDLCLayout = './Layouts/MemberDetailedStatement3.rdl';
+    RDLCLayout = './Layouts/MemberDetailedStatement.rdl';
     UsageCategory = ReportsAndAnalysis;
 
     dataset
@@ -118,7 +118,7 @@ Report 50223 "Member Detailed Statement"
                 dataitem(loan; "Cust. Ledger Entry")
                 {
                     DataItemLink = "Customer No." = field("Client Code"), "Loan No" = field("Loan  No."), "Posting Date" = field("Date filter");
-                    DataItemTableView = sorting("Posting Date") where("Transaction Type" = filter(Loan | "Loan Repayment"|"Interest Due"|"Interest Paid"), "Loan No" = filter(<> ''), Reversed = filter(false));
+                    DataItemTableView = sorting("Posting Date") where("Transaction Type" = filter(Loan | "Loan Repayment" | "Interest Due" | "Interest Paid"), "Loan No" = filter(<> ''), Reversed = filter(false));
                     column(PostingDate_loan; loan."Posting Date")
                     {
                     }

@@ -2580,16 +2580,16 @@ Table 51364 "Member Register Depricated"
         field(69111; "Payroll/Staff No2"; Code[15])
         {
         }
-        field(69112; "Employer Code2"; Code[15])
-        {
-            TableRelation = "HR Asset Transfer Header";
+        // field(69112; "Employer Code2"; Code[15])
+        // {
+        //     TableRelation = "HR Asset Transfer Header";
 
-            trigger OnValidate()
-            begin
-                Employer.Get("Employer Code");
-                "Employer Name" := Employer.Description;
-            end;
-        }
+        //     trigger OnValidate()
+        //     begin
+        //         Employer.Get("Employer Code");
+        //         "Employer Name" := Employer.Description;
+        //     end;
+        // }
         field(69113; "Employer Name2"; Code[20])
         {
         }
@@ -2684,16 +2684,16 @@ Table 51364 "Member Register Depricated"
         field(69132; "Payroll/Staff No3"; Code[15])
         {
         }
-        field(69133; "Employer Code3"; Code[10])
-        {
-            TableRelation = "HR Asset Transfer Header";
+        // field(69133; "Employer Code3"; Code[10])
+        // {
+        //     TableRelation = "HR Asset Transfer Header";
 
-            trigger OnValidate()
-            begin
-                Employer.Get("Employer Code");
-                "Employer Name" := Employer.Description;
-            end;
-        }
+        //     trigger OnValidate()
+        //     begin
+        //         Employer.Get("Employer Code");
+        //         "Employer Name" := Employer.Description;
+        //     end;
+        // }
         field(69134; "Employer Name3"; Code[20])
         {
         }
