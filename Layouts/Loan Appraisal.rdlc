@@ -5841,12 +5841,6 @@ UYrNnsJTRei43v51FKvHYOuFrNtSjIaCNMVPHT9xUIiGYjQtRMOK6CQvVnoK0fPtl+dQiP48FKKsiM5g
         <Field Name="LoanCashCleared_LoansRegisterFormat">
           <DataField>LoanCashCleared_LoansRegisterFormat</DataField>
         </Field>
-        <Field Name="LoanCashClearancefee_LoansRegister">
-          <DataField>LoanCashClearancefee_LoansRegister</DataField>
-        </Field>
-        <Field Name="LoanCashClearancefee_LoansRegisterFormat">
-          <DataField>LoanCashClearancefee_LoansRegisterFormat</DataField>
-        </Field>
         <Field Name="PrincipleRepayment">
           <DataField>PrincipleRepayment</DataField>
         </Field>
@@ -6653,12 +6647,6 @@ UYrNnsJTRei43v51FKvHYOuFrNtSjIaCNMVPHT9xUIiGYjQtRMOK6CQvVnoK0fPtl+dQiP48FKKsiM5g
         </Field>
         <Field Name="UtilizableAmount_LoansRegisterFormat">
           <DataField>UtilizableAmount_LoansRegisterFormat</DataField>
-        </Field>
-        <Field Name="NetUtilizableAmount_LoansRegister">
-          <DataField>NetUtilizableAmount_LoansRegister</DataField>
-        </Field>
-        <Field Name="NetUtilizableAmount_LoansRegisterFormat">
-          <DataField>NetUtilizableAmount_LoansRegisterFormat</DataField>
         </Field>
         <Field Name="NettakeHome_LoansRegister">
           <DataField>NettakeHome_LoansRegister</DataField>

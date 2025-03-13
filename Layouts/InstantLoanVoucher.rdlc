@@ -1,167 +1,158 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition"
-        xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
-    <DataSources>
-        <DataSource Name="DataSource">
-          <ConnectionProperties>
-            <DataProvider>SQL</DataProvider>
-            <ConnectString />
-          </ConnectionProperties>
-          <rd:SecurityType>None</rd:SecurityType>
-          <rd:DataSourceID>8b76812e-7735-40c8-b1ca-1e173850bed3</rd:DataSourceID>
-        </DataSource>
-    </DataSources>
-    <DataSets>
-        <DataSet Name="LoansRegister">
-            <Query>
-                <DataSourceName>BCDataSource</DataSourceName>
-                <CommandText>Loans Register</CommandText>
-            </Query>
-            <Fields>
-                <Field Name="ClientName">
-                    <DataField>Client Name</DataField>
-                    <rd:TypeName>System.String</rd:TypeName>
-                </Field>
-                <Field Name="RequestedAmount">
-                    <DataField>Requested Amount</DataField>
-                    <rd:TypeName>System.Decimal</rd:TypeName>
-                </Field>
-                <Field Name="Signature">
-                    <DataField>Signature</DataField>
-                    <rd:TypeName>System.String</rd:TypeName>
-                </Field>
-                <Field Name="ApplicationDate">
-                    <DataField>Application Date</DataField>
-                    <rd:TypeName>System.DateTime</rd:TypeName>
-                </Field>
-                <Field Name="ModeofDisbursement">
-                    <DataField>Mode of Disbursement</DataField>
-                    <rd:TypeName>System.String</rd:TypeName>
-                </Field>
-                <Field Name="BankName">
-                    <DataField>Bank Name</DataField>
-                    <rd:TypeName>System.String</rd:TypeName>
-                </Field>
-                <Field Name="BankAccount">
-                    <DataField>Bank Account</DataField>
-                    <rd:TypeName>System.String</rd:TypeName>
-                </Field>
-                <Field Name="BankBranch">
-                    <DataField>Bank Branch</DataField>
-                    <rd:TypeName>System.String</rd:TypeName>
-                </Field>
-                <Field Name="DisbursedBy">
-                    <DataField>Disbursed By</DataField>
-                    <rd:TypeName>System.String</rd:TypeName>
-                </Field>
-                <Field Name="ApprovedBy">
-                    <DataField>Approved By</DataField>
-                    <rd:TypeName>System.String</rd:TypeName>
-                </Field>
-                <Field Name="DateApproved">
-                    <DataField>Date Approved</DataField>
-                    <rd:TypeName>System.DateTime</rd:TypeName>
-                </Field>
-            </Fields>
-        </DataSet>
-    </DataSets>
-    <ReportSections>
-        <ReportSection>
-            <Width>8.5in</Width>  
-            <Body>
-                <Height>2in</Height>
-                <ReportItems>
-                    <Tablix Name="LoanVoucherTable">
-                        <TablixBody>
-                            <TablixColumns>
-                                <TablixColumn>
-                                    <Width>2in</Width>
-                                </TablixColumn>
-                                <TablixColumn>
-                                    <Width>2in</Width>
-                                </TablixColumn>
-                                <TablixColumn>
-                                    <Width>2in</Width>
-                                </TablixColumn>
-                            </TablixColumns>
-                            <TablixRows>
-                                <TablixRow>
-                                    <Height>0.25in</Height>
-                                    <TablixCells>
-                                        <TablixCell>
-                                            <CellContents>
-                                                <Textbox Name="ClientNameTextbox">
-                                                    <Paragraphs>
-                                                        <Paragraph>
-                                                            <TextRuns>
-                                                                <TextRun>
-                                                                    <Value>=Fields!ClientName.Value</Value>
-                                                                </TextRun>
-                                                            </TextRuns>
-                                                        </Paragraph>
-                                                    </Paragraphs>
-                                                </Textbox>
-                                            </CellContents>
-                                        </TablixCell>
-                                        <TablixCell>
-                                            <CellContents>
-                                                <Textbox Name="RequestedAmountTextbox">
-                                                    <Paragraphs>
-                                                        <Paragraph>
-                                                            <TextRuns>
-                                                                <TextRun>
-                                                                    <Value>=Fields!RequestedAmount.Value</Value>
-                                                                </TextRun>
-                                                            </TextRuns>
-                                                        </Paragraph>
-                                                    </Paragraphs>
-                                                </Textbox>
-                                            </CellContents>
-                                        </TablixCell>
-                                        <TablixCell>
-                                            <CellContents>
-                                                <Textbox Name="ApplicationDateTextbox">
-                                                    <Paragraphs>
-                                                        <Paragraph>
-                                                            <TextRuns>
-                                                                <TextRun>
-                                                                    <Value>=Fields!ApplicationDate.Value</Value>
-                                                                </TextRun>
-                                                            </TextRuns>
-                                                        </Paragraph>
-                                                    </Paragraphs>
-                                                </Textbox>
-                                            </CellContents>
-                                        </TablixCell>
-                                    </TablixCells>
-                                </TablixRow>
-                            </TablixRows>
-                        </TablixBody>
-                        <TablixColumnHierarchy>
-                            <TablixMembers>
-                                <TablixMember />
-                                <TablixMember />
-                                <TablixMember />
-                            </TablixMembers>
-                        </TablixColumnHierarchy>
-                        <TablixRowHierarchy>
-                            <TablixMembers>
-                                <TablixMember>
-                                    <Group Name="Details" />
-                                </TablixMember>
-                            </TablixMembers>
-                        </TablixRowHierarchy>
-                    </Tablix>
-                </ReportItems>
-            </Body>
-            <Page>
-                <PageHeight>11in</PageHeight>
-                <PageWidth>8.5in</PageWidth>
-                <LeftMargin>0.5in</LeftMargin>
-                <RightMargin>0.5in</RightMargin>
-                <TopMargin>0.5in</TopMargin>
-                <BottomMargin>0.5in</BottomMargin>
-            </Page>
-        </ReportSection>
-    </ReportSections>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <DataSources>
+    <DataSource Name="DataSource">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString />
+      </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
+      <rd:DataSourceID>8b76812e-7735-40c8-b1ca-1e173850bed3</rd:DataSourceID>
+    </DataSource>
+  </DataSources>
+  <ReportSections>
+    <ReportSection>
+      <Width>8.5in</Width>
+      <Body>
+        <Height>2in</Height>
+        <ReportItems>
+          <Tablix Name="LoanVoucherTable">
+            <TablixBody>
+              <TablixColumns>
+                <TablixColumn>
+                  <Width>2in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>2in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>2in</Width>
+                </TablixColumn>
+              </TablixColumns>
+              <TablixRows>
+                <TablixRow>
+                  <Height>0.25in</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="ClientNameTextbox">
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!ClientName.Value</Value>
+                                </TextRun>
+                              </TextRuns>
+                            </Paragraph>
+                          </Paragraphs>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="RequestedAmountTextbox">
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!RequestedAmount.Value</Value>
+                                </TextRun>
+                              </TextRuns>
+                            </Paragraph>
+                          </Paragraphs>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="ApplicationDateTextbox">
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!ApplicationDate.Value</Value>
+                                </TextRun>
+                              </TextRuns>
+                            </Paragraph>
+                          </Paragraphs>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+              </TablixRows>
+            </TablixBody>
+            <TablixColumnHierarchy>
+              <TablixMembers>
+                <TablixMember />
+                <TablixMember />
+                <TablixMember />
+              </TablixMembers>
+            </TablixColumnHierarchy>
+            <TablixRowHierarchy>
+              <TablixMembers>
+                <TablixMember>
+                  <Group Name="Details" />
+                </TablixMember>
+              </TablixMembers>
+            </TablixRowHierarchy>
+          </Tablix>
+        </ReportItems>
+      </Body>
+      <Page>
+        <PageHeight>11in</PageHeight>
+        <PageWidth>8.5in</PageWidth>
+        <LeftMargin>0.5in</LeftMargin>
+        <RightMargin>0.5in</RightMargin>
+        <TopMargin>0.5in</TopMargin>
+        <BottomMargin>0.5in</BottomMargin>
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="ClientName">
+          <DataField>ClientName</DataField>
+        </Field>
+        <Field Name="RequestedAmount">
+          <DataField>RequestedAmount</DataField>
+        </Field>
+        <Field Name="RequestedAmountFormat">
+          <DataField>RequestedAmountFormat</DataField>
+        </Field>
+        <Field Name="Signature">
+          <DataField>Signature</DataField>
+        </Field>
+        <Field Name="ApplicationDate">
+          <DataField>ApplicationDate</DataField>
+        </Field>
+        <Field Name="ModeofDisbursement">
+          <DataField>ModeofDisbursement</DataField>
+        </Field>
+        <Field Name="BankName">
+          <DataField>BankName</DataField>
+        </Field>
+        <Field Name="BankAccount">
+          <DataField>BankAccount</DataField>
+        </Field>
+        <Field Name="BankBranch">
+          <DataField>BankBranch</DataField>
+        </Field>
+        <Field Name="DisbursedBy">
+          <DataField>DisbursedBy</DataField>
+        </Field>
+        <Field Name="ApprovedBy">
+          <DataField>ApprovedBy</DataField>
+        </Field>
+        <Field Name="DateApproved">
+          <DataField>DateApproved</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
 </Report>
