@@ -87,7 +87,7 @@ Report 50223 "Member Detailed Statement"
                 column(LoanNumber; Loans."Loan  No.")
                 {
                 }
-                column(ProductType; LoanName)
+                column(ProductType; Loans."Loan Product Type Name")
                 {
                 }
                 column(RequestedAmount; Loans."Requested Amount")
@@ -108,6 +108,7 @@ Report 50223 "Member Detailed Statement"
                 column(LoanProductTypeName_Loans; Loans."Loan Product Type Name")
                 {
                 }
+
                 column(Repayment_Loans; Loans.Repayment)
                 {
                 }
@@ -375,55 +376,55 @@ Report 50223 "Member Detailed Statement"
                 end;
             }
 
-            dataitem(HousingShares; "Cust. Ledger Entry")
+            dataitem(ChildrenSavings; "Cust. Ledger Entry")
             {
                 DataItemLink = "Customer No." = field("No."), "Posting Date" = field("Date Filter");
-                DataItemTableView = sorting("Transaction Type", "Loan No", "Posting Date") where("Transaction Type" = const("Benevolent Fund"), Reversed = filter(false)); //"Benevolent Fund" from Investment
+                DataItemTableView = sorting("Transaction Type", "Loan No", "Posting Date") where("Transaction Type" = const("Junior Savings"), Reversed = filter(false)); //"Benevolent Fund" from Investment
 
-                column(OpenBalancesHousingShares; OpenBalancesHousingShares)
+                column(OpenBalancesChildrenSavings; OpenBalancesChildrenSavings)
                 {
                 }
-                column(CLosingBalancesHousingShares; ClosingBalanceHousingShares)
+                column(ClosingBalancesChildrenSavings; ClosingBalanceChildrenSavings)
                 {
                 }
-                column(Description_HousingShares; HousingShares.Description)
+                column(Description_ChildrenSavings; ChildrenSavings.Description)
                 {
                 }
-                column(DocumentNo_HousingShares; HousingShares."Document No.")
+                column(DocumentNo_ChildrenSavings; ChildrenSavings."Document No.")
                 {
                 }
-                column(PostingDate_HousingShares; HousingShares."Posting Date")
+                column(PostingDate_ChildrenSavings; ChildrenSavings."Posting Date")
                 {
                 }
-                column(CreditAmount_HousingShares; HousingShares."Credit Amount")
+                column(CreditAmount_ChildrenSavings; ChildrenSavings."Credit Amount")
                 {
                 }
-                column(DebitAmount_HousingShares; HousingShares."Debit Amount")
+                column(DebitAmount_ChildrenSavings; ChildrenSavings."Debit Amount")
                 {
                 }
-                column(Amount_HousingShares; HousingShares.Amount)
+                column(Amount_ChildrenSavings; ChildrenSavings.Amount)
                 {
                 }
-                column(TransactionType_HousingShares; HousingShares."Transaction Type")
+                column(TransactionType_ChildrenSavings; ChildrenSavings."Transaction Type")
                 {
                 }
-                column(BalAccountNo_HousingShares; HousingShares."Bal. Account No.")
+                column(BalAccountNo_ChildrenSavings; ChildrenSavings."Bal. Account No.")
                 {
                 }
-                column(BankCodeHousingShares; BankCodeHousingShares)
+                column(BankCodeChildrenSavings; BankCodeChildrenSavings)
                 {
                 }
 
                 trigger OnAfterGetRecord()
                 begin
-                    ClosingBalanceHousingShares := ClosingBalanceHousingShares - HousingShares.Amount;
-                    BankCodeHousingShares := GetBankCode(HousingShares);
+                    ClosingBalanceChildrenSavings := ClosingBalanceChildrenSavings - ChildrenSavings.Amount;
+                    BankCodeChildrenSavings := GetBankCode(ChildrenSavings);
                     //............................................................
-                    if HousingShares.Amount < 0 then begin
-                        HousingShares."Credit Amount" := (HousingShares.Amount * -1);
+                    if ChildrenSavings.Amount < 0 then begin
+                        ChildrenSavings."Credit Amount" := (ChildrenSavings.Amount * -1);
                     end else
-                        if HousingShares.Amount > 0 then begin
-                            HousingShares."Debit Amount" := (HousingShares.Amount);
+                        if ChildrenSavings.Amount > 0 then begin
+                            ChildrenSavings."Debit Amount" := (ChildrenSavings.Amount);
                         end
                 end;
 
@@ -783,9 +784,9 @@ Report 50223 "Member Detailed Statement"
         OpenBalancesPepeaShares: Decimal;
         ClosingBalancePepeaShares: Decimal;
         BankCodePepeaShares: Code[50];
-        OpenBalancesHousingShares: Decimal;
-        ClosingBalanceHousingShares: Decimal;
-        BankCodeHousingShares: Code[50];
+        OpenBalancesChildrenSavings: Decimal;
+        ClosingBalanceChildrenSavings: Decimal;
+        BankCodeChildrenSavings: Code[50];
         ApprovedAmount_Interest: Decimal;
         LonRepaymentSchedule: Record "Loan Repayment Schedule";
 

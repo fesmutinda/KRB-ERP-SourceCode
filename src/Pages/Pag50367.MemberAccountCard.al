@@ -2,8 +2,8 @@ page 50367 "Member Account Card"
 {
     ApplicationArea = Basic;
     Caption = 'Member Card';
-    DeleteAllowed = false;// true;
-    Editable = false;// true;
+    DeleteAllowed = true;
+    Editable = true;
     InsertAllowed = false;
     PageType = Card;
     // PromotedActionCategories = 'Process,Reports,Budgetary Control,Cancellation,Category7_caption,Category8_caption,Category9_caption,Category10_caption';
@@ -101,10 +101,15 @@ page 50367 "Member Account Card"
                 field("Employer Code"; Rec."Employer Code")
                 {
                     ApplicationArea = Basic;
-                    Caption = 'Employer';
-                    Editable = false;
+                    Caption = 'Employer Code';
+                    Editable = true;
                 }
-
+                field("Employment Info"; Rec."Employment Info")
+                {
+                    ApplicationArea = Basic;
+                    Caption = 'Employer';
+                    Editable = true;
+                }
                 field("Passport No."; Rec."Passport No.")
                 {
                     ApplicationArea = Basic;
@@ -166,7 +171,7 @@ page 50367 "Member Account Card"
                 field("Registration Date"; Rec."Registration Date")
                 {
                     ApplicationArea = Basic;
-                    Editable = false;
+                    Editable = true;
                 }
                 field("Global Dimension 1 Code"; Rec."Global Dimension 1 Code"
                 )

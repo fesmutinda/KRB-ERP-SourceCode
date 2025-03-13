@@ -1,0 +1,5 @@
+*.app
+.vscode/.alcache/
+.vscode/.alcache/cache_*.json
+.alpackages/
+Swizzsoft Systems and Solutions_KRB_2.5.0.0.app

@@ -3,9 +3,9 @@ page 50387 "Loans Guarantee Details"
 {
     PageType = ListPart;
     RefreshOnActivate = false;
-    Editable = true;
     InsertAllowed = true;
-    DeleteAllowed=true;
+    DeleteAllowed = true;
+    Editable = true;
     SourceTable = "Loans Guarantee Details";
 
     layout
@@ -21,7 +21,7 @@ page 50387 "Loans Guarantee Details"
                 field("Member No"; Rec."Member No")
                 {
                     ApplicationArea = Basic;
-                    Caption = 'Member No.';
+                    Caption = 'Account No.';
                 }
                 field(Name; Rec.Name)
                 {
@@ -41,6 +41,7 @@ page 50387 "Loans Guarantee Details"
                 field("Self Guarantee"; Rec."Self Guarantee")
                 {
                     ApplicationArea = Basic;
+                    // Visible = false;
                 }
                 field(Date; Rec.Date)
                 {

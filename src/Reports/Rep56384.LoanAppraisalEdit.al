@@ -105,9 +105,9 @@ Report 56384 "Loan Appraisal Edit"
             column(LoanCashCleared_LoansRegister; "Loans Register"."Loan  Cash Cleared")
             {
             }
-            column(LoanCashClearancefee_LoansRegister; "Loans Register"."Loan Cash Clearance fees")
-            {
-            }
+            // column(LoanCashClearancefee_LoansRegister; "Loans Register"."Loan Cash Clearance fees")
+            // {
+            // }
             column(PrincipleRepayment; "Loans Register"."Loan Principle Repayment")
             {
             }
@@ -627,9 +627,9 @@ Report 56384 "Loan Appraisal Edit"
             column(UtilizableAmount_LoansRegister; "Loans Register"."Utilizable Amount")
             {
             }
-            column(NetUtilizableAmount_LoansRegister; "Loans Register"."Net Utilizable")
-            {
-            }
+            // column(NetUtilizableAmount_LoansRegister; "Loans Register"."Net Utilizable")
+            // {
+            // }
             column(NettakeHome_LoansRegister; "Loans Register"."Net take Home")
             {
             }

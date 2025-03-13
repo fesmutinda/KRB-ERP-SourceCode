@@ -321,110 +321,110 @@ Page 56043 "KRB Sacco Role Center"
                 }
                 //........................................................................................................................................           
 
-                group("SASRA Reports")
-                {
-                    Caption = 'SASRA Reports';
-                    ToolTip = 'which highlights the operations and performance of the SACCO industry during the year ended';
-                    Visible = false;
-                    action("Capital Adequacy Return")
-                    {
-                        ApplicationArea = Basic, Suite;
-                        Caption = 'Capital Adequacy Return';
-                        RunObject = report "CAPITAL ADEQUACY RETURN";
-                        ToolTip = 'View or Generate Deposit Return SASRA for a given period.';
-                    }
+                // group("SASRA Reports")
+                // {
+                //     Caption = 'SASRA Reports';
+                //     ToolTip = 'which highlights the operations and performance of the SACCO industry during the year ended';
+                //     Visible = false;
+                //     action("Capital Adequacy Return")
+                //     {
+                //         ApplicationArea = Basic, Suite;
+                //         Caption = 'Capital Adequacy Return';
+                //         RunObject = report "CAPITAL ADEQUACY RETURN";
+                //         ToolTip = 'View or Generate Deposit Return SASRA for a given period.';
+                //     }
 
-                    action("Investiment Return")
-                    {
-                        ApplicationArea = Basic, Suite;
-                        Caption = 'Investiment Return';
-                        RunObject = report "RETURN ON INVESTMENT";
-                        ToolTip = 'View or Generate Deposit Return SASRA for a given period.';
-                        // Visible = false;
-                    }
-                    action("Liquidity Statement")
-                    {
-                        ApplicationArea = Basic, Suite;
-                        Caption = 'Liquidity Statement';
-                        RunObject = report Liquidity;
-                        ToolTip = 'View or Generate Deposit Return SASRA for a given period.';
-                        // Visible = false;
-                    }
-                    action("Form2F Statement of CompIncome")
-                    {
-                        ApplicationArea = Basic, Suite;
-                        Caption = 'Statement of comprehensive Income';
-                        RunObject = report "Form2F Statement of CompIncome";
-                        ToolTip = 'View or Generate Deposit Return SASRA for a given period.';
-                        // Visible = false;
-                    }
-                    action("Deposits Return-SASRA")
-                    {
-                        ApplicationArea = Basic, Suite;
-                        Caption = 'Statement of Deposits Return';
-                        Image = Report;
-                        RunObject = report "Deposit returnN";
-                    }
-                    action("Statement of Financial Position")
-                    {
-                        ApplicationArea = Basic, Suite;
-                        Caption = 'Statement of Financial Position';
-                        RunObject = report "STATEMENT OF FINANCIAL P";
-                        ToolTip = 'View or Generate Deposit Return SASRA for a given period.';
-                        // Visible = false;
-                    }
-                    action("Other Disclosures")
-                    {
-                        ApplicationArea = Basic, Suite;
-                        Caption = 'Other Disclosures';
-                        RunObject = report "Other Disclosures";
-                    }
-                    action("Insider Lending Report")
-                    {
-                        ApplicationArea = Basic, Suite;
-                        Caption = 'Insider Lending Report';
-                        RunObject = report "Insider Lending & Perf Return";
-                        ToolTip = 'View or Generate Agency Returns for a given period.';
-                        // Visible = false;
-                    }
+                //     action("Investiment Return")
+                //     {
+                //         ApplicationArea = Basic, Suite;
+                //         Caption = 'Investiment Return';
+                //         RunObject = report "RETURN ON INVESTMENT";
+                //         ToolTip = 'View or Generate Deposit Return SASRA for a given period.';
+                //         // Visible = false;
+                //     }
+                //     action("Liquidity Statement")
+                //     {
+                //         ApplicationArea = Basic, Suite;
+                //         Caption = 'Liquidity Statement';
+                //         RunObject = report Liquidity;
+                //         ToolTip = 'View or Generate Deposit Return SASRA for a given period.';
+                //         // Visible = false;
+                //     }
+                //     action("Form2F Statement of CompIncome")
+                //     {
+                //         ApplicationArea = Basic, Suite;
+                //         Caption = 'Statement of comprehensive Income';
+                //         RunObject = report "Form2F Statement of CompIncome";
+                //         ToolTip = 'View or Generate Deposit Return SASRA for a given period.';
+                //         // Visible = false;
+                //     }
+                //     action("Deposits Return-SASRA")
+                //     {
+                //         ApplicationArea = Basic, Suite;
+                //         Caption = 'Statement of Deposits Return';
+                //         Image = Report;
+                //         RunObject = report "Deposit returnN";
+                //     }
+                //     action("Statement of Financial Position")
+                //     {
+                //         ApplicationArea = Basic, Suite;
+                //         Caption = 'Statement of Financial Position';
+                //         RunObject = report "STATEMENT OF FINANCIAL P";
+                //         ToolTip = 'View or Generate Deposit Return SASRA for a given period.';
+                //         // Visible = false;
+                //     }
+                //     action("Other Disclosures")
+                //     {
+                //         ApplicationArea = Basic, Suite;
+                //         Caption = 'Other Disclosures';
+                //         RunObject = report "Other Disclosures";
+                //     }
+                //     action("Insider Lending Report")
+                //     {
+                //         ApplicationArea = Basic, Suite;
+                //         Caption = 'Insider Lending Report';
+                //         RunObject = report "Insider Lending & Perf Return";
+                //         ToolTip = 'View or Generate Agency Returns for a given period.';
+                //         // Visible = false;
+                //     }
 
-                    action("Loans Defaulter Aging-SASRA")
-                    {
-                        ApplicationArea = Basic, Suite;
-                        Caption = 'Loans Defaulter Aging';
-                        RunObject = report "SASRA Loans Classification";
-                    }
+                //     action("Loans Defaulter Aging-SASRA")
+                //     {
+                //         ApplicationArea = Basic, Suite;
+                //         Caption = 'Loans Defaulter Aging';
+                //         RunObject = report "SASRA Loans Classification";
+                //     }
 
-                    // action("Sectorial Lending Report")
-                    // {
-                    //     ApplicationArea = Basic, Suite;
-                    //     Caption = 'Sectorial Lending Report';
-                    //     RunObject = report "SECTORAL LENDING";
-                    //     ToolTip = 'View or Generate Agency Returns for a given period.';
-                    //     // Visible = false;
-                    // }
+                //     // action("Sectorial Lending Report")
+                //     // {
+                //     //     ApplicationArea = Basic, Suite;
+                //     //     Caption = 'Sectorial Lending Report';
+                //     //     RunObject = report "SECTORAL LENDING";
+                //     //     ToolTip = 'View or Generate Agency Returns for a given period.';
+                //     //     // Visible = false;
+                //     // }
 
-                    action("Risk Class of Assets")
-                    {
-                        ApplicationArea = Basic, Suite;
-                        Caption = 'Risk Classification and Loan Provisioning';
-                        RunObject = report "Risk Class Of Assets & Prov";
-                    }
+                //     action("Risk Class of Assets")
+                //     {
+                //         ApplicationArea = Basic, Suite;
+                //         Caption = 'Risk Classification and Loan Provisioning';
+                //         RunObject = report "Risk Class Of Assets & Prov";
+                //     }
 
-                    // action("Loans Provisioning Summary-SASRA")
-                    // {
-                    //     ApplicationArea = Basic, Suite;
-                    //     Caption = 'Loans Provisioning Summary';
-                    //     RunObject = report "Loans Provisioning Summarys";
-                    // }
-                    action("Loan Sectorial Lendng-SASRA")
-                    {
-                        ApplicationArea = Basic, Suite;
-                        Caption = 'Loan Sectorial Lending';
-                        RunObject = REPORT "Loan Sectoral Lending Report";
-                    }
+                //     // action("Loans Provisioning Summary-SASRA")
+                //     // {
+                //     //     ApplicationArea = Basic, Suite;
+                //     //     Caption = 'Loans Provisioning Summary';
+                //     //     RunObject = report "Loans Provisioning Summarys";
+                //     // }
+                //     action("Loan Sectorial Lendng-SASRA")
+                //     {
+                //         ApplicationArea = Basic, Suite;
+                //         Caption = 'Loan Sectorial Lending';
+                //         RunObject = REPORT "Loan Sectoral Lending Report";
+                //     }
 
-                }
+                // }
                 //..........................................................................................................................................
                 group("Receipt Processing")
                 {
@@ -840,53 +840,53 @@ Page 56043 "KRB Sacco Role Center"
                         Visible = true;
 
                     }
-                    action("Member Account Balances Report")
-                    {
-                        ApplicationArea = all;
-                        RunObject = report "Member Account  balances";
-                        ToolTip = 'Member Account Summary Report.';
-                    }
-                    action(MembersavingReport)
-                    {
-                        ApplicationArea = all;
-                        Caption = 'Member savings columnar report.';
-                        // RunObject = report "Member savings report";
+                    // action("Member Account Balances Report")
+                    // {
+                    //     ApplicationArea = all;
+                    //     RunObject = report "Member Detailed Statement";
+                    //     ToolTip = 'Member Account Summary Report.';
+                    // }
+                    // action(MembersavingReport)
+                    // {
+                    //     ApplicationArea = all;
+                    //     Caption = 'Member savings columnar report.';
+                    //     // RunObject = report "Member savings report";
 
-                    }
-                    action(memberwithoutsharecapitalReport)
-                    {
-                        ApplicationArea = all;
-                        Caption = 'Members without minimum share capital report.';
-                        // RunObject = report MemberwithoutMinshapitalreport;
+                    // }
+                    // action(memberwithoutsharecapitalReport)
+                    // {
+                    //     ApplicationArea = all;
+                    //     Caption = 'Members without minimum share capital report.';
+                    //     // RunObject = report MemberwithoutMinshapitalreport;
 
-                    }
+                    // }
 
-                    action(MemberwithoutPassportReport)
-                    {
-                        ApplicationArea = all;
-                        Caption = 'Members without passports report.';
-                        // RunObject = report Memberswithoutpassportsreport;
+                    // action(MemberwithoutPassportReport)
+                    // {
+                    //     ApplicationArea = all;
+                    //     Caption = 'Members without passports report.';
+                    //     // RunObject = report Memberswithoutpassportsreport;
 
-                    }
-                    action(MemberwithoutSignatureReport)
-                    {
-                        ApplicationArea = all;
-                        Caption = ' Members without signature report.';
-                        // RunObject = report Memberwithoutsignaturereport;
+                    // }
+                    // action(MemberwithoutSignatureReport)
+                    // {
+                    //     ApplicationArea = all;
+                    //     Caption = ' Members without signature report.';
+                    //     // RunObject = report Memberwithoutsignaturereport;
 
-                    }
-                    action(MemberApplicationReport)
-                    {
-                        ApplicationArea = all;
-                        Caption = 'Member application report';
-                        // RunObject = report MembershipApplicationReport;
-                    }
-                    action(MemberswithoutLoanReport)
-                    {
-                        ApplicationArea = all;
-                        Caption = 'Members Without Loan report';
-                        // RunObject = report MemberwithoutLoanReport;
-                    }
+                    // }
+                    // action(MemberApplicationReport)
+                    // {
+                    //     ApplicationArea = all;
+                    //     Caption = 'Member application report';
+                    //     // RunObject = report MembershipApplicationReport;
+                    // }
+                    // action(MemberswithoutLoanReport)
+                    // {
+                    //     ApplicationArea = all;
+                    //     Caption = 'Members Without Loan report';
+                    //     // RunObject = report MemberwithoutLoanReport;
+                    // }
                     action(MembersReport)
                     {
                         ApplicationArea = all;
@@ -894,6 +894,36 @@ Page 56043 "KRB Sacco Role Center"
                         RunObject = report MemberReport;
                         ToolTip = 'Members Report Contains all Members status';
                     }
+
+
+                    //
+                    // action("Member Next Of Kin Details")
+                    // {
+                    //     ApplicationArea = All;
+                    //     Caption = 'Benificiary Report';
+                    //     RunObject = report "Next of Kin Details Report";
+                    // }
+                    // action("Members Without Next of Kin")
+                    // {
+                    //     ApplicationArea = All;
+                    //     // RunObject = report MemberWithoutNextOfKin;
+                    // }
+                    // action("Member shares Report")
+                    // {
+                    //     ApplicationArea = all;
+                    //     RunObject = report "Member Share Capital Statement";
+                    // }
+                    // action("Member Deposits Report")
+                    // {
+                    //     ApplicationArea = all;
+                    //     RunObject = report "Members Deposits Statement";
+                    // }
+                    // action("Member Detailed Statement")
+                    // {
+                    //     ApplicationArea = all;
+                    //     RunObject = report "Member Detailed Statement";
+                    // }
+
                     action("Membership Closure Report")
                     {
                         ApplicationArea = all;
@@ -901,40 +931,11 @@ Page 56043 "KRB Sacco Role Center"
                         RunObject = report "Membership Closure Report";
 
                     }
-
-
-                    //
-                    action("Member Next Of Kin Details")
-                    {
-                        ApplicationArea = All;
-                        Caption = 'Benificiary Report';
-                        RunObject = report "Next of Kin Details Report";
-                    }
-                    action("Members Without Next of Kin")
-                    {
-                        ApplicationArea = All;
-                        // RunObject = report MemberWithoutNextOfKin;
-                    }
-                    action("Member shares Report")
-                    {
-                        ApplicationArea = all;
-                        RunObject = report "Member Share Capital Statement";
-                    }
-                    action("Member Deposits Report")
-                    {
-                        ApplicationArea = all;
-                        RunObject = report "Members Deposits Statement";
-                    }
-                    action("Member Detailed Statement")
-                    {
-                        ApplicationArea = all;
-                        RunObject = report "Member Detailed Statement";
-                    }
-                    action("Member Accounts Statement")
-                    {
-                        ApplicationArea = all;
-                        RunObject = report "Members Deposits Statement";// "Member Account Statement";
-                    }
+                    // action("Member Accounts Statement")
+                    // {
+                    //     ApplicationArea = all;
+                    //     RunObject = report "Members Deposits Statement";// "Member Account Statement";
+                    // }
                 }
 
             }

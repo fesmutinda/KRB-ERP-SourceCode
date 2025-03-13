@@ -47,7 +47,8 @@ page 56110 "Member Application Card"
                 {
                     ApplicationArea = Basic;
                     Editable = TitleEditable;
-                    ShowMandatory = true;
+                    Visible = false;
+                    ShowMandatory = false;
                 }
 
                 field("First Name"; Rec."First Name")
@@ -114,6 +115,7 @@ page 56110 "Member Application Card"
                     ApplicationArea = Basic;
                     Editable = PostalCodeEditable;
                     Importance = Promoted;
+                    Visible = false;
                 }
                 field(Nationality; Rec.Nationality)
                 {
@@ -159,6 +161,7 @@ page 56110 "Member Application Card"
                     ApplicationArea = Basic;
                     Editable = PhoneEditable;
 
+
                     trigger OnValidate()
                     begin
                         if StrLen(Rec."Mobile No. 2") <> 10 then
@@ -170,6 +173,7 @@ page 56110 "Member Application Card"
                     ApplicationArea = Basic;
                     Editable = IDNoEditable;
                     ShowMandatory = true;
+                    Visible = false;
                 }
                 field("ID No."; Rec."ID No.")
                 {
@@ -177,12 +181,12 @@ page 56110 "Member Application Card"
                     Editable = IDNoEditable;
                     ShowMandatory = true;
                 }
-                field("Passport No."; Rec."Passport No.")
-                {
-                    ApplicationArea = all;
+                // field("Passport No."; Rec."Passport No.")
+                // {
+                //     ApplicationArea = all;
 
-                    Editable = IDNoEditable;
-                }
+                //     Editable = IDNoEditable;
+                // }
                 field("Date of Birth"; Rec."Date of Birth")
                 {
                     ApplicationArea = Basic;
@@ -212,7 +216,7 @@ page 56110 "Member Application Card"
                 field("KRA Pin"; Rec."KRA Pin")
                 {
                     ApplicationArea = Basic;
-                    Style = Attention;
+                    ShowMandatory = false;
                     StyleExpr = true;
                     Editable = NameEditable;
                 }
@@ -240,26 +244,27 @@ page 56110 "Member Application Card"
                 {
                     ApplicationArea = Basic;
                     Editable = EmailEdiatble;
-                    ShowMandatory = false;
+                    ShowMandatory = true;
                 }
                 field(Location; Rec.Location)
                 {
                     ApplicationArea = Basic;
                     Caption = 'Physical Location';
-                    ShowMandatory = true;
+                    ShowMandatory = false;
                     Editable = NameEditable;
                 }
                 field("Received 1 Copy Of ID"; Rec."Received 1 Copy Of ID")
                 {
                     ApplicationArea = Basic;
                     Editable = CopyOFIDEditable;
-                    ShowMandatory = true;
+                    ShowMandatory = false;
                 }
 
                 field("Copy of KRA Pin"; Rec."Copy of KRA Pin")
                 {
                     ApplicationArea = Basic;
                     Editable = CopyofKRAPinEditable;
+                    ShowMandatory = false;
                 }
                 field("AutoFill Mobile Details"; Rec."AutoFill Mobile Details")
                 {
@@ -348,32 +353,32 @@ page 56110 "Member Application Card"
                 }
 
             }
-            group("Bank Details")
-            {
+            // group("Bank Details")
+            // {
 
-                field("Bank Code"; Rec."Bank Code")
-                {
-                    ApplicationArea = Basic;
-                    Caption = 'Bank Code';
-                    ShowMandatory = true;
-                    NotBlank = true;
-                }
-                field("Bank Name"; Rec."Bank Name")
-                {
-                    ApplicationArea = Basic;
-                    Caption = 'Bank Name';
-                    Editable = false;
-                }
-                field("Bank Branch"; Rec."Bank Branch")
-                {
-                    ApplicationArea = Basic;
-                    Editable = false;
-                }
-                field("Bank Account No"; Rec."Bank Account No")
-                {
-                    ApplicationArea = Basic;
-                }
-            }
+            //     field("Bank Code"; Rec."Bank Code")
+            //     {
+            //         ApplicationArea = Basic;
+            //         Caption = 'Bank Code';
+            //         ShowMandatory = true;
+            //         NotBlank = true;
+            //     }
+            //     field("Bank Name"; Rec."Bank Name")
+            //     {
+            //         ApplicationArea = Basic;
+            //         Caption = 'Bank Name';
+            //         Editable = false;
+            //     }
+            //     field("Bank Branch"; Rec."Bank Branch")
+            //     {
+            //         ApplicationArea = Basic;
+            //         Editable = false;
+            //     }
+            //     field("Bank Account No"; Rec."Bank Account No")
+            //     {
+            //         ApplicationArea = Basic;
+            //     }
+            // }
             group("Employment Details")
             {
                 Visible = Individual;
@@ -413,10 +418,12 @@ page 56110 "Member Application Card"
                     Caption = 'Estimated Monthly Income Levels';
                     ApplicationArea = Basic;
                     Editable = EmployerCodeEditable;
+                    Visible = false;
                 }
                 field("Source of Funds"; Rec."Source of Funds")
                 {
-                    Visible = not employedMember and not selfEmployedMember;
+                    //Visible = not employedMember and not selfEmployedMember;
+                    Visible = false;
                     Caption = 'Source of Funds';
                     ApplicationArea = Basic;
                     Editable = EmployerCodeEditable;
@@ -431,7 +438,8 @@ page 56110 "Member Application Card"
                 }
                 field("Specific Source of Funds"; Rec."Specific Source of Funds")
                 {
-                    Visible = otherFundsSource;
+                    Visible = false;
+                    //Visible = otherFundsSource;
                     Caption = 'Specific Source of Funds';
                     ApplicationArea = Basic;
                     Editable = EmployerCodeEditable;
@@ -497,39 +505,42 @@ page 56110 "Member Application Card"
                     ApplicationArea = Basic;
                     Editable = false;
                 }
-                field(Department; Rec.Department)
-                {
-                    ApplicationArea = Basic;
-                    Editable = NameEditable;
-                }
-                field("Office Branch"; Rec."Office Branch")
-                {
-                    ApplicationArea = Basic;
-                    Editable = NameEditable;
-                }
+                // field(Department; Rec.Department)
+                // {
+                //     ApplicationArea = Basic;
+                //     Editable = NameEditable;
+                // }
+                // field("Office Branch"; Rec."Office Branch")
+                // {
+                //     ApplicationArea = Basic;
+                //     Editable = NameEditable;
+                // }
                 field("Official Designation"; Rec."Official Designation")
                 {
                     ApplicationArea = Basic;
                     Editable = NameEditable;
+                    Visible = false;
                 }
-                field(Station; Rec.Section)
-                {
-                    Caption = 'Station';
-                    ApplicationArea = Basic;
-                }
-                field("Station Name"; Rec."Station Name")
-                {
-                    ApplicationArea = all;
-                }
+                // field(Station; Rec.Section)
+                // {
+                //     Caption = 'Station';
+                //     ApplicationArea = Basic;
+                // }
+                // field("Station Name"; Rec."Station Name")
+                // {
+                //     ApplicationArea = all;
+                // }
                 field("Date Employed"; Rec."Date Employed")
                 {
                     ApplicationArea = Basic;
                     Editable = NameEditable;
+                    Visible = false;
                 }
                 field("Terms of Employment"; Rec."Terms of Employment")
                 {
                     ApplicationArea = Basic;
                     Editable = NameEditable;
+                    Visible = false;
                 }
             }
             group("Ex-KRB Employee")
@@ -551,34 +562,36 @@ page 56110 "Member Application Card"
                     ApplicationArea = Basic;
                     Editable = false;
                 }
-                field("Ex-Department"; Rec.Department)
-                {
-                    ApplicationArea = Basic;
-                    Editable = NameEditable;
-                }
-                field("Ex-Office Branch"; Rec."Office Branch")
-                {
-                    ApplicationArea = Basic;
-                    Editable = NameEditable;
-                }
+                // field("Ex-Department"; Rec.Department)
+                // {
+                //     ApplicationArea = Basic;
+                //     Editable = NameEditable;
+                // }
+                // field("Ex-Office Branch"; Rec."Office Branch")
+                // {
+                //     ApplicationArea = Basic;
+                //     Editable = NameEditable;
+                // }
                 field("Ex-Official Designation"; Rec."Official Designation")
                 {
                     ApplicationArea = Basic;
                     Editable = NameEditable;
+                    Visible = false;
                 }
-                field("Ex-Station"; Rec.Section)
-                {
-                    Caption = 'Station';
-                    ApplicationArea = Basic;
-                }
-                field("Ex-Station Name"; Rec."Station Name")
-                {
-                    ApplicationArea = all;
-                }
+                // field("Ex-Station"; Rec.Section)
+                // {
+                //     Caption = 'Station';
+                //     ApplicationArea = Basic;
+                // }
+                // field("Ex-Station Name"; Rec."Station Name")
+                // {
+                //     ApplicationArea = all;
+                // }
                 field("Ex-Terms of Employment"; Rec."Terms of Employment")
                 {
                     ApplicationArea = Basic;
                     Editable = NameEditable;
+                    Visible = false;
                 }
             }
             group("IsSelfEmployed")
@@ -597,7 +610,7 @@ page 56110 "Member Application Card"
                 field("KRAPin"; Rec."KRA Pin")
                 {
                     ApplicationArea = Basic;
-                    ShowMandatory = true;
+                    ShowMandatory = false;
                     Caption = 'KRA Pin';
                 }
             }
@@ -618,6 +631,7 @@ page 56110 "Member Application Card"
                 {
                     ApplicationArea = Basic;
                     Editable = MonthlyContributionEdit;
+                    Visible = false;
                 }
                 field("Recruited By"; Rec."Recruited By")
                 {
@@ -662,10 +676,12 @@ page 56110 "Member Application Card"
                 {
                     ApplicationArea = Basic;
                     Editable = GlobalDim2Editable;
+                    ShowMandatory = true;
                 }
                 field("Sms Notification"; Rec."Sms Notification")
                 {
                     ApplicationArea = Basic;
+                    Visible = false;
                 }
                 group("User Details")
                 {
@@ -691,15 +707,15 @@ page 56110 "Member Application Card"
         //factbox
         area(factboxes)
         {
-            part(Control149; "Applicant Picture")
-            {
+            // part(Control149; "Applicant Picture")
+            // {
 
-                ApplicationArea = all;
-                SubPageLink = "No." = FIELD("No.");
-                // Visible = Individual;
-                Enabled = true;
+            //     ApplicationArea = all;
+            //     SubPageLink = "No." = FIELD("No.");
+            //     // Visible = Individual;
+            //     Enabled = false;
 
-            }
+            // }
             part(Control150; "Applicant Document")
             {
                 ApplicationArea = all;
@@ -707,13 +723,13 @@ page 56110 "Member Application Card"
                 Visible = Individual;
                 Enabled = true;
             }
-            part(Control151; "Applicant Signature")
-            {
-                ApplicationArea = all;
-                SubPageLink = "No." = FIELD("No.");
-                //   Visible = (Individual) AND NOT (JuniourAccountType);
-                Enabled = true;
-            }
+            // part(Control151; "Applicant Signature")
+            // {
+            //     ApplicationArea = all;
+            //     SubPageLink = "No." = FIELD("No.");
+            //     //   Visible = (Individual) AND NOT (JuniourAccountType);
+            //     Enabled = false;
+            // }
             // part(Control152; "Applicant Logo")
             // {
             //     ApplicationArea = all;
@@ -847,8 +863,8 @@ page 56110 "Member Application Card"
                             Rec.TestField(Name);
                             Rec.TestField("ID No.");
                             Rec.TestField("Mobile Phone No");
-                            Rec.TestField(Picture);
-                            Rec.TestField(Signature);
+                            // Rec.TestField(Picture);
+                            // Rec.TestField(Signature);
                             Rec.TestField(Gender);
                             Rec.TestField("Customer Posting Group");
                             Rec.TestField("Global Dimension 1 Code");
@@ -859,9 +875,60 @@ page 56110 "Member Application Card"
                             NOkApp.Reset;
                             NOkApp.SetRange(NOkApp."Account No", Rec."No.");
                             if NOkApp.Find('-') = false then begin
-                                Error('Please Insert Next 0f kin Information');
+                                Error('Please Insert Next Of Kin Information');
                             end;
                         end;
+
+                        if (Rec."Account Category" = Rec."Account Category"::"Regular Account") then begin
+                            nomineeApp.Reset();
+                            nomineeApp.SetRange(nomineeApp."Account No", Rec."No.");
+
+                            // Check if there is any nominee for the account
+                            if not nomineeApp.FindFirst() then begin
+                                Error('Please Insert Nominee Information');
+                            end else begin
+                                // Check if there is a nominee under 18
+                                nomineeApp.Reset();
+                                nomineeApp.SetRange(nomineeApp."Account No", Rec."No.");
+
+                                if nomineeApp.FindFirst() then begin
+                                    repeat
+                                        AgeText := nomineeApp.Age; // Get the Age text
+                                        YearPart := CopyStr(AgeText, 1, StrPos(AgeText, ' Years') - 1); // Extract the number before " Years"
+
+                                        if YearPart <> '' then begin
+                                            Evaluate(IntegerAge, YearPart); // Convert extracted text to integer
+
+                                            if IntegerAge < 18 then begin
+
+
+                                                // If a nominee under 18 exists, check for at least one guardian nominee above 18
+                                                nomineeApp.Reset();
+                                                nomineeApp.SetRange(nomineeApp."Account No", Rec."No.");
+                                                GuardianFound := false; // Flag to check for a valid guardian
+
+                                                if nomineeApp.FindFirst() then begin
+                                                    repeat
+                                                        AgeText := nomineeApp.Age;
+                                                        YearPart := CopyStr(AgeText, 1, StrPos(AgeText, ' Years') - 1);
+                                                        Evaluate(IntegerAge, YearPart);
+
+                                                        if (IntegerAge > 18) and (nomineeApp."Next Of Kin Type" = nomineeApp."Next Of Kin Type"::"Guardian/Trustee") then
+                                                            GuardianFound := true;
+                                                    until (nomineeApp.Next() = 0) or GuardianFound; // Exit if we find a guardian
+                                                end;
+
+                                                if not GuardianFound then begin
+                                                    Error('Please Insert at least one guardian nominee (Age > 18) since a nominee under 18 exists.');
+                                                end;
+                                            end;
+                                        end;
+                                    until nomineeApp.Next() = 0;
+                                end;
+                            end;
+                        end;
+
+
                         if Rec.Status <> Rec.Status::Open then
                             Error(Text001);
 
@@ -1268,6 +1335,13 @@ page 56110 "Member Application Card"
         CoveragePercentStyle: Text;
         SwizzsoftFactory: Codeunit "Swizzsoft Factory";
         EmailCodeunit: Codeunit Emailcodeunit;
+
+        IntegerAge: Integer;
+        GuardianFound: Boolean;
+        AgeText: Text[50];
+        YearPart: Text[10];
+
+        nomineeApp: Record "Member App Nominee";
 
 
     procedure UpdateControls()
@@ -1813,7 +1887,7 @@ page 56110 "Member Application Card"
     local procedure FnCreateNomineeDetails(MemberNo: text[70])
     var
         // NextofKinBOSA: Record "Members Next Kin Details";
-        nomineeApp: Record "Member App Nominee";
+        //nomineeApp: Record "Member App Nominee";
         membersNominee: Record "Members Nominee";
     begin
 
