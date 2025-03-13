@@ -110,7 +110,7 @@ Page 56131 "Loan Disburesment Batch Card"
                     var
                         Text001: label 'This Batch is already pending approval';
                         ApprovalsMgmt: Codeunit "Approvals Mgmt.";
-                        SrestepApprovalsCodeUnit: Codeunit SurestepApprovalsCodeUnit;
+                        SwizzApprovalsCodeUnit: Codeunit SwizzsoftApprovalsCodeUnit;
                     begin
                         LoanApps.Reset;
                         LoanApps.SetRange(LoanApps."Batch No.", Rec."Batch No.");
@@ -121,7 +121,7 @@ Page 56131 "Loan Disburesment Batch Card"
                             // Status := Status::Approved;
                             // rec.Modify(true);
                             // Message('Approved');
-                            SrestepApprovalsCodeUnit.SendLoanBatchRequestForApproval(rec."Batch No.", Rec);
+                            SwizzApprovalsCodeUnit.SendLoanBatchRequestForApproval(rec."Batch No.", Rec);
                         end;
                     end;
                 }
@@ -137,10 +137,10 @@ Page 56131 "Loan Disburesment Batch Card"
                     trigger OnAction()
                     var
                         ApprovalMgt: Codeunit "Approvals Mgmt.";
-                        SrestepApprovalsCodeUnit: Codeunit SurestepApprovalsCodeUnit;
+                        SwizzApprovalsCodeUnit: Codeunit SwizzsoftApprovalsCodeUnit;
                     begin
                         if Confirm('Cancel Approval?', false) = true then begin
-                            SrestepApprovalsCodeUnit.CancelLoanBatchRequestForApproval(rec."Batch No.", Rec);
+                            SwizzApprovalsCodeUnit.CancelLoanBatchRequestForApproval(rec."Batch No.", Rec);
                         end;
                     end;
                 }

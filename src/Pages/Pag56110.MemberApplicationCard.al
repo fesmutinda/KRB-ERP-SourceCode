@@ -868,7 +868,7 @@ page 56110 "Member Application Card"
                         //................................
 
                         if Confirm('Are you sure you want to send Membership Application for approval', false) = true then begin
-                            SrestepApprovalsCodeUnit.SendMembershipApplicationsRequestForApproval(Rec."No.", Rec);
+                            SwizzApprovalsCodeUnit.SendMembershipApplicationsRequestForApproval(Rec."No.", Rec);
                             // ApprovalCodeUnit.OnSendMembershipApplicationForApproval(Rec);
                             Rec.Status := Rec.Status::"Pending Approval";
                         end;
@@ -889,7 +889,7 @@ page 56110 "Member Application Card"
                     // Approvalmgt: Codeunit "Export F/O Consolidation";
                     begin
                         if Confirm('Cancel Approval?', false) = true then begin
-                            SrestepApprovalsCodeUnit.CancelMembershipApplicationsRequestForApproval(rec."No.", Rec);
+                            SwizzApprovalsCodeUnit.CancelMembershipApplicationsRequestForApproval(rec."No.", Rec);
 
                         end;
                     end;
@@ -1256,7 +1256,7 @@ page 56110 "Member Application Card"
         Jooint: Boolean;
         BusinessAccount: Boolean;
         Vendor: Record Vendor;
-        SrestepApprovalsCodeUnit: Codeunit SurestepApprovalsCodeUnit;
+        SwizzApprovalsCodeUnit: Codeunit SwizzsoftApprovalsCodeUnit;
         OpenApprovalEntriesExist: Boolean;
         EnabledApprovalWorkflowsExist: Boolean;
         RecordApproved: Boolean;

@@ -319,7 +319,7 @@ Page 56128 "Loans Pending Approval"
                         if Confirm('Send Approval Request For Loan Application of Ksh. ' + Format(Rec."Approved Amount") + ' applied by ' + Format(Rec."Client Name") + ' ?', false) = false then begin
                             exit;
                         end else begin
-                            SrestepApprovalsCodeUnit.SendInstantLoanApplicationsRequestForApproval(rec."Loan  No.", Rec);
+                            SwizzApprovalsCodeUnit.SendInstantLoanApplicationsRequestForApproval(rec."Loan  No.", Rec);
                             FnSendLoanApprovalNotifications();
                             CurrPage.close();
                         end;
@@ -337,7 +337,7 @@ Page 56128 "Loans Pending Approval"
                         if Confirm('Cancel Approval?', false) = false then begin
                             exit;
                         end else begin
-                            SrestepApprovalsCodeUnit.CancelLoanApplicationsRequestForApproval(rec."Loan  No.", Rec);
+                            SwizzApprovalsCodeUnit.CancelLoanApplicationsRequestForApproval(rec."Loan  No.", Rec);
                             CurrPage.Close();
                         end;
                     end;
@@ -578,7 +578,7 @@ Page 56128 "Loans Pending Approval"
 
         EnabledApprovalWorkflowsExist: Boolean;
         RecordApproved: Boolean;
-        SrestepApprovalsCodeUnit: Codeunit SurestepApprovalsCodeUnit;
+        SwizzApprovalsCodeUnit: Codeunit SwizzsoftApprovalsCodeUnit;
         CanCancelApprovalForRecord: Boolean;
 
 

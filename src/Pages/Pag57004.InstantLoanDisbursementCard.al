@@ -341,7 +341,7 @@ page 57004 "Instant Loan Disbursement Card"
                             exit;
                         end
                         else begin
-                            SrestepApprovalsCodeUnit.CancelInstantLoanApplicationsRequestForApproval(rec."Loan  No.", Rec);
+                            SwizzApprovalsCodeUnit.CancelInstantLoanApplicationsRequestForApproval(rec."Loan  No.", Rec);
                             CurrPage.Close();
                         end;
                     end;
@@ -554,7 +554,7 @@ page 57004 "Instant Loan Disbursement Card"
         BatchName: Code[50];
         EnabledApprovalWorkflowsExist: Boolean;
         RecordApproved: Boolean;
-        SrestepApprovalsCodeUnit: Codeunit SurestepApprovalsCodeUnit;
+        SwizzApprovalsCodeUnit: Codeunit SwizzsoftApprovalsCodeUnit;
         CanCancelApprovalForRecord: Boolean;
 
     procedure UpdateControl()

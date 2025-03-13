@@ -194,7 +194,7 @@ Page 56121 "Membership Exit Card"
                     trigger OnAction()
                     var
                         text001: label 'This batch is already pending approval';
-                        SrestepApprovalsCodeUnit: Codeunit SurestepApprovalsCodeUnit;
+                        SwizzApprovalsCodeUnit: Codeunit SwizzsoftApprovalsCodeUnit;
                     begin
 
                         if Rec."Mode Of Disbursement" = Rec."Mode Of Disbursement"::Cheque then begin
@@ -203,7 +203,7 @@ Page 56121 "Membership Exit Card"
                         if Rec.Status <> Rec.Status::Open then
                             Error(text001);
                         //.................................
-                        SrestepApprovalsCodeUnit.SendMembershipExitApplicationsRequestForApproval(rec."No.", Rec);
+                        SwizzApprovalsCodeUnit.SendMembershipExitApplicationsRequestForApproval(rec."No.", Rec);
                         Rec.Status := Rec.Status::Approved;
                         //.................................
                         GenSetUp.Get();

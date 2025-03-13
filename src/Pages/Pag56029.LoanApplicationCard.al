@@ -484,7 +484,7 @@ Page 56029 "Loan Application Card"
                         if Confirm('Send Approval Request For Loan Application of Ksh. ' + Format(Rec."Approved Amount") + ' applied by ' + Format(Rec."Client Name") + ' ?', false) = false then begin
                             exit;
                         end else begin
-                            SrestepApprovalsCodeUnit.SendLoanApplicationsRequestForApproval(rec."Loan  No.", Rec);
+                            SwizzApprovalsCodeUnit.SendLoanApplicationsRequestForApproval(rec."Loan  No.", Rec);
                             Rec."Approval Status" := Rec."Approval Status"::Pending;
                             FnSendLoanApprovalNotifications();
                             CurrPage.close();
@@ -503,7 +503,7 @@ Page 56029 "Loan Application Card"
                         if Confirm('Cancel Approval?', false) = false then begin
                             exit;
                         end else begin
-                            SrestepApprovalsCodeUnit.CancelLoanApplicationsRequestForApproval(rec."Loan  No.", Rec);
+                            SwizzApprovalsCodeUnit.CancelLoanApplicationsRequestForApproval(rec."Loan  No.", Rec);
                             CurrPage.Close();
                         end;
                     end;
@@ -764,7 +764,7 @@ Page 56029 "Loan Application Card"
 
         EnabledApprovalWorkflowsExist: Boolean;
         RecordApproved: Boolean;
-        SrestepApprovalsCodeUnit: Codeunit SurestepApprovalsCodeUnit;
+        SwizzApprovalsCodeUnit: Codeunit SwizzsoftApprovalsCodeUnit;
         CanCancelApprovalForRecord: Boolean;
         offsetTable: Record "Loan Offset Details";
 

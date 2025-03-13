@@ -233,7 +233,7 @@ Page 50001 "Payment Card"
                     end else begin
                         rec.Status := rec.Status::Approved;
                         rec.Modify();
-                        //SrestepApprovalsCodeUnit.SendPaymentVoucherTransactionsRequestForApproval(rec."No.", Rec);
+                        //SwizzApprovalsCodeUnit.SendPaymentVoucherTransactionsRequestForApproval(rec."No.", Rec);
                     end;
                 end;
             }
@@ -253,7 +253,7 @@ Page 50001 "Payment Card"
                         rec.Status := rec.Status::New;
                         rec.Modify();
                         Message('Success');
-                        // SrestepApprovalsCodeUnit.CancelPaymentVoucherTransactionsRequestForApproval(rec."No.", Rec);
+                        // SwizzApprovalsCodeUnit.CancelPaymentVoucherTransactionsRequestForApproval(rec."No.", Rec);
                     end;
                 end;
             }
@@ -287,7 +287,7 @@ Page 50001 "Payment Card"
 
     var
         FundsUser: Record "Funds User Setup";
-        SrestepApprovalsCodeUnit: Codeunit SwizzsoftApprovalsCodeUnit;
+        SwizzApprovalsCodeUnit: Codeunit SwizzsoftApprovalsCodeUnit;
         FundsManager: Codeunit "Funds Management";
         JTemplate: Code[20];
         JBatch: Code[20];

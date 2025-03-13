@@ -122,7 +122,7 @@ Page 50145 "Member Re-Application Page"
                     if Rec.Status <> Rec.Status::Open then
                         Message('The docuement has already be send for approval')
                     else
-                        SrestepApprovalsCodeUnit.SendMemberReapplicationRequestForApproval(rec."No.", rec);
+                        SwizzApprovalsCodeUnit.SendMemberReapplicationRequestForApproval(rec."No.", rec);
                 end;
 
             }
@@ -139,7 +139,7 @@ Page 50145 "Member Re-Application Page"
 
                 begin
                     if Confirm('Cancel Approval?', false) = true then begin
-                        SrestepApprovalsCodeUnit.CancelMemberReapplicationRequestForApproval(rec."No.", Rec);
+                        SwizzApprovalsCodeUnit.CancelMemberReapplicationRequestForApproval(rec."No.", Rec);
                     end;
                 end;
             }
@@ -147,7 +147,7 @@ Page 50145 "Member Re-Application Page"
     }
     var
         Cust: Record Customer;
-        SrestepApprovalsCodeUnit: Codeunit SurestepApprovalsCodeUnit;
+        SwizzApprovalsCodeUnit: Codeunit SwizzsoftApprovalsCodeUnit;
 
 }
 

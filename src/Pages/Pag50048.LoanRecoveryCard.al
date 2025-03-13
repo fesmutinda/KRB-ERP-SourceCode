@@ -101,7 +101,7 @@ Page 50048 "Loan Recovery Card"
                     if Confirm('Are you sure you want to send Approval Request ?', false) = false then begin
                         exit;
                     end else begin
-                        SrestepApprovalsCodeUnit.SendLoanRecoveryApplicationsRequestForApproval(rec."Document No", Rec);
+                        SwizzApprovalsCodeUnit.SendLoanRecoveryApplicationsRequestForApproval(rec."Document No", Rec);
                         CurrPage.Close();
                     end;
                 end;
@@ -120,7 +120,7 @@ Page 50048 "Loan Recovery Card"
                     if Confirm('Are you sure you want to Cancel Approval Request ?', false) = false then begin
                         exit;
                     end else begin
-                        SrestepApprovalsCodeUnit.CancelLoanRecoveryApplicationsRequestForApproval(rec."Document No", Rec);
+                        SwizzApprovalsCodeUnit.CancelLoanRecoveryApplicationsRequestForApproval(rec."Document No", Rec);
                     end;
                 end;
             }
@@ -276,7 +276,7 @@ Page 50048 "Loan Recovery Card"
         }
     }
     var
-        SrestepApprovalsCodeUnit: Codeunit SurestepApprovalsCodeUnit;
+        SwizzApprovalsCodeUnit: Codeunit SwizzsoftApprovalsCodeUnit;
         SendApprovalEnabled: Boolean;
         CancelApprovalEnabled: Boolean;
         PostEnabled: Boolean;

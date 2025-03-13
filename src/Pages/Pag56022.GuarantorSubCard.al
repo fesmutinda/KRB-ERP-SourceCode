@@ -99,7 +99,7 @@ Page 56022 "Guarantor Sub Card"
 
                     trigger OnAction()
                     var
-                        SrestepApprovalsCodeUnit: Codeunit SwizzsoftApprovalsCodeUnit;
+                        SwizzApprovalsCodeUnit: Codeunit SwizzsoftApprovalsCodeUnit;
                         text001: label 'This batch is already pending approval';
                         GuarantorshipSubstitutionL: Record "Guarantorship Substitution L";
                     begin
@@ -136,7 +136,7 @@ Page 56022 "Guarantor Sub Card"
 
                         //Approval code  here
                         if Confirm('Send Approval Request?', false) = true then begin
-                            SrestepApprovalsCodeUnit.SendGuarantorSubRequestForApproval(rec."Document No", Rec);
+                            SwizzApprovalsCodeUnit.SendGuarantorSubRequestForApproval(rec."Document No", Rec);
                         end;
                         //...................
                     end;
@@ -154,13 +154,13 @@ Page 56022 "Guarantor Sub Card"
                     trigger OnAction()
                     var
                         text001: label 'This batch is already pending approval';
-                        SrestepApprovalsCodeUnit: Codeunit SwizzsoftApprovalsCodeUnit;
+                        SwizzApprovalsCodeUnit: Codeunit SwizzsoftApprovalsCodeUnit;
                     begin
                         if Rec.Status <> Rec.Status::Pending then
                             Error(text001);
                         //Approval here
                         if Confirm('Cancel Approval Request?', false) = true then begin
-                            SrestepApprovalsCodeUnit.CancelGuarantorSubRequestForApproval(Rec."Document No", Rec);
+                            SwizzApprovalsCodeUnit.CancelGuarantorSubRequestForApproval(Rec."Document No", Rec);
                         end;
                     end;
                 }

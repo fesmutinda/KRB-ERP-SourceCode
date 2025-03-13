@@ -143,7 +143,7 @@ Page 56003 "Sacco Transfer Card"
 
                     trigger OnAction()
                     var
-                        Approvals: Codeunit SwizzsoftApprovalsCodeUnit;
+                        Approvals: Codeunit "SwizzsoftApprovalsCodeUnit";
                     begin
                         if Confirm('Cancel Approval Request ?', false) = false then begin
                             exit;

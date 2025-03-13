@@ -703,7 +703,7 @@ page 50841 "Change Request Card"
                 var
                     text001: label 'This batch is already pending approval';
                     ApprovalsMgmt: Codeunit "Approvals Mgmt.";
-                    SrestepApprovalsCodeUnit: codeunit SurestepApprovalsCodeUnit;
+                    SwizzApprovalsCodeUnit: codeunit SwizzsoftApprovalsCodeUnit;
 
                 begin
 
@@ -714,7 +714,7 @@ page 50841 "Change Request Card"
                     // ApprovalsMgmt.OnSendChangeRequestForApproval(Rec);
 
                     if confirm('Are you sure you want to send this change request doc for Approval?', false) = true then begin
-                        SrestepApprovalsCodeUnit.SendMemberChangeRequestForApproval(rec.No, Rec);
+                        SwizzApprovalsCodeUnit.SendMemberChangeRequestForApproval(rec.No, Rec);
                         Message('Approval Request Sent!');
                         CurrPage.Close();
                     end;

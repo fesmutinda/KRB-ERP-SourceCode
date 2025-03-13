@@ -397,7 +397,7 @@ Page 51007 "BOSA Loans Disbursement Card"
                             exit;
                         end
                         else begin
-                            SrestepApprovalsCodeUnit.SendLoanApplicationsRequestForApproval(rec."Loan  No.", Rec);
+                            SwizzApprovalsCodeUnit.SendLoanApplicationsRequestForApproval(rec."Loan  No.", Rec);
                             FnSendLoanApprovalNotifications();
                             CurrPage.close();
                         end;
@@ -418,7 +418,7 @@ Page 51007 "BOSA Loans Disbursement Card"
                             exit;
                         end
                         else begin
-                            SrestepApprovalsCodeUnit.CancelLoanApplicationsRequestForApproval(rec."Loan  No.", Rec);
+                            SwizzApprovalsCodeUnit.CancelLoanApplicationsRequestForApproval(rec."Loan  No.", Rec);
                             CurrPage.Close();
                         end;
                     end;
@@ -641,7 +641,7 @@ Page 51007 "BOSA Loans Disbursement Card"
         BatchName: Code[50];
         EnabledApprovalWorkflowsExist: Boolean;
         RecordApproved: Boolean;
-        SrestepApprovalsCodeUnit: Codeunit SurestepApprovalsCodeUnit;
+        SwizzApprovalsCodeUnit: Codeunit SwizzsoftApprovalsCodeUnit;
         CanCancelApprovalForRecord: Boolean;
 
     procedure UpdateControl()

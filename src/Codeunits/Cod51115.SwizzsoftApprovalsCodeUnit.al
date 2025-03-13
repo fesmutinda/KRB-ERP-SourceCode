@@ -1,5 +1,5 @@
-//Replacing Workflow Integration codeunit for membership functions
-codeunit 51115 "SurestepApprovalsCodeUnit"
+
+codeunit 51115 SwizzsoftApprovalsCodeUnit
 {
 
     trigger OnRun()
@@ -345,6 +345,22 @@ codeunit 51115 "SurestepApprovalsCodeUnit"
     begin
     end;
     //------------------------------------------------------------------------------------------------------
+    procedure CancelInternalTransfersTransactionsRequestForApproval(InternalTransfersTransactions: Code[40]; var SaccoTransfers: Record "Sacco Transfers")
+    begin
+        FnOnCancelInternalTransfersTransactionsApprovalRequest(SaccoTransfers);
+    end;
+
+    [IntegrationEvent(false, false)]
+
+    procedure FnOnSendInternalTransfersTransactionsForApproval(var InternalTransfersTransactions: Record "Sacco Transfers")
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+
+    procedure FnOnCancelInternalTransfersTransactionsApprovalRequest(var InternalTransfersTransactions: Record "Sacco Transfers")
+    begin
+    end;
     //7)--------------------------------------------------------------------Send MembershipExit  Applications request For Approval start
 
     procedure SendMembershipExitApplicationsRequestForApproval(MemberApplicationNo: Code[40]; var "Membership Exist": Record "Membership Exist")

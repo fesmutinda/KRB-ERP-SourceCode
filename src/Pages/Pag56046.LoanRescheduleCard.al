@@ -574,7 +574,7 @@ Page 56046 "Loan Reschedule Card"
                     var
                         Text001: label 'This transaction is already pending approval';
                         ApprovalMgt: Codeunit "Approvals Mgmt.";
-                        SrestepApprovalsCodeUnit: Codeunit SurestepApprovalsCodeUnit;
+                        SwizzApprovalsCodeUnit: Codeunit SwizzsoftApprovalsCodeUnit;
                     begin
                         //ENSURE THAT REQUESTED AMOUNT IS ENTERED
                         Rec.TestField("Requested Amount");
@@ -589,7 +589,7 @@ Page 56046 "Loan Reschedule Card"
                         //   ApprovalsMgmt.OnSendLoanAppDocForApproval(Rec);
                         //........................
                         if Confirm('Send Approval Request?', false) = true then begin
-                            SrestepApprovalsCodeUnit.SendLoanApplicationsRequestForApproval(rec."Loan  No.", Rec);
+                            SwizzApprovalsCodeUnit.SendLoanApplicationsRequestForApproval(rec."Loan  No.", Rec);
                             Message('Approval Sent Success!');
                             CurrPage.Close();
                         end;
@@ -634,10 +634,10 @@ Page 56046 "Loan Reschedule Card"
                     trigger OnAction()
                     var
                         ApprovalMgt: Codeunit "Approvals Mgmt.";
-                        SrestepApprovalsCodeUnit: Codeunit SwizzsoftApprovalsCodeUnit;
+                        SwizzApprovalsCodeUnit: Codeunit SwizzsoftApprovalsCodeUnit;
                     begin
                         if Confirm('Cancel Approval?', false) = true then begin
-                            SrestepApprovalsCodeUnit.CancelLoanApplicationsRequestForApproval(rec."Loan  No.", Rec);
+                            SwizzApprovalsCodeUnit.CancelLoanApplicationsRequestForApproval(rec."Loan  No.", Rec);
                         end;
                     end;
                 }
