@@ -11,7 +11,7 @@
             "authentication": "UserPassword",
             "startupObjectId": 56043,
             "startupObjectType": "Page",
-            "port": 7049,
+            "port": 8049,
             "breakOnError": "All",
             "launchBrowser": true,
             "enableLongRunningSqlStatements": true,

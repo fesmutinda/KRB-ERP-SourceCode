@@ -698,51 +698,6 @@ Report 56384 "Loan Appraisal Edit"
                     TGuaranteedAmount := TGuaranteedAmount + GuaranteedAmount;
                 end;
             }
-            dataitem("Loan Collateral Details"; "Loan Collateral Details")
-            {
-                column(ReportForNavId_1000000099; 1000000099)
-                {
-                }
-                column(LoanNo_LoanCollateralDetails; "Loan Collateral Details"."Loan No")
-                {
-                }
-                column(Type_LoanCollateralDetails; "Loan Collateral Details".Type)
-                {
-                }
-                column(SecurityDetails_LoanCollateralDetails; "Loan Collateral Details"."Security Details")
-                {
-                }
-                column(Remarks_LoanCollateralDetails; "Loan Collateral Details".Remarks)
-                {
-                }
-                column(LoanType_LoanCollateralDetails; "Loan Collateral Details"."Loan Type")
-                {
-                }
-                column(Value_LoanCollateralDetails; "Loan Collateral Details".Value)
-                {
-                }
-                column(GuaranteeValue_LoanCollateralDetails; "Loan Collateral Details"."Guarantee Value")
-                {
-                }
-                column(Code_LoanCollateralDetails; "Loan Collateral Details".Code)
-                {
-                }
-                column(Category_LoanCollateralDetails; "Loan Collateral Details".Category)
-                {
-                }
-                column(CollateralMultiplier_LoanCollateralDetails; "Loan Collateral Details"."Collateral Multiplier")
-                {
-                }
-                column(ViewDocument_LoanCollateralDetails; "Loan Collateral Details"."View Document")
-                {
-                }
-                column(AssesmentDone_LoanCollateralDetails; "Loan Collateral Details"."Assesment Done")
-                {
-                }
-                column(AccountNo_LoanCollateralDetails; "Loan Collateral Details"."Account No")
-                {
-                }
-            }
             dataitem("Loan Offset Details"; "Loan Offset Details")
             {
                 DataItemLink = "Loan No." = field("Loan  No.");

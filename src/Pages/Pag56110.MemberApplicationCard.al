@@ -1661,7 +1661,7 @@ page 56110 "Member Application Card"
         SMSMessages."Telephone No" := Rec."Mobile Phone No";
         SMSMessages."Sent To Server" := SMSMessages."sent to server"::No;
         SMSMessages."SMS Message" := 'Dear Member your account has been created successfully, your Account No is '
-        + BOSAACC + '  Account Name ' + Rec.Name + ' .' + 'You can now Deposit Via PayBill 587649. Thank You For Choosing to Save With Us';
+        + BOSAACC + '  Account Name ' + Rec.Name + '. Thank You For Choosing to Save With Us';
         SMSMessages.Insert;
 
     end;
@@ -1979,7 +1979,7 @@ page 56110 "Member Application Card"
     var
     begin
         SMSToSend := 'Dear Member your account has been created successfully, your Account No is '
-        + BOSAACC + '  Account Name ' + Rec.Name + ' .' + 'You can now Deposit Via PayBill 587649. Thank You For Choosing to Bank With Us';
+        + BOSAACC + '  Account Name ' + Rec.Name + '. Thank You For Choosing to Bank With Us';
         IEntry := 0;
         SMSMessages.Reset();
         if SMSMessages.Find('+') then begin

@@ -33,7 +33,7 @@ Codeunit 50802 Emailcodeunit
         TempEmailItem.SendAsHTML(true);
     end;
 
-    procedure SendMail(EmailAddress: Text[60]; EmailSubject: text[100]; EmailBody: Text[200])
+    procedure SendMail(EmailAddress: Text[60]; EmailSubject: text[100]; EmailBody: Text[1000])
     var
         EmailMessage: Codeunit "Email Message";
         Email: Codeunit Email;

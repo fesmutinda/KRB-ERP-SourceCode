@@ -382,22 +382,6 @@ Page 56029 "Loan Application Card"
                 SubPageLink = "Loan No" = field("Loan  No.");
                 Editable = MNoEditable;
             }
-            part(Control1000000005; "Loan Collateral Security")
-            {
-                Visible = false;
-                Caption = 'Other Securities';
-                ApplicationArea = Basic;
-                SubPageLink = "Loan No" = field("Loan  No.");
-                Editable = MNoEditable;
-            }
-            // part(Control1000000002; "Loan Appraisal Salary Details")
-            // {
-            //     Caption = 'Salary Details';
-            //     ApplicationArea = Basic;
-            //     Editable = MNoEditable;
-            //     SubPageLink = "Loan No" = field("Loan  No."),
-            //                   "Client Code" = field("Client Code");
-            // }
 
         }
         area(factboxes)
@@ -486,6 +470,7 @@ Page 56029 "Loan Application Card"
                         end else begin
                             SwizzApprovalsCodeUnit.SendLoanApplicationsRequestForApproval(rec."Loan  No.", Rec);
                             Rec."Approval Status" := Rec."Approval Status"::Pending;
+                            Rec."Loan Status" := Rec."Loan Status"::Appraisal;
                             FnSendLoanApprovalNotifications();
                             CurrPage.close();
                         end;

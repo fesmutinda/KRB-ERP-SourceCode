@@ -3210,7 +3210,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>TOTAL DEVCO DEDUCTIONS</Value>
+                                  <Value>TOTAL KRB DEDUCTIONS</Value>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>7pt</FontSize>

@@ -76,42 +76,22 @@ Table 51372 "Loans Guarantee Details"
                     "Loan Balance" := Cust."Outstanding Balance";
                     Shares := Cust."Current Shares" * 1;
                     Amont := 0;
-                    
+
                     //***********************************************************************************************
                     "Free Shares" := 0;
                     if "Self Guarantee" = true then begin
                         Amont := SwizzsoftFactory.FnGetMemberSelfLiability("Member No");
                         "TotalLoan Guaranteed" := Cust.TLoansGuaranteedS;
                         "Free Shares" := (Shares) - "TotalLoan Guaranteed";
-                        // MESSAGE('Sharesis %1',Shares);
-
-                        //MESSAGE('"Free Shares"is %1....| amont is %2  ',"Free Shares",Amont);
-
-                        // MESSAGE('"Free Shares"is %1',"Free Shares");
-
                     end else begin
                         if "Self Guarantee" = false then
-                            Message('deposi is %1', Shares);
+                            // Message('deposi is %1', Shares);
                         Amont := Shares * 1 - SwizzsoftFactory.FnGetMemberLiability("Member No");
-                        //MESSAGE('amont is %1',Amont);
                         "TotalLoan Guaranteed" := Cust.TLoansGuaranteed;
-                        //MESSAGE('"TotalLoan Guaranteed" is %1', "TotalLoan Guaranteed");
-
                         "Free Shares" := (Shares * 1) - "TotalLoan Guaranteed";
-
-                        // MESSAGE(' Free Shares is %1',"Free Shares");
                     end;
                     "Amont Guaranteed" := "Amont Guaranteed";
-                    // IF "Self Guarantee" = TRUE  THEN BEGIN
-                    //  "TotalLoan Guaranteed":=Cust.TLoansGuaranteedS;
-                    //      "Free Shares":=(Shares)-"TotalLoan Guaranteed";
-                    //
-                    //   END ELSE
-                    //    "TotalLoan Guaranteed":=Cust.TLoansGuaranteed;
-                    //    "Free Shares":=(Shares*3)-"TotalLoan Guaranteed";
                 end;
-                //IF "Total Loans Guaranteed" > GenSetUp."Maximum No of Guarantees" THEN
-                //ERROR('This member has guaranteed more than %1 loans therefore cannot guarantee any more loans',GenSetUp."Maximum No of Guarantees");
                 if "Shares *3" < 1 then
                     Error('Member Must have Deposits');
 
