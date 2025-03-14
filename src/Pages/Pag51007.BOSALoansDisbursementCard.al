@@ -338,10 +338,6 @@ Page 51007 "BOSA Loans Disbursement Card"
                             exit;
                         end
                         else begin
-                            // FundsUserSetup.GET(USERID);
-                            // TemplateName := FundsUserSetup."Payment Journal Template";
-                            // BatchName := FundsUserSetup."Payment Journal Batch";
-
                             TemplateName := 'GENERAL';
                             BatchName := 'LOANS';
                             LoanApps.Reset;

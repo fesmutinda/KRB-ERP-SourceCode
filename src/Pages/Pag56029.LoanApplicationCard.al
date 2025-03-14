@@ -504,7 +504,8 @@ Page 56029 "Loan Application Card"
                     begin
                         Cust.Reset;
                         Cust.SetRange(Cust."No.", Rec."Client Code");
-                        Report.Run(50223, true, false, Cust);
+                        // Report.Run(50223, true, false, Cust);
+                        Report.Run(56886, true, false, Cust);
                     end;
                 }
                 action("View Schedule")

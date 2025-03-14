@@ -52,6 +52,7 @@ page 57003 "Instant Loan Application Card"
                     ApplicationArea = Basic;
                     Style = Unfavorable;
                     Editable = false;
+                    // Visible = false;
                 }
 
                 field(Mulitiplier; Rec."Loan Deposit Multiplier")
@@ -59,12 +60,14 @@ page 57003 "Instant Loan Application Card"
                     ApplicationArea = Basic;
                     Editable = true;
                     Style = StrongAccent;
+                    Visible = false;
                 }
                 field("Existing Loan"; Rec."Existing Loan")
                 {
                     Caption = 'Other Loans';
                     ApplicationArea = basic;
                     Editable = false;
+                    Visible = false;
                 }
                 field("Application Date"; Rec."Application Date")
                 {
@@ -132,7 +135,7 @@ page 57003 "Instant Loan Application Card"
                     ShowMandatory = false;
                     Style = Ambiguous;
                     Editable = MNoEditable;
-
+                    Visible = false;
 
                     trigger OnValidate()
                     begin
@@ -144,7 +147,7 @@ page 57003 "Instant Loan Application Card"
                     ApplicationArea = Basic;
                     ShowMandatory = true;
                     TableRelation = "Sub Sector".Code where(No = field("Main-Sector"));
-
+                    Visible = false;
                     trigger OnValidate()
                     begin
                         Rec.TestField(Posted, false);
@@ -152,6 +155,7 @@ page 57003 "Instant Loan Application Card"
                 }
                 field("Specific Sector"; Rec."Specific-Sector")
                 {
+                    Visible = false;
                     ApplicationArea = Basic;
                     ShowMandatory = true;
                     TableRelation = "Specific Sector".Code where(No = field("Sub-Sector"));
@@ -195,6 +199,7 @@ page 57003 "Instant Loan Application Card"
                 {
                     ApplicationArea = Basic;
                     Editable = false;
+                    Visible = false;
                 }
                 field(Repayment; Rec.Repayment)
                 {
@@ -204,9 +209,11 @@ page 57003 "Instant Loan Application Card"
                 field("Valuation Cost"; Rec."Valuation Cost")
                 {
                     ApplicationArea = Basic;
+                    Visible = false;
                 }
                 field("Legal Cost"; Rec."Legal Cost")
                 {
+                    Visible = false;
 
                 }
                 field("Loan Status"; Rec."Loan Status")
@@ -298,14 +305,7 @@ page 57003 "Instant Loan Application Card"
                 SubPageLink = "Loan No" = field("Loan  No.");
                 Editable = MNoEditable;
             }
-            part(Control1000000005; "Loan Collateral Security")
-            {
-                Visible = false;
-                Caption = 'Other Securities';
-                ApplicationArea = Basic;
-                SubPageLink = "Loan No" = field("Loan  No.");
-                Editable = MNoEditable;
-            }
+
 
         }
         area(factboxes)

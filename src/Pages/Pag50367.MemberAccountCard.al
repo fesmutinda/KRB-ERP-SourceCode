@@ -667,21 +667,7 @@ page 50367 "Member Account Card"
                         Cust.Reset;
                         Cust.SetRange(Cust."No.", Rec."No.");
                         if Cust.Find('-') then
-                            Report.Run(50227, true, false, Cust);
-                    end;
-                }
-                action("BOSA Loans Statement")
-                {
-                    ApplicationArea = Basic;
-                    Image = "Report";
-                    Promoted = true;
-                    PromotedCategory = Report;
-
-                    trigger OnAction()
-                    begin
-                        Cust.Reset;
-                        Cust.SetRange(Cust."No.", Rec."No.");
-                        if Cust.Find('-') then
+                            // Report.Run(50227, true, false, Cust);
                             Report.Run(56531, true, false, Cust);
                     end;
                 }

@@ -47,13 +47,6 @@ page 57001 "Loans-Pending Approval Instant"
                     Caption = 'Member  No';
                 }
 
-
-                field("Group Code"; Rec."Group Code")
-                {
-                    ApplicationArea = Basic;
-                    Visible = false;
-                }
-
                 field("Requested Amount"; Rec."Requested Amount")
                 {
                     ApplicationArea = Basic;
@@ -84,11 +77,6 @@ page 57001 "Loans-Pending Approval Instant"
                 field(Repayment; Rec.Repayment)
                 {
                     ApplicationArea = Basic;
-                }
-                field("Rejection  Remark"; Rec."Rejection  Remark")
-                {
-                    ApplicationArea = Basic;
-                    visible = false;
                 }
                 field("Captured By"; Rec."Captured By")
                 {

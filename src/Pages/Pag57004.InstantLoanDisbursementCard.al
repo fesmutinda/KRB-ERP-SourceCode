@@ -103,42 +103,7 @@ page 57004 "Instant Loan Disbursement Card"
                         Rec.TestField(Posted, false);
                     end;
                 }
-                field("Main Sector"; Rec."Main-Sector")
-                {
-                    ApplicationArea = Basic;
-                    ShowMandatory = true;
-                    Style = Ambiguous;
-                    Editable = MNoEditable;
 
-                    trigger OnValidate()
-                    begin
-                        Rec.TestField(Posted, false);
-                    end;
-                }
-                field("Sub-Sector"; Rec."Sub-Sector")
-                {
-                    ApplicationArea = Basic;
-                    ShowMandatory = true;
-                    Style = Ambiguous;
-                    Editable = MNoEditable;
-
-                    trigger OnValidate()
-                    begin
-                        Rec.TestField(Posted, false);
-                    end;
-                }
-                field("Specific Sector"; Rec."Specific-Sector")
-                {
-                    ApplicationArea = Basic;
-                    ShowMandatory = true;
-                    Style = Ambiguous;
-                    Editable = MNoEditable;
-
-                    trigger OnValidate()
-                    begin
-                        Rec.TestField(Posted, false);
-                    end;
-                }
                 field("Repayment Method"; Rec."Repayment Method")
                 {
                     ApplicationArea = Basic;
@@ -154,11 +119,11 @@ page 57004 "Instant Loan Disbursement Card"
                     ApplicationArea = Basic;
                     Editable = false;
                 }
-                field("Loan Insurance"; Rec."Loan Insurance")
-                {
-                    ApplicationArea = Basic;
-                    Editable = false;
-                }
+                // field("Loan Insurance"; Rec."Loan Insurance")
+                // {
+                //     ApplicationArea = Basic;
+                //     Editable = false;
+                // }
                 field(Repayment; Rec.Repayment)
                 {
                     ApplicationArea = Basic;
@@ -186,26 +151,14 @@ page 57004 "Instant Loan Disbursement Card"
                     ShowMandatory = true;
                     Editable = true;
                 }
-                field("Mode of Disbursement"; Rec."Mode of Disbursement")
-                {
-                    ApplicationArea = Basic;
-                    Editable = MNoEditable;
-                    ShowMandatory = true;
-                }
                 field("Paying Bank Account No"; Rec."Paying Bank Account No")
                 {
                     ApplicationArea = Basic;
                     Editable = true;
                 }
-                field("Batch No."; Rec."Batch No.")
-                {
-                    Editable = true;
-                    ApplicationArea = Basic;
-                }
                 field("Loan Disbursement Date"; Rec."Loan Disbursement Date")
                 {
                     ApplicationArea = Basic;
-                    // Editable = MNoEditable;
                     Editable = true;
                     Style = StrongAccent;
                     ShowMandatory = true;
@@ -662,7 +615,7 @@ page 57004 "Instant Loan Disbursement Card"
             SMSMessage.Source := 'LOANS';
             SMSMessage."Entered By" := UserId;
             SMSMessage."Sent To Server" := SMSMessage."sent to server"::No;
-            SMSMessage."SMS Message" := 'Your' + Format(Rec."Loan Product Type Name") + 'Loan Application of amount ' + Format(Rec."Requested Amount") + ' for ' + Rec."Client Code" + ' ' + Rec."Client Name" + ' has been received and is being Processed ' + compinfo.Name + ' ' + GenSetUp."Customer Care No";
+            SMSMessage."SMS Message" := 'Your Instant Loan Application of amount ' + Format(Rec."Requested Amount") + ' for ' + Rec."Client Code" + ' ' + Rec."Client Name" + ' has been received and is being Processed ' + compinfo.Name + ' ' + GenSetUp."Customer Care No";
             Cust.Reset;
             Cust.SetRange(Cust."No.", Rec."Client Code");
             if Cust.Find('-') then begin
@@ -697,21 +650,9 @@ page 57004 "Instant Loan Disbursement Card"
             Error('Approval status MUST be Open');
         end;
         Rec.TestField("Requested Amount");
-        Rec.TestField("Main-Sector");
-        Rec.TestField("Sub-Sector");
-        Rec.TestField("Specific-Sector");
         Rec.TestField("Loan Product Type");
         Rec.TestField("Mode of Disbursement");
-        //----------------------
-        if LoanType.get(Rec."Loan Product Type") then begin
-            if LoanType."Appraise Guarantors" = true then begin
-                LoanGuarantors.Reset();
-                LoanGuarantors.SetRange(LoanGuarantors."Loan No", Rec."Loan  No.");
-                if LoanGuarantors.find('-') then begin
-                    Error('Please Insert Loan Applicant Guarantor Details!');
-                end;
-            end;
-        end;
+
     end;
 
     local procedure FnSendLoanApprovalNotifications()
@@ -735,7 +676,7 @@ page 57004 "Instant Loan Disbursement Card"
         SMSMessages.Source := 'LOAN APPL';
         SMSMessages."Entered By" := USERID;
         SMSMessages."Sent To Server" := SMSMessages."Sent To Server"::No;
-        SMSMessages."SMS Message" := 'Your' + Format(Rec."Loan Product Type Name") + 'loan application of KSHs.' + FORMAT(Rec."Requested Amount") + ' has been received. KRB Sacco Ltd.';
+        SMSMessages."SMS Message" := 'Your Instant loan application of KSHs.' + FORMAT(Rec."Requested Amount") + ' has been received. KRB Sacco Ltd.';
         Cust.RESET;
         IF Cust.GET(Rec."Client Code") THEN
             if Cust."Mobile Phone No" <> '' then begin
@@ -745,38 +686,6 @@ page 57004 "Instant Loan Disbursement Card"
                 if (Cust."Mobile Phone No" = '') and (Cust."Mobile Phone No." <> '') then begin
                     SMSMessages."Telephone No" := Cust."Mobile Phone No.";
                 end;
-        SMSMessages.INSERT;
-        //.......................................Notify Guarantors
-        LoanGuar.RESET;
-        LoanGuar.SETRANGE(LoanGuar."Loan No", Rec."Loan  No.");
-        IF LoanGuar.FIND('-') THEN BEGIN
-            REPEAT
-                Cust.RESET;
-                Cust.SETRANGE(Cust."No.", LoanGuar."Member No");
-                IF Cust.FIND('-') THEN BEGIN
-                    SMSMessages.RESET;
-                    IF SMSMessages.FIND('+') THEN BEGIN
-                        iEntryNo := SMSMessages."Entry No";
-                        iEntryNo := iEntryNo + 1;
-                    END
-                    ELSE BEGIN
-                        iEntryNo := 1;
-                    END;
-                    SMSMessages.INIT;
-                    SMSMessages."Entry No" := iEntryNo;
-                    SMSMessages."Account No" := LoanGuar."Member No";
-                    SMSMessages."Date Entered" := TODAY;
-                    SMSMessages."Time Entered" := TIME;
-                    SMSMessages.Source := 'LOAN GUARANTORS';
-                    SMSMessages."Entered By" := USERID;
-                    SMSMessages."Sent To Server" := SMSMessages."Sent To Server"::No;
-                    IF LoanApp.GET(LoanGuar."Loan No") THEN SMSMessages."SMS Message" := 'You have guaranteed an amount of ' + FORMAT(LoanGuar."Amont Guaranteed") + ' to ' + Rec."Client Name" + '  ' + ' Loan Type ' + Rec."Loan Product Type Name" + ' ' + 'of ' + FORMAT(Rec."Requested Amount") + ' at KRB Sacco Ltd. Call 0726050260 if in dispute';
-                    ;
-                    SMSMessages."Telephone No" := Cust."Phone No.";
-                    SMSMessages.INSERT;
-                END;
-            UNTIL LoanGuar.NEXT = 0;
-        END;
     end;
 
     local procedure FnMemberHasAnExistingLoanSameProduct(): Boolean
@@ -866,32 +775,6 @@ page 57004 "Instant Loan Disbursement Card"
         //**************Loan Principal Posting**********************************
         LineNo := LineNo + 10000;
         SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, Rec."Loan  No.", LineNo, GenJournalLine."Transaction Type"::Loan, GenJournalLine."Account Type"::Customer, LoanApps."Client Code", DirbursementDate, VarAmounttoDisburse, 'BOSA', LoanApps."Loan  No.", 'Loan Disbursement - ' + LoanApps."Loan Product Type", LoanApps."Loan  No.");
-        //--------------------------------RECOVER OVERDRAFT()-------------------------------------------------------
-        //Code Here
-
-        //...................Cater for Loan Offset Now !
-        Rec.CalcFields("Top Up Amount");
-        if Rec."Top Up Amount" > 0 then begin
-            LoanTopUp.RESET;
-            LoanTopUp.SETRANGE(LoanTopUp."Loan No.", Rec."Loan  No.");
-            IF LoanTopUp.FIND('-') THEN BEGIN
-                repeat
-                    LineNo := LineNo + 10000;
-                    SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, Rec."Loan  No.", LineNo, GenJournalLine."Transaction Type"::"Loan Repayment", GenJournalLine."Account Type"::Customer, LoanApps."Client Code", DirbursementDate, LoanTopUp."Principle Top Up" * -1, 'BOSA', LoanApps."Loan  No.", 'Loan OffSet By - ' + LoanApps."Loan  No.", LoanTopUp."Loan Top Up");
-                    //..................Recover Interest On Top Up
-                    LineNo := LineNo + 10000;
-                    SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, Rec."Loan  No.", LineNo, GenJournalLine."Transaction Type"::"Interest Paid", GenJournalLine."Account Type"::Customer, LoanApps."Client Code", DirbursementDate, LoanTopUp."Interest Top Up" * -1, 'BOSA', LoanApps."Loan  No.", 'Interest Due Paid on top up - ', LoanTopUp."Loan Top Up");
-                    //If there is top up commission charged write it here start
-                    LineNo := LineNo + 10000;
-                    SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, LoanApps."Loan  No.", LineNo, GenJournalLine."Transaction Type"::" ", GenJournalLine."Account Type"::"G/L Account", GenSetUp."Top up Account", DirbursementDate, LoanTopUp.Commision * -1, 'BOSA', Rec."Batch No.", 'Commision on top up - ', LoanTopUp."Loan Top Up");
-                    //If there is top up commission charged write it here end
-                    AmountTop := (LoanTopUp."Principle Top Up" + LoanTopUp."Interest Top Up" + LoanTopUp.Commision);
-                    VarAmounttoDisburse := VarAmounttoDisburse - (LoanTopUp."Principle Top Up" + LoanTopUp."Interest Top Up" + LoanTopUp.Commision);
-                UNTIL LoanTopUp.NEXT = 0;
-            END;
-        end;
-        //If there is top up commission charged write it here start // "Loan Insurance"
-        //If there is top up commission charged write it here end
 
         NetAmount := Rec."Approved Amount" - (Rec."Loan Processing Fee" + Rec."Loan Dirbusement Fee" + Rec."Loan Insurance" + AmountTop);
         //***************************Loan Product Charges code
@@ -931,31 +814,6 @@ page 57004 "Instant Loan Disbursement Card"
             UNTIL PCharges.NEXT = 0;
         END;
         //end of code
-        //....Insuarance
-        // PREMIUM = LOAN AMOUNT x (5.03 x PERIOD +21.15)/6000 x 0.6
-        LineNo := LineNo + 10000;
-
-        insurancePremium := Rec."Loan Insurance";// ROUND(((Rec."Requested Amount") * (5.03 * Rec.Installments + 21.15) / 6000) * 0.6, 1, '=');
-        SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, LoanApps."Loan  No.", LineNo, GenJournalLine."Transaction Type"::" ", GenJournalLine."Account Type"::"G/L Account", GenSetUp."Insurance Retension Account", DirbursementDate, insurancePremium * -1, 'BOSA', Rec."Batch No.", 'Loan Insurance Amount ' + Format(LoanApps."Loan  No."), '');
-        VarAmounttoDisburse := VarAmounttoDisburse - insurancePremium;
-
-        //.....Valuation
-        VarAmounttoDisburse := VarAmounttoDisburse - (Rec."Loan Processing Fee" + Rec."Loan Dirbusement Fee" + Rec."Loan Insurance");
-        LineNo := LineNo + 10000;
-        SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, LoanApps."Loan  No.", LineNo, GenJournalLine."Transaction Type"::" ", GenJournalLine."Account Type"::"G/L Account", GenSetUp."Asset Valuation Cost", DirbursementDate, LoanApps."Valuation Cost" * -1, 'BOSA', Rec."Batch No.", 'Loan Principle Amount ' + Format(LoanApps."Loan  No."), '');
-        VarAmounttoDisburse := VarAmounttoDisburse - LoanApps."Valuation Cost";
-        //...Debosting amount
-        LineNo := LineNo + 10000;
-        SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, LoanApps."Loan  No.", LineNo, GenJournalLine."Transaction Type"::" ", GenJournalLine."Account Type"::"G/L Account", GenSetUp."Boosting Fees Account", DirbursementDate, LoanApps."Deboost Commision" * -1, 'BOSA', Rec."Batch No.", 'Debosting commision ' + Format(LoanApps."Loan  No."), '');
-        VarAmounttoDisburse := VarAmounttoDisburse - LoanApps."Deboost Commision";
-        //Debosting commsion
-        LineNo := LineNo + 10000;
-        SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, LoanApps."Loan  No.", LineNo, GenJournalLine."Transaction Type"::"Deposit Contribution", GenJournalLine."Account Type"::Customer, LoanApps."Client Code", DirbursementDate, LoanApps."Deboost Amount" * -1, 'BOSA', Rec."Batch No.", 'Debosted shares ' + Format(LoanApps."Loan  No."), '');
-        VarAmounttoDisburse := VarAmounttoDisburse - LoanApps."Deboost Amount";
-        //..Legal Fees
-        LineNo := LineNo + 10000;
-        SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, LoanApps."Loan  No.", LineNo, GenJournalLine."Transaction Type"::" ", GenJournalLine."Account Type"::"G/L Account", GenSetUp."Legal Fees", DirbursementDate, LoanApps."Legal Cost" * -1, 'BOSA', Rec."Batch No.", 'Loan Principle Amount ' + Format(LoanApps."Loan  No."), '');
-        VarAmounttoDisburse := VarAmounttoDisburse - LoanApps."Legal Cost";
         //------------------------------------2. CREDIT MEMBER BANK A/C---------------------------------------------------------------------------------------------
         LineNo := LineNo + 10000;
         SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, Rec."Loan  No.", LineNo, GenJournalLine."Transaction Type"::" ", GenJournalLine."Account Type"::"Bank Account", LoanApps."Paying Bank Account No", DirbursementDate, VarAmounttoDisburse * -1, 'BOSA', LoanApps."Loan  No.", 'Loan ' + Format(LoanApps."Loan  No.") + ' Amount disbursed to Member Bank Account ' + Format(Rec."Bank Account"), '');
@@ -970,7 +828,7 @@ page 57004 "Instant Loan Disbursement Card"
         LoansR.SetRange(LoansR."Loan  No.", Rec."Loan  No.");
         if LoansR.Find('-') then begin
             msg := '';
-            msg := 'Dear Member, Your ' + Format(LoansR."Loan Product Type Name") + ' loan application of KSHs.' + Format(Rec."Requested Amount") + ' has been processed and it will be deposited to your Bank Account.';
+            msg := 'Dear Member, Your Instant loan application of KSHs.' + Format(Rec."Requested Amount") + ' has been processed and it will be deposited to your Bank Account.';
             PhoneNo := FnGetPhoneNo(Rec."Client Code");
             SendSMSMessage(Rec."Client Code", msg, PhoneNo);
         end;
