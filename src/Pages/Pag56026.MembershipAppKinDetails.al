@@ -28,15 +28,15 @@ Page 56026 "Membership App Kin Details"
                 // {
                 //     ApplicationArea = Basic;
                 // }
-                field("Date of Birth"; Rec."Date of Birth")
-                {
-                    ApplicationArea = Basic;
-                }
-                field(Address; Rec.Address)
-                {
-                    Visible = false;
-                    ApplicationArea = Basic;
-                }
+                // field("Date of Birth"; Rec."Date of Birth")
+                // {
+                //     ApplicationArea = Basic;
+                // }
+                // field(Address; Rec.Address)
+                // {
+                //     Visible = false;
+                //     ApplicationArea = Basic;
+                // }
                 field(Telephone; Rec.Telephone)
                 {
                     ApplicationArea = Basic;
@@ -49,11 +49,11 @@ Page 56026 "Membership App Kin Details"
                 // {
                 //     ApplicationArea = Basic;
                 // }
-                field("ID No."; Rec."ID No.")
-                {
-                    Caption = 'Id/Birth Cert No.';
-                    ApplicationArea = Basic;
-                }
+                // field("ID No."; Rec."ID No.")
+                // {
+                //     Caption = 'Id/Birth Cert No.';
+                //     ApplicationArea = Basic;
+                // }
                 // field("%Allocation"; Rec."%Allocation")
                 // {
                 //     ApplicationArea = Basic;

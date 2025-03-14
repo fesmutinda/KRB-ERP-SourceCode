@@ -28,6 +28,7 @@ page 50364 "Membership App Nominee Detail"
                 field("Date of Birth"; Rec."Date of Birth")
                 {
                     ApplicationArea = Basic;
+                    ShowMandatory = true;
                 }
                 field(Age; Rec.Age)
                 {
