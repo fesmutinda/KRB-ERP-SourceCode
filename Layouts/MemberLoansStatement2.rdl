@@ -11,6 +11,274 @@
       <rd:DataSourceID>3159a83d-f0a1-4713-9dd8-a50bd5a07920</rd:DataSourceID>
     </DataSource>
   </DataSources>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+      <Fields>
+        <Field Name="Payroll_Staff_No">
+          <DataField>Payroll_Staff_No</DataField>
+        </Field>
+        <Field Name="Employer_Name">
+          <DataField>Employer_Name</DataField>
+        </Field>
+        <Field Name="PayrollStaffNo_Members">
+          <DataField>PayrollStaffNo_Members</DataField>
+        </Field>
+        <Field Name="No_Members">
+          <DataField>No_Members</DataField>
+        </Field>
+        <Field Name="MobilePhoneNo_MembersRegister">
+          <DataField>MobilePhoneNo_MembersRegister</DataField>
+        </Field>
+        <Field Name="Name_Members">
+          <DataField>Name_Members</DataField>
+        </Field>
+        <Field Name="EmployerCode_Members">
+          <DataField>EmployerCode_Members</DataField>
+        </Field>
+        <Field Name="EmployerName">
+          <DataField>EmployerName</DataField>
+        </Field>
+        <Field Name="PageNo_Members">
+          <DataField>PageNo_Members</DataField>
+        </Field>
+        <Field Name="Shares_Retained">
+          <DataField>Shares_Retained</DataField>
+        </Field>
+        <Field Name="Shares_RetainedFormat">
+          <DataField>Shares_RetainedFormat</DataField>
+        </Field>
+        <Field Name="ShareCapBF">
+          <DataField>ShareCapBF</DataField>
+        </Field>
+        <Field Name="ShareCapBFFormat">
+          <DataField>ShareCapBFFormat</DataField>
+        </Field>
+        <Field Name="IDNo_Members">
+          <DataField>IDNo_Members</DataField>
+        </Field>
+        <Field Name="GlobalDimension2Code_Members">
+          <DataField>GlobalDimension2Code_Members</DataField>
+        </Field>
+        <Field Name="Company_Name">
+          <DataField>Company_Name</DataField>
+        </Field>
+        <Field Name="Company_Address">
+          <DataField>Company_Address</DataField>
+        </Field>
+        <Field Name="Company_Picture">
+          <DataField>Company_Picture</DataField>
+        </Field>
+        <Field Name="Company_Phone">
+          <DataField>Company_Phone</DataField>
+        </Field>
+        <Field Name="Company_SMS">
+          <DataField>Company_SMS</DataField>
+        </Field>
+        <Field Name="Company_Email">
+          <DataField>Company_Email</DataField>
+        </Field>
+        <Field Name="PrincipleBF">
+          <DataField>PrincipleBF</DataField>
+        </Field>
+        <Field Name="PrincipleBFFormat">
+          <DataField>PrincipleBFFormat</DataField>
+        </Field>
+        <Field Name="Outstanding_Balance">
+          <DataField>Outstanding_Balance</DataField>
+        </Field>
+        <Field Name="Outstanding_BalanceFormat">
+          <DataField>Outstanding_BalanceFormat</DataField>
+        </Field>
+        <Field Name="Oustanding_Interest">
+          <DataField>Oustanding_Interest</DataField>
+        </Field>
+        <Field Name="Oustanding_InterestFormat">
+          <DataField>Oustanding_InterestFormat</DataField>
+        </Field>
+        <Field Name="LoanNumber">
+          <DataField>LoanNumber</DataField>
+        </Field>
+        <Field Name="ProductType">
+          <DataField>ProductType</DataField>
+        </Field>
+        <Field Name="RequestedAmount">
+          <DataField>RequestedAmount</DataField>
+        </Field>
+        <Field Name="RequestedAmountFormat">
+          <DataField>RequestedAmountFormat</DataField>
+        </Field>
+        <Field Name="Interest">
+          <DataField>Interest</DataField>
+        </Field>
+        <Field Name="InterestFormat">
+          <DataField>InterestFormat</DataField>
+        </Field>
+        <Field Name="Installments">
+          <DataField>Installments</DataField>
+        </Field>
+        <Field Name="LoanPrincipleRepayment">
+          <DataField>LoanPrincipleRepayment</DataField>
+        </Field>
+        <Field Name="LoanPrincipleRepaymentFormat">
+          <DataField>LoanPrincipleRepaymentFormat</DataField>
+        </Field>
+        <Field Name="ApprovedAmount_Loans">
+          <DataField>ApprovedAmount_Loans</DataField>
+        </Field>
+        <Field Name="ApprovedAmount_LoansFormat">
+          <DataField>ApprovedAmount_LoansFormat</DataField>
+        </Field>
+        <Field Name="LoanProductTypeName_Loans">
+          <DataField>LoanProductTypeName_Loans</DataField>
+        </Field>
+        <Field Name="Repayment_Loans">
+          <DataField>Repayment_Loans</DataField>
+        </Field>
+        <Field Name="Repayment_LoansFormat">
+          <DataField>Repayment_LoansFormat</DataField>
+        </Field>
+        <Field Name="ModeofDisbursement_Loans">
+          <DataField>ModeofDisbursement_Loans</DataField>
+        </Field>
+        <Field Name="PostingDate_loan">
+          <DataField>PostingDate_loan</DataField>
+        </Field>
+        <Field Name="DocumentNo_loan">
+          <DataField>DocumentNo_loan</DataField>
+        </Field>
+        <Field Name="Description_loan">
+          <DataField>Description_loan</DataField>
+        </Field>
+        <Field Name="DebitAmount_Loan">
+          <DataField>DebitAmount_Loan</DataField>
+        </Field>
+        <Field Name="DebitAmount_LoanFormat">
+          <DataField>DebitAmount_LoanFormat</DataField>
+        </Field>
+        <Field Name="CreditAmount_Loan">
+          <DataField>CreditAmount_Loan</DataField>
+        </Field>
+        <Field Name="CreditAmount_LoanFormat">
+          <DataField>CreditAmount_LoanFormat</DataField>
+        </Field>
+        <Field Name="Amount_Loan">
+          <DataField>Amount_Loan</DataField>
+        </Field>
+        <Field Name="Amount_LoanFormat">
+          <DataField>Amount_LoanFormat</DataField>
+        </Field>
+        <Field Name="openBalance_loan">
+          <DataField>openBalance_loan</DataField>
+        </Field>
+        <Field Name="openBalance_loanFormat">
+          <DataField>openBalance_loanFormat</DataField>
+        </Field>
+        <Field Name="CLosingBalance_loan">
+          <DataField>CLosingBalance_loan</DataField>
+        </Field>
+        <Field Name="CLosingBalance_loanFormat">
+          <DataField>CLosingBalance_loanFormat</DataField>
+        </Field>
+        <Field Name="TransactionType_loan">
+          <DataField>TransactionType_loan</DataField>
+        </Field>
+        <Field Name="LoanNo">
+          <DataField>LoanNo</DataField>
+        </Field>
+        <Field Name="PrincipleBF_loans">
+          <DataField>PrincipleBF_loans</DataField>
+        </Field>
+        <Field Name="PrincipleBF_loansFormat">
+          <DataField>PrincipleBF_loansFormat</DataField>
+        </Field>
+        <Field Name="LoanType_loan">
+          <DataField>LoanType_loan</DataField>
+        </Field>
+        <Field Name="Loan_Description">
+          <DataField>Loan_Description</DataField>
+        </Field>
+        <Field Name="BalAccountNo_loan">
+          <DataField>BalAccountNo_loan</DataField>
+        </Field>
+        <Field Name="BankCodeLoan">
+          <DataField>BankCodeLoan</DataField>
+        </Field>
+        <Field Name="User7">
+          <DataField>User7</DataField>
+        </Field>
+        <Field Name="PostingDate_Interest">
+          <DataField>PostingDate_Interest</DataField>
+        </Field>
+        <Field Name="DocumentNo_Interest">
+          <DataField>DocumentNo_Interest</DataField>
+        </Field>
+        <Field Name="Description_Interest">
+          <DataField>Description_Interest</DataField>
+        </Field>
+        <Field Name="DebitAmount_Interest">
+          <DataField>DebitAmount_Interest</DataField>
+        </Field>
+        <Field Name="DebitAmount_InterestFormat">
+          <DataField>DebitAmount_InterestFormat</DataField>
+        </Field>
+        <Field Name="CreditAmount_Interest">
+          <DataField>CreditAmount_Interest</DataField>
+        </Field>
+        <Field Name="CreditAmount_InterestFormat">
+          <DataField>CreditAmount_InterestFormat</DataField>
+        </Field>
+        <Field Name="Amount_Interest">
+          <DataField>Amount_Interest</DataField>
+        </Field>
+        <Field Name="Amount_InterestFormat">
+          <DataField>Amount_InterestFormat</DataField>
+        </Field>
+        <Field Name="OpeningBalInt">
+          <DataField>OpeningBalInt</DataField>
+        </Field>
+        <Field Name="OpeningBalIntFormat">
+          <DataField>OpeningBalIntFormat</DataField>
+        </Field>
+        <Field Name="ClosingBalInt">
+          <DataField>ClosingBalInt</DataField>
+        </Field>
+        <Field Name="ClosingBalIntFormat">
+          <DataField>ClosingBalIntFormat</DataField>
+        </Field>
+        <Field Name="TransactionType_Interest">
+          <DataField>TransactionType_Interest</DataField>
+        </Field>
+        <Field Name="LoanNo_Interest">
+          <DataField>LoanNo_Interest</DataField>
+        </Field>
+        <Field Name="InterestBF">
+          <DataField>InterestBF</DataField>
+        </Field>
+        <Field Name="InterestBFFormat">
+          <DataField>InterestBFFormat</DataField>
+        </Field>
+        <Field Name="BalAccountNo_Interest">
+          <DataField>BalAccountNo_Interest</DataField>
+        </Field>
+        <Field Name="BankCodeInterest">
+          <DataField>BankCodeInterest</DataField>
+        </Field>
+        <Field Name="User8">
+          <DataField>User8</DataField>
+        </Field>
+        <Field Name="LoanNo_ApprovedAMount">
+          <DataField>LoanNo_ApprovedAMount</DataField>
+        </Field>
+        <Field Name="LoanNo_ApprovedAMountFormat">
+          <DataField>LoanNo_ApprovedAMountFormat</DataField>
+        </Field>
+      </Fields>
+    </DataSet>
+  </DataSets>
   <ReportSections>
     <ReportSection>
       <Body>
@@ -921,7 +1189,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!CLosingBalance_loan.Value</Value>
+                                  <Value>=Fields!CLosingBalance_loan.Value*</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontSize>7pt</FontSize>
@@ -2180,6 +2448,12 @@
       </Page>
     </ReportSection>
   </ReportSections>
+  <ReportParametersLayout>
+    <GridLayoutDefinition>
+      <NumberOfColumns>4</NumberOfColumns>
+      <NumberOfRows>2</NumberOfRows>
+    </GridLayoutDefinition>
+  </ReportParametersLayout>
   <Code>Public Function BlankZero(ByVal Value As Decimal)
     if Value = 0 then
         Return ""
@@ -2219,272 +2493,4 @@ End Function
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
   <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
-  <DataSets>
-    <DataSet Name="DataSet_Result">
-      <Fields>
-        <Field Name="Payroll_Staff_No">
-          <DataField>Payroll_Staff_No</DataField>
-        </Field>
-        <Field Name="Employer_Name">
-          <DataField>Employer_Name</DataField>
-        </Field>
-        <Field Name="PayrollStaffNo_Members">
-          <DataField>PayrollStaffNo_Members</DataField>
-        </Field>
-        <Field Name="No_Members">
-          <DataField>No_Members</DataField>
-        </Field>
-        <Field Name="MobilePhoneNo_MembersRegister">
-          <DataField>MobilePhoneNo_MembersRegister</DataField>
-        </Field>
-        <Field Name="Name_Members">
-          <DataField>Name_Members</DataField>
-        </Field>
-        <Field Name="EmployerCode_Members">
-          <DataField>EmployerCode_Members</DataField>
-        </Field>
-        <Field Name="EmployerName">
-          <DataField>EmployerName</DataField>
-        </Field>
-        <Field Name="PageNo_Members">
-          <DataField>PageNo_Members</DataField>
-        </Field>
-        <Field Name="Shares_Retained">
-          <DataField>Shares_Retained</DataField>
-        </Field>
-        <Field Name="Shares_RetainedFormat">
-          <DataField>Shares_RetainedFormat</DataField>
-        </Field>
-        <Field Name="ShareCapBF">
-          <DataField>ShareCapBF</DataField>
-        </Field>
-        <Field Name="ShareCapBFFormat">
-          <DataField>ShareCapBFFormat</DataField>
-        </Field>
-        <Field Name="IDNo_Members">
-          <DataField>IDNo_Members</DataField>
-        </Field>
-        <Field Name="GlobalDimension2Code_Members">
-          <DataField>GlobalDimension2Code_Members</DataField>
-        </Field>
-        <Field Name="Company_Name">
-          <DataField>Company_Name</DataField>
-        </Field>
-        <Field Name="Company_Address">
-          <DataField>Company_Address</DataField>
-        </Field>
-        <Field Name="Company_Picture">
-          <DataField>Company_Picture</DataField>
-        </Field>
-        <Field Name="Company_Phone">
-          <DataField>Company_Phone</DataField>
-        </Field>
-        <Field Name="Company_SMS">
-          <DataField>Company_SMS</DataField>
-        </Field>
-        <Field Name="Company_Email">
-          <DataField>Company_Email</DataField>
-        </Field>
-        <Field Name="PrincipleBF">
-          <DataField>PrincipleBF</DataField>
-        </Field>
-        <Field Name="PrincipleBFFormat">
-          <DataField>PrincipleBFFormat</DataField>
-        </Field>
-        <Field Name="Outstanding_Balance">
-          <DataField>Outstanding_Balance</DataField>
-        </Field>
-        <Field Name="Outstanding_BalanceFormat">
-          <DataField>Outstanding_BalanceFormat</DataField>
-        </Field>
-        <Field Name="Oustanding_Interest">
-          <DataField>Oustanding_Interest</DataField>
-        </Field>
-        <Field Name="Oustanding_InterestFormat">
-          <DataField>Oustanding_InterestFormat</DataField>
-        </Field>
-        <Field Name="LoanNumber">
-          <DataField>LoanNumber</DataField>
-        </Field>
-        <Field Name="ProductType">
-          <DataField>ProductType</DataField>
-        </Field>
-        <Field Name="RequestedAmount">
-          <DataField>RequestedAmount</DataField>
-        </Field>
-        <Field Name="RequestedAmountFormat">
-          <DataField>RequestedAmountFormat</DataField>
-        </Field>
-        <Field Name="Interest">
-          <DataField>Interest</DataField>
-        </Field>
-        <Field Name="InterestFormat">
-          <DataField>InterestFormat</DataField>
-        </Field>
-        <Field Name="Installments">
-          <DataField>Installments</DataField>
-        </Field>
-        <Field Name="LoanPrincipleRepayment">
-          <DataField>LoanPrincipleRepayment</DataField>
-        </Field>
-        <Field Name="LoanPrincipleRepaymentFormat">
-          <DataField>LoanPrincipleRepaymentFormat</DataField>
-        </Field>
-        <Field Name="ApprovedAmount_Loans">
-          <DataField>ApprovedAmount_Loans</DataField>
-        </Field>
-        <Field Name="ApprovedAmount_LoansFormat">
-          <DataField>ApprovedAmount_LoansFormat</DataField>
-        </Field>
-        <Field Name="LoanProductTypeName_Loans">
-          <DataField>LoanProductTypeName_Loans</DataField>
-        </Field>
-        <Field Name="Repayment_Loans">
-          <DataField>Repayment_Loans</DataField>
-        </Field>
-        <Field Name="Repayment_LoansFormat">
-          <DataField>Repayment_LoansFormat</DataField>
-        </Field>
-        <Field Name="ModeofDisbursement_Loans">
-          <DataField>ModeofDisbursement_Loans</DataField>
-        </Field>
-        <Field Name="PostingDate_loan">
-          <DataField>PostingDate_loan</DataField>
-        </Field>
-        <Field Name="DocumentNo_loan">
-          <DataField>DocumentNo_loan</DataField>
-        </Field>
-        <Field Name="Description_loan">
-          <DataField>Description_loan</DataField>
-        </Field>
-        <Field Name="DebitAmount_Loan">
-          <DataField>DebitAmount_Loan</DataField>
-        </Field>
-        <Field Name="DebitAmount_LoanFormat">
-          <DataField>DebitAmount_LoanFormat</DataField>
-        </Field>
-        <Field Name="CreditAmount_Loan">
-          <DataField>CreditAmount_Loan</DataField>
-        </Field>
-        <Field Name="CreditAmount_LoanFormat">
-          <DataField>CreditAmount_LoanFormat</DataField>
-        </Field>
-        <Field Name="Amount_Loan">
-          <DataField>Amount_Loan</DataField>
-        </Field>
-        <Field Name="Amount_LoanFormat">
-          <DataField>Amount_LoanFormat</DataField>
-        </Field>
-        <Field Name="openBalance_loan">
-          <DataField>openBalance_loan</DataField>
-        </Field>
-        <Field Name="openBalance_loanFormat">
-          <DataField>openBalance_loanFormat</DataField>
-        </Field>
-        <Field Name="CLosingBalance_loan">
-          <DataField>CLosingBalance_loan</DataField>
-        </Field>
-        <Field Name="CLosingBalance_loanFormat">
-          <DataField>CLosingBalance_loanFormat</DataField>
-        </Field>
-        <Field Name="TransactionType_loan">
-          <DataField>TransactionType_loan</DataField>
-        </Field>
-        <Field Name="LoanNo">
-          <DataField>LoanNo</DataField>
-        </Field>
-        <Field Name="PrincipleBF_loans">
-          <DataField>PrincipleBF_loans</DataField>
-        </Field>
-        <Field Name="PrincipleBF_loansFormat">
-          <DataField>PrincipleBF_loansFormat</DataField>
-        </Field>
-        <Field Name="LoanType_loan">
-          <DataField>LoanType_loan</DataField>
-        </Field>
-        <Field Name="Loan_Description">
-          <DataField>Loan_Description</DataField>
-        </Field>
-        <Field Name="BalAccountNo_loan">
-          <DataField>BalAccountNo_loan</DataField>
-        </Field>
-        <Field Name="BankCodeLoan">
-          <DataField>BankCodeLoan</DataField>
-        </Field>
-        <Field Name="User7">
-          <DataField>User7</DataField>
-        </Field>
-        <Field Name="PostingDate_Interest">
-          <DataField>PostingDate_Interest</DataField>
-        </Field>
-        <Field Name="DocumentNo_Interest">
-          <DataField>DocumentNo_Interest</DataField>
-        </Field>
-        <Field Name="Description_Interest">
-          <DataField>Description_Interest</DataField>
-        </Field>
-        <Field Name="DebitAmount_Interest">
-          <DataField>DebitAmount_Interest</DataField>
-        </Field>
-        <Field Name="DebitAmount_InterestFormat">
-          <DataField>DebitAmount_InterestFormat</DataField>
-        </Field>
-        <Field Name="CreditAmount_Interest">
-          <DataField>CreditAmount_Interest</DataField>
-        </Field>
-        <Field Name="CreditAmount_InterestFormat">
-          <DataField>CreditAmount_InterestFormat</DataField>
-        </Field>
-        <Field Name="Amount_Interest">
-          <DataField>Amount_Interest</DataField>
-        </Field>
-        <Field Name="Amount_InterestFormat">
-          <DataField>Amount_InterestFormat</DataField>
-        </Field>
-        <Field Name="OpeningBalInt">
-          <DataField>OpeningBalInt</DataField>
-        </Field>
-        <Field Name="OpeningBalIntFormat">
-          <DataField>OpeningBalIntFormat</DataField>
-        </Field>
-        <Field Name="ClosingBalInt">
-          <DataField>ClosingBalInt</DataField>
-        </Field>
-        <Field Name="ClosingBalIntFormat">
-          <DataField>ClosingBalIntFormat</DataField>
-        </Field>
-        <Field Name="TransactionType_Interest">
-          <DataField>TransactionType_Interest</DataField>
-        </Field>
-        <Field Name="LoanNo_Interest">
-          <DataField>LoanNo_Interest</DataField>
-        </Field>
-        <Field Name="InterestBF">
-          <DataField>InterestBF</DataField>
-        </Field>
-        <Field Name="InterestBFFormat">
-          <DataField>InterestBFFormat</DataField>
-        </Field>
-        <Field Name="BalAccountNo_Interest">
-          <DataField>BalAccountNo_Interest</DataField>
-        </Field>
-        <Field Name="BankCodeInterest">
-          <DataField>BankCodeInterest</DataField>
-        </Field>
-        <Field Name="User8">
-          <DataField>User8</DataField>
-        </Field>
-        <Field Name="LoanNo_ApprovedAMount">
-          <DataField>LoanNo_ApprovedAMount</DataField>
-        </Field>
-        <Field Name="LoanNo_ApprovedAMountFormat">
-          <DataField>LoanNo_ApprovedAMountFormat</DataField>
-        </Field>
-      </Fields>
-      <Query>
-        <DataSourceName>DataSource</DataSourceName>
-        <CommandText />
-      </Query>
-    </DataSet>
-  </DataSets>
 </Report>
