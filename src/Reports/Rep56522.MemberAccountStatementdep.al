@@ -1,6 +1,7 @@
 Report 56522 "Member Account Statement-dep."
 {
     DefaultLayout = RDLC;
+    Caption = 'Member Deposit Statement';
     RDLCLayout = './Layout/Member Account Statement-dep..rdlc';
 
     dataset

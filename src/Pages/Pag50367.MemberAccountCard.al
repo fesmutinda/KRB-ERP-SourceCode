@@ -618,22 +618,7 @@ page 50367 "Member Account Card"
                         Cust.Reset;
                         Cust.SetRange(Cust."No.", Rec."No.");
                         if Cust.Find('-') then
-                            Report.Run(50223, true, false, Cust);
-                    end;
-                }
-                action("Detailed Statement Edit")
-                {
-                    ApplicationArea = Basic;
-                    Caption = 'Detailed Statement Edit';
-                    Image = Report;
-                    Promoted = true;
-                    PromotedCategory = Report;
-
-                    trigger OnAction()
-                    begin
-                        Cust.Reset;
-                        Cust.SetRange(Cust."No.", Rec."No.");
-                        if Cust.Find('-') then
+                            // Report.Run(50223, true, false, Cust);
                             Report.Run(56886, true, false, Cust);
                     end;
                 }
@@ -650,23 +635,9 @@ page 50367 "Member Account Card"
                         Cust.Reset;
                         Cust.SetRange(Cust."No.", Rec."No.");
                         if Cust.Find('-') then begin
-                            Report.Run(50224, true, false, Cust);
-                        END;
-                    end;
-                }
-                action("Deposit Statement Edit")
-                {
-                    ApplicationArea = Basic;
-                    Image = "Report";
-                    Promoted = true;
-                    PromotedCategory = Report;
-
-                    trigger OnAction()
-                    begin
-                        Cust.Reset;
-                        Cust.SetRange(Cust."No.", Rec."No.");
-                        if Cust.Find('-') then
+                            // Report.Run(50224, true, false, Cust);
                             Report.Run(56522, true, false, Cust);
+                        END;
                     end;
                 }
                 action("Shares Statement")

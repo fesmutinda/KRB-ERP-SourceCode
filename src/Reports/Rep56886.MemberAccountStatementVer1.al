@@ -2,7 +2,7 @@
 Report 56886 "Member Account Statement(Ver1)"
 {
     DefaultLayout = RDLC;
-    Caption = 'Detailed Statement';
+    Caption = 'Detailed Member Statement';
     RDLCLayout = './Layout/Member Account Statement(Ver1).rdlc';
 
     dataset
@@ -598,7 +598,6 @@ Report 56886 "Member Account Statement(Ver1)"
         ShareCapBF: Decimal;
         RiskBF: Decimal;
         DividendBF: Decimal;
-        KhojaBF: Decimal;
         Company: Record "Company Information";
         OpenBalanceHse: Decimal;
         CLosingBalanceHse: Decimal;
@@ -627,7 +626,7 @@ Report 56886 "Member Account Statement(Ver1)"
         ClosingBalanceDeposits: Decimal;
         OpenBalanceDividend: Decimal;
         ClosingBalanceDividend: Decimal;
-        OpenBalanceKhoja: Decimal;
-        ClosingBalanceKhoja: Decimal;
+    // OpenBalanceKhoja: Decimal;
+    // ClosingBalanceKhoja: Decimal;
 }
 
