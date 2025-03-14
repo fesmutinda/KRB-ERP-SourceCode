@@ -1,7 +1,5 @@
 report 51016 "Payroll Payslip"
 {
-    // version Payroll ManagementV1.0(Surestep Systems)
-
     DefaultLayout = RDLC;
     RDLCLayout = './Layouts/Payroll Payslip.rdl';
 

@@ -1166,7 +1166,7 @@ Report 56384 "Loan Appraisal Edit"
                         //LOAN Charges
                         LegalFee := "Loans Register"."Legal Cost";
                         ValuationFee := "Loans Register"."Valuation Cost";
-                        LoanInsurance := "Loans Register".Insurance;
+                        LoanInsurance := "Loans Register"."Loan Insurance";
 
                         LoanProcessingFee := SFactory.FnGetChargeFee("Loans Register"."Loan Product Type", "Loans Register"."Approved Amount", 'PROCESSING');
                         DisbursementFee := SFactory.FnGetChargeFee("Loans Register"."Loan Product Type", Netdisbursed, 'DISBURSEMENT');

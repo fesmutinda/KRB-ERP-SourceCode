@@ -597,7 +597,7 @@ Codeunit 50007 "Swizzsoft Factory."
 
         //LoanAmount:=LoansRec."Approved Amount";
         LoanAmount:=LoansRec."Approved Amount";
-        Insurance:=LoansRec.Insurance;
+        Insurance:=LoansRec."Loan Insurance";
         InterestRate:=LoansRec.Interest;
         RepayPeriod:=LoansRec.Installments;
         InitialInstal:=LoansRec.Installments+LoansRec."Grace Period - Principle (M)";

@@ -42,7 +42,7 @@ page 50391 "Loans Rejected List"
                 {
                     ApplicationArea = Basic;
                 }
-                field(Insurance; Rec.Insurance)
+                field(Insurance; Rec."Loan Insurance")
                 {
                     ApplicationArea = Basic;
                 }

@@ -309,9 +309,6 @@ report 50006 "Instant LoanApplication"
             column(ClientCode; "Client Code")
             {
             }
-            column(ClientCode11111; "Client Code11111")
-            {
-            }
             column(ClientCycle; "Client Cycle")
             {
             }
@@ -573,7 +570,7 @@ report 50006 "Instant LoanApplication"
             column(InstalmentPeriod; "Instalment Period")
             {
             }
-            column(Insurance; Insurance)
+            column(Insurance; "Loan Insurance")
             {
             }
             column(Insurance025; "Insurance 0.25")

@@ -59,9 +59,9 @@ Table 51645 "Loan Dis Batch Lines"
                             InterestUpfront := LoanApps."Loan Interest Repayment";
 
                         if (LoanApps."Loan Product Type" = 'INSTANT') or (LoanApps."Loan Product Type" = 'KARIBU') then
-                            InsuranceAmount := LoanApps.Insurance;
+                            InsuranceAmount := LoanApps."Loan Insurance";
                         if LoanApps."Insurance Upfront" then
-                            InsuranceAmount := LoanApps.Insurance;
+                            InsuranceAmount := LoanApps."Loan Insurance";
                         if LoanApps."Top Up Amount" > 0 then begin
                             if LoanApps.Refinancing then
                                 deductions := ROUND("EFT Fees" + InterestUpfront + InsuranceAmount + LoanApps."Boosted Amount" + LoanApps."Top Up Amount" + LoanApps."Boosting Commision" + LoanApps."Lumpsum Amount Charge" + LoanApps."Penalty Amount", 0.1, '=')

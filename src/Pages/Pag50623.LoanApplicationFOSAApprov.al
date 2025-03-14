@@ -47,7 +47,7 @@ page 50623 "Loan Application FOSA(Approv)"
                 {
                     ApplicationArea = Basic;
                 }
-                field(Insurance; Rec.Insurance)
+                field(Insurance; Rec."Loan Insurance")
                 {
                     ApplicationArea = Basic;
                 }

@@ -18,7 +18,6 @@ page 50367 "Member Account Card"
             group(General)
             {
                 Caption = 'General';
-                // //Editable = true;
                 Visible = Individual;
                 field("No."; Rec."No.")
                 {
@@ -564,7 +563,7 @@ page 50367 "Member Account Card"
                     RunObject = Page "Members Nominee Details List";
                     RunPageLink = "Account No" = field("No.");
                 }
-            
+
                 action("Members Statistics")
                 {
                     ApplicationArea = Basic;
@@ -622,6 +621,22 @@ page 50367 "Member Account Card"
                             Report.Run(50223, true, false, Cust);
                     end;
                 }
+                action("Detailed Statement Edit")
+                {
+                    ApplicationArea = Basic;
+                    Caption = 'Detailed Statement Edit';
+                    Image = Report;
+                    Promoted = true;
+                    PromotedCategory = Report;
+
+                    trigger OnAction()
+                    begin
+                        Cust.Reset;
+                        Cust.SetRange(Cust."No.", Rec."No.");
+                        if Cust.Find('-') then
+                            Report.Run(56886, true, false, Cust);
+                    end;
+                }
                 action("Deposit Statement")
                 {
                     ApplicationArea = Basic;
@@ -637,6 +652,21 @@ page 50367 "Member Account Card"
                         if Cust.Find('-') then begin
                             Report.Run(50224, true, false, Cust);
                         END;
+                    end;
+                }
+                action("Deposit Statement Edit")
+                {
+                    ApplicationArea = Basic;
+                    Image = "Report";
+                    Promoted = true;
+                    PromotedCategory = Report;
+
+                    trigger OnAction()
+                    begin
+                        Cust.Reset;
+                        Cust.SetRange(Cust."No.", Rec."No.");
+                        if Cust.Find('-') then
+                            Report.Run(56522, true, false, Cust);
                     end;
                 }
                 action("Shares Statement")
