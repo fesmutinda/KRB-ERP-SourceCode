@@ -2210,7 +2210,7 @@ Table 51371 "Loans Register"
         field(68009; "Oustanding Interest to Date"; Decimal)
         {
             CalcFormula = sum("Cust. Ledger Entry"."Amount Posted" where("Loan No" = field("Loan  No."),
-                                                                  "Transaction Type" = filter("Insurance Contribution" | "Deposit Contribution"),
+                                                                  "Transaction Type" = filter("Interest Paid" | "Deposit Contribution"),
                                                                   "Document No." = field("Document No. Filter")));
             Editable = false;
             FieldClass = FlowField;
@@ -2218,7 +2218,7 @@ Table 51371 "Loans Register"
         field(68010; "Current Interest Paid"; Decimal)
         {
             CalcFormula = sum("Cust. Ledger Entry"."Amount Posted" where("Loan No" = field("Loan  No."),
-                                                                  "Transaction Type" = const("Insurance Contribution"),
+                                                                  "Transaction Type" = const("Interest Paid"),
                                                                   "Posting Date" = field("Period Date Filter")));
             Editable = false;
             FieldClass = FlowField;
@@ -2550,7 +2550,7 @@ Table 51371 "Loans Register"
         field(68065; "Last Interest Pay Date"; Date)
         {
             CalcFormula = max("Cust. Ledger Entry"."Posting Date" where("Loan No" = field("Loan  No."),
-                                                                          "Transaction Type" = filter("Insurance Contribution"),
+                                                                          "Transaction Type" = filter("Interest Paid"),
                                                                           "Posting Date" = field("Date filter")));
             Editable = false;
             FieldClass = FlowField;
@@ -2974,7 +2974,7 @@ Table 51371 "Loans Register"
         field(69057; "loan  Interest"; Decimal)
         {
             CalcFormula = sum("Cust. Ledger Entry"."Amount Posted" where("Loan No" = field("Loan  No."),
-                                                                  "Transaction Type" = filter("Insurance Contribution" | "Deposit Contribution"),
+                                                                  "Transaction Type" = filter("Interest Paid" | "Deposit Contribution"),
                                                                   "Posting Date" = field("Date filter")));
             Editable = false;
             FieldClass = FlowField;
@@ -3367,6 +3367,10 @@ Table 51371 "Loans Register"
             DataClassification = ToBeClassified;
         }
         field(68110; "Valuation Cost"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(68112; "Bank Transfer Charges"; Decimal)
         {
             DataClassification = ToBeClassified;
         }

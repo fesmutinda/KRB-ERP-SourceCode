@@ -548,7 +548,7 @@ Codeunit 50025 SwizzKashMB
                 MemberLedgerEntry.SetCurrentkey(MemberLedgerEntry."Entry No.");
                 MemberLedgerEntry.Ascending(false);
                 MemberLedgerEntry.SetRange(MemberLedgerEntry."Customer No.",Account);
-                MemberLedgerEntry.SetRange(MemberLedgerEntry."Transaction Type",MemberLedgerEntry."transaction type"::"Benevolent Fund");
+                MemberLedgerEntry.SetRange(MemberLedgerEntry."Transaction Type",MemberLedgerEntry."transaction type"::"Junior Savings");
                 Mrowcount:=MemberLedgerEntry.Count;
                 if MemberLedgerEntry.Find('-') then begin
                   repeat
@@ -1265,96 +1265,6 @@ Codeunit 50025 SwizzKashMB
                         if GenJournalLine.Amount<>0 then
                         GenJournalLine.Insert;
         
-                /*//Dr Transfer Charges
-                        LineNo:=LineNo+10000;
-                        GenJournalLine.INIT;
-                        GenJournalLine."Journal Template Name":='GENERAL';
-                        GenJournalLine."Journal Batch Name":='MOBILETRAN';
-                        GenJournalLine."Line No.":=LineNo;
-                        GenJournalLine."Account Type":=GenJournalLine."Account Type"::Vendor;
-                        GenJournalLine."Account No.":=accFrom;
-                        GenJournalLine.VALIDATE(GenJournalLine."Account No.");
-                        GenJournalLine."Document No.":=DocNumber;
-                        GenJournalLine."External Document No.":=accFrom;
-                        GenJournalLine."Posting Date":=TODAY;
-                        GenJournalLine.Description:='Mobile Transfer Charges';
-                        GenJournalLine.Amount:=(MobileCharges-ExcDuty) + SurePESACharge ;
-                        GenJournalLine.VALIDATE(GenJournalLine.Amount);
-                        IF GenJournalLine.Amount<>0 THEN
-                        GenJournalLine.INSERT;
-        
-        
-                //DR Excise Duty
-                        LineNo:=LineNo+10000;
-                        GenJournalLine.INIT;
-                        GenJournalLine."Journal Template Name":='GENERAL';
-                        GenJournalLine."Journal Batch Name":='MOBILETRAN';
-                        GenJournalLine."Line No.":=LineNo;
-                        GenJournalLine."Account Type":=GenJournalLine."Account Type"::Vendor;
-                        GenJournalLine."Account No.":=accFrom;
-                        GenJournalLine.VALIDATE(GenJournalLine."Account No.");
-                        GenJournalLine."Document No.":=DocNumber;
-                        GenJournalLine."External Document No.":=accFrom;
-                        GenJournalLine."Posting Date":=TODAY;
-                        GenJournalLine.Description:='Excise duty-Mobile Transfer';
-                        GenJournalLine.Amount:=ExcDuty;
-                        GenJournalLine.VALIDATE(GenJournalLine.Amount);
-                        IF GenJournalLine.Amount<>0 THEN
-                        GenJournalLine.INSERT;
-        
-                        LineNo:=LineNo+10000;
-                        GenJournalLine.INIT;
-                        GenJournalLine."Journal Template Name":='GENERAL';
-                        GenJournalLine."Journal Batch Name":='MOBILETRAN';
-                        GenJournalLine."Line No.":=LineNo;
-                        GenJournalLine."Account Type":=GenJournalLine."Account Type"::"G/L Account";
-                        GenJournalLine."Account No.":=FORMAT('200-000-3016');
-                        GenJournalLine.VALIDATE(GenJournalLine."Account No.");
-                        GenJournalLine."Document No.":=DocNumber;
-                        GenJournalLine."External Document No.":=MobileChargesACC;
-                        GenJournalLine."Posting Date":=TODAY;
-                        GenJournalLine.Description:='Excise duty-Mobile Transfer';
-                        GenJournalLine.Amount:=ExcDuty*-1;
-                        GenJournalLine.VALIDATE(GenJournalLine.Amount);
-                        IF GenJournalLine.Amount<>0 THEN
-                        GenJournalLine.INSERT;
-        
-                //CR Mobile Transactions Acc
-                        LineNo:=LineNo+10000;
-                        GenJournalLine.INIT;
-                        GenJournalLine."Journal Template Name":='GENERAL';
-                        GenJournalLine."Journal Batch Name":='MOBILETRAN';
-                        GenJournalLine."Line No.":=LineNo;
-                        GenJournalLine."Account Type":=GenJournalLine."Account Type"::"G/L Account";
-                        GenJournalLine."Account No.":=MobileChargesACC;
-                        GenJournalLine.VALIDATE(GenJournalLine."Account No.");
-                        GenJournalLine."Document No.":=DocNumber;
-                        GenJournalLine."External Document No.":=MobileChargesACC;
-                        GenJournalLine."Posting Date":=TODAY;
-                        GenJournalLine.Description:='Mobile Transfer Charges';
-                        GenJournalLine.Amount:=(MobileCharges-ExcDuty)*-1;
-                        GenJournalLine.VALIDATE(GenJournalLine.Amount);
-                        IF GenJournalLine.Amount<>0 THEN
-                        GenJournalLine.INSERT;
-        
-                //CR Commission
-                        LineNo:=LineNo+10000;
-                        GenJournalLine.INIT;
-                        GenJournalLine."Journal Template Name":='GENERAL';
-                        GenJournalLine."Journal Batch Name":='MOBILETRAN';
-                        GenJournalLine."Line No.":=LineNo;
-                        GenJournalLine."Account Type":=GenJournalLine."Account type"::Customer;
-                        GenJournalLine."Account No.":=SurePESACommACC;
-                        GenJournalLine.VALIDATE(GenJournalLine."Account No.");
-                        GenJournalLine."Document No.":=DocNumber;
-                        GenJournalLine."External Document No.":=MobileChargesACC;
-                        GenJournalLine."Posting Date":=TODAY;
-                        GenJournalLine.Description:='Mobile Transfer Charges';
-                        GenJournalLine.Amount:=-SurePESACharge;
-                        GenJournalLine.VALIDATE(GenJournalLine.Amount);
-                        IF GenJournalLine.Amount<>0 THEN
-                        GenJournalLine.INSERT;*/
-        
                 //CR ACC2
                         LineNo:=LineNo+10000;
                         GenJournalLine.Init;
@@ -1375,7 +1285,7 @@ Codeunit 50025 SwizzKashMB
                         GenJournalLine."Transaction Type" := GenJournalLine."transaction type"::"Share Capital";
                         end;
                         if accTo='Benevolent Fund' then begin
-                        GenJournalLine."Transaction Type" := GenJournalLine."transaction type"::"Benevolent Fund";
+                        GenJournalLine."Transaction Type" := GenJournalLine."transaction type"::"Junior Savings";
         
                         GenJournalLine.Description:='Mobile Transfer from '+accFrom;
                         end;
@@ -1464,10 +1374,6 @@ Codeunit 50025 SwizzKashMB
 
                 accounts:=accounts+'::::'+Members."No."+':::Deposit Contribution:::1';
               accounts:=accounts+'::::'+Members."No."+':::Share Capital:::2';
-              //accounts:=accounts+'::::'+Members."No."+':::Withdrawable deposits:::3';
-              //accounts:=accounts+'::::'+Members."No."+':::Invetstment Contribution:::4';
-              //accounts:=accounts+'::::'+Members."No."+':::Benevolent Fund:::5';
-              //accounts:=accounts+'::::'+Members."No."+':::Kisiko welfare:::6';
 
                  Vendor.Reset;
                  Vendor.SetRange(Vendor."BOSA Account No", Members."No.");
@@ -2267,13 +2173,13 @@ Codeunit 50025 SwizzKashMB
          Members.Reset;
           Members.SetRange(Members."No.",FnGetMemberNo(phone));
           if Members.Find('-') then begin
-             Members.CalcFields(Members."Benevolent Fund");
+             Members.CalcFields(Members."Junior Savings");
              Members.CalcFields(Members."Withdrawable Savings");
             // Members.CALCFIELDS(Members."Kisiko Welfare");
           //.. Members.CALCFIELDS(Members."Withdrawable Savings");
 
-           if Members."Benevolent Fund">0 then
-               accounts:=accounts+ ', Benevolent Fund Ksh. ' + Format(Members."Benevolent Fund");
+           if Members."Junior Savings">0 then
+               accounts:=accounts+ ', Benevolent Fund Ksh. ' + Format(Members."Junior Savings");
             if Members."Withdrawable Savings">0 then
                accounts:=accounts+ ', Jiokoe Savings Ksh. ' + Format(Members."Withdrawable Savings");
 
@@ -2327,7 +2233,7 @@ Codeunit 50025 SwizzKashMB
           if Members.Find('-') then begin
               MemberLedgerEntry.Reset;
               MemberLedgerEntry.SetRange(MemberLedgerEntry."Customer No.",Members."No.");
-              MemberLedgerEntry.SetRange(MemberLedgerEntry."Transaction Type",MemberLedgerEntry."transaction type"::"Benevolent Fund");
+              MemberLedgerEntry.SetRange(MemberLedgerEntry."Transaction Type",MemberLedgerEntry."transaction type"::"Junior Savings");
               if MemberLedgerEntry.Find('-') then begin
                 repeat
                     bvamount:=bvamount+MemberLedgerEntry.Amount;
@@ -6161,8 +6067,8 @@ Codeunit 50025 SwizzKashMB
         
         
             if AppType='4' then begin
-                Members.CalcFields(Members."Benevolent Fund");
-                TempBalance:=Members."Benevolent Fund";
+                Members.CalcFields(Members."Junior Savings");
+                TempBalance:=Members."Junior Savings";
         
                 msg:='Dear '+SplitString(Members.Name,' ')+' Your Benevolent fund A/C Balance is Ksh.'+Format(TempBalance)
                           +  ' .Thank you for using KRB Sacco Mobile.';
@@ -6965,7 +6871,7 @@ Codeunit 50025 SwizzKashMB
             memberledgerentryTable.SetRange(memberledgerentryTable."Transaction Type", memberledgerentryTable."transaction type"::"Deposit Contribution");
           end
           else if accountType = 'BEN' then begin
-            memberledgerentryTable.SetRange(memberledgerentryTable."Transaction Type", memberledgerentryTable."transaction type"::"Benevolent Fund");
+            memberledgerentryTable.SetRange(memberledgerentryTable."Transaction Type", memberledgerentryTable."transaction type"::"Junior Savings");
           end
           else if accountType = 'SHA' then begin
             memberledgerentryTable.SetRange(memberledgerentryTable."Transaction Type", memberledgerentryTable."transaction type"::"Share Capital");

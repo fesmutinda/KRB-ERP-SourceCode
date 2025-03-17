@@ -54,10 +54,6 @@ Report 51314 "Payroll JournalTransfer."
                                 SaccoTransactionType := Tntype::"Interest Paid";
                             if PeriodTrans."coop parameters" = PeriodTrans."coop parameters"::shares then
                                 SaccoTransactionType := Tntype::"Deposit Contribution";
-                            if PeriodTrans."coop parameters" = PeriodTrans."coop parameters"::Welfare then
-                                SaccoTransactionType := Tntype::"Benevolent Fund";
-                            // if PeriodTrans."coop parameters" = PeriodTrans."coop parameters"::Likizo then
-                            //     SaccoTransactionType := Tntype::Holiday_Savers;
                             if PeriodTrans."coop parameters" = PeriodTrans."coop parameters"::"Share Capital" then
                                 SaccoTransactionType := Tntype::"Share Capital";
 
@@ -68,10 +64,7 @@ Report 51314 "Payroll JournalTransfer."
                                     PeriodTrans."Journal Account Type" := PeriodTrans."journal account type"::"G/L Account";
 
                                 end;
-                            if PeriodTrans."Transaction Code" = 'BENEV' then begin //LOAN APP FEE //LOAN INSURANCE
-                                PeriodTrans."Journal Account Type" := PeriodTrans."journal account type"::Customer;
-                                SaccoTransactionType := Tntype::"Benevolent Fund";
-                            end;
+
                             if (PeriodTrans."Transaction Code" <> 'BPAY')
                         then begin
                                 CreateJnlEntry(IntegerPostAs, PeriodTrans."Journal Account Code",

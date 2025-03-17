@@ -137,23 +137,12 @@ tableextension 50044 "GenJournalLineExt" extends "Gen. Journal Line"
                     Description := 'Interest Due';
                 if "Transaction Type" = "transaction type"::"Interest Paid" then
                     Description := 'Interest Paid';
-                if "Transaction Type" = "transaction type"::"Benevolent Fund" then
-                    Description := 'ABF Fund';
                 if "Transaction Type" = "transaction type"::"Deposit Contribution" then
                     Description := 'Deposits Contribution';
-                // if "Transaction Type" = "transaction type"::"Appraisal Fee" then
-                //     Description := 'Appraisal Fee';
-                // if "Transaction Type" = "transaction type"::"Application Fee" then
-                //     Description := 'Application Fee';
-                // if "Transaction Type" = "transaction type"::"Unallocated Funds" then
-                //     Description := 'Unallocated Funds';
-                if "Transaction Type" = "transaction type"::"Insurance Contribution" then
-                    Description := 'Insurance Contribution';
-                // if "Transaction Type" = "transaction type"::"CIC shares" then
-                //     Description := 'Normal shares';
-                // if "Transaction Type" = "transaction type"::"Pepea Shares" then
-                //     Description := 'Pepea Shares';
-
+                if "Transaction Type" = "transaction type"::"Loan Transfer Charges" then
+                    Description := 'Loan Transfer Charges';
+                if "Transaction Type" = "transaction type"::"Bank Transfer Charges" then
+                    Description := 'Bank Transfer Charges';
             end;
         }
         field(51516221; "Loan No"; Code[20])

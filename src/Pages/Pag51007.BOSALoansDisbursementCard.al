@@ -148,6 +148,7 @@ Page 51007 "BOSA Loans Disbursement Card"
                 }
                 field(Remarks; Rec.Remarks)
                 {
+                    Caption = 'Loan Purpose';
                     ApplicationArea = Basic;
                     Editable = MNoEditable;
                     Visible = true;
@@ -177,6 +178,21 @@ Page 51007 "BOSA Loans Disbursement Card"
                     ApplicationArea = Basic;
                     Editable = false;
                 }
+                field("Valuation Cost"; Rec."Valuation Cost")
+                {
+                    ApplicationArea = Basic;
+                }
+                field("Legal Cost"; Rec."Legal Cost")
+                {
+
+                }
+                field("Bank Transfer Charges"; Rec."Bank Transfer Charges")
+                {
+                    ApplicationArea = Basic;
+                    Editable = true;
+                    ShowMandatory = true;
+                }
+
                 field("Loan Status"; Rec."Loan Status")
                 {
                     ApplicationArea = Basic;
@@ -278,20 +294,6 @@ Page 51007 "BOSA Loans Disbursement Card"
                 Caption = 'Guarantors  Detail';
                 SubPageLink = "Loan No" = field("Loan  No.");
                 Editable = MNoEditable;
-            }
-            part(Control1000000005; "Loan Collateral Security")
-            {
-                Caption = 'Other Securities';
-                SubPageLink = "Loan No" = field("Loan  No.");
-                Editable = MNoEditable;
-                Visible = false;
-            }
-            part(Control1000000002; "Loan Appraisal Salary Details")
-            {
-                Caption = 'Salary Details';
-                Editable = MNoEditable;
-                SubPageLink = "Loan No" = field("Loan  No."), "Client Code" = field("Client Code");
-                Visible = false;
             }
         }
         area(factboxes)
@@ -498,6 +500,7 @@ Page 51007 "BOSA Loans Disbursement Card"
         DirbursementDate: Date;
         VarAmounttoDisburse: Decimal;
         insurancePremium: Decimal;
+        bankTransferCharges: Decimal;
         LoanGuar: Record "Loans Guarantee Details";
         SMSMessages: Record "SMS Messages";
         i: Integer;
@@ -917,6 +920,7 @@ Page 51007 "BOSA Loans Disbursement Card"
     begin
         AmountTop := 0;
         NetAmount := 0;
+        bankTransferCharges := 0;
         //--------------------Generate Schedule
         Sfactorycode.FnGenerateRepaymentSchedule(Rec."Loan  No.");
         DirbursementDate := Rec."Loan Disbursement Date";
@@ -948,7 +952,7 @@ Page 51007 "BOSA Loans Disbursement Card"
         END;
         //**************Loan Principal Posting**********************************
         LineNo := LineNo + 10000;
-        SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, Rec."Loan  No.", LineNo, GenJournalLine."Transaction Type"::Loan, GenJournalLine."Account Type"::Customer, LoanApps."Client Code", DirbursementDate, VarAmounttoDisburse, 'BOSA', LoanApps."Loan  No.", 'Loan Disbursement - ' + LoanApps."Loan Product Type", LoanApps."Loan  No.");
+        SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, Rec."Loan  No.", LineNo, GenJournalLine."Transaction Type"::Loan, GenJournalLine."Account Type"::Customer, LoanApps."Client Code", DirbursementDate, VarAmounttoDisburse, 'BOSA', LoanApps."Loan  No.", 'Loan Disbursement principle ' + LoanApps."Loan Product Type", LoanApps."Loan  No.");
         //--------------------------------RECOVER OVERDRAFT()-------------------------------------------------------
         //Code Here
 
@@ -1014,6 +1018,17 @@ Page 51007 "BOSA Loans Disbursement Card"
             UNTIL PCharges.NEXT = 0;
         END;
         //end of code
+        //....Bank Transfer Charges....
+
+        bankTransferCharges := Rec."Bank Transfer Charges";
+        //.....credit Bank
+        LineNo := LineNo + 10000;
+        SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, LoanApps."Loan  No.", LineNo, GenJournalLine."Transaction Type"::" ", GenJournalLine."Account Type"::"Bank Account", LoanApps."Paying Bank Account No", DirbursementDate, bankTransferCharges * -1, 'BOSA', Rec."Batch No.", 'Bank transfer charges ' + Format(LoanApps."Loan  No."), '');
+        //....debit member & Bank trans duty....
+        LineNo := LineNo + 10000;
+        SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, LoanApps."Loan  No.", LineNo, GenJournalLine."Transaction Type"::"Bank Transfer Charges"
+        , GenJournalLine."Account Type"::Customer, LoanApps."Client Code", DirbursementDate, bankTransferCharges, 'BOSA', Rec."Batch No.", 'Loan disbursment bank charges ' + Format(LoanApps."Loan  No."), '');
+
         //....Insuarance
         // PREMIUM = LOAN AMOUNT x (5.03 x PERIOD +21.15)/6000 x 0.6
         LineNo := LineNo + 10000;
@@ -1041,7 +1056,7 @@ Page 51007 "BOSA Loans Disbursement Card"
         VarAmounttoDisburse := VarAmounttoDisburse - LoanApps."Legal Cost";
         //------------------------------------2. CREDIT MEMBER BANK A/C---------------------------------------------------------------------------------------------
         LineNo := LineNo + 10000;
-        SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, Rec."Loan  No.", LineNo, GenJournalLine."Transaction Type"::" ", GenJournalLine."Account Type"::"Bank Account", LoanApps."Paying Bank Account No", DirbursementDate, VarAmounttoDisburse * -1, 'BOSA', LoanApps."Loan  No.", 'Loan disbursement ' + Format(Rec."Loan  No."), '');
+        SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, Rec."Loan  No.", LineNo, GenJournalLine."Transaction Type"::" ", GenJournalLine."Account Type"::"Bank Account", LoanApps."Paying Bank Account No", DirbursementDate, VarAmounttoDisburse * -1, 'BOSA', LoanApps."Loan  No.", 'Loan net amount disbursement ' + Format(Rec."Loan  No."), '');
     end;
 
     local procedure FnSendNotifications()

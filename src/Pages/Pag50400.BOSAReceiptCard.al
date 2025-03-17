@@ -165,12 +165,9 @@ page 50400 "BOSA Receipt Card"
                         RunBal := Rec.Amount;
                         RunBal := FnRunEntranceFee(Rec, RunBal);
                         RunBal := FnRunInterest(Rec, RunBal);
-                        RunBal := FnRunInsuranceContribution(Rec, RunBal);
                         RunBal := FnRunPrinciple(Rec, RunBal);
                         RunBal := FnRunShareCapital(Rec, RunBal);
                         RunBal := FnRunDepositContribution(Rec, RunBal);
-
-                        // RunBal := FnRunBenevolentFund(Rec, RunBal);
 
                         if RunBal > 0 then begin
                             if Confirm('Excess Money will allocated to ' + Format(Rec."Excess Transaction Type") + '.Do you want to Continue?', true) = false then
@@ -740,83 +737,6 @@ page 50400 "BOSA Receipt Card"
             exit(RunningBalance);
         end;
     end;
-
-    local procedure FnRunInsuranceContribution(ObjRcptBuffer: Record "Receipts & Payments"; RunningBalance: Decimal): Decimal
-    var
-        AmountToDeduct: Decimal;
-        ObjReceiptTransactions: Record "Receipt Allocation";
-        varTotalRepay: Decimal;
-        varMultipleLoan: Decimal;
-        varLRepayment: Decimal;
-        PRpayment: Decimal;
-        ObjMember: Record Customer;
-    begin
-        GenSetup.Get();
-        if RunningBalance > 0 then begin
-            ObjMember.Reset;
-            ObjMember.SetRange(ObjMember."No.", ObjRcptBuffer."Account No.");
-            if ObjMember.Find('-') then begin
-                //if ObjMember."Registration Date" <> 0D then begin
-                AmountToDeduct := 0;
-                AmountToDeduct := GenSetup."Benevolent Fund Contribution";
-                if RunningBalance <= AmountToDeduct then
-                    AmountToDeduct := RunningBalance;
-                ObjReceiptTransactions.Init;
-                ObjReceiptTransactions."Document No" := ObjRcptBuffer."Transaction No.";
-                ObjReceiptTransactions."Account Type" := ObjReceiptTransactions."account type"::Customer;
-
-                ObjReceiptTransactions."Member No" := ObjRcptBuffer."Account No.";
-                ObjReceiptTransactions."Transaction Type" := ObjReceiptTransactions."transaction type"::"Benevolent Fund";
-                ObjReceiptTransactions."Global Dimension 1 Code" := 'BOSA';
-                ObjReceiptTransactions."Global Dimension 2 Code" := SURESTEPFactory.FnGetMemberBranch(ObjRcptBuffer."Account No.");
-                ObjReceiptTransactions.Amount := AmountToDeduct;
-                if ObjReceiptTransactions.Amount <> 0 then
-                    ObjReceiptTransactions.Insert(true);
-                RunningBalance := RunningBalance - Abs(ObjReceiptTransactions.Amount);
-                //end;
-            end;
-            exit(RunningBalance);
-        end;
-    end;
-
-    local procedure FnRunBenevolentFund(ObjRcptBuffer: Record "Receipts & Payments"; RunningBalance: Decimal): Decimal
-    var
-        AmountToDeduct: Decimal;
-        ObjReceiptTransactions: Record "Receipt Allocation";
-        varTotalRepay: Decimal;
-        varMultipleLoan: Decimal;
-        varLRepayment: Decimal;
-        PRpayment: Decimal;
-        ObjMember: Record Customer;
-    begin
-        if RunningBalance > 0 then begin
-            GenSetup.Get();
-            ObjMember.Reset;
-            ObjMember.SetRange(ObjMember."No.", ObjRcptBuffer."Account No.");
-            if ObjMember.Find('-') then begin
-                //if ObjMember."Registration Date" <> 0D then begin
-
-                AmountToDeduct := 0;
-                AmountToDeduct := GenSetup."Benevolent Fund Contribution";
-                if RunningBalance <= AmountToDeduct then
-                    AmountToDeduct := RunningBalance;
-                ObjReceiptTransactions.Init;
-                ObjReceiptTransactions."Document No" := ObjRcptBuffer."Transaction No.";
-                ObjReceiptTransactions."Account Type" := ObjReceiptTransactions."account type"::Customer;
-
-                ObjReceiptTransactions."Member No" := ObjRcptBuffer."Account No.";
-                ObjReceiptTransactions."Transaction Type" := ObjReceiptTransactions."transaction type"::"Benevolent Fund";
-                ObjReceiptTransactions."Global Dimension 1 Code" := 'BOSA';
-                ObjReceiptTransactions."Global Dimension 2 Code" := SURESTEPFactory.FnGetMemberBranch(ObjRcptBuffer."Account No.");
-                ObjReceiptTransactions.Amount := AmountToDeduct;
-                if ObjReceiptTransactions.Amount <> 0 then
-                    ObjReceiptTransactions.Insert(true);
-                RunningBalance := RunningBalance - Abs(ObjReceiptTransactions.Amount);
-            end;
-        end;
-        exit(RunningBalance);
-    end;
-    //end;
 
     local procedure FnRunUnallocatedAmount(ObjRcptBuffer: Record "Receipts & Payments"; RunningBalance: Decimal): Decimal
     var

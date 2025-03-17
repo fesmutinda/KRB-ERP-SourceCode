@@ -11,7 +11,10 @@ Page 56126 "LoanList-Pending Approval BOSA"
     InsertAllowed = false;
     ModifyAllowed = false;
     SourceTableView = where(Posted = const(false),
-                            Source = filter(BOSA), "Loan Status" = const(Appraisal), "Approval Status" = const(Pending));
+                            Source = filter(BOSA),
+                            "Loan Status" = const(Appraisal),
+                            "Approval Status" = const(Pending),
+                            "Loan Product Type" = const('<>LT007'));
 
     layout
     {

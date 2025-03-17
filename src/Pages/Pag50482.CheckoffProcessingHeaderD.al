@@ -449,7 +449,7 @@ page 50482 "Checkoff Processing Header-D"
                                 UnallocatedFunds := 0;
                                 //Deposits
                                 LineNo := LineNo + 10000;
-                                SwizzsoftFactory.FnCreateGnlJournalLine(Jtemplate, JBatch, Rec.No, LineNo, GenJournalLine."transaction type"::"Benevolent Fund", GenJournalLine."account type"::Customer,
+                                SwizzsoftFactory.FnCreateGnlJournalLine(Jtemplate, JBatch, Rec.No, LineNo, GenJournalLine."transaction type"::"Deposit Contribution", GenJournalLine."account type"::Customer,
                                                                      ReceiptLine."Member No.", Rec."Loan CutOff Date", -ReceiptLine."Deposit contribution", 'BOSA', '', 'Deposit contribution Checkoff for ' +
                                                                      KnGetPeriodDescription(Rec."CheckOff Period") + ' ' + CheckoffLinesBuffer."Member No." + ' ' + Rec."Employer Code", '');
                                 //share capital

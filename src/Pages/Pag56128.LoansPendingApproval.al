@@ -177,6 +177,12 @@ Page 56128 "Loans Pending Approval"
                     ApplicationArea = Basic;
                     Editable = false;
                 }
+                field("Bank Transfer Charges"; Rec."Bank Transfer Charges")
+                {
+                    ApplicationArea = Basic;
+                    Editable = true;
+                    ShowMandatory = true;
+                }
                 field("Loan Status"; Rec."Loan Status")
                 {
                     ApplicationArea = Basic;

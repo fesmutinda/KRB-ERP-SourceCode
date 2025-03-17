@@ -356,6 +356,11 @@ page 50411 "Sacco General Set-Up"
             group(Others)
             {
                 Caption = 'Others';
+                field("Bank Transfer Charges Account"; Rec."Bank Transfer Charges Account")
+                {
+                    ApplicationArea = Basic;
+                    Visible = true;
+                }
                 field("Insurance Retension Account"; Rec."Insurance Retension Account")
                 {
                     ApplicationArea = Basic;
@@ -367,7 +372,7 @@ page 50411 "Sacco General Set-Up"
                     ApplicationArea = Basic;
                     Visible = false;
                 }
-                field("Loan Transfer Fees Account"; Rec."Loan Transfer Fees Account")
+                field("Loan Transfer Fees Account"; Rec."Loan Transfer fees Account")
                 {
                     ApplicationArea = Basic;
                 }

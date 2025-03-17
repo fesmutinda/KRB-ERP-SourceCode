@@ -129,6 +129,12 @@ page 57004 "Instant Loan Disbursement Card"
                     ApplicationArea = Basic;
                     Editable = false;
                 }
+                field("Bank Transfer Charges"; Rec."Bank Transfer Charges")
+                {
+                    ApplicationArea = Basic;
+                    Editable = true;
+                    ShowMandatory = true;
+                }
                 field("Loan Status"; Rec."Loan Status")
                 {
                     ApplicationArea = Basic;
@@ -429,7 +435,7 @@ page 57004 "Instant Loan Disbursement Card"
         GenJournalLine: Record "Gen. Journal Line";
         FOSAComm: Decimal;
         BOSAComm: Decimal;
-        LoanTopUp: Record "Loan Offset Details";
+        LoanTopUp: Record "Instant Offset Details";
         Vend: Record Vendor;
         BOSAInt: Decimal;
         TopUpComm: Decimal;
@@ -775,6 +781,24 @@ page 57004 "Instant Loan Disbursement Card"
         //**************Loan Principal Posting**********************************
         LineNo := LineNo + 10000;
         SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, Rec."Loan  No.", LineNo, GenJournalLine."Transaction Type"::Loan, GenJournalLine."Account Type"::Customer, LoanApps."Client Code", DirbursementDate, VarAmounttoDisburse, 'BOSA', LoanApps."Loan  No.", 'Loan Disbursement - ' + LoanApps."Loan Product Type", LoanApps."Loan  No.");
+
+        //...................Cater for Loan Offset Now !
+        Rec.CalcFields("Top Up Amount");
+        if Rec."Top Up Amount" > 0 then begin
+            LoanTopUp.RESET;
+            LoanTopUp.SETRANGE(LoanTopUp."Loan No.", Rec."Loan  No.");
+            IF LoanTopUp.FIND('-') THEN BEGIN
+                repeat
+                    LineNo := LineNo + 10000;
+                    SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, Rec."Loan  No.", LineNo, GenJournalLine."Transaction Type"::"Loan Repayment", GenJournalLine."Account Type"::Customer, LoanApps."Client Code", DirbursementDate, LoanTopUp."Principle Top Up" * -1, 'BOSA', LoanApps."Loan  No.", 'Loan OffSet By - ' + LoanApps."Loan  No.", LoanTopUp."Loan Top Up");
+                    //..................Recover Interest On Top Up
+                    LineNo := LineNo + 10000;
+                    SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, Rec."Loan  No.", LineNo, GenJournalLine."Transaction Type"::"Interest Paid", GenJournalLine."Account Type"::Customer, LoanApps."Client Code", DirbursementDate, LoanTopUp."Interest Top Up" * -1, 'BOSA', LoanApps."Loan  No.", 'Interest Due Paid on top up - ', LoanTopUp."Loan Top Up");
+
+                    VarAmounttoDisburse := VarAmounttoDisburse - (LoanTopUp."Principle Top Up" + LoanTopUp."Interest Top Up");
+                UNTIL LoanTopUp.NEXT = 0;
+            END;
+        end;
 
         NetAmount := Rec."Approved Amount" - (Rec."Loan Processing Fee" + Rec."Loan Dirbusement Fee" + Rec."Loan Insurance" + AmountTop);
         //***************************Loan Product Charges code

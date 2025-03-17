@@ -86,7 +86,7 @@ tableextension 50047 "CustomerExt" extends Customer
         field(68011; "Outstanding Balance"; Decimal)
         {
             CalcFormula = sum("Cust. Ledger Entry"."Amount Posted" where("Customer No." = field("No."),
-                                                                  "Transaction Type" = filter(Loan | "Loan Repayment"|"Interest Paid" | "Interest Due"), "Posting Date" = field("Date Filter"), Reversed = const(false)));
+                                                                  "Transaction Type" = filter(Loan | "Loan Repayment" | "Interest Paid" | "Interest Due"), "Posting Date" = field("Date Filter"), Reversed = const(false)));
             Editable = false;
             FieldClass = FlowField;
         }
@@ -289,7 +289,7 @@ tableextension 50047 "CustomerExt" extends Customer
         field(68046; "Insurance Fund"; Decimal)
         {
             CalcFormula = - sum("Cust. Ledger Entry"."Amount Posted" where("Customer No." = field("No."),
-                                                                   "Transaction Type" = filter("Benevolent Fund"),
+                                                                   "Transaction Type" = filter("Withdrawable Savings"),
                                                                    "Posting Date" = field("Date Filter"),
                                                                    "Document No." = field("Document No. Filter"), "Posting Date" = field("Date Filter"), Reversed = const(false)));
             Editable = false;
@@ -762,16 +762,6 @@ tableextension 50047 "CustomerExt" extends Customer
         {
 
         }
-        field(68187; "Benevolent Fund"; Decimal)
-        {
-            CalcFormula = - sum("Cust. Ledger Entry"."Amount Posted" where("Customer No." = field("No."),
-                                                                   "Transaction Type" = const("Benevolent Fund"),
-                                                                   "Posting Date" = field("Date Filter"),
-                                                                    Reversed = Const(false),
-                                                                   "Document No." = field("Document No. Filter")));
-            Editable = false;
-            FieldClass = FlowField;
-        }
         field(68188; "Office Branch"; Code[20])
         {
         }
@@ -828,26 +818,6 @@ tableextension 50047 "CustomerExt" extends Customer
         }
         field(68202; "Member No. 2"; Code[20])
         {
-        }
-        field(68199; "Likizo Contribution"; Decimal)
-        {
-
-
-            CalcFormula = - sum("Cust. Ledger Entry"."Amount Posted" where("Customer No." = field("No."),
-                                                                   "Transaction Type" = filter("Holiday Savings"),
-                                                                   "Posting Date" = field("Date Filter"), Reversed = const(false)));
-            Editable = false;
-
-            FieldClass = FlowField;
-        }
-        field(68203; "Alpha Savings"; Decimal)
-        {
-            CalcFormula = - sum("Cust. Ledger Entry"."Amount Posted" where("Customer No." = field("No."),
-                                                                   "Transaction Type" = filter(Alpha_savings),
-                                                                   "Posting Date" = field("Date Filter"), Reversed = const(false)));
-            Editable = false;
-
-            FieldClass = FlowField;
         }
 
         field(68204; "Junior Savings"; Decimal)
@@ -1817,7 +1787,7 @@ tableextension 50047 "CustomerExt" extends Customer
         field(69342; "Risk Fund"; Decimal)
         {
             CalcFormula = - sum("Cust. Ledger Entry"."Amount Posted" where("Customer No." = field("No."),
-                                                                   "Transaction Type" = const("Benevolent Fund"),
+                                                                   "Transaction Type" = const("Junior Savings"),
                                                                    "Posting Date" = field("Date Filter"),
                                                                    "Document No." = field("Document No. Filter")));
             Editable = false;

@@ -216,6 +216,12 @@ page 57003 "Instant Loan Application Card"
                     Visible = false;
 
                 }
+                field("Bank Transfer Charges"; Rec."Bank Transfer Charges")
+                {
+                    ApplicationArea = Basic;
+                    Editable = true;
+                    ShowMandatory = true;
+                }
                 field("Loan Status"; Rec."Loan Status")
                 {
                     ApplicationArea = Basic;
@@ -363,6 +369,7 @@ page 57003 "Instant Loan Application Card"
 
                         FnCheckForTestFields();
                         Rec.Appraised := true;
+                        Rec.Appraised := true;
                         if Confirm('Send Approval Request For Loan Application of Ksh. ' + Format(Rec."Approved Amount") + ' applied by ' + Format(Rec."Client Name") + ' ?', false) = false then begin
                             exit;
                         end else begin
@@ -433,13 +440,12 @@ page 57003 "Instant Loan Application Card"
                 }
                 action("Loans to Offset")
                 {
-                    Visible = false;
                     ApplicationArea = Basic;
                     Caption = 'Loans to Offset';
                     Image = AddAction;
                     Promoted = true;
                     PromotedCategory = Process;
-                    RunObject = Page "Loan Offset Detail List";
+                    RunObject = Page "Instant Offset Detail List";
                     RunPageLink = "Loan No." = field("Loan  No."),
                                   "Client Code" = field("Client Code");
                 }

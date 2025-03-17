@@ -2248,14 +2248,11 @@ Page 56144 "CashierTransactionCard-Posted"
                     if ReceiptAllocations."Transaction Type" = ReceiptAllocations."transaction type"::"Deposit Contribution" then
                         GenJournalLine."Transaction Type" := GenJournalLine."transaction type"::"Deposit Contribution"
                     else
-                        if ReceiptAllocations."Transaction Type" = ReceiptAllocations."transaction type"::"Benevolent Fund" then
-                            GenJournalLine."Transaction Type" := GenJournalLine."transaction type"::"Benevolent Fund"
+                        if ReceiptAllocations."Transaction Type" = ReceiptAllocations."transaction type"::"Loan Repayment" then
+                            GenJournalLine."Transaction Type" := GenJournalLine."transaction type"::"Loan Repayment"
                         else
-                            if ReceiptAllocations."Transaction Type" = ReceiptAllocations."transaction type"::"Loan Repayment" then
-                                GenJournalLine."Transaction Type" := GenJournalLine."transaction type"::"Loan Repayment"
-                            else
-                                if ReceiptAllocations."Transaction Type" = ReceiptAllocations."transaction type"::"Registration Fee" then
-                                    GenJournalLine."Transaction Type" := GenJournalLine."transaction type"::"Registration Fee";
+                            if ReceiptAllocations."Transaction Type" = ReceiptAllocations."transaction type"::"Registration Fee" then
+                                GenJournalLine."Transaction Type" := GenJournalLine."transaction type"::"Registration Fee";
                 GenJournalLine."Loan No" := ReceiptAllocations."Loan No.";
                 if GenJournalLine.Amount <> 0 then
                     GenJournalLine.Insert;
@@ -2401,7 +2398,7 @@ Page 56144 "CashierTransactionCard-Posted"
             ReceiptAllocations.Init;
             ReceiptAllocations."Document No" := Rec.No;
             ReceiptAllocations."Member No" := Rec."BOSA Account No";
-            ReceiptAllocations."Transaction Type" := ReceiptAllocations."transaction type"::"Benevolent Fund";
+            ReceiptAllocations."Transaction Type" := ReceiptAllocations."transaction type"::"Unallocated Funds";
             ReceiptAllocations."Loan No." := '';
             ReceiptAllocations.Amount := RunBal;
             ReceiptAllocations."Interest Amount" := 0;

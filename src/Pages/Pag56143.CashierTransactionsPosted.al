@@ -212,12 +212,12 @@ Page 56143 "Cashier Transactions - Posted"
                 GenJournalLine.Amount := ReceiptAllocations.Amount;
                 GenJournalLine.Validate(GenJournalLine.Amount);
                 if ReceiptAllocations."Transaction Type" = ReceiptAllocations."transaction type"::"Interest Due" then
-                    GenJournalLine."Transaction Type" := GenJournalLine."transaction type"::"Benevolent Fund"
+                    GenJournalLine."Transaction Type" := GenJournalLine."transaction type"::"Interest Due"
                 else
                     if ReceiptAllocations."Transaction Type" = ReceiptAllocations."transaction type"::Loan then
                         GenJournalLine."Transaction Type" := GenJournalLine."transaction type"::"Deposit Contribution"
                     else
-                        if ReceiptAllocations."Transaction Type" = ReceiptAllocations."transaction type"::"Benevolent Fund" then
+                        if ReceiptAllocations."Transaction Type" = ReceiptAllocations."transaction type"::"Unallocated Funds" then
                             GenJournalLine."Transaction Type" := GenJournalLine."transaction type"::"Unallocated Funds"
                         else
                             if ReceiptAllocations."Transaction Type" = ReceiptAllocations."transaction type"::"Registration Fee" then
