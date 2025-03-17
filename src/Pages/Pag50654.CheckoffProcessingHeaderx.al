@@ -646,9 +646,9 @@ page 50654 "Checkoff Processing Headerx"
     begin
         if AmountReceived > 0 then begin
             LineNo := LineNo + 10000;
-            SFactory.FnCreateGnlJournalLine(BATCH_TEMPLATE, BATCH_NAME, DOCUMENT_NO, LineNo, GenJournalLine."transaction type"::"Benevolent Fund",
+            SFactory.FnCreateGnlJournalLine(BATCH_TEMPLATE, BATCH_NAME, DOCUMENT_NO, LineNo, GenJournalLine."transaction type"::"Interest Paid",
              GenJournalLine."account type"::Customer, AccountNo, Rec."Posting Date", AmountReceived * -1, 'BOSA', Rec."Document No",
-             Format(GenJournalLine."transaction type"::"Benevolent Fund"), '');
+             Format(GenJournalLine."transaction type"::"Interest Paid"), '');
         end;
     end;
 

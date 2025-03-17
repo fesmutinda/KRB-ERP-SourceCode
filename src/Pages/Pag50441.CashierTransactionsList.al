@@ -177,10 +177,10 @@ page 50441 "Cashier Transactions - List"
                 GenJournalLine.Amount := ReceiptAllocations.Amount;
                 GenJournalLine.Validate(GenJournalLine.Amount);
                 if ReceiptAllocations."Transaction Type" = ReceiptAllocations."transaction type"::"Deposit Contribution" then
-                    GenJournalLine."Transaction Type" := GenJournalLine."transaction type"::"Benevolent Fund"
+                    GenJournalLine."Transaction Type" := GenJournalLine."transaction type"::"Deposit Contribution"
                 else if ReceiptAllocations."Transaction Type" = ReceiptAllocations."transaction type"::"Share Capital" then
                     GenJournalLine."Transaction Type" := GenJournalLine."transaction type"::Loan
-                else if ReceiptAllocations."Transaction Type" = ReceiptAllocations."transaction type"::"Benevolent Fund" then
+                else if ReceiptAllocations."Transaction Type" = ReceiptAllocations."transaction type"::"Loan Insurance Paid" then
                     GenJournalLine."Transaction Type" := GenJournalLine."transaction type"::"Loan Insurance Paid"
                 else if ReceiptAllocations."Transaction Type" = ReceiptAllocations."transaction type"::"Registration Fee" then
                     GenJournalLine."Transaction Type" := GenJournalLine."transaction type"::"Interest Paid"
@@ -207,7 +207,7 @@ page 50441 "Cashier Transactions - List"
                     GenJournalLine.Description := 'Interest Paid';
                     GenJournalLine.Amount := ReceiptAllocations."Interest Amount";
                     GenJournalLine.Validate(GenJournalLine.Amount);
-                    GenJournalLine."Transaction Type" := GenJournalLine."transaction type"::"Insurance Contribution";
+                    GenJournalLine."Transaction Type" := GenJournalLine."transaction type"::"Interest Paid";
                     GenJournalLine."Loan No" := ReceiptAllocations."Loan No.";
                     if GenJournalLine.Amount <> 0 then
                         GenJournalLine.Insert;

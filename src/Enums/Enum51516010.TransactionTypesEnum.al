@@ -27,10 +27,10 @@ enum 51516010 "TransactionTypesEnum"
     {
         Caption = 'Interest Paid';
     }
-    value(7; "Benevolent Fund")
-    {
-        Caption = 'Benevolent Fund';
-    }
+    // value(7; "Benevolent Fund")
+    // {
+    //     Caption = 'Benevolent Fund';
+    // }
     value(8; "Deposit Contribution")
     {
         Caption = 'Deposit Contribution';
@@ -67,18 +67,18 @@ enum 51516010 "TransactionTypesEnum"
     {
         Caption = 'Dividend';
     }
-    value(17; "Withholding Tax")
-    {
-        Caption = 'Withholding Tax';
-    }
+    // value(17; "Withholding Tax")
+    // {
+    //     Caption = 'Withholding Tax';
+    // }
     // value(18; "Administration Fee")
     // {
     //     Caption = 'Administration Fee';
     // }
-    value(19; "Insurance Contribution")
-    {
-        Caption = 'Insurance Contribution';
-    }
+    // value(19; "Insurance Contribution")
+    // {
+    //     Caption = 'Insurance Contribution';
+    // }
     // value(20; Prepayment)
     // {
     //     Caption = 'Prepayment';
@@ -175,24 +175,24 @@ enum 51516010 "TransactionTypesEnum"
     // {
     //     Caption = 'Kuscco Shares';
     // }
-    value(44; "CIC shares")
-    {
-        Caption = 'CIC shares';
+    // value(44; "CIC shares")
+    // {
+    //     Caption = 'CIC shares';
 
-    }
-    value(50; "0")
-    {
-        Caption = '';
-    }
-    value(52; "Holiday Savings")
-    {
-        Caption = 'Holiday Savings';
-    }
-    value(53; Alpha_savings)
-    {
-        Caption = 'Alpha Savings';
+    // }
+    // value(50; "0")
+    // {
+    //     Caption = '';
+    // }
+    // value(52; "Holiday Savings")
+    // {
+    //     Caption = 'Holiday Savings';
+    // }
+    // value(53; Alpha_savings)
+    // {
+    //     Caption = 'Alpha Savings';
 
-    }
+    // }
     value(54; "Loan Application Fee Paid")
     {
 
@@ -206,5 +206,7 @@ enum 51516010 "TransactionTypesEnum"
 
     }
     value(57; "Junior Savings") { Caption = 'Junior Savings'; }
+    value(58; "Bank Transfer Charges") { Caption = 'Bank Transfer Charges'; }
+    value(59; "Loan Transfer Charges") { Caption = 'Loan Transfer Charges'; }
 
 }

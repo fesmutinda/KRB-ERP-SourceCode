@@ -284,16 +284,6 @@ page 50402 "Posted BOSA Receipt Card"
                                 end;
                             end;
                             BosaSetUp.Get();
-                            ReceiptAllocations.Init;
-                            ReceiptAllocations."Document No" := Rec."Transaction No.";
-                            ReceiptAllocations."Member No" := Rec."Account No.";
-                            ReceiptAllocations."Transaction Type" := ReceiptAllocations."transaction type"::"Benevolent Fund";
-                            ReceiptAllocations."Loan No." := ' ';
-                            ReceiptAllocations.Amount := BosaSetUp."Welfare Contribution";
-                            ReceiptAllocations."Total Amount" := ReceiptAllocations.Amount;
-                            ReceiptAllocations."Global Dimension 1 Code" := 'BOSA';
-                            ReceiptAllocations."Global Dimension 2 Code" := 'NAIROBI';
-                            ReceiptAllocations.Insert;
 
                             //Deposits Contribution
                             if Cust.Get(Rec."Account No.") then begin

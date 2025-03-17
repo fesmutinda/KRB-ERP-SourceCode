@@ -152,7 +152,7 @@ Table 51527 "Loans PayOff Details"
         {
             CalcFormula = sum("Cust. Ledger Entry"."Amount Posted" where("Customer No." = field("Member No"),
                                                                   "Loan No" = field("Loan to PayOff"),
-                                                                  "Transaction Type" = filter("Insurance Contribution")));
+                                                                  "Transaction Type" = filter("Interest Paid")));
             FieldClass = FlowField;
         }
         field(10; "Outstanding Balance"; Decimal)

@@ -230,6 +230,7 @@ Page 56029 "Loan Application Card"
 
                 field(Remarks; Rec.Remarks)
                 {
+                    Caption = 'Loan Purpose';
                     ApplicationArea = Basic;
                     Editable = MNoEditable;
 
@@ -267,6 +268,12 @@ Page 56029 "Loan Application Card"
                 {
 
                 }
+                field("Bank Transfer Charges"; Rec."Bank Transfer Charges")
+                {
+                    ApplicationArea = Basic;
+                    Editable = true;
+                    ShowMandatory = true;
+                }
                 field("Loan Status"; Rec."Loan Status")
                 {
                     ApplicationArea = Basic;
@@ -275,9 +282,6 @@ Page 56029 "Loan Application Card"
                     trigger OnValidate()
                     begin
                         UpdateControl();
-
-
-
                     end;
                 }
                 field("Approval Status"; Rec."Approval Status")

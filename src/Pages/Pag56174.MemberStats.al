@@ -108,13 +108,6 @@ Page 56174 "Member Stats"
                 {
                     style = Strong;
                 }
-
-                field("Benevolent Fund"; Rec."Benevolent Fund")
-                {
-                    visible = false;
-                }
-
-
             }
             group("File Movement FactBox")
             {

@@ -11,7 +11,9 @@ Page 56127 "Loan Application BOSA-Approved"
     InsertAllowed = false;
     ModifyAllowed = false;
     SourceTableView = where(Posted = const(false),
-                            Source = filter(BOSA), "Approval Status" = const(Approved));
+                            Source = filter(BOSA),
+                            "Approval Status" = const(Approved),
+                            "Loan Product Type" = const('<>LT007'));
 
     layout
     {

@@ -142,10 +142,8 @@ table 50051 "BOSA Transfer Schedule"
                                         Description := 'Interest Due' else
                                         if "Transaction Type" = "transaction type"::"Interest Paid" then
                                             Description := 'Interest Paid' else
-                                            if "Transaction Type" = "transaction type"::"Benevolent Fund" then
-                                                Description := 'ABF Fund' else
-                                                if "Transaction Type" = "transaction type"::"Deposit Contribution" then
-                                                    Description := 'Shares Contribution';
+                                            if "Transaction Type" = "transaction type"::"Deposit Contribution" then
+                                                Description := 'Shares Contribution';
                 if Cust.get("Source Account No.") then begin
                     Cust.CalcFields(Cust."Current Shares");
                     "Transaction Amount" := Cust."Current Shares"

@@ -219,6 +219,10 @@ Table 51398 "Sacco General Set-Up"
         {
             FieldClass = FlowFilter;
         }
+        field(1168; "Bank Transfer Charges Account"; Code[20])
+        {
+            TableRelation = "G/L Account";
+        }
         field(1602; "Legal Fees"; Code[50])
         {
             DataClassification = ToBeClassified;

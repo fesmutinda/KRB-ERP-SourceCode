@@ -216,6 +216,12 @@ page 57003 "Instant Loan Application Card"
                     Visible = false;
 
                 }
+                field("Bank Transfer Charges"; Rec."Bank Transfer Charges")
+                {
+                    ApplicationArea = Basic;
+                    Editable = true;
+                    ShowMandatory = true;
+                }
                 field("Loan Status"; Rec."Loan Status")
                 {
                     ApplicationArea = Basic;
@@ -362,6 +368,7 @@ page 57003 "Instant Loan Application Card"
                         //----------------
 
                         FnCheckForTestFields();
+                        Rec.Appraised := true;
                         if Confirm('Send Approval Request For Loan Application of Ksh. ' + Format(Rec."Approved Amount") + ' applied by ' + Format(Rec."Client Name") + ' ?', false) = false then begin
                             exit;
                         end else begin
@@ -432,13 +439,12 @@ page 57003 "Instant Loan Application Card"
                 }
                 action("Loans to Offset")
                 {
-                    Visible = false;
                     ApplicationArea = Basic;
                     Caption = 'Loans to Offset';
                     Image = AddAction;
                     Promoted = true;
                     PromotedCategory = Process;
-                    RunObject = Page "Loan Offset Detail List";
+                    RunObject = Page "Instant Offset Detail List";
                     RunPageLink = "Loan No." = field("Loan  No."),
                                   "Client Code" = field("Client Code");
                 }
@@ -834,12 +840,12 @@ page 57003 "Instant Loan Application Card"
         if Rec."Approval Status" <> Rec."Approval Status"::Open then begin
             Error('Approval status MUST be Open');
         end;
-        if Rec.Appraised = false then
-            Error('Please Appraise the Loan');
+        // if Rec.Appraised = false then
+        //     Error('Please Appraise the Loan');
         Rec.TestField("Requested Amount");
-        Rec.TestField("Main-Sector");
-        Rec.TestField("Sub-Sector");
-        Rec.TestField("Specific-Sector");
+        // Rec.TestField("Main-Sector");
+        // Rec.TestField("Sub-Sector");
+        // Rec.TestField("Specific-Sector");
         Rec.TestField("Loan Product Type");
         Rec.TestField("Mode of Disbursement");
         //----------------------
