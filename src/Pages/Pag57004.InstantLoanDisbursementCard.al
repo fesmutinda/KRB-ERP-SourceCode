@@ -746,9 +746,11 @@ page 57004 "Instant Loan Disbursement Card"
         Sfactorycode: Codeunit "Swizzsoft Factory";
         AmountTop: Decimal;
         NetAmount: Decimal;
+        bankTransferCharges: Decimal;
     begin
         AmountTop := 0;
         NetAmount := 0;
+        bankTransferCharges := 0;
         //--------------------Generate Schedule
         Sfactorycode.FnGenerateRepaymentSchedule(Rec."Loan  No.");
         DirbursementDate := Rec."Loan Disbursement Date";
@@ -801,6 +803,20 @@ page 57004 "Instant Loan Disbursement Card"
         end;
 
         NetAmount := Rec."Approved Amount" - (Rec."Loan Processing Fee" + Rec."Loan Dirbusement Fee" + Rec."Loan Insurance" + AmountTop);
+
+        //....Bank Transfer Charges....
+
+        bankTransferCharges := Rec."Bank Transfer Charges";
+        //.....credit Bank
+        LineNo := LineNo + 10000;
+        SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, LoanApps."Loan  No.", LineNo, GenJournalLine."Transaction Type"::" ", GenJournalLine."Account Type"::"Bank Account", LoanApps."Paying Bank Account No", DirbursementDate, bankTransferCharges * -1, 'BOSA', Rec."Batch No.", 'Bank transfer charges ' + Format(LoanApps."Loan  No."), '');
+        //....debit member & Bank trans duty....
+        LineNo := LineNo + 10000;
+        SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, Rec."Loan  No.", LineNo, GenJournalLine."Transaction Type"::Loan, GenJournalLine."Account Type"::Customer, LoanApps."Client Code", DirbursementDate, bankTransferCharges, 'BOSA', LoanApps."Loan  No.", 'Bank transfer charges ' + Format(LoanApps."Loan  No."), LoanApps."Loan  No.");
+        //     SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, LoanApps."Loan  No.", LineNo, GenJournalLine."Transaction Type"::"Bank Transfer Charges"
+        //    , GenJournalLine."Account Type"::Customer, LoanApps."Client Code", DirbursementDate, bankTransferCharges, 'BOSA', Rec."Batch No.", 'Loan disbursment bank charges ' + Format(LoanApps."Loan  No."), '');
+
+
         //***************************Loan Product Charges code
         PCharges.Reset();
         PCharges.SETRANGE(PCharges."Product Code", Rec."Loan Product Type");

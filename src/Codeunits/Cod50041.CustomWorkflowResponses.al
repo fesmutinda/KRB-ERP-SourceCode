@@ -686,6 +686,15 @@ codeunit 50041 "Custom Workflow Responses"
                     LoansRegister.Modify(true);
                     Handled := true;
                 end;
+            // //Loans Applications
+            // DATABASE::"Loans Register" and LoansRegister."Loan Product Type" == 'LT007':
+            //     begin
+            //         RecRef.SetTable(LoansRegister);
+            //         LoansRegister."Approval Status" := LoansRegister."Approval Status"::Approved;
+            //         LoansRegister.Validate("loan status", LoansRegister."loan status"::Approved);
+            //         LoansRegister.Modify(true);
+            //         Handled := true;
+            //     end;
             //BOSA Transfers
             DATABASE::"BOSA Transfers":
                 begin
