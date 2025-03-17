@@ -4730,7 +4730,7 @@ Table 51371 "Loans Register"
         "Recovery Mode" := "recovery mode"::"Payroll Deduction";
         "Captured By" := UpperCase(UserId);
 
-        "Paying Bank Account No" := 'BNK_0001';
+        "Paying Bank Account No" := 'BK01';//Default Bank Account
         IF UserSetUp.GET(USERID) THEN
             "Transacting Branch" := UserSetUp.Branch;
 
