@@ -1363,7 +1363,7 @@ Table 51371 "Loans Register"
         }
         field(53054; "Paying Bank Account No"; Code[25])
         {
-            InitValue = 'BNK_0001';
+            InitValue = 'BK01';
             TableRelation = "Bank Account"."No.";
         }
         field(53055; "No. Series"; Code[20])
