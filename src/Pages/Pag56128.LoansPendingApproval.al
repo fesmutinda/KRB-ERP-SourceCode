@@ -344,6 +344,9 @@ Page 56128 "Loans Pending Approval"
                             exit;
                         end else begin
                             SwizzApprovalsCodeUnit.CancelLoanApplicationsRequestForApproval(rec."Loan  No.", Rec);
+                            Rec."Loan Status" := Rec."Loan Status"::Application;
+                            Rec."Approval Status" := Rec."Approval Status"::Open;
+                            Rec.Modify(true);
                             CurrPage.Close();
                         end;
                     end;
