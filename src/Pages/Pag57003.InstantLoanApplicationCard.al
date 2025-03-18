@@ -467,8 +467,7 @@ page 57003 "Instant Loan Application Card"
     trigger OnAfterGetCurrRecord()
     begin
         UpdateControl();
-        OpenApprovalEntriesExist := ApprovalsMgmt.HasOpenApprovalEntries(REC.RecordId);//Return No and allow sending of approval request.
-
+        OpenApprovalEntriesExist := ApprovalsMgmt.HasOpenApprovalEntries(REC.RecordId);
         EnabledApprovalWorkflowsExist := true;
     end;
 

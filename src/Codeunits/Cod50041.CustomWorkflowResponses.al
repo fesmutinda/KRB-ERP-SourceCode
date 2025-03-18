@@ -618,6 +618,7 @@ codeunit 50041 "Custom Workflow Responses"
         LoanRecoveryApplication: Record "Loan Recovery Header";
         MembershipExist: Record "Membership Exist";
         MemberReapplication: Record "Member Reapplication";
+        instantLoanApplications: Record "Loans Register";
     begin
         case RecRef.Number of
             //Membership Reapplication
