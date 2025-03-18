@@ -369,6 +369,7 @@ page 57003 "Instant Loan Application Card"
 
                         FnCheckForTestFields();
                         Rec.Appraised := true;
+                        Rec.Appraised := true;
                         if Confirm('Send Approval Request For Loan Application of Ksh. ' + Format(Rec."Approved Amount") + ' applied by ' + Format(Rec."Client Name") + ' ?', false) = false then begin
                             exit;
                         end else begin
@@ -841,12 +842,12 @@ page 57003 "Instant Loan Application Card"
         end;
         // if Rec.Appraised = false then
         //     Error('Please Appraise the Loan');
-        Rec.TestField("Requested Amount");
+        // Rec.TestField("Requested Amount");
         // Rec.TestField("Main-Sector");
         // Rec.TestField("Sub-Sector");
         // Rec.TestField("Specific-Sector");
-        Rec.TestField("Loan Product Type");
-        Rec.TestField("Mode of Disbursement");
+        // Rec.TestField("Loan Product Type");
+        // Rec.TestField("Mode of Disbursement");
         //----------------------
     end;
 
