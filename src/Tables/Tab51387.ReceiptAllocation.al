@@ -81,6 +81,7 @@ Table 51387 "Receipt Allocation"
 
             trigger OnValidate()
             begin
+                //Loan | "Loan Repayment" | "Interest Paid" | "Interest Due" | "Loan Transfer Charges"
                 if (("Transaction Type" = "transaction type"::"Interest Paid") or ("Transaction Type" = "transaction type"::Loan) or ("Transaction Type" = "transaction type"::"Loan Repayment")) then begin
                     if "Loan No." = '' then
                         Error('You must specify loan no. for loan transactions.');

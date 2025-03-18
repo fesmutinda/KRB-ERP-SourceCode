@@ -25,12 +25,12 @@ Table 51927 "House Group Change Request"
             trigger OnValidate()
             begin
                 if ObjCust.Get("Member No") then begin
-                    ObjCust.CalcFields(ObjCust."Current Shares", ObjCust."Total Loans Outstanding");
+                    ObjCust.CalcFields(ObjCust."Current Shares", ObjCust."Outstanding Balance");
                     "Member Name" := ObjCust.Name;
                     "House Group" := ObjCust."Member House Group";
                     "House Group Name" := ObjCust."Member House Group Name";
                     "Deposits on Date of Change" := ObjCust."Current Shares";
-                    "Outs. Loans on Date of Change" := ObjCust."Total Loans Outstanding";
+                    "Outs. Loans on Date of Change" := ObjCust."Outstanding Balance";
                 end;
             end;
         }

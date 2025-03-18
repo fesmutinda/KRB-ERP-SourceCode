@@ -1596,22 +1596,12 @@ Table 51371 "Loans Register"
         {
             CalcFormula = sum("Cust. Ledger Entry"."Amount Posted" where("Customer No." = field("Client Code"),
                                                                   "Loan No" = field("Loan  No."),
-                                                                  "Transaction Type" = filter(Loan | "Loan Repayment" | "Interest Paid" | "Interest Due"),
+                                                                  "Transaction Type" = filter(Loan | "Loan Repayment" | "Interest Paid" | "Interest Due" | "Loan Transfer Charges"),
                                                                   "Currency Code" = field("Currency Filter"),
                                                                   "Posting Date" = field("Date filter")));
             Editable = false;
             FieldClass = FlowField;
         }
-        // field(69217; "Total Balance"; Decimal)
-        // {
-        //     CalcFormula = sum("Cust. Ledger Entry"."Amount Posted" where("Customer No." = field("Client Code"),
-        //                                                           "Loan No" = field("Loan  No."),
-        //                                                           "Transaction Type" = filter(Loan | Repayment | "Interest Paid" | "Interest Due"),
-        //                                                           "Posting Date" = field("Date filter"),
-        //                                                           Reversed = const(false)));
-        //     Editable = false;
-        //     FieldClass = FlowField;
-        // }
         field(53103; "Loan to Share Ratio"; Decimal)
         {
         }
@@ -2693,16 +2683,6 @@ Table 51371 "Loans Register"
         field(69006; "Bank Branch"; Text[70])
         {
         }
-        field(69007; "Outstanding Loan"; Decimal)
-        {
-            CalcFormula = sum("Cust. Ledger Entry"."Amount Posted" where("Customer No." = field("Client Code"),
-                                                                  "Loan No" = field("Loan  No."),
-                                                                  "Transaction Type" = filter(Loan | "Loan Repayment" | "Interest Due" | "Interest Paid"),
-                                                                  "Currency Code" = field("Currency Filter"),
-                                                                  "Posting Date" = field("Date filter")));
-            Editable = false;
-            FieldClass = FlowField;
-        }
         field(69008; "Loan Count"; Integer)
         {
             CalcFormula = count("Cust. Ledger Entry" where("Customer No." = field("Client Code"),
@@ -3663,7 +3643,7 @@ Table 51371 "Loans Register"
         field(69185; "Outstanding Balance-Capitalize"; Decimal)
         {
             CalcFormula = sum("Cust. Ledger Entry"."Amount Posted" where("Customer No." = field("Client Code"),
-                                                                  "Transaction Type" = filter(Loan | "Loan Repayment"),
+                                                                  "Transaction Type" = filter(Loan | "Loan Repayment" | "Interest Paid" | "Interest Due" | "Loan Transfer Charges"),
                                                                   "Posting Date" = field("Date filter"),
                                                                   "Loan No" = field("Loan  No.")));
             FieldClass = FlowField;

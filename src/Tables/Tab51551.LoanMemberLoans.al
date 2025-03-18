@@ -131,7 +131,7 @@ Table 51551 "Loan Member Loans"
         field(17; Shares; Decimal)
         {
             CalcFormula = - sum("Cust. Ledger Entry"."Amount Posted" where("Customer No." = field("Member No"),
-                                                                   "Transaction Type" = filter(Loan),
+                                                                   "Transaction Type" = filter("Share Capital"),
                                                                    "Posting Date" = field("Date Filter")));
             Editable = true;
             FieldClass = FlowField;

@@ -86,7 +86,7 @@ tableextension 50047 "CustomerExt" extends Customer
         field(68011; "Outstanding Balance"; Decimal)
         {
             CalcFormula = sum("Cust. Ledger Entry"."Amount Posted" where("Customer No." = field("No."),
-                                                                  "Transaction Type" = filter(Loan | "Loan Repayment" | "Interest Paid" | "Interest Due"), "Posting Date" = field("Date Filter"), Reversed = const(false)));
+                                                                  "Transaction Type" = filter(Loan | "Loan Repayment" | "Interest Paid" | "Interest Due" | "Loan Transfer Charges"), "Posting Date" = field("Date Filter"), Reversed = const(false)));
             Editable = false;
             FieldClass = FlowField;
         }
@@ -897,12 +897,12 @@ tableextension 50047 "CustomerExt" extends Customer
         {
             TableRelation = "Post Code".Code;
         }
-        field(69040; "Total Loans Outstanding"; Decimal)
-        {
-            CalcFormula = sum("Cust. Ledger Entry"."Amount Posted" where("Customer No." = field("No."),
-                                                                  "Transaction Type" = filter(Loan | "Loan Repayment")));
-            FieldClass = FlowField;
-        }
+        // field(69040; "Total Loans Outstanding"; Decimal)
+        // {
+        //     CalcFormula = sum("Cust. Ledger Entry"."Amount Posted" where("Customer No." = field("No."),
+        //                                                           "Transaction Type" = filter(Loan | "Loan Repayment")));
+        //     FieldClass = FlowField;
+        // }
         field(69041; "No of Loans Guaranteed"; Integer)
         {
             CalcFormula = count("Loans Guarantee Details" where("Member No" = field("No."),

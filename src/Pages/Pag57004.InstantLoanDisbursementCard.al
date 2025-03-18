@@ -812,7 +812,7 @@ page 57004 "Instant Loan Disbursement Card"
         SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, LoanApps."Loan  No.", LineNo, GenJournalLine."Transaction Type"::" ", GenJournalLine."Account Type"::"Bank Account", LoanApps."Paying Bank Account No", DirbursementDate, bankTransferCharges * -1, 'BOSA', Rec."Batch No.", 'Bank transfer charges ' + Format(LoanApps."Loan  No."), '');
         //....debit member & Bank trans duty....
         LineNo := LineNo + 10000;
-        SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, Rec."Loan  No.", LineNo, GenJournalLine."Transaction Type"::Loan, GenJournalLine."Account Type"::Customer, LoanApps."Client Code", DirbursementDate, bankTransferCharges, 'BOSA', LoanApps."Loan  No.", 'Bank transfer charges ' + Format(LoanApps."Loan  No."), LoanApps."Loan  No.");
+        SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, Rec."Loan  No.", LineNo, GenJournalLine."Transaction Type"::"Loan Transfer Charges", GenJournalLine."Account Type"::Customer, LoanApps."Client Code", DirbursementDate, bankTransferCharges, 'BOSA', LoanApps."Loan  No.", 'Bank transfer charges ' + Format(LoanApps."Loan  No."), LoanApps."Loan  No.");
         //     SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, LoanApps."Loan  No.", LineNo, GenJournalLine."Transaction Type"::"Bank Transfer Charges"
         //    , GenJournalLine."Account Type"::Customer, LoanApps."Client Code", DirbursementDate, bankTransferCharges, 'BOSA', Rec."Batch No.", 'Loan disbursment bank charges ' + Format(LoanApps."Loan  No."), '');
 

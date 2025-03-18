@@ -1029,7 +1029,7 @@ report 50006 "Instant LoanApplication"
             column(OutstandingInsurance; "Outstanding Insurance")
             {
             }
-            column(OutstandingLoan; "Outstanding Loan")
+            column(OutstandingLoan; "Outstanding BAlance")
             {
             }
             column(OutstandingLoan2; "Outstanding Loan2")

@@ -662,20 +662,7 @@ tableextension 56000 VendorExt2 extends Vendor
         field(69069; "Modified By"; Code[45])
         {
         }
-        field(69050; "Outstanding Loans"; Decimal)
-        {
-            CalcFormula = sum("Cust. Ledger Entry"."Amount Posted" where("FOSA Account No." = field("No."),
-                                                                  "Transaction Type" = filter(Loan | "Loan Repayment" | "Loan Adjustment"),
-                                                                  "Posting Date" = field("Date Filter")));
-            FieldClass = FlowField;
-        }
-        field(69051; "Outstanding Interest"; Decimal)
-        {
-            CalcFormula = sum("Cust. Ledger Entry"."Amount Posted" where("FOSA Account No." = field("No."),
-                                                                  "Transaction Type" = filter("Interest Due" | "Interest Paid"),
-                                                                  "Posting Date" = field("Date Filter")));
-            FieldClass = FlowField;
-        }
+
         field(69052; "Cheque Acc. No"; Code[20])
         {
         }

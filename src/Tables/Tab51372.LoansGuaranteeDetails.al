@@ -358,7 +358,7 @@ Table 51372 "Loans Guarantee Details"
         }
         field(16; "Outstanding Balance"; Decimal)
         {
-            CalcFormula = sum("Cust. Ledger Entry"."Amount Posted" where("Transaction Type" = filter(Loan | "Loan Repayment"),
+            CalcFormula = sum("Cust. Ledger Entry"."Amount Posted" where("Transaction Type" = filter(Loan | "Loan Repayment" | "Interest Paid" | "Interest Due" | "Loan Transfer Charges"),
                                                                   "Loan No" = field("Loan No")));
             FieldClass = FlowField;
         }
@@ -374,7 +374,7 @@ Table 51372 "Loans Guarantee Details"
         }
         field(18; "Loans Outstanding"; Decimal)
         {
-            CalcFormula = sum("Cust. Ledger Entry"."Amount Posted" where("Transaction Type" = filter(Loan | "Loan Repayment"),
+            CalcFormula = sum("Cust. Ledger Entry"."Amount Posted" where("Transaction Type" = filter(Loan | "Loan Repayment" | "Interest Paid" | "Interest Due" | "Loan Transfer Charges"),
                                                                   "Loan No" = field("Loan No")));
             FieldClass = FlowField;
 
@@ -389,7 +389,7 @@ Table 51372 "Loans Guarantee Details"
         field(19; "Guarantor Outstanding"; Decimal)
         {
             CalcFormula = sum("Cust. Ledger Entry"."Amount Posted" where("Customer No." = field("Member No"),
-                                                                  "Transaction Type" = filter(Loan | "Loan Repayment")));
+                                                                  "Transaction Type" = filter(Loan | "Loan Repayment" | "Interest Paid" | "Interest Due" | "Loan Transfer Charges")));
             FieldClass = FlowField;
         }
         field(20; "Employer Code"; Code[20])

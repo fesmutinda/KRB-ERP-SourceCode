@@ -301,46 +301,6 @@ tableextension 50069 "VendorExt" extends Vendor
                                                                   Reversed = const(false)));
             FieldClass = FlowField;
         }
-
-        field(6987901; "Outstanding okoa biashara"; Decimal)
-        {
-            CalcFormula = sum("Cust. Ledger Entry"."Amount Posted" where("Customer No." = field("BOSA Account No"),
-                                                                  "Transaction Type" = filter(Loan | "Loan Repayment"),
-                                                                  "Loan product Type" = const('OKOA'),
-                                                                  "Posting Date" = field("Date filter"),
-                                                                  Reversed = const(false)));
-            FieldClass = FlowField;
-        }
-
-
-        field(6907003; "Outstanding FOSA Interest"; Decimal)
-        {
-            CalcFormula = sum("Cust. Ledger Entry"."Amount Posted" where("Customer No." = field("BOSA Account No"),
-                                                                  "Transaction Type" = filter("Interest Due" | "Interest Paid"),
-                                                                  "Posting Date" = field("Date filter"),
-                                                                  Reversed = const(false)
-                                                                  , "Global Dimension 1 Code" = const('FOSA')));
-            FieldClass = FlowField;
-        }
-        // field(6907904; "Outstanding FOSA Loan"; Decimal)
-        // {
-        //     CalcFormula = sum("Cust. Ledger Entry"."Amount Posted" where("Customer No." = field("BOSA Account No"),
-        //                                                           "Transaction Type" = filter("Loan" | "Loan Repayment"),
-        //                                                           "Posting Date" = field("Date filter"),
-        //                                                           Reversed = const(false)
-        //                                                           , "Global Dimension 1 Code" = const('FOSA')
-        //                                                           ));
-        //     FieldClass = FlowField;
-        // }
-        field(6907905; "Outstanding Overdraft Interest"; Decimal)
-        {
-            CalcFormula = sum("Cust. Ledger Entry"."Amount Posted" where("Customer No." = field("BOSA Account No"),
-                                                                  "Transaction Type" = filter("Interest Due" | "Interest Paid"),
-                                                                  "Posting Date" = field("Date filter"),
-                                                                  Reversed = const(false)
-                                                                  , "Loan product Type" = const('OVERDRAFT')));
-            FieldClass = FlowField;
-        }
         field(690796; "Outstanding OKOA Interest"; Decimal)
         {
             CalcFormula = sum("Cust. Ledger Entry"."Amount Posted" where("Customer No." = field("BOSA Account No"),
@@ -381,70 +341,6 @@ tableextension 50069 "VendorExt" extends Vendor
         PurchPrepmtPct: Record "Purchase Prepayment %";
         CustomReportSelection: Record "Custom Report Selection";
     begin
-
-        // Error('You cannot delete an existing FOSA Account');
-
-        // MoveEntries.MoveVendorEntries(Rec);
-
-        // CommentLine.SetRange("Table Name", CommentLine."table name"::Vendor);
-        // CommentLine.SetRange("No.", "No.");
-        // CommentLine.DeleteAll;
-
-        // VendBankAcc.SetRange("Vendor No.", "No.");
-        // VendBankAcc.DeleteAll;
-
-        // OrderAddr.SetRange("Vendor No.", "No.");
-        // OrderAddr.DeleteAll;
-
-        // // ItemCrossReference.SetCurrentkey("Cross-Reference Type", "Cross-Reference Type No.");
-        // // ItemCrossReference.SetRange("Cross-Reference Type", ItemCrossReference."cross-reference type"::Vendor);
-        // // ItemCrossReference.SetRange("Cross-Reference Type No.", "No.");
-        // // ItemCrossReference.DeleteAll;
-
-        // PurchOrderLine.SetCurrentkey("Document Type", "Pay-to Vendor No.");
-        // PurchOrderLine.SetFilter(
-        //   "Document Type", '%1|%2',
-        //   PurchOrderLine."document type"::Order,
-        //   PurchOrderLine."document type"::"Return Order");
-        // PurchOrderLine.SetRange("Pay-to Vendor No.", "No.");
-        // if PurchOrderLine.FindFirst then
-        //     Error(
-        //       Text000,
-        //       TableCaption, "No.",
-        //       PurchOrderLine."Document Type");
-
-        // PurchOrderLine.SetRange("Pay-to Vendor No.");
-        // PurchOrderLine.SetRange("Buy-from Vendor No.", "No.");
-        // if PurchOrderLine.FindFirst then
-        //     Error(
-        //       Text000,
-        //       TableCaption, "No.");
-
-        // UpdateContFromVend.OnDelete(Rec);
-
-        // DimMgt.DeleteDefaultDim(Database::Vendor, "No.");
-
-        // ServiceItem.SetRange("Vendor No.", "No.");
-        // ServiceItem.ModifyAll("Vendor No.", '');
-
-        // ItemVendor.SetRange("Vendor No.", "No.");
-        // ItemVendor.DeleteAll(true);
-
-        // PurchPrice.SetCurrentkey("Vendor No.");
-        // PurchPrice.SetRange("Vendor No.", "No.");
-        // PurchPrice.DeleteAll(true);
-
-        // PurchLineDiscount.SetCurrentkey("Vendor No.");
-        // PurchLineDiscount.SetRange("Vendor No.", "No.");
-        // PurchLineDiscount.DeleteAll(true);
-
-        // CustomReportSelection.SetRange("Source Type", Database::Vendor);
-        // CustomReportSelection.SetRange("Source No.", "No.");
-        // CustomReportSelection.DeleteAll;
-
-        // PurchPrepmtPct.SetCurrentkey("Vendor No.");
-        // PurchPrepmtPct.SetRange("Vendor No.", "No.");
-        // PurchPrepmtPct.DeleteAll(true);
 
     end;
 

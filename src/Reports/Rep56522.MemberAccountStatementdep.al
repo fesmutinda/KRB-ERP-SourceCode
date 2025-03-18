@@ -352,7 +352,7 @@ Report 56522 "Member Account Statement-dep."
                 dataitem(loan; "Cust. Ledger Entry")
                 {
                     DataItemLink = "Customer No." = field("Client Code"), "Loan No" = field("Loan  No."), "Posting Date" = field("Date filter");
-                    DataItemTableView = sorting("Posting Date") where("Transaction Type" = filter(Loan | "Loan Repayment" | "Interest Due" | "Interest Paid"));
+                    DataItemTableView = sorting("Posting Date") where("Transaction Type" = filter(Loan | "Loan Repayment" | "Interest Due" | "Interest Paid" | "Loan Transfer Charges"));
                     column(ReportForNavId_1102755031; 1102755031)
                     {
                     }
