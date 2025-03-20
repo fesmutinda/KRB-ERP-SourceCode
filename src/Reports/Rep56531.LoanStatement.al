@@ -70,7 +70,7 @@ Report 56531 "Loan Statement"
             dataitem(Loans; "Loans Register")
             {
                 DataItemLink = "Client Code" = field("No."), "Date filter" = field("Date Filter"), "Loan Product Type" = field("Loan Product Filter");
-                DataItemTableView = sorting("Loan  No.") where(Posted = const(true), "Outstanding Balance" = filter('>0'));
+                DataItemTableView = sorting("Loan  No.") where(Posted = const(true), "Outstanding Balance" = filter('>0'), Reversed = const(false));
                 column(ReportForNavId_1102755024; 1102755024)
                 {
                 }

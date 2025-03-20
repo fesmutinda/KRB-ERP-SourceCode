@@ -66,7 +66,7 @@ Report 56522 "Member Account Statement-dep."
             dataitem(ShareCapital; "Cust. Ledger Entry")
             {
                 DataItemLink = "Customer No." = field("No."), "Posting Date" = field("Date Filter");
-                DataItemTableView = sorting("Posting Date") where("Transaction Type" = filter("Share Capital"));
+                DataItemTableView = sorting("Posting Date") where("Transaction Type" = filter("Share Capital"), Reversed = const(false));
                 column(ReportForNavId_1000000009; 1000000009)
                 {
                 }
@@ -126,7 +126,7 @@ Report 56522 "Member Account Statement-dep."
             dataitem(Deposits; "Cust. Ledger Entry")
             {
                 DataItemLink = "Customer No." = field("No."), "Posting Date" = field("Date Filter");
-                DataItemTableView = sorting("Posting Date") where("Transaction Type" = filter("Deposit Contribution"));
+                DataItemTableView = sorting("Posting Date") where("Transaction Type" = filter("Deposit Contribution"), Reversed = const(false));
                 column(ReportForNavId_1000000036; 1000000036)
                 {
                 }
@@ -186,7 +186,7 @@ Report 56522 "Member Account Statement-dep."
             dataitem(Dividend; "Cust. Ledger Entry")
             {
                 DataItemLink = "Customer No." = field("No."), "Posting Date" = field("Date Filter");
-                DataItemTableView = sorting("Posting Date") where("Transaction Type" = filter(Dividend));
+                DataItemTableView = sorting("Posting Date") where("Transaction Type" = filter(Dividend), Reversed = const(false));
                 column(ReportForNavId_1000000059; 1000000059)
                 {
                 }
@@ -246,7 +246,7 @@ Report 56522 "Member Account Statement-dep."
             dataitem(Khoja; "Cust. Ledger Entry")
             {
                 DataItemLink = "Customer No." = field("No."), "Posting Date" = field("Date Filter");
-                DataItemTableView = sorting("Posting Date") where("Transaction Type" = filter("Withdrawable Savings"));
+                DataItemTableView = sorting("Posting Date") where("Transaction Type" = filter("Withdrawable Savings"), Reversed = const(false));
                 column(ReportForNavId_1000000071; 1000000071)
                 {
                 }
@@ -306,7 +306,7 @@ Report 56522 "Member Account Statement-dep."
             dataitem(Loans; "Loans Register")
             {
                 DataItemLink = "Client Code" = field("No."), "Date filter" = field("Date Filter"), "Loan Product Type" = field("Loan Product Filter");
-                DataItemTableView = sorting("Loan  No.") where(Posted = const(true));
+                DataItemTableView = sorting("Loan  No.") where(Posted = const(true), Reversed = const(false));
                 column(ReportForNavId_1102755024; 1102755024)
                 {
                 }

@@ -94,10 +94,7 @@ codeunit 50015 "PostCustomerExtension"
             if LoanApp.Find('-') then begin
                 if LoanTypes.Get(LoanApp."Loan Product Type") then begin
                     LoanTypes.TestField(LoanTypes."Loan Account");
-                    //GenJournalLine."Posting Group" := LoanTypes."Loan Account";
-                    //FnCheckIfPostingGroupIsSetUp,If != Then SetUp
                     GenJournalLine."Posting Group" := FnHandlePostingGroup(LoanTypes."Loan Account", FORMAT(COPYSTR(LoanApp."Loan Product Type", 1, 19)));
-                    ;
                     GenJournalLine.Found := true;
                     GenJournalLine.Modify();
                 end;

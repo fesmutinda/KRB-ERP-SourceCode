@@ -1648,9 +1648,6 @@ Page 56043 "KRB Sacco Role Center"
                     }
 
                 }
-
-
-
                 group("SMS Messages")
                 {
                     Caption = 'SMS Messages';
@@ -1675,8 +1672,30 @@ Page 56043 "KRB Sacco Role Center"
 
 
                 }
-                group("Alternative Channels Setups")
+                group("Portal Activities")
+                {
+                    Caption = 'Online Banking';
+                    action("PortalApplications")
+                    {
+                        Caption = 'Online Portal Users';
+                        Image = Calls;
+                        RunObject = page "Online Portal Users";
+                    }
+                    action("Portal Audit Trail")
+                    {
+                        Caption = 'Portal Audit Trail';
+                        Image = PostedReceipt;
+                        RunObject = page "Portal Audit Trail";
+                    }
+                    action("Portal Feedback")
+                    {
+                        Caption = 'Portal Feedback';
+                        Image = PostedReceipt;
+                        RunObject = page "Portal Feedback";
+                    }
 
+                }
+                group("Alternative Channels Setups")
                 {
                     Caption = 'Alternative Channels Setup';
 
