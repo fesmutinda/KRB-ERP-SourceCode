@@ -34,12 +34,12 @@ codeunit 50037 "EventSubscribers"
             Error('Denied!,you do have have permission to reverse. Contact system administrator');
         end;
     end;
-    //3)-------------This is to Ignore the checks for missing entries...
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post Reverse", 'OnBeforeReverse', '', false, false)]
-    local procedure IgnoreCLECheck(var IsHandled: Boolean)
-    begin
-        IsHandled := true;
-    end;
+    // //3)-------------This is to Ignore the checks for missing entries...
+    // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post Reverse", 'OnBeforeReverse', '', false, false)]
+    // local procedure IgnoreCLECheck(var IsHandled: Boolean)
+    // begin
+    //     IsHandled := true;
+    // end;
 
     //4)---------------------------------Update Allowed Posting Date to & from for user currently logging in
     [EventSubscriber(ObjectType::Codeunit, 40, OnLogInEndOnAfterGetUserSetupRegisterTime, '', false, false)]
