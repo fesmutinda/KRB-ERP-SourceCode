@@ -416,6 +416,9 @@ Table 51381 "Loan Products Setup"
         {
             DataClassification = ToBeClassified;
         }
+        field(131; "Show On Portal"; Boolean)
+        {
+        }
     }
 
     keys

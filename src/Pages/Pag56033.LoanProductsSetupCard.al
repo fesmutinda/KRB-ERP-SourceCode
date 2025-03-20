@@ -173,6 +173,11 @@ Page 56033 "Loan Products Setup Card"
                 {
                     ApplicationArea = Basic;
                 }
+                field("Show On Portal"; Rec."Show On Portal")
+                {
+                    ApplicationArea = Basic;
+                }
+
                 // field("Sacco Deposits"; Rec."Sacco Deposits")
                 // {
                 //     ApplicationArea = Basic;
