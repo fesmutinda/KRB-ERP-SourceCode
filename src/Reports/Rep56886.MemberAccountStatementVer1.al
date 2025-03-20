@@ -377,7 +377,7 @@ Report 56886 "Member Account Statement(Ver1)"
                 column(LoanNumber; Loans."Loan  No.")
                 {
                 }
-                column(ProductType; LoanName)
+                column(ProductType; Loans."Loan Product Type Name")
                 {
                 }
                 column(RequestedAmount; Loans."Requested Amount")
