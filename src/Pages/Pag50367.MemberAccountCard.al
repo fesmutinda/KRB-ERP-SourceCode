@@ -573,35 +573,6 @@ page 50367 "Member Account Card"
                     RunObject = Page "Members Statistics";
                     RunPageLink = "No." = field("No.");
                 }
-                action("Member is  a Guarantor")
-                {
-                    ApplicationArea = Basic;
-                    Caption = 'Member is  a Guarantor';
-                    Image = "Report";
-
-                    trigger OnAction()
-                    begin
-
-                        Cust.Reset;
-                        Cust.SetRange(Cust."No.", Rec."No.");
-                        if Cust.Find('-') then
-                            Report.Run(50226, true, false, Cust);
-                    end;
-                }
-                action("Member is  Guaranteed")
-                {
-                    ApplicationArea = Basic;
-                    Caption = 'Member is  Guaranteed';
-                    Image = "Report";
-
-                    trigger OnAction()
-                    begin
-                        Cust.Reset;
-                        Cust.SetRange(Cust."No.", Rec."No.");
-                        if Cust.Find('-') then
-                            Report.Run(50225, true, false, Cust);
-                    end;
-                }
                 group(ActionGroup1102755018)
                 {
                 }
@@ -637,6 +608,54 @@ page 50367 "Member Account Card"
                         if Cust.Find('-') then begin
                             // Report.Run(50224, true, false, Cust);
                             Report.Run(56522, true, false, Cust);
+                        END;
+                    end;
+                }
+                action("Member is  a Guarantor")
+                {
+                    ApplicationArea = Basic;
+                    Caption = 'Member is  a Guarantor';
+                    Image = "Report";
+
+                    trigger OnAction()
+                    begin
+
+                        Cust.Reset;
+                        Cust.SetRange(Cust."No.", Rec."No.");
+                        if Cust.Find('-') then
+                            Report.Run(56504, true, false, Cust);
+                    end;
+                }
+                action("Member is  Guaranteed")
+                {
+                    ApplicationArea = Basic;
+                    Caption = 'Member is  Guaranteed';
+                    Image = JobPurchaseInvoice;
+                    Promoted = true;
+                    PromotedCategory = Report;
+                    trigger OnAction()
+                    begin
+                        Cust.Reset;
+                        Cust.SetRange(Cust."No.", Rec."No.");
+                        if Cust.Find('-') then
+                            Report.Run(56504, true, false, Cust);
+                    end;
+                }
+
+                action("Withdrawable Statement")
+                {
+                    ApplicationArea = Basic;
+                    Caption = 'Withdrawable Statement';
+                    Image = "Report";
+                    Promoted = true;
+                    PromotedCategory = "Report";
+
+                    trigger OnAction()
+                    begin
+                        Cust.Reset;
+                        Cust.SetRange(Cust."No.", Rec."No.");
+                        if Cust.Find('-') then begin
+                            Report.Run(56523, true, false, Cust);
                         END;
                     end;
                 }
@@ -1274,22 +1293,7 @@ page 50367 "Member Account Card"
 
                     end;
                 }
-                // action("FOSA Statement")
-                // {
-                //     ApplicationArea = Basic;
-                //     Promoted = true;
-                //     PromotedCategory = "Report";
 
-                //     trigger OnAction()
-                //     begin
-                //         Vend.Reset;
-                //         Vend.SetRange(Vend."BOSA Account No", "No.");
-                //         if Vend.Find('-') then
-                //             Report.Run(50248, true, false, Vend);
-                //     end;
-
-
-                // }
                 action("Shares Certificate")
                 {
                     ApplicationArea = Basic;

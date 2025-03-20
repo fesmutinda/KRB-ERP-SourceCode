@@ -124,12 +124,8 @@ Codeunit 50120 "PORTALIntegration MFS"
                 Online."Date Created" := Today;
                 Online.IdNumber := idNo;
                 Online.Password := NewPassword;
-                // NewPassword := EncryptionManagement.Encrypt(NewPassword);
-                // Online.Password.CREATEOUTSTREAM(OutStream);
-                // OutStream.WRITE(NewPassword);
+                Online."Changed Password" := true;
                 Online.Insert;
-                //  ;
-                //  ;
 
                 FnSMSMessage(FAccNo, phoneNumber, sms);
                 emailAddress := true;
@@ -224,33 +220,6 @@ Codeunit 50120 "PORTALIntegration MFS"
             end;
         end;
     end;
-
-
-    procedure fnFosaStatement(MemberNo: Code[50]; "filter": Text; var BigText: BigText) exitString: Text
-    var
-        Filename: Text[100];
-        Outputstream: OutStream;
-        RecRef: RecordRef;
-        TempBlob: Codeunit "Temp Blob";
-        Outstr: OutStream;
-        Instr: InStream;
-        Base64Convert: Codeunit "Base64 Convert";
-    begin
-        Vendor.Reset;
-        Vendor.SetRange(Vendor."No.", MemberNo);
-        Vendor.SetFilter("Date Filter", filter);
-        if Vendor.Find('-') then begin
-            RecRef.GetTable(Vendor);
-            Clear(TempBlob);
-            TempBlob.CreateOutStream(Outstr);
-            TempBlob.CreateInStream(Instr);
-            if Report.SaveAs(Report::"Member Account Statement(Ver1)", '', ReportFormat::Pdf, Outstr, RecRef) then begin
-                exitString := Base64Convert.ToBase64(Instr);
-                exit;
-            end;
-        end;
-    end;
-
 
     procedure fndividentstatement(No: Code[50]; Path: Text[100]) exitString: Text
     var
@@ -350,7 +319,7 @@ Codeunit 50120 "PORTALIntegration MFS"
             Clear(TempBlob);
             TempBlob.CreateOutStream(Outstr);
             TempBlob.CreateInStream(Instr);
-            if Report.SaveAs(Report::"Member Account Statement(Ver1)", '', ReportFormat::Pdf, Outstr, RecRef) then begin
+            if Report.SaveAs(Report::"Members Loans Guarantors", '', ReportFormat::Pdf, Outstr, RecRef) then begin
                 exitString := Base64Convert.ToBase64(Instr);
                 exit;
             end;
@@ -386,18 +355,44 @@ Codeunit 50120 "PORTALIntegration MFS"
 
         objMember.Reset;
         objMember.SetRange(objMember."No.", MemberNo);
+        objMember.SetFilter("Date Filter", filter);
         if objMember.Find('-') then begin
             RecRef.GetTable(objMember);
             Clear(TempBlob);
             TempBlob.CreateOutStream(Outstr);
             TempBlob.CreateInStream(Instr);
-            if Report.SaveAs(Report::"Member Account Statement-dep.", '', ReportFormat::Pdf, Outstr, RecRef) then begin
+            if Report.SaveAs(Report::"Member Statement Deposits", '', ReportFormat::Pdf, Outstr, RecRef) then begin
                 exitString := Base64Convert.ToBase64(Instr);
                 exit;
             end;
         end;
     end;
 
+    procedure fnMemberWithdrawableStatement(MemberNo: Code[50]; "filter": Text) exitString: Text
+    var
+        Filename: Text[100];
+        Outputstream: OutStream;
+        RecRef: RecordRef;
+        TempBlob: Codeunit "Temp Blob";
+        Outstr: OutStream;
+        Instr: InStream;
+        Base64Convert: Codeunit "Base64 Convert";
+    begin
+
+        objMember.Reset;
+        objMember.SetRange(objMember."No.", MemberNo);
+        objMember.SetFilter("Date Filter", filter);
+        if objMember.Find('-') then begin
+            RecRef.GetTable(objMember);
+            Clear(TempBlob);
+            TempBlob.CreateOutStream(Outstr);
+            TempBlob.CreateInStream(Instr);
+            if Report.SaveAs(Report::"Member Statement Withdrawable", '', ReportFormat::Pdf, Outstr, RecRef) then begin
+                exitString := Base64Convert.ToBase64(Instr);
+                exit;
+            end;
+        end;
+    end;
 
     procedure fnLoanGuranteedFosa(MemberNo: Code[50]; "filter": Text; BigText: BigText) exitString: Text
     var
@@ -470,7 +465,7 @@ Codeunit 50120 "PORTALIntegration MFS"
             Clear(TempBlob);
             TempBlob.CreateOutStream(Outstr);
             TempBlob.CreateInStream(Instr);
-            if Report.SaveAs(Report::"Member Account Statement(Ver1)", '', ReportFormat::Pdf, Outstr, RecRef) then begin
+            if Report.SaveAs(Report::"Loans Guaranteed", '', ReportFormat::Pdf, Outstr, RecRef) then begin
                 exitString := Base64Convert.ToBase64(Instr);
                 exit;
             end;
@@ -490,6 +485,7 @@ Codeunit 50120 "PORTALIntegration MFS"
         Online.SetRange(Password, currentPass);
         if Online.Find('-') then begin
             Online.Password := newPass;
+            Online."Changed Password" := true;
             Online.Modify;
             updated := true;
         end
@@ -715,8 +711,9 @@ Codeunit 50120 "PORTALIntegration MFS"
                     + ',"LoanProductType":"' + objLoanRegister."Loan Product Type Name" + '"'
                     + ',"Installments":"' + FORMAT(objLoanRegister.Installments) + '"'
                     + ',"LoanBalance":"' + FORMAT(objLoanRegister."Outstanding Balance") + '"'
-                    + ',"RemainingPeriod":"' + FORMAT(objLoanRegister.Installments - Loanperiod) + '"'
+                    + ',"RemainingPeriod":"' + FORMAT(objLoanRegister.Installments - Loanperiod) + '"'//AmountArrears
                     + ',"RequestedAmount":"' + FORMAT(objLoanRegister."Requested Amount") + '"'
+                    + ',"AmountArrears":"' + FORMAT(objLoanRegister."Amount in Arrears") + '"'
                     + ',"LoanStatus":"' + FORMAT(objLoanRegister."Loan Status") + '"}';
                 end else begin
                     balancesText := balancesText + ',{"LoanNo":"' + FORMAT(objLoanRegister."Loan  No.") + '"'
@@ -725,6 +722,7 @@ Codeunit 50120 "PORTALIntegration MFS"
                 + ',"LoanBalance":"' + FORMAT(objLoanRegister."Outstanding Balance") + '"'
                 + ',"RemainingPeriod":"' + FORMAT(objLoanRegister.Installments - Loanperiod) + '"'
                 + ',"RequestedAmount":"' + FORMAT(objLoanRegister."Requested Amount") + '"'
+                    + ',"AmountArrears":"' + FORMAT(objLoanRegister."Amount in Arrears") + '"'
                 + ',"LoanStatus":"' + FORMAT(objLoanRegister."Loan Status") + '"}';
                 end;
 
@@ -783,17 +781,26 @@ Codeunit 50120 "PORTALIntegration MFS"
     end;
 
     procedure FnGetNOKProfile(MemberNo: Code[20]) info: Text
+    var
+        memberNominee: Record "Members Nominee";
     begin
         objMember.RESET;
         objMember.SETRANGE(objMember."No.", MemberNo);
         IF objMember.FIND('-') THEN BEGIN
-            objNextKin.RESET();
-            objNextKin.SETRANGE("Account No", objMember."No.");
-            IF objNextKin.FIND('-') THEN BEGIN
+            memberNominee.Reset();
+            memberNominee.SetRange(memberNominee."Account No", objMember."No.");
+            if memberNominee.Find('-') then begin
                 REPEAT
-                    info := info + FORMAT(objNextKin."Name") + ':' + FORMAT(objNextKin."Date of Birth") + ':' + FORMAT(objNextKin."%Allocation") + ':' + FORMAT(objNextKin.Relationship) + '::';
-                UNTIL objNextKin.NEXT() = 0;
-            END;
+                    info := info + FORMAT(memberNominee."Name") + ':' + FORMAT(memberNominee."Date of Birth") + ':' + FORMAT(memberNominee."%Allocation") + ':' + FORMAT(memberNominee.Relationship) + '::';
+                UNTIL memberNominee.NEXT() = 0;
+            end;
+            // objNextKin.RESET();
+            // objNextKin.SETRANGE("Account No", objMember."No.");
+            // IF objNextKin.FIND('-') THEN BEGIN
+            //     REPEAT
+            //         info := info + FORMAT(objNextKin."Name") + ':' + FORMAT(objNextKin."Date of Birth") + ':' + FORMAT(objNextKin."%Allocation") + ':' + FORMAT(objNextKin.Relationship) + '::';
+            //     UNTIL objNextKin.NEXT() = 0;
+            // END;
         END;
     end;
 
@@ -910,7 +917,7 @@ Codeunit 50120 "PORTALIntegration MFS"
             Clear(TempBlob);
             TempBlob.CreateOutStream(Outstr);
             TempBlob.CreateInStream(Instr);
-            if Report.SaveAs(Report::"Member Account Statement-dep.", '', ReportFormat::Pdf, Outstr, RecRef) then begin
+            if Report.SaveAs(Report::"Member Statement Deposits", '', ReportFormat::Pdf, Outstr, RecRef) then begin
                 exitString := Base64Convert.ToBase64(Instr);
                 exit;
             end;
@@ -930,12 +937,13 @@ Codeunit 50120 "PORTALIntegration MFS"
     begin
         objMember.Reset;
         objMember.SetRange(objMember."No.", MemberNo);
+        // objMember.SetFilter("Date Filter", filter);
         if objMember.Find('-') then begin
             RecRef.GetTable(objMember);
             Clear(TempBlob);
             TempBlob.CreateOutStream(Outstr);
             TempBlob.CreateInStream(Instr);
-            if Report.SaveAs(Report::"Member Loans Statement", '', ReportFormat::Pdf, Outstr, RecRef) then begin
+            if Report.SaveAs(Report::"Loan Statement", '', ReportFormat::Pdf, Outstr, RecRef) then begin
                 exitString := Base64Convert.ToBase64(Instr);
                 exit;
             end;
@@ -967,36 +975,6 @@ Codeunit 50120 "PORTALIntegration MFS"
         end;
     end;
 
-
-    procedure FnLoanStatementHistorical(MemberNo: Code[50]; "filter": Text; var BigText: BigText) exitString: Text
-    var
-        Filename: Text[100];
-        Outputstream: OutStream;
-        RecRef: RecordRef;
-        TempBlob: Codeunit "Temp Blob";
-        Outstr: OutStream;
-        Instr: InStream;
-        Base64Convert: Codeunit "Base64 Convert";
-    begin
-        objMember.Reset;
-        objMember.SetRange(objMember."No.", MemberNo);
-        if objMember.Find('-') then begin
-            objMember.Reset;
-            objMember.SetRange(objMember."No.", MemberNo);
-            if objMember.Find('-') then begin
-                RecRef.GetTable(objMember);
-                Clear(TempBlob);
-                TempBlob.CreateOutStream(Outstr);
-                TempBlob.CreateInStream(Instr);
-                if Report.SaveAs(Report::"Member Account Statement(Ver1)", '', ReportFormat::Pdf, Outstr, RecRef) then begin
-                    exitString := Base64Convert.ToBase64(Instr);
-                    exit;
-                end;
-            end;
-        end;
-    end;
-
-
     procedure Fnlogin(username: Code[50]; password: Text) status: Boolean
     var
         InStream: InStream;
@@ -1016,6 +994,7 @@ Codeunit 50120 "PORTALIntegration MFS"
             ObjLog.Date := Today;
             ObjLog.Time := Time;
             ObjLog."Login Status" := ObjLog."login status"::Successfull;
+            Online."Last Login" := CurrentDateTime;
             ObjMember.Reset;
             if ObjMember.Get(username) then begin
                 ObjLog."Member Name" := ObjMember.Name;
@@ -1037,6 +1016,31 @@ Codeunit 50120 "PORTALIntegration MFS"
         end;
     end;
 
+    procedure fnSendOTPCode(memberNumber: Code[10]; otpCode: Code[5]) validated: Boolean
+    begin
+        validated := false;
+        Online.Reset();
+        Online.SetRange("User Name", memberNumber);
+        if Online.Find('-') then begin
+            sms := 'Your Portal verification code is ' + otpCode;
+            Online."Login OTP" := otpCode;
+            FnSMSMessage(memberNumber, Online.MobileNumber, sms);
+            Online.Modify(true);
+            validated := true;
+        end;
+    end;
+
+    procedure fnConfirmOTPCode(memberNumber: Code[10]; otpCode: Code[5]) validated: Boolean
+    begin
+        validated := false;
+        Online.Reset();
+        Online.SetRange("User Name", memberNumber);
+        Online.SetRange("Login OTP", otpCode);
+        if Online.Find('-') then begin
+
+            validated := true;
+        end;
+    end;
 
     procedure FnmemberInfo(MemberNo: Code[20]) info: Text
     begin

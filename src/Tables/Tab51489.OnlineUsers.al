@@ -47,6 +47,8 @@ Table 51489 "Online Users"
         {
             Caption = 'Key';
         }
+        field(12; "Last Login"; DateTime) { }
+        field(13; "Login OTP"; Code[4]) { }
     }
 
     keys
