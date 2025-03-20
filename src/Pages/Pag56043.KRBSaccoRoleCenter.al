@@ -199,8 +199,8 @@ Page 56043 "KRB Sacco Role Center"
                     ApplicationArea = Basic, Suite;
                     Caption = 'General Journals';
                     Image = Journal;
-                    RunObject = Page "General Journal Batches";// "General Journal";
-                    RunPageView = where("Journal Template Name" = const('GENERAL'), "Template Type" = const(General), Recurring = const(false));
+                    RunObject = Page "General Journal";//"General Journal Batches";
+                    // RunPageView = where("Journal Template Name" = const('GENERAL'), "Template Type" = const(General), Recurring = const(false));
                     ToolTip = 'Post financial transactions directly to general ledger accounts and other accounts, such as bank, customer, vendor, and employee accounts. Posting with a general journal always creates entries on general ledger accounts. This is true even when, for example, you post a journal line to a customer account, because an entry is posted to a general ledger receivables account through a posting group.';
                 }
 

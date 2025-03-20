@@ -175,7 +175,7 @@ Codeunit 50120 "PORTALIntegration MFS"
     end;
 
 
-    procedure fnMemberStatement(MemberNo: Code[50]; "filter": Text; var BigText: BigText) exitString: Text
+    procedure fnMemberStatement(MemberNo: Code[50]; filter: Text) exitString: Text
     var
         Filename: Text[100];
         Outputstream: OutStream;
@@ -187,6 +187,7 @@ Codeunit 50120 "PORTALIntegration MFS"
     begin
         objMember.Reset;
         objMember.SetRange(objMember."No.", MemberNo);
+        objMember.SetFilter("Date Filter", filter);
         if objMember.Find('-') then begin
             RecRef.GetTable(objMember);
             Clear(TempBlob);
@@ -200,7 +201,7 @@ Codeunit 50120 "PORTALIntegration MFS"
     end;
 
 
-    procedure FnMemberDefaultStatement(MemberNo: Code[50]; var BigText: BigText) exitString: Text
+    procedure FnMemberDefaultStatement(MemberNo: Code[50]) exitString: Text
     var
         Filename: Text[100];
         Outputstream: OutStream;
@@ -664,12 +665,10 @@ Codeunit 50120 "PORTALIntegration MFS"
 
         IF objMember.FIND('-') THEN BEGIN
 
-            // FOSAbal:=FNFosaBalance(objMember."FOSA Account No.");
             objMember.CALCFIELDS(objMember."Shares Retained");// "Total Committed Shares");
             objMember.CALCFIELDS(objMember."Current Shares");
-            //objMember.CALCFIELDS("Demand Savings");
             objMember.CALCFIELDS(objMember."Shares Retained");
-            info := FORMAT(objMember."Current Shares") + ':' + FORMAT(objMember."Shares Retained") + ':' + FORMAT(objMember."Risk Fund") + ':' + FORMAT(objMember."Dividend Amount") + ':' + FORMAT(objMember."FOSA Account No.")
+            info := FORMAT(objMember."Current Shares") + ':' + FORMAT(objMember."Shares Retained") + ':' + FORMAT(objMember."Risk Fund") + ':' + FORMAT(objMember."Dividend Amount") + ':' + FORMAT(objMember."Payroll/Staff No")
             + ':' + FORMAT(objMember."Current Shares" - objMember."Shares Retained");
         END;
     end;
@@ -694,6 +693,48 @@ Codeunit 50120 "PORTALIntegration MFS"
             UNTIL
             objLoanRegister.NEXT = 0;
             // END;
+        END;
+    end;
+
+    procedure fnRunningLoans(memberNumber: Code[20]) runningLoans: Text
+    var
+        balancesText: Text;
+    begin
+        balancesText := '';
+        objLoanRegister.RESET;
+        objLoanRegister.SETRANGE(objLoanRegister."BOSA No", memberNumber);
+        objLoanRegister.SETFILTER(objLoanRegister.Posted, '%1', TRUE);
+        objLoanRegister.SETFILTER(objLoanRegister."Outstanding Balance", '>%1', 0);
+        IF objLoanRegister.FIND('-') THEN BEGIN
+            objLoanRegister.ASCENDING(TRUE);
+
+            REPEAT
+                objLoanRegister.CALCFIELDS("Total Loans Outstanding", objLoanRegister."Outstanding Balance");
+                if balancesText = '' then begin
+                    balancesText := '{"LoanNo":"' + FORMAT(objLoanRegister."Loan  No.") + '"'
+                    + ',"LoanProductType":"' + objLoanRegister."Loan Product Type Name" + '"'
+                    + ',"Installments":"' + FORMAT(objLoanRegister.Installments) + '"'
+                    + ',"LoanBalance":"' + FORMAT(objLoanRegister."Outstanding Balance") + '"'
+                    + ',"RemainingPeriod":"' + FORMAT(objLoanRegister.Installments - Loanperiod) + '"'
+                    + ',"RequestedAmount":"' + FORMAT(objLoanRegister."Requested Amount") + '"'
+                    + ',"LoanStatus":"' + FORMAT(objLoanRegister."Loan Status") + '"}';
+                end else begin
+                    balancesText := balancesText + ',{"LoanNo":"' + FORMAT(objLoanRegister."Loan  No.") + '"'
+                + ',"LoanProductType":"' + objLoanRegister."Loan Product Type Name" + '"'
+                + ',"Installments":"' + FORMAT(objLoanRegister.Installments) + '"'
+                + ',"LoanBalance":"' + FORMAT(objLoanRegister."Outstanding Balance") + '"'
+                + ',"RemainingPeriod":"' + FORMAT(objLoanRegister.Installments - Loanperiod) + '"'
+                + ',"RequestedAmount":"' + FORMAT(objLoanRegister."Requested Amount") + '"'
+                + ',"LoanStatus":"' + FORMAT(objLoanRegister."Loan Status") + '"}';
+                end;
+
+            UNTIL
+            objLoanRegister.NEXT = 0;
+            IF balancesText <> '' THEN BEGIN
+                runningLoans := '{ "StatusCode":"200","StatusDescription":"OK","RunningLoans":[' + balancesText + '] }';
+            END ELSE BEGIN
+                runningLoans := '{ "StatusCode":"400","StatusDescription":"NoLoans","RunningLoans":[] }';
+            END;
         END;
     end;
 
@@ -763,7 +804,7 @@ Codeunit 50120 "PORTALIntegration MFS"
 
         if objMember.Find('-') then begin
             phoneNumber := objMember."Phone No.";
-            FAccNo := objMember."FOSA Account No.";
+            FAccNo := objMember."Payroll/Staff No";
             objMember."Monthly Contribution" := "Updated Fig";
             objMember.Modify;
             sms := 'You have adjusted your monthly contributions to: ' + Format("Updated Fig") + ' account number ' + FAccNo +
@@ -831,7 +872,7 @@ Codeunit 50120 "PORTALIntegration MFS"
             Message('test');
             Result := true;
             phoneNumber := objMember."Mobile Phone No";
-            ClientName := objMember."FOSA Account No.";
+            ClientName := objMember.Name;
             sms := 'We have received your ' + LoanProductType + ' loan application of  amount : ' + Format(AmountApplied) +
             '. We are processing your loan, you will hear from us soon. Thanks for using SWIZZSOFT SACCO  Portal.';
             FnSMSMessage(ClientName, phoneNumber, sms);
@@ -1003,14 +1044,14 @@ Codeunit 50120 "PORTALIntegration MFS"
         objMember.SetRange(objMember."No.", MemberNo);
         if objMember.Find('-') then begin
             info := objMember."No." + '.' + ':' + objMember.Name + '.' + ':' + objMember."E-Mail" + '.' + ':' + Format(objMember.Status) + '.' + ':' + Format(objMember."Account Category") + '.' + ':' + objMember."Mobile Phone No"
-            + '.' + ':' + objMember."ID No." + '.' + ':' + objMember."FOSA Account No.";
+            + '.' + ':' + objMember."ID No." + '.' + ':' + objMember."Payroll/Staff No";
         end
         else
             objMember.Reset;
         objMember.SetRange(objMember."ID No.", MemberNo);
         if objMember.Find('-') then begin
             info := objMember."No." + '.' + ':' + objMember.Name + '.' + ':' + objMember."E-Mail" + '.' + ':' + objMember."Employer Name" + '.' + ':' + Format(objMember."Account Category") + '.' + ':' + objMember."Mobile Phone No"
-            + '.' + ':' + objMember."Bank Code" + '.' + ':' + objMember."Bank Account No." + '.' + ':' + objMember."FOSA Account No.";
+            + '.' + ':' + objMember."Bank Code" + '.' + ':' + objMember."Bank Account No." + '.' + ':' + objMember."Payroll/Staff No";
 
         end;
     end;
@@ -1057,7 +1098,7 @@ Codeunit 50120 "PORTALIntegration MFS"
                       '","FosaAccountBalance":"' + FORMAT(objMember."Withdrawable Savings") +
                       '","OutstandingLoanBalance":"' + FORMAT(objMember."Outstanding Balance") +
                       '","OutstandingInterest":"' + FORMAT(objMember."Outstanding Interest") +
-                      '","FosaAccount":"' + FORMAT(objMember."FOSA Account No.") + '" }';
+                      '","FosaAccount":"' + FORMAT(objMember."Payroll/Staff No") + '" }';
         end;
     end;
 
@@ -1093,7 +1134,6 @@ Codeunit 50120 "PORTALIntegration MFS"
                 until Vendor.Next = 0;
             end;
 
-            // FOSAbal:=FNFosaBalance(objMember."FOSA Account No.");
             objMember.CalcFields("Current Shares");
             objMember.CalcFields("Dividend Amount");
             objMember.CalcFields("Shares Retained", "Junior Savings");
@@ -1259,7 +1299,6 @@ Codeunit 50120 "PORTALIntegration MFS"
             until Loansetup.Next = 0;
         end;
     end;
-
 
     procedure fnLoanDetails2(Loancode: Code[20]) loandetail: Text
     begin
