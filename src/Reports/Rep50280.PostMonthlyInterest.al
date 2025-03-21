@@ -1,8 +1,6 @@
 #pragma warning disable AA0005, AA0008, AA0018, AA0021, AA0072, AA0137, AA0201, AA0204, AA0206, AA0218, AA0228, AL0254, AL0424, AS0011, AW0006 // ForNAV settings
 Report 50280 "Post Monthly Interest."
 {
-    // DefaultLayout = RDLC;
-    // RDLCLayout = './Layouts/Post Monthly Interest..rdlc';
     ProcessingOnly = true;
 
     dataset
@@ -77,6 +75,7 @@ Report 50280 "Post Monthly Interest."
                 loanapp.Reset;
                 loanapp.SetRange(loanapp."Loan  No.", "Loans Register"."Loan  No.");
                 loanapp.SetFilter(loanapp."Date filter", SDATE);
+                loanapp.SetFilter(loanapp."Loan Product Type", '<>LT008');
                 if loanapp.Find('-') then begin
                     repeat
                         loanapp.CalcFields(loanapp."Outstanding Balance");
@@ -104,7 +103,7 @@ Report 50280 "Post Monthly Interest."
                                         GenJournalLine.Amount := ROUND(loanapp."Outstanding Balance" * (LoanType."Interest rate" / 1200), 1, '>');
                                         GenJournalLine.Validate(GenJournalLine.Amount);
                                         GenJournalLine."Bal. Account Type" := GenJournalLine."bal. account type"::"G/L Account";
-                                        GenJournalLine."Bal. Account No." := LoanType."Loan Interest Account";
+                                        GenJournalLine."Bal. Account No." := LoanType."Receivable Interest Account";
                                         GenJournalLine."Loan Product Type" := LoanType.Code;
                                         GenJournalLine.Validate(GenJournalLine."Bal. Account No.");
                                     end;
@@ -120,64 +119,10 @@ Report 50280 "Post Monthly Interest."
                                         GenJournalLine.Insert;
                                 until cust.Next = 0;
                             end;
-
-
                         end;
 
                     until loanapp.Next = 0;
                 end;
-                /* loanapp.RESET;
-                 loanapp.SETRANGE(loanapp."Loan  No.","Loan  No.");
-                 loanapp.SETFILTER(loanapp."Date filter",SDATE);
-                 IF loanapp.FIND('-') THEN BEGIN
-                 loanapp.CALCFIELDS(loanapp."Outstanding Balance");
-                 IF loanapp."Outstanding Balance" > 0 THEN BEGIN
-                 IF loanapp."Approved Amount" > 100000 THEN BEGIN
-                 LineNo:=LineNo+10000;
-                    GenJournalLine.INIT;
-                    GenJournalLine."Journal Template Name":='General';
-                    GenJournalLine."Journal Batch Name":='INT DUE';
-                    GenJournalLine."Line No.":=LineNo;
-                    GenJournalLine."Account Type":=GenJournalLine."Account Type"::Member;
-                    GenJournalLine."Account No.":= loanapp."Client Code";
-                    GenJournalLine."Transaction Type":=GenJournalLine."Transaction Type"::"Insurance Charge";
-                    GenJournalLine.VALIDATE(GenJournalLine."Account No.");
-                    GenJournalLine."Document No.":=DocNo;
-                    GenJournalLine."Posting Date":=PostDate;
-                    GenJournalLine.Description:=DocNo+' '+'Insurance charged';
-                    GenJournalLine.Amount:=ROUND( loanapp."Outstanding Balance"*( 0.0166667/100),1,'>');
-                    GenJournalLine.VALIDATE(GenJournalLine.Amount);
-                     IF LoanType.GET(loanapp."Loan Product Type") THEN BEGIN
-                    GenJournalLine."Bal. Account Type":=GenJournalLine."Bal. Account Type"::"G/L Account";
-                    GenJournalLine."Bal. Account No.":=LoanType."Loan Insurance Accounts";
-                    GenJournalLine.VALIDATE(GenJournalLine."Bal. Account No.");
-                    END;
-                    IF  loanapp.Source= loanapp.Source::BOSA THEN BEGIN
-                    GenJournalLine."Shortcut Dimension 1 Code":='BOSA' ;
-                    GenJournalLine."Shortcut Dimension 2 Code":= 'NAIROBI';
-                    END;
-                    IF  loanapp.Source= loanapp.Source::FOSA THEN BEGIN
-                    GenJournalLine."Shortcut Dimension 1 Code":='FOSA' ;
-                    GenJournalLine."Shortcut Dimension 2 Code":= 'NAIROBI';
-                    END;
-                    GenJournalLine.VALIDATE(GenJournalLine."Shortcut Dimension 1 Code");
-                    GenJournalLine.VALIDATE(GenJournalLine."Shortcut Dimension 2 Code");
-                    GenJournalLine."Loan No":= loanapp."Loan  No.";
-                    IF GenJournalLine.Amount<>0 THEN
-                    GenJournalLine.INSERT;
-                 END;
-                 END;
-                 END;*/
-                /*
-                //Post New
-                GenJournalLine.RESET;
-                GenJournalLine.SETRANGE("Journal Template Name",'General');
-                GenJournalLine.SETRANGE("Journal Batch Name",'INT DUE');
-                IF GenJournalLine.FIND('-') THEN BEGIN
-                CODEUNIT.RUN(CODEUNIT::"Gen. Jnl.-Post B",GenJournalLine);
-                END; */
-                //Post New
-
             end;
 
             trigger OnPostDataItem()
