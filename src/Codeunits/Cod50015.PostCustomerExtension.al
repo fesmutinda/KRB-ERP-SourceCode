@@ -160,7 +160,7 @@ codeunit 50015 "PostCustomerExtension"
                     LoanTypes.TestField(LoanTypes."Receivable Interest Account");
                     //GenJournalLine."Posting Group" := FnHandlePostingGroup(LoanTypes."Receivable Interest Account", 'INTPAID-' + FORMAT(COPYSTR(LoanTypes.Code, 1, 10)));
                     //lets credit the loan account----Festus
-                    GenJournalLine."Posting Group" := FnHandlePostingGroup(LoanTypes."Receivable Interest Account", 'INTPAID-' + FORMAT(COPYSTR(LoanTypes.Code, 1, 10)));
+                    GenJournalLine."Posting Group" := FnHandlePostingGroup(LoanTypes."Loan Account", 'INTPAID-' + FORMAT(COPYSTR(LoanTypes.Code, 1, 10)));
 
                     GenJournalLine.Found := true;
                     GenJournalLine.Modify();
