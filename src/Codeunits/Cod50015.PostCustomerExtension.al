@@ -179,7 +179,6 @@ codeunit 50015 "PostCustomerExtension"
                     LoanTypes.TestField(LoanTypes."Receivable Interest Account");
                     //FnCheckIfPostingGroupIsSetUp,If != Then SetUp
                     GenJournalLine."Posting Group" := FnHandlePostingGroup(LoanTypes."Receivable Interest Account", 'INTDUE-' + FORMAT(COPYSTR(LoanTypes.Code, 1, 10)));
-                    ;
                     GenJournalLine.Found := true;
                     GenJournalLine.Found := true;
                     GenJournalLine.Modify();

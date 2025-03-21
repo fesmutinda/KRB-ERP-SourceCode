@@ -4111,6 +4111,9 @@ Table 51371 "Loans Register"
         {
             Enabled = false;
         }
+        field(69217990; "Do not charge Interest"; Boolean)
+        {
+        }
         field(51516210; "Loan Reschedule Instalments"; Integer)
         {
 

@@ -9,6 +9,7 @@ Report 50280 "Post Monthly Interest."
         {
             CalcFields = "Outstanding Balance";
             RequestFilterFields = "Date filter", "Issued Date", "Loan  No.", "Client Code";
+            DataItemTableView = where("Loan Product Type" = filter(<> 'LT008'));
             column(ReportForNavId_4645; 4645)
             {
             }
@@ -75,10 +76,13 @@ Report 50280 "Post Monthly Interest."
                 loanapp.Reset;
                 loanapp.SetRange(loanapp."Loan  No.", "Loans Register"."Loan  No.");
                 loanapp.SetFilter(loanapp."Date filter", SDATE);
-                loanapp.SetFilter(loanapp."Loan Product Type", '<>LT008');
+                // loanapp.SetFilter(loanapp."Loan Product Type", '<>LT008');
                 if loanapp.Find('-') then begin
                     repeat
                         loanapp.CalcFields(loanapp."Outstanding Balance");
+                        loanapp.CalcFields(loanapp."Oustanding Interest");
+                        if loanapp."Outstanding Balance" = loanapp."Oustanding Interest" then CurrReport.Skip;
+                        if loanapp."Oustanding Interest" > loanapp."Outstanding Balance" then CurrReport.Skip;
                         if loanapp."Outstanding Balance" > 0 then begin
 
                             Cust.Reset;
@@ -100,10 +104,13 @@ Report 50280 "Post Monthly Interest."
                                     GenJournalLine."Posting Date" := PostDate;
                                     GenJournalLine.Description := 'INT Charged' + ' ' + Format(PostDate);
                                     if LoanType.Get(loanapp."Loan Product Type") then begin
-                                        GenJournalLine.Amount := ROUND(loanapp."Outstanding Balance" * (LoanType."Interest rate" / 1200), 1, '>');
+                                        GenJournalLine.Amount := ROUND(loanapp."Outstanding Balance" * (loanapp.Interest / 1200), 1, '>');
+                                        if loanapp."Repayment Method" = loanapp."repayment method"::"Straight Line" then
+                                            GenJournalLine.Amount := ROUND(loanapp."Approved Amount" * (loanapp.Interest / 1200), 1, '>');
                                         GenJournalLine.Validate(GenJournalLine.Amount);
+
                                         GenJournalLine."Bal. Account Type" := GenJournalLine."bal. account type"::"G/L Account";
-                                        GenJournalLine."Bal. Account No." := LoanType."Receivable Interest Account";
+                                        GenJournalLine."Bal. Account No." := LoanType."Loan Interest Account";
                                         GenJournalLine."Loan Product Type" := LoanType.Code;
                                         GenJournalLine.Validate(GenJournalLine."Bal. Account No.");
                                     end;
@@ -127,7 +134,24 @@ Report 50280 "Post Monthly Interest."
 
             trigger OnPostDataItem()
             begin
-
+                if (UserId <> 'MOBILE') and (UserId <> 'ATM') and (UserId <> 'AGENCY') then begin
+                    EntryNos := 0;
+                    if Audit.FindLast then
+                        EntryNos := 1 + Audit."Entry No";
+                    Audit.Init;
+                    Audit."Entry No" := EntryNos;
+                    Audit."Transaction Type" := 'Interest Processing';
+                    Audit."Loan Number" := '';
+                    Audit."Document Number" := DocNo;
+                    Audit."Account Number" := '';
+                    Audit.UsersId := UserId;
+                    Audit.Amount := 0;
+                    Audit.Date := Today;
+                    Audit.Time := Time;
+                    Audit.Source := 'INTEREST DUE';
+                    Audit.Insert;
+                    Commit
+                end;
                 GenJournalLine.Reset;
                 GenJournalLine.SetRange("Journal Template Name", 'General');
                 GenJournalLine.SetRange("Journal Batch Name", 'INT DUE');
@@ -218,7 +242,8 @@ Report 50280 "Post Monthly Interest."
         LoanType: Record "Loan Products Setup";
         PostDate: Date;
         Cust: Record Customer;
-
+        Audit: Record "Audit Entries";
+        EntryNos: Integer;
         LineNo: Integer;
         DocNo: Code[20];
         GenJournalLine: Record "Gen. Journal Line";
