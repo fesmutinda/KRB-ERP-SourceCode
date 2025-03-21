@@ -158,9 +158,10 @@ codeunit 50015 "PostCustomerExtension"
             if LoanApp.Find('-') then begin
                 if LoanTypes.Get(LoanApp."Loan Product Type") then begin
                     LoanTypes.TestField(LoanTypes."Receivable Interest Account");
-                    //FnCheckIfPostingGroupIsSetUp,If != Then SetUp
+                    //GenJournalLine."Posting Group" := FnHandlePostingGroup(LoanTypes."Receivable Interest Account", 'INTPAID-' + FORMAT(COPYSTR(LoanTypes.Code, 1, 10)));
+                    //lets credit the loan account----Festus
                     GenJournalLine."Posting Group" := FnHandlePostingGroup(LoanTypes."Receivable Interest Account", 'INTPAID-' + FORMAT(COPYSTR(LoanTypes.Code, 1, 10)));
-                    ;
+
                     GenJournalLine.Found := true;
                     GenJournalLine.Modify();
                 end;
@@ -177,8 +178,9 @@ codeunit 50015 "PostCustomerExtension"
             if LoanApp.Find('-') then begin
                 if LoanTypes.Get(LoanApp."Loan Product Type") then begin
                     LoanTypes.TestField(LoanTypes."Receivable Interest Account");
-                    //FnCheckIfPostingGroupIsSetUp,If != Then SetUp
-                    GenJournalLine."Posting Group" := FnHandlePostingGroup(LoanTypes."Receivable Interest Account", 'INTDUE-' + FORMAT(COPYSTR(LoanTypes.Code, 1, 10)));
+                    //GenJournalLine."Posting Group" := FnHandlePostingGroup(LoanTypes."Receivable Interest Account", 'INTDUE-' + FORMAT(COPYSTR(LoanTypes.Code, 1, 10)));
+                    //lets debit the Loan Account ---Festus
+                    GenJournalLine."Posting Group" := FnHandlePostingGroup(LoanTypes."Loan Account", 'INTDUE-' + FORMAT(COPYSTR(LoanTypes.Code, 1, 10)));
                     GenJournalLine.Found := true;
                     GenJournalLine.Found := true;
                     GenJournalLine.Modify();
