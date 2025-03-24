@@ -1565,27 +1565,6 @@ Codeunit 50120 "PORTALIntegration MFS"
         end;
     end;
 
-
-    procedure FnGetLoansForGuarantee(Member: Code[40]) Guarantee: Text
-    begin
-
-        // OnlineLoanGuarantors.Reset;
-        // OnlineLoanGuarantors.SetRange("Member No", Member);
-        // OnlineLoanGuarantors.SetFilter(Approved, '%1', OnlineLoanGuarantors.Approved::Pending);
-        // if OnlineLoanGuarantors.FindFirst then begin
-        //     ObjLoanApplications.Reset;
-        //     ObjLoanApplications.SetRange("Application No", OnlineLoanGuarantors."Loan Application No");
-        //     if ObjLoanApplications.FindFirst then begin
-        //         repeat
-        //             Guarantee := Format(OnlineLoanGuarantors."Loan Application No") + '::' + ObjLoanApplications."Loan Type" + '::' + OnlineLoanGuarantors.ApplicantNo + '::' + OnlineLoanGuarantors.ApplicantName
-        //             + '::' + Format(ObjLoanApplications."Loan Amount") + '::' + Guarantee;
-        //         until OnlineLoanGuarantors.Next = 0;
-        //     end;
-        // end;
-
-    end;
-
-
     procedure FnEditableLoans(MemberNo: Code[10]; Loan: Code[20]) Edit: Text
     var
         Loantpe: Text;
@@ -2185,6 +2164,49 @@ Codeunit 50120 "PORTALIntegration MFS"
             responseText := '{ "StatusCode":"200","StatusDescription":"OK","OnlineGuarantors":[' + guarantorsText + '] }';
         END ELSE BEGIN
             responseText := '{ "StatusCode":"400","StatusDescription":"NoLoans","OnlineGuarantors":[] }';
+        END;
+    end;
+
+    procedure FnGetLoansForGuarantee(Member: Code[40]) responseText: Text
+    var
+        guarantorsText: Text;
+    begin
+
+        OnlineLoanGuarantors.Reset;
+        OnlineLoanGuarantors.SetRange("Member No", Member);
+        OnlineLoanGuarantors.SetFilter(Approved, '%1', OnlineLoanGuarantors.Approved::Pending);
+        if OnlineLoanGuarantors.FindFirst then begin
+            ObjLoanApplications.Reset;
+            ObjLoanApplications.SetRange("Application No", OnlineLoanGuarantors."Loan Application No");
+            if ObjLoanApplications.FindFirst then begin
+                repeat
+                    if guarantorsText = '' then begin
+                        guarantorsText := '{'
+                                      + '"LoanApplicationNo":"' + FORMAT(OnlineLoanGuarantors."Loan Application No") + '"'
+                                      + ',"LoanType":"' + FORMAT(OnlineLoanGuarantors."Loan Type") + '"'
+                                      + ',"ApplicantNo":"' + OnlineLoanGuarantors.ApplicantNo + '"'
+                                      + ',"ApplicantName":"' + FORMAT(OnlineLoanGuarantors.ApplicantName) + '"'
+                                      + ',"Amount":"' + FORMAT(OnlineLoanGuarantors."Amount") + '"'
+                                      + ',"EntryNo":"' + FORMAT(OnlineLoanGuarantors."Entry No") + '"'
+                                      + '}';
+                    end else begin
+                        guarantorsText := guarantorsText + ',{'
+                                                              + '"LoanApplicationNo":"' + FORMAT(OnlineLoanGuarantors."Loan Application No") + '"'
+                                                              + ',"LoanType":"' + FORMAT(OnlineLoanGuarantors."Loan Type") + '"'
+                                                              + ',"ApplicantNo":"' + OnlineLoanGuarantors.ApplicantNo + '"'
+                                                              + ',"ApplicantName":"' + FORMAT(OnlineLoanGuarantors.ApplicantName) + '"'
+                                                              + ',"Amount":"' + FORMAT(OnlineLoanGuarantors."Amount") + '"'
+                                                              + ',"EntryNo":"' + FORMAT(OnlineLoanGuarantors."Entry No") + '"'
+                                                              + '}';
+                    end;
+
+                until OnlineLoanGuarantors.Next = 0;
+            end;
+        end;
+        IF guarantorsText <> '' THEN BEGIN
+            responseText := '{ "StatusCode":"200","StatusDescription":"OK","OnlineRequests":[' + guarantorsText + '] }';
+        END ELSE BEGIN
+            responseText := '{ "StatusCode":"400","StatusDescription":"NoLoans","OnlineRequests":[] }';
         END;
     end;
 

@@ -40,6 +40,7 @@ Table 59046 "Online Loan Guarantors"
         field(11; "ID No"; Code[20]) { Editable = false; }
         field(12; ApplicantName; Code[50]) { Editable = false; }
         field(13; "Applicant Mobile"; Code[30]) { }
+        field(14; "Loan Type"; Code[30]) { }
     }
 
     keys
