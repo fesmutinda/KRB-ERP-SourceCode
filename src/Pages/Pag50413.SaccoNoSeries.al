@@ -52,6 +52,10 @@ page 50413 "Sacco No. Series"
                 {
                     ApplicationArea = Basic;
                 }
+                field("Portal Loan Nos"; Rec."Portal Loan Nos")
+                {
+                    ApplicationArea = Basic;
+                }
                 field("Loans Batch Nos"; Rec."Loans Batch Nos")
                 {
                     ApplicationArea = Basic;
@@ -268,10 +272,6 @@ page 50413 "Sacco No. Series"
                     ApplicationArea = Basic;
                 }
                 field("Request for Quotation Nos"; Rec."Request for Quotation Nos")
-                {
-                    ApplicationArea = Basic;
-                }
-                field("Investors Nos"; Rec."Investors Nos")
                 {
                     ApplicationArea = Basic;
                 }

@@ -760,24 +760,74 @@ Codeunit 50120 "PORTALIntegration MFS"
         END;
     end;
 
-    procedure fnOnlineLoans(MemberNo: Code[20]) loans: Text
+    procedure fnOnlineLoans(memberNumber: Code[20]) runningLoans: Text
+    var
+        balancesText: Text;
+        onlineloans: Record "Online Loan Application";
     begin
-        //  onlineloans.RESET;
-        //  onlineloans."Member No":=MemberNo;
-        //  onlineloans.VALIDATE(onlineloans."Member No");
-        //  
-        // onlineloans.RESET;
-        // onlineloans.SETRANGE(onlineloans."Member No", MemberNo);
-        // IF onlineloans.FIND('-') THEN BEGIN
-        //     onlineloans.ASCENDING(TRUE);
-        //     REPEAT
-        //         loans := loans + onlineloans."Loan Product Type" + ':' + FORMAT(onlineloans.Installments) + ':' + FORMAT(onlineloans."Principle Repayment") + ':' + FORMAT(onlineloans."Interest Repayment") + ':'
-        //         + FORMAT(onlineloans."Total Monthly Repayment") + ':' + FORMAT(onlineloans."Product Description") + ':' + FORMAT(onlineloans."Interest rate") + ':' + FORMAT(onlineloans."Repayment Method") + ':' + FORMAT(onlineloans."Requested Amount")
-        //         + ':'//+FORMAT(onlineloans."Document No")+'::'
+        balancesText := '';
+        onlineloans.RESET;
+        onlineloans.SETRANGE(onlineloans."BOSA No", memberNumber);
 
-        //     UNTIL
-        //     onlineloans.NEXT = 0;
-        // END;
+        onlineloans.SETFILTER(onlineloans.Posted, '%1', false);
+        onlineloans.SETFILTER(onlineloans.submitted, '%1', false);
+        IF onlineloans.FIND('-') THEN BEGIN
+            onlineloans.ASCENDING(TRUE);
+            REPEAT
+                if balancesText = '' then begin
+                    balancesText := '{'
+                    + '"LoanNo":"' + FORMAT(onlineloans."Application No") + '"'
+                    + ',"ProductType":"' + onlineloans."Loan Type" + '"'
+                    + ',"ProductName":"' + onlineloans."Loan Product Type Name" + '"'
+                    + ',"Installments":"' + FORMAT(onlineloans.Installments) + '"'
+                    + ',"InterestRate":"' + FORMAT(onlineloans."Interest Rate") + '"'
+                    + ',"RequestedAmount":"' + FORMAT(onlineloans."Loan Amount") + '"'
+                    + ',"InterestCalculationMethod":"' + FORMAT(onlineloans."Interest Calculation Method") + '"'
+                    + '}';
+                end else begin
+                    balancesText := balancesText + ',{'
+                    + '"LoanNo":"' + FORMAT(onlineloans."Application No") + '"'
+                    + ',"ProductType":"' + onlineloans."Loan Type" + '"'
+                    + ',"ProductName":"' + onlineloans."Loan Product Type Name" + '"'
+                    + ',"Installments":"' + FORMAT(onlineloans.Installments) + '"'
+                    + ',"InterestRate":"' + FORMAT(onlineloans."Interest Rate") + '"'
+                    + ',"RequestedAmount":"' + FORMAT(onlineloans."Loan Amount") + '"'
+                    + ',"InterestCalculationMethod":"' + FORMAT(onlineloans."Interest Calculation Method") + '"'
+                    + '}';
+                end;
+
+            UNTIL
+            onlineloans.NEXT = 0;
+            IF balancesText <> '' THEN BEGIN
+                runningLoans := '{ "StatusCode":"200","StatusDescription":"OK","OnlineLoans":[' + balancesText + '] }';
+            END ELSE BEGIN
+                runningLoans := '{ "StatusCode":"400","StatusDescription":"NoLoans","OnlineLoans":[] }';
+            END;
+        END;
+    end;
+
+    procedure fnOnlineLoan(memberNumber: Code[20]; loanNumber: Code[20]) loanData: Text
+    var
+        onlineloans: Record "Online Loan Application";
+    begin
+        loanData := '';
+        onlineloans.RESET;
+        onlineloans.SETRANGE(onlineloans."BOSA No", memberNumber);
+        onlineloans.SetRange(onlineloans."Application No", loanNumber);
+        onlineloans.SETFILTER(onlineloans.Posted, '%1', false);
+        onlineloans.SETFILTER(onlineloans.submitted, '%1', false);
+        IF onlineloans.FIND('-') THEN BEGIN
+            loanData := '{'
+                    + '"LoanNo":"' + FORMAT(onlineloans."Application No") + '"'
+                    + ',"ProductType":"' + onlineloans."Loan Type" + '"'
+                    + ',"ProductName":"' + onlineloans."Loan Product Type Name" + '"'
+                    + ',"Installments":"' + FORMAT(onlineloans.Installments) + '"'
+                    + ',"InterestRate":"' + FORMAT(onlineloans."Interest Rate") + '"'
+                    + ',"RequestedAmount":"' + FORMAT(onlineloans."Loan Amount") + '"'
+                    + ',"InterestCalculationMethod":"' + FORMAT(onlineloans."Interest Calculation Method") + '"'
+                    + ',"ApplicationDate":"' + FORMAT(onlineloans."Application Date") + '"'
+                    + '}';
+        END;
     end;
 
     procedure FnGetNOKProfile(MemberNo: Code[20]) info: Text
@@ -944,6 +994,31 @@ Codeunit 50120 "PORTALIntegration MFS"
             TempBlob.CreateOutStream(Outstr);
             TempBlob.CreateInStream(Instr);
             if Report.SaveAs(Report::"Loan Statement", '', ReportFormat::Pdf, Outstr, RecRef) then begin
+                exitString := Base64Convert.ToBase64(Instr);
+                exit;
+            end;
+        end;
+    end;
+
+    procedure FnLoanSchedule(MemberNo: Code[50]; loanNo: Code[20]) exitString: Text
+    var
+        Filename: Text[100];
+        Outputstream: OutStream;
+        RecRef: RecordRef;
+        TempBlob: Codeunit "Temp Blob";
+        Outstr: OutStream;
+        Instr: InStream;
+        Base64Convert: Codeunit "Base64 Convert";
+    begin
+        objLoanRegister.Reset();
+        objLoanRegister.SetFilter(objLoanRegister."Client Code", MemberNo);
+        objLoanRegister.SetRange(objLoanRegister."Loan  No.", loanNo);
+        if objLoanRegister.Find('-') then begin
+            RecRef.GetTable(objLoanRegister);
+            Clear(TempBlob);
+            TempBlob.CreateOutStream(Outstr);
+            TempBlob.CreateInStream(Instr);
+            if Report.SaveAs(Report::"Loans Repayment Schedule New", '', ReportFormat::Pdf, Outstr, RecRef) then begin
                 exitString := Base64Convert.ToBase64(Instr);
                 exit;
             end;
@@ -1781,143 +1856,127 @@ Codeunit 50120 "PORTALIntegration MFS"
     end;
 
 
-    procedure OnlineLoanApplication(BosaNo: Code[30]; LoanType: Code[30]; LoanAmount: Decimal; loanpurpose: Text; repaymentPeriod: Integer) GeneratedApplicationNo: Integer
+    procedure OnlineLoanApplication(BosaNo: Code[30]; LoanType: Code[30]; LoanAmount: Decimal; loanpurpose: Text; repaymentPeriod: Integer) GeneratedApplicationNo: Code[20]
     var
-        NewApplicationNo: Integer;
+        ObjLoanApplications: Record "Online Loan Application";
     begin
-        // ObjLoanApplications.Reset;
-        // ObjLoanApplications.SetRange("Loan Type", '');
-        // ObjLoanApplications.SetRange("BOSA No", BosaNo);
-        // if ObjLoanApplications.Find('-') then
-        //     GeneratedApplicationNo := 0
-        // else begin
+        ObjLoanApplications.Reset;
 
-        //     ObjLoanApplications.Reset;
+        LoanProductType.Get(LoanType);
 
-        //     if ObjLoanApplications.FindLast then
-        //         NewApplicationNo := ObjLoanApplications."Application No" + 1
-        //     else
-        //         NewApplicationNo := 1;
+        objMember.Reset;
+        objMember.SetRange(objMember."No.", BosaNo);
+        if objMember.Find('-') then begin
 
-        //     LoanProductType.Get(LoanType);
+            // ObjLoanApplications."Application No" := NewApplicationNo;
+            ObjLoanApplications."Application Date" := Date;
+            ObjLoanApplications."Id No" := objMember."ID No.";
+            ObjLoanApplications."BOSA No" := objMember."No.";
+            ObjLoanApplications."Employment No" := objMember."Payroll/Staff No";
+            ObjLoanApplications."Member Names" := objMember.Name;
+            ObjLoanApplications.Email := objMember."E-Mail";
+            ObjLoanApplications."Date of Birth" := objMember."Date of Birth";
+            ObjLoanApplications."Membership No" := objMember."No.";
+            ObjLoanApplications.Telephone := objMember."Mobile Phone No";
+            ObjLoanApplications."Loan Type" := LoanType;
+            // ObjLoanApplications."FOSA Account No" := objMember."FOSA Account";
+            ObjLoanApplications."Home Address" := objMember.Address;
+            ObjLoanApplications.Station := objMember."Station/Department";
+            ObjLoanApplications."Loan Amount" := LoanAmount;
+            ObjLoanApplications."Repayment Period" := repaymentPeriod;
+            ObjLoanApplications.Source := LoanProductType.Source;
+            ObjLoanApplications."Interest Rate" := LoanProductType."Interest rate";
+            // ObjLoanApplications."Min No Of Guarantors" := LoanProductType."Min No. Of Guarantors";
+            ObjLoanApplications."Loan Purpose" := loanpurpose;
+            ObjLoanApplications."Sent To Bosa Loans" := false;
+            ObjLoanApplications.submitted := false;
+            ObjLoanApplications.Posted := false;
+            ObjLoanApplications.Refno := '0';
+            ObjLoanApplications."Loan No" := '0';
+            //objLoanApplications."Payment Mode" :=disbursementMode;
+            ObjLoanApplications.Insert(true);
 
-        //     objMember.Reset;
-        //     objMember.SetRange(objMember."No.", BosaNo);
-        //     if objMember.Find('-') then begin
-
-        //         ObjLoanApplications."Application No" := NewApplicationNo;
-        //         ObjLoanApplications."Application Date" := CurrentDatetime;
-        //         ObjLoanApplications."Id No" := objMember."ID No.";
-        //         ObjLoanApplications."BOSA No" := objMember."No.";
-        //         ObjLoanApplications."Employment No" := objMember."Personal No";
-        //         ObjLoanApplications."Member Names" := objMember.Name;
-        //         ObjLoanApplications.Email := objMember."E-Mail";
-        //         ObjLoanApplications."Date of Birth" := objMember."Date of Birth";
-        //         ObjLoanApplications."Membership No" := objMember."No.";
-        //         ObjLoanApplications.Telephone := objMember."Mobile Phone No";
-        //         ObjLoanApplications."Loan Type" := LoanType;
-        //         ObjLoanApplications."FOSA Account No" := objMember."FOSA Account";
-        //         ObjLoanApplications."Home Address" := objMember.Address;
-        //         ObjLoanApplications.Station := objMember."Station/Department";
-        //         ObjLoanApplications."Loan Amount" := LoanAmount;
-        //         ObjLoanApplications."Repayment Period" := repaymentPeriod;
-        //         ObjLoanApplications.Source := LoanProductType.Source;
-        //         ObjLoanApplications."Interest Rate" := LoanProductType."Interest rate";
-        //         ObjLoanApplications."Min No Of Guarantors" := LoanProductType."Min No. Of Guarantors";
-        //         ObjLoanApplications."Loan Purpose" := loanpurpose;
-        //         ObjLoanApplications."Sent To Bosa Loans" := false;
-        //         ObjLoanApplications.submitted := false;
-        //         ObjLoanApplications.Posted := false;
-        //         ObjLoanApplications.Refno := '0';
-        //         ObjLoanApplications."Loan No" := '0';
-        //         //objLoanApplications."Payment Mode" :=disbursementMode;
-        //         ObjLoanApplications.Insert(true);
-
-        //         GeneratedApplicationNo := ObjLoanApplications."Application No";
-        //         if LoanType = '' then SubmitLoan(ObjLoanApplications."Membership No", NewApplicationNo);
-        //     end;
-        //     //SendEmail email TO CreditAccounts officer
-        //     //send sms to applicatnt
-        // end;
-
+            GeneratedApplicationNo := ObjLoanApplications."Application No";
+            // if LoanType = '' then SubmitLoan(ObjLoanApplications."Membership No", NewApplicationNo);
+        end;
     end;
 
 
-    procedure SubmitLoan(MemberNo: Text; LoanNo: Integer)
+    procedure SubmitLoan(MemberNo: Text; LoanNo: Code[20])
     begin
-        // if objMember.Get(MemberNo) then begin
+        if objMember.Get(MemberNo) then begin
 
-        //     ObjLoanApplications.Reset;
-        //     ObjLoanApplications.SetRange(ObjLoanApplications."Application No", LoanNo);
-        //     ObjLoanApplications.SetRange("BOSA No", MemberNo);
-        //     if ObjLoanApplications.Find('-') then begin
-        //         ObjLoanApplications.submitted := true;
-        //         ObjLoanApplications.Modify;
+            ObjLoanApplications.Reset;
+            ObjLoanApplications.SetRange(ObjLoanApplications."Application No", LoanNo);
+            ObjLoanApplications.SetRange("BOSA No", MemberNo);
+            if ObjLoanApplications.Find('-') then begin
+                ObjLoanApplications.submitted := true;
+                ObjLoanApplications.Modify;
 
-        //         //send sms to member
-        //         ReturnList := 'Dear Member, you have submitted Loan,' + 'No,' + Format(ObjLoanApplications."Application No") + 'for loan type' + ObjLoanApplications."Loan Type" + 'your  loan application for appraisal.';
-        //         if (objMember."Phone No." <> '') then
-        //             FnSMSMessage(ClientName, objMember."Phone No.", ReturnList);
-        //         // SMSMessage('PORTALTRAN',FAccNo,objMember."Phone No.",ReturnList);
-        //         Message('test');
-        //         if (objMember."Mobile Phone No" <> '') then
-        //             // SMSMessage('PORTALTRAN',FAccNo,objMember."Phone No.",ReturnList);
-        //             FnSMSMessage(ClientName, objMember."Mobile Phone No", ReturnList);
-        //         Message('test');
-        //         ReturnList := 'Dear Loans Officer,' + objMember.Name + 'member no,' + objMember."No." + 'has Applied Loan amount,' + Format(ObjLoanApplications."Loan Amount") + 'Application No,' + Format(ObjLoanApplications."Application No") + 'Login to navision to check';
-        //         //  FnSMSMessage(ClientName,objMember.,ReturnList);
-        //         // SMSMessage('PORTALTRAN',FAccNo,'0727548586',ReturnList);
-        //         Message('test');
-        //     end;
-        // end;
+                //send sms to member
+                ReturnList := 'Dear Member, you have submitted Loan,' + 'No,' + Format(ObjLoanApplications."Application No") + 'for loan type' + ObjLoanApplications."Loan Type" + 'your  loan application for appraisal.';
+                if (objMember."Phone No." <> '') then
+                    FnSMSMessage(ClientName, objMember."Phone No.", ReturnList);
+                // SMSMessage('PORTALTRAN',FAccNo,objMember."Phone No.",ReturnList);
+                Message('test');
+                if (objMember."Mobile Phone No" <> '') then
+                    // SMSMessage('PORTALTRAN',FAccNo,objMember."Phone No.",ReturnList);
+                    FnSMSMessage(ClientName, objMember."Mobile Phone No", ReturnList);
+                Message('test');
+                ReturnList := 'Dear Loans Officer,' + objMember.Name + 'member no,' + objMember."No." + 'has Applied Loan amount,' + Format(ObjLoanApplications."Loan Amount") + 'Application No,' + Format(ObjLoanApplications."Application No") + 'Login to navision to check';
+                //  FnSMSMessage(ClientName,objMember.,ReturnList);
+                // SMSMessage('PORTALTRAN',FAccNo,'0727548586',ReturnList);
+                Message('test');
+            end;
+        end;
     end;
 
 
-    procedure FnRequestGuarantorship(BosaNo: Code[30]; AppNo: Integer) guaranteed: Boolean
+    procedure FnRequestGuarantorship(BosaNo: Code[30]; AppNo: Code[20]) guaranteed: Boolean
     begin
-        // guaranteed := false;
-        // ObjLoanApplications.Reset;
-        // ObjLoanApplications.SetRange("Application No", AppNo);
-        // if ObjLoanApplications.Find('-') then begin
-        //     OnlineLoanGuarantors.Reset;
-        //     if OnlineLoanGuarantors.FindLast then
-        //         NewApplicationNumber := OnlineLoanGuarantors."Entry No" + 1
-        //     else
-        //         NewApplicationNumber := 1;
-        //     //create in online gurantors table
-        //     objMember.Reset;
-        //     objMember.SetRange(objMember."No.", BosaNo);
-        //     objMember.SetFilter(Status, '%1', objMember.Status::Active);
-        //     Message('test1');
-        //     if objMember.Find('-') then begin
-        //         OnlineLoanGuarantors.Init;
-        //         OnlineLoanGuarantors."Entry No" := NewApplicationNumber;
-        //         OnlineLoanGuarantors."Loan Application No" := AppNo;
-        //         OnlineLoanGuarantors."Member No" := objMember."No.";
-        //         OnlineLoanGuarantors.Names := objMember.Name;
-        //         OnlineLoanGuarantors."Email Address" := objMember."E-Mail";
-        //         OnlineLoanGuarantors."ID No" := objMember."ID No.";
-        //         OnlineLoanGuarantors.Telephone := objMember."Mobile Phone No";
-        //         OnlineLoanGuarantors.ApplicantNo := objMember."No.";
-        //         OnlineLoanGuarantors.ApplicantName := ObjLoanApplications."Member Names";
-        //         ;
-        //         OnlineLoanGuarantors."Applicant Mobile" := ObjLoanApplications.Telephone;
-        //         OnlineLoanGuarantors.Approved := OnlineLoanGuarantors.Approved::Pending;
-        //         OnlineLoanGuarantors."Approval Status" := false;
-        //         OnlineLoanGuarantors.Insert;
-        //         guaranteed := true;
-        //         Message('test3');
+        guaranteed := false;
+        ObjLoanApplications.Reset;
+        ObjLoanApplications.SetRange("Application No", AppNo);
+        if ObjLoanApplications.Find('-') then begin
+            OnlineLoanGuarantors.Reset;
+            if OnlineLoanGuarantors.FindLast then
+                NewApplicationNumber := OnlineLoanGuarantors."Entry No" + 1
+            else
+                NewApplicationNumber := 1;
+            //create in online gurantors table
+            objMember.Reset;
+            objMember.SetRange(objMember."No.", BosaNo);
+            objMember.SetFilter(Status, '%1', objMember.Status::Active);
+            Message('test1');
+            if objMember.Find('-') then begin
+                OnlineLoanGuarantors.Init;
+                OnlineLoanGuarantors."Entry No" := NewApplicationNumber;
+                OnlineLoanGuarantors."Loan Application No" := AppNo;
+                OnlineLoanGuarantors."Member No" := objMember."No.";
+                OnlineLoanGuarantors.Names := objMember.Name;
+                OnlineLoanGuarantors."Email Address" := objMember."E-Mail";
+                OnlineLoanGuarantors."ID No" := objMember."ID No.";
+                OnlineLoanGuarantors.Telephone := objMember."Mobile Phone No";
+                OnlineLoanGuarantors.ApplicantNo := objMember."No.";
+                OnlineLoanGuarantors.ApplicantName := ObjLoanApplications."Member Names";
+                ;
+                OnlineLoanGuarantors."Applicant Mobile" := ObjLoanApplications.Telephone;
+                OnlineLoanGuarantors.Approved := OnlineLoanGuarantors.Approved::Pending;
+                OnlineLoanGuarantors."Approval Status" := false;
+                OnlineLoanGuarantors.Insert;
+                guaranteed := true;
+                Message('test3');
 
-        //         ObjLoanApplications.Get(AppNo);
-        //         //send sms to guarantor
-        //         ReturnList := 'Dear Member, ' + ObjLoanApplications."Member Names" + ' has requested loan Guarantorship,' + 'of.' + Format(ObjLoanApplications."Loan Amount") + 'Kindly login to the portal to accept or reject the request';
-        //         // SMSMessage('PORTALTRAN',FAccNo,objMember."Phone No.",ReturnList);
-        //         FnSMSMessage('PORTAL', objMember."Mobile Phone No", ReturnList);
+                ObjLoanApplications.Get(AppNo);
+                //send sms to guarantor
+                ReturnList := 'Dear Member, ' + ObjLoanApplications."Member Names" + ' has requested loan Guarantorship,' + 'of.' + Format(ObjLoanApplications."Loan Amount") + 'Kindly login to the portal to accept or reject the request';
+                // SMSMessage('PORTALTRAN',FAccNo,objMember."Phone No.",ReturnList);
+                FnSMSMessage('PORTAL', objMember."Mobile Phone No", ReturnList);
 
 
-        //     end;
+            end;
 
-        //  end;
+        end;
     end;
 
 
@@ -1953,40 +2012,40 @@ Codeunit 50120 "PORTALIntegration MFS"
     end;
 
 
-    procedure ApproveGuarantorship(MemberNo: Text; LoanNo: Integer; Amount: Decimal): Text
+    procedure ApproveGuarantorship(MemberNo: Text; LoanNo: Code[20]; Amount: Decimal): Text
     begin
-        // OnlineLoanGuarantors.Reset;
-        // OnlineLoanGuarantors.SetRange(OnlineLoanGuarantors."Loan Application No", LoanNo);
-        // OnlineLoanGuarantors.SetRange(OnlineLoanGuarantors."Member No", MemberNo);
-        // if OnlineLoanGuarantors.Find('-') then begin
-        //     OnlineLoanGuarantors.Approved := OnlineLoanGuarantors.Approved::Approved;
-        //     OnlineLoanGuarantors.Amount := Amount;
-        //     OnlineLoanGuarantors."Approval Status" := true;
-        //     OnlineLoanGuarantors.Modify;
+        OnlineLoanGuarantors.Reset;
+        OnlineLoanGuarantors.SetRange(OnlineLoanGuarantors."Loan Application No", LoanNo);
+        OnlineLoanGuarantors.SetRange(OnlineLoanGuarantors."Member No", MemberNo);
+        if OnlineLoanGuarantors.Find('-') then begin
+            OnlineLoanGuarantors.Approved := OnlineLoanGuarantors.Approved::Approved;
+            OnlineLoanGuarantors.Amount := Amount;
+            OnlineLoanGuarantors."Approval Status" := true;
+            OnlineLoanGuarantors.Modify;
 
-        //     //send sms/email to loanee
-        //     objMember.Get(OnlineLoanGuarantors.ApplicantNo);
-        //     ReturnList := 'Dear Member, your loan guarantorship have been approved by,' + OnlineLoanGuarantors.Names + '. Login to   members portal to Submit for appraisal ';
-        //     //SMSMessage('PORTALTRAN',FAccNo,objMember."Phone No.",ReturnList);
-        //     FnSMSMessage('PORTAL', objMember."Mobile Phone No", ReturnList);
-        //     if OnlineLoanGuarantors.Approved = OnlineLoanGuarantors.Approved::Rejected then
-        //         ReturnList := 'Dear Member, your loan guarantorship have been rejected. Login to member portal for details';
-        //     //SMSMessage('PORTALTRAN',FAccNo,objMember."Phone No.",ReturnList);
-        //     FnSMSMessage('PORTAL', objMember."Mobile Phone No", ReturnList);
+            //send sms/email to loanee
+            objMember.Get(OnlineLoanGuarantors.ApplicantNo);
+            ReturnList := 'Dear Member, your loan guarantorship have been approved by,' + OnlineLoanGuarantors.Names + '. Login to   members portal to Submit for appraisal ';
+            //SMSMessage('PORTALTRAN',FAccNo,objMember."Phone No.",ReturnList);
+            FnSMSMessage('PORTAL', objMember."Mobile Phone No", ReturnList);
+            if OnlineLoanGuarantors.Approved = OnlineLoanGuarantors.Approved::Rejected then
+                ReturnList := 'Dear Member, your loan guarantorship have been rejected. Login to member portal for details';
+            //SMSMessage('PORTALTRAN',FAccNo,objMember."Phone No.",ReturnList);
+            FnSMSMessage('PORTAL', objMember."Mobile Phone No", ReturnList);
 
-        //     //SEND sms to member
+            //SEND sms to member
 
 
-        //     //send sms/email to guarantor
-        //     objMember.Get(MemberNo);
-        //     ReturnList := 'Dear Member, you have approved loan Guarantorship.' + 'for,' + OnlineLoanGuarantors.ApplicantName;
-        //     //SMSMessage('PORTALTRAN',FAccNo,OnlineLoanGuarantors.Telephone,ReturnList);
-        //     FnSMSMessage('PORTAL', objMember."Mobile Phone No", ReturnList);
-        //     if OnlineLoanGuarantors.Approved = OnlineLoanGuarantors.Approved::Rejected then
-        //         ReturnList := 'Dear Member, you have rejected loan Guarantorship.';
-        //     FnSMSMessage('PORTAL', objMember."Mobile Phone No", ReturnList);
-        //     //SMSMessage('PORTALTRAN',FAccNo,objMember."Phone No.",ReturnList);
-        // end;
+            //send sms/email to guarantor
+            objMember.Get(MemberNo);
+            ReturnList := 'Dear Member, you have approved loan Guarantorship.' + 'for,' + OnlineLoanGuarantors.ApplicantName;
+            //SMSMessage('PORTALTRAN',FAccNo,OnlineLoanGuarantors.Telephone,ReturnList);
+            FnSMSMessage('PORTAL', objMember."Mobile Phone No", ReturnList);
+            if OnlineLoanGuarantors.Approved = OnlineLoanGuarantors.Approved::Rejected then
+                ReturnList := 'Dear Member, you have rejected loan Guarantorship.';
+            FnSMSMessage('PORTAL', objMember."Mobile Phone No", ReturnList);
+            //SMSMessage('PORTALTRAN',FAccNo,objMember."Phone No.",ReturnList);
+        end;
 
     end;
 
@@ -2087,43 +2146,71 @@ Codeunit 50120 "PORTALIntegration MFS"
         exit(ReturnDecimal);
     end;
 
-
-    procedure FnGetGuarantors(LoanNo: Integer) text: Text
+    procedure FnGetGuarantors(LoanNo: Code[20]; memberNumber: Code[20]) responseText: Text
+    var
+        OnlineLoanGuarantors: Record "Online Loan Guarantors";
+        guarantorsText: Text;
     begin
-        // OnlineLoanGuarantors.Reset;
-        // OnlineLoanGuarantors.SetRange("Loan Application No", LoanNo);
-        // if OnlineLoanGuarantors.FindFirst then begin
-        //     repeat
-        //         text := OnlineLoanGuarantors."Member No" + '.' + ':' + OnlineLoanGuarantors.Names + '.' + ':' + OnlineLoanGuarantors."Email Address" + '.' + ':' + OnlineLoanGuarantors.Telephone
-        //         + '.' + ':' + Format(OnlineLoanGuarantors.Amount) + '.' + ':' + Format(OnlineLoanGuarantors.Approved) + '.' + ':' + text
-        //   until OnlineLoanGuarantors.Next = 0;
-        // end;
-    end;
+        guarantorsText := '';
+        OnlineLoanGuarantors.Reset;
+        OnlineLoanGuarantors.SetRange("Loan Application No", LoanNo);
+        // OnlineLoanGuarantors.SetRange(OnlineLoanGuarantors.ApplicantNo, memberNumber);
+        if OnlineLoanGuarantors.FindFirst then begin
+            repeat
+                if guarantorsText = '' then begin
+                    guarantorsText := '{'
+                                        + '"AccountNo":"' + FORMAT(OnlineLoanGuarantors."Member No") + '"'
+                                        + ',"AmountGuaranteed":"' + FORMAT(OnlineLoanGuarantors.Amount) + '"'
+                                        + ',"GuarantorName":"' + OnlineLoanGuarantors.Names + '"'
+                                        + ',"IdNumber":"' + FORMAT(OnlineLoanGuarantors."ID No") + '"'
+                                        + ',"EmailAddress":"' + FORMAT(OnlineLoanGuarantors."Email Address") + '"'
+                                        + ',"Telephone":"' + FORMAT(OnlineLoanGuarantors.Telephone) + '"'
+                                        + ',"ApprovalStatus":"' + FORMAT(OnlineLoanGuarantors."Approval Status") + '"'
+                                        + '}';
+                end else begin
+                    guarantorsText := guarantorsText + ',{'
+                                                            + '"AccountNo":"' + FORMAT(OnlineLoanGuarantors."Member No") + '"'
+                                                            + ',"AmountGuaranteed":"' + FORMAT(OnlineLoanGuarantors.Amount) + '"'
+                                                            + ',"GuarantorName":"' + OnlineLoanGuarantors.Names + '"'
+                                                            + ',"IdNumber":"' + FORMAT(OnlineLoanGuarantors."ID No") + '"'
+                                                            + ',"EmailAddress":"' + FORMAT(OnlineLoanGuarantors."Email Address") + '"'
+                                                            + ',"Telephone":"' + FORMAT(OnlineLoanGuarantors.Telephone) + '"'
+                                                            + ',"ApprovalStatus":"' + FORMAT(OnlineLoanGuarantors."Approval Status") + '"'
+                                                            + '}';
+                end;
+            until OnlineLoanGuarantors.Next = 0;
 
+        end;
+        IF guarantorsText <> '' THEN BEGIN
+            responseText := '{ "StatusCode":"200","StatusDescription":"OK","OnlineGuarantors":[' + guarantorsText + '] }';
+        END ELSE BEGIN
+            responseText := '{ "StatusCode":"400","StatusDescription":"NoLoans","OnlineGuarantors":[] }';
+        END;
+    end;
 
     procedure FnGetOnlineLoans(MemberNo: Code[30]) text: Text
     begin
-        // ObjLoanApplications.Reset;
-        // ObjLoanApplications.SetRange("BOSA No", MemberNo);
-        // if ObjLoanApplications.Find('-') then begin
-        //     repeat
-        //         text := Format(ObjLoanApplications."Application No") + '.' + ':' + ObjLoanApplications."Loan Type" + '.' + ':' + Format(ObjLoanApplications."Loan Amount")
-        //         + '.' + ':' + Format(ObjLoanApplications."Application Date") + '.' + ':' + Format(ObjLoanApplications.submitted) + '.' + ':' + text;
-        //     until ObjLoanApplications.Next = 0;
-        // end;
+        ObjLoanApplications.Reset;
+        ObjLoanApplications.SetRange("BOSA No", MemberNo);
+        if ObjLoanApplications.Find('-') then begin
+            repeat
+                text := Format(ObjLoanApplications."Application No") + '.' + ':' + ObjLoanApplications."Loan Type" + '.' + ':' + Format(ObjLoanApplications."Loan Amount")
+                + '.' + ':' + Format(ObjLoanApplications."Application Date") + '.' + ':' + Format(ObjLoanApplications.submitted) + '.' + ':' + text;
+            until ObjLoanApplications.Next = 0;
+        end;
     end;
 
 
     procedure FnEditOnlineLoan(LoanNo: Code[30]) loan: Text
     begin
-        // ObjLoanApplications.Reset;
-        // ObjLoanApplications.SetRange("Loan No", LoanNo);
-        // if ObjLoanApplications.FindFirst then begin
+        ObjLoanApplications.Reset;
+        ObjLoanApplications.SetRange("Loan No", LoanNo);
+        if ObjLoanApplications.FindFirst then begin
 
-        //     loan := ObjLoanApplications."Loan Type" + '.' + ':' + ObjLoanApplications."Loan Purpose" + '.' + ':' + Format(ObjLoanApplications."Loan Amount")
-        //      + '.' + ':' + Format(ObjLoanApplications."Interest Rate");
+            loan := ObjLoanApplications."Loan Type" + '.' + ':' + ObjLoanApplications."Loan Purpose" + '.' + ':' + Format(ObjLoanApplications."Loan Amount")
+             + '.' + ':' + Format(ObjLoanApplications."Interest Rate");
 
-        // end;
+        end;
     end;
 }
 

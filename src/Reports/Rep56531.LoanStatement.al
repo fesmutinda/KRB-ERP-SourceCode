@@ -125,7 +125,7 @@ Report 56531 "Loan Statement"
                 dataitem(loan; "Cust. Ledger Entry")
                 {
                     DataItemLink = "Customer No." = field("Client Code"), "Loan No" = field("Loan  No."), "Posting Date" = field("Date filter");
-                    DataItemTableView = sorting("Posting Date") where("Transaction Type" = filter(Loan | "Loan Repayment" | "Interest Due" | "Interest Paid" | "Loan Transfer Charges"));
+                    DataItemTableView = sorting("Posting Date") where("Transaction Type" = filter(Loan | "Loan Repayment" | "Interest Due" | "Interest Paid" | "Loan Transfer Charges"), Reversed = const(false));
                     column(ReportForNavId_1102755031; 1102755031)
                     {
                     }

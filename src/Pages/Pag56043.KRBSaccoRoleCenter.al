@@ -1693,6 +1693,12 @@ Page 56043 "KRB Sacco Role Center"
                         Image = PostedReceipt;
                         RunObject = page "Portal Feedback";
                     }
+                    action("Online Loans")
+                    {
+                        Caption = 'Online Loan Applications';
+                        Image = PostedMemo;
+                        RunObject = page "Online Loan Applications";
+                    }
 
                 }
                 group("Alternative Channels Setups")

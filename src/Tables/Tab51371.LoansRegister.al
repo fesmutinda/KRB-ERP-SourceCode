@@ -77,75 +77,6 @@ Table 51371 "Loans Register"
                         end;
                     until LoanApp.Next = 0;
                 end;
-                // GenSetUp.GET();
-                // IF Cust.GET("Client Code") THEN BEGIN
-                //  IF Cust."Registration Date"<>0D THEN
-                //  RefDate:=CALCDATE('<+'+GenSetUp."Share Capital Period"+'>',Cust."Registration Date");
-                //  IF RefDate>TODAY THEN BEGIN
-                //    IF "Loan Product Type"<>'KARIBU' THEN
-                //    ERROR('Member has not finished 6 Months in the sacco to qualify for this loan!');
-                //  END;
-                // END;
-
-                //Check if member has unpaid Sukuma Mwezi Loan
-
-                GenSetUp.Get();
-                if Cust.Get("Client Code") then begin
-                    LoanApp.Reset;
-                    LoanApp.SetRange(LoanApp."Client Code", "Client Code");
-                    //LoanApp.SETRANGE(LoanApp."Loan Product Type",'SUKUMA');
-                    LoanApp.SetRange(LoanApp.Posted, true);
-                    if LoanApp.Find('-') then begin
-                        LoanApp.CalcFields(LoanApp."Outstanding Balance");
-                        if LoanApp."Outstanding Balance" > 0 then begin
-                            if LoanApp."Expected Date of Completion" < Today then begin
-                                //IF "Loan Product Type"<>'TRUSTEE' THEN
-                                //ERROR('Member has an outstanding Sukuma Mwezi Loan that is overdue!');
-                            end;
-                        end;
-                    end;
-                end;
-
-                Cust.Reset;
-                Cust.SetRange(Cust."No.", "Client Code");
-                if Cust.FindFirst then begin
-                    //MESSAGE('01021 %1',"Client Code");
-                    Cust.CalcFields("Shares Retained", "Current Shares");
-                    //IF "Loan Product Type"<>'QUICK' THEN BEGIN
-                    if (Cust."Shares Retained" < GenSetUp."Retained Shares") and ("Loan Product Type" <> 'QUICK') then
-                        Error(Err, "Client Code", Cust."Shares Retained");
-
-                    //END;
-                end;
-
-                /*LoanTyped.RESET;
-                LoanTyped.SETRANGE(Code,"Loan Product Type");
-                IF LoanTyped.FINDFIRST THEN BEGIN
-                
-                   LoanApp.RESET;
-                   LoanApp.SETRANGE(LoanApp."Loan  No.","Loan  No.");
-                   LoanApp.SETRANGE(Posted,TRUE);
-                   IF LoanApp.FINDFIRST THEN BEGIN
-                      LoanApp.CALCFIELDS("Outstanding Balance");
-                      IF LoanApp."Outstanding Balance">0 THEN  BEGIN
-                         IF LoanTyped.Code="Loan Product Type" THEN
-                         ERROR(Text0007,"Client Code","Loan Product Type");
-                
-                      END;
-                
-                   END;
-                
-                END;
-                */
-                /*LoanTyped.GET("Loan Product Type");
-                IF Posted=FALSE THEN BEGIN
-                IF LoanTyped.Code="Loan Product Type" THEN
-                
-                ERROR(Text0007,"Client Code","Loan Product Type");
-                END;
-                */
-
-
 
                 sHARES := 0;
                 LoanApp.Reset;
@@ -1598,7 +1529,8 @@ Table 51371 "Loans Register"
                                                                   "Loan No" = field("Loan  No."),
                                                                   "Transaction Type" = filter(Loan | "Loan Repayment" | "Interest Paid" | "Interest Due" | "Loan Transfer Charges"),
                                                                   "Currency Code" = field("Currency Filter"),
-                                                                  "Posting Date" = field("Date filter")));
+                                                                  "Posting Date" = field("Date filter"),
+                                                                  Reversed = const(false)));
             Editable = false;
             FieldClass = FlowField;
         }

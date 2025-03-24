@@ -2381,70 +2381,53 @@ Codeunit 51120 "PORTALIntegration KRB"
     end;
 
 
-    procedure OnlineLoanApplication(BosaNo: Code[30]; LoanType: Code[30]; LoanAmount: Decimal; loanpurpose: Text; repaymentPeriod: Integer) GeneratedApplicationNo: Integer
+    procedure OnlineLoanApplication(BosaNo: Code[30]; LoanType: Code[30]; LoanAmount: Decimal; loanpurpose: Text; repaymentPeriod: Integer) GeneratedApplicationNo: Code[20]
     var
-        NewApplicationNo: Integer;
         ObjLoanApplications: Record "Online Loan Application";
     begin
         ObjLoanApplications.Reset;
-        ObjLoanApplications.SetRange("Loan Type", '');
-        ObjLoanApplications.SetRange("BOSA No", BosaNo);
-        if ObjLoanApplications.Find('-') then
-            GeneratedApplicationNo := 0
-        else begin
 
-            ObjLoanApplications.Reset;
+        LoanProductType.Get(LoanType);
 
-            if ObjLoanApplications.FindLast then
-                NewApplicationNo := ObjLoanApplications."Application No" + 1
-            else
-                NewApplicationNo := 1;
+        objMember.Reset;
+        objMember.SetRange(objMember."No.", BosaNo);
+        if objMember.Find('-') then begin
 
-            LoanProductType.Get(LoanType);
+            // ObjLoanApplications."Application No" := NewApplicationNo;
+            ObjLoanApplications."Application Date" := Date;
+            ObjLoanApplications."Id No" := objMember."ID No.";
+            ObjLoanApplications."BOSA No" := objMember."No.";
+            ObjLoanApplications."Employment No" := objMember."Payroll/Staff No";
+            ObjLoanApplications."Member Names" := objMember.Name;
+            ObjLoanApplications.Email := objMember."E-Mail";
+            ObjLoanApplications."Date of Birth" := objMember."Date of Birth";
+            ObjLoanApplications."Membership No" := objMember."No.";
+            ObjLoanApplications.Telephone := objMember."Mobile Phone No";
+            ObjLoanApplications."Loan Type" := LoanType;
+            // ObjLoanApplications."FOSA Account No" := objMember."FOSA Account";
+            ObjLoanApplications."Home Address" := objMember.Address;
+            ObjLoanApplications.Station := objMember."Station/Department";
+            ObjLoanApplications."Loan Amount" := LoanAmount;
+            ObjLoanApplications."Repayment Period" := repaymentPeriod;
+            ObjLoanApplications.Source := LoanProductType.Source;
+            ObjLoanApplications."Interest Rate" := LoanProductType."Interest rate";
+            // ObjLoanApplications."Min No Of Guarantors" := LoanProductType."Min No. Of Guarantors";
+            ObjLoanApplications."Loan Purpose" := loanpurpose;
+            ObjLoanApplications."Sent To Bosa Loans" := false;
+            ObjLoanApplications.submitted := false;
+            ObjLoanApplications.Posted := false;
+            ObjLoanApplications.Refno := '0';
+            ObjLoanApplications."Loan No" := '0';
+            //objLoanApplications."Payment Mode" :=disbursementMode;
+            ObjLoanApplications.Insert(true);
 
-            objMember.Reset;
-            objMember.SetRange(objMember."No.", BosaNo);
-            if objMember.Find('-') then begin
-
-                ObjLoanApplications."Application No" := NewApplicationNo;
-                ObjLoanApplications."Application Date" := CurrentDatetime;
-                ObjLoanApplications."Id No" := objMember."ID No.";
-                ObjLoanApplications."BOSA No" := objMember."No.";
-                ObjLoanApplications."Employment No" := objMember."Payroll/Staff No";
-                ObjLoanApplications."Member Names" := objMember.Name;
-                ObjLoanApplications.Email := objMember."E-Mail";
-                ObjLoanApplications."Date of Birth" := objMember."Date of Birth";
-                ObjLoanApplications."Membership No" := objMember."No.";
-                ObjLoanApplications.Telephone := objMember."Mobile Phone No";
-                ObjLoanApplications."Loan Type" := LoanType;
-                // ObjLoanApplications."FOSA Account No" := objMember."FOSA Account";
-                ObjLoanApplications."Home Address" := objMember.Address;
-                ObjLoanApplications.Station := objMember."Station/Department";
-                ObjLoanApplications."Loan Amount" := LoanAmount;
-                ObjLoanApplications."Repayment Period" := repaymentPeriod;
-                ObjLoanApplications.Source := LoanProductType.Source;
-                ObjLoanApplications."Interest Rate" := LoanProductType."Interest rate";
-                // ObjLoanApplications."Min No Of Guarantors" := LoanProductType."Min No. Of Guarantors";
-                ObjLoanApplications."Loan Purpose" := loanpurpose;
-                ObjLoanApplications."Sent To Bosa Loans" := false;
-                ObjLoanApplications.submitted := false;
-                ObjLoanApplications.Posted := false;
-                ObjLoanApplications.Refno := '0';
-                ObjLoanApplications."Loan No" := '0';
-                //objLoanApplications."Payment Mode" :=disbursementMode;
-                ObjLoanApplications.Insert(true);
-
-                GeneratedApplicationNo := ObjLoanApplications."Application No";
-                // if LoanType = '' then SubmitLoan(ObjLoanApplications."Membership No", NewApplicationNo);
-            end;
-            //SendEmail email TO CreditAccounts officer
-            //send sms to applicatnt
+            GeneratedApplicationNo := ObjLoanApplications."Application No";
+            // if LoanType = '' then SubmitLoan(ObjLoanApplications."Membership No", NewApplicationNo);
         end;
-
     end;
 
 
-    procedure SubmitLoan(MemberNo: Text; LoanNo: Integer)
+    procedure SubmitLoan(MemberNo: Text; LoanNo: Code[20])
     begin
         if objMember.Get(MemberNo) then begin
 
@@ -2474,7 +2457,7 @@ Codeunit 51120 "PORTALIntegration KRB"
     end;
 
 
-    procedure FnRequestGuarantorship(BosaNo: Code[30]; AppNo: Integer) guaranteed: Boolean
+    procedure FnRequestGuarantorship(BosaNo: Code[30]; AppNo: Code[20]) guaranteed: Boolean
     begin
         guaranteed := false;
         ObjLoanApplications.Reset;
@@ -2554,7 +2537,7 @@ Codeunit 51120 "PORTALIntegration KRB"
     end;
 
 
-    procedure ApproveGuarantorship(MemberNo: Text; LoanNo: Integer; Amount: Decimal): Text
+    procedure ApproveGuarantorship(MemberNo: Text; LoanNo: Code[20]; Amount: Decimal): Text
     begin
         OnlineLoanGuarantors.Reset;
         OnlineLoanGuarantors.SetRange(OnlineLoanGuarantors."Loan Application No", LoanNo);
@@ -2689,7 +2672,7 @@ Codeunit 51120 "PORTALIntegration KRB"
     end;
 
 
-    procedure FnGetGuarantors(LoanNo: Integer) text: Text
+    procedure FnGetGuarantors(LoanNo: Code[20]) text: Text
     var
         OnlineLoanGuarantors: Record "Online Loan Guarantors";
     begin

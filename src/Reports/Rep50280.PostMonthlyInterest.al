@@ -9,7 +9,7 @@ Report 50280 "Post Monthly Interest."
         {
             CalcFields = "Outstanding Balance";
             RequestFilterFields = "Date filter", "Issued Date", "Loan  No.", "Client Code";
-            DataItemTableView = where("Loan Product Type" = filter(<> 'LT008'));
+            // DataItemTableView = where("Loan Product Type" = filter(<> 'LT008'));
             column(ReportForNavId_4645; 4645)
             {
             }
@@ -76,13 +76,13 @@ Report 50280 "Post Monthly Interest."
                 loanapp.Reset;
                 loanapp.SetRange(loanapp."Loan  No.", "Loans Register"."Loan  No.");
                 loanapp.SetFilter(loanapp."Date filter", SDATE);
-                // loanapp.SetFilter(loanapp."Loan Product Type", '<>LT008');
+                loanapp.SetFilter(loanapp."Loan Product Type", '<>LT008');
                 if loanapp.Find('-') then begin
                     repeat
                         loanapp.CalcFields(loanapp."Outstanding Balance");
                         loanapp.CalcFields(loanapp."Oustanding Interest");
-                        if loanapp."Outstanding Balance" = loanapp."Oustanding Interest" then CurrReport.Skip;
-                        if loanapp."Oustanding Interest" > loanapp."Outstanding Balance" then CurrReport.Skip;
+                        // if loanapp."Outstanding Balance" = loanapp."Oustanding Interest" then CurrReport.Skip;
+                        // if loanapp."Oustanding Interest" > loanapp."Outstanding Balance" then CurrReport.Skip;
                         if loanapp."Outstanding Balance" > 0 then begin
 
                             Cust.Reset;
@@ -104,9 +104,7 @@ Report 50280 "Post Monthly Interest."
                                     GenJournalLine."Posting Date" := PostDate;
                                     GenJournalLine.Description := 'INT Charged' + ' ' + Format(PostDate);
                                     if LoanType.Get(loanapp."Loan Product Type") then begin
-                                        GenJournalLine.Amount := ROUND(loanapp."Outstanding Balance" * (loanapp.Interest / 1200), 1, '>');
-                                        if loanapp."Repayment Method" = loanapp."repayment method"::"Straight Line" then
-                                            GenJournalLine.Amount := ROUND(loanapp."Approved Amount" * (loanapp.Interest / 1200), 1, '>');
+                                        GenJournalLine.Amount := ROUND(loanapp."Outstanding Balance" * (LoanType."Interest rate" / 1200), 1, '>');
                                         GenJournalLine.Validate(GenJournalLine.Amount);
 
                                         GenJournalLine."Bal. Account Type" := GenJournalLine."bal. account type"::"G/L Account";
