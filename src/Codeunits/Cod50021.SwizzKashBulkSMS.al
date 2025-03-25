@@ -25,6 +25,7 @@ Codeunit 50021 SwizzKashBulkSMS
         begin
             SMSMessages.Reset;
             SMSMessages.SetRange(SMSMessages."Sent To Server", SMSMessages."sent to server"::No);
+            SMSMessages.SetRange(SMSMessages.Source, '=1%', 'WEBPORTAL');
             SMSMessages.SetRange(SMSMessages."Date Entered", Today);
             if SMSMessages.Find('-') then begin
 

@@ -1137,21 +1137,26 @@ Codeunit 50120 "PORTALIntegration MFS"
 
 
     procedure MemberAccountDetails(MemberNo: Code[20]) info: Text
+    var
+        dateOfBirth: Date;
     begin
         objMember.Reset;
         objMember.SetRange(objMember."No.", MemberNo);
         if objMember.Find('-') then begin
+            dateOfBirth := objMember."Date of Birth";
+            if FORMAT(dateOfBirth) = '' then
+                dateOfBirth := Today;
 
-            info := '{ "MemberNumber":"' + objMember."No." +
-                      '","MemberName":"' + objMember.Name +
-                      '","EmailAddress":"' + FORMAT(objMember."E-Mail") +
-                      '","AccountStatus":"' + FORMAT(objMember.Status) +
-                      '","MobileNumber":"' + FORMAT(objMember."Mobile Phone No") +
-                      '","IdNumber":"' + FORMAT(objMember."ID No.") +
-                      '","AccountCategory":"' + FORMAT(objMember."Account Category") +
-                      '","PayrollNumber":"' + FORMAT(objMember."Payroll/Staff No") +
-                      '","DateofBirth":"' + Format(objMember."Date of Birth") +
-                      '","Gender":"' + FORMAT(objMember.Gender) + '" }';
+            info := '{ "MemberNumber":"' + objMember."No." + '.' +
+                      '","MemberName":"' + objMember.Name + '.' +
+                      '","EmailAddress":"' + FORMAT(objMember."E-Mail") + '.' +
+                      '","AccountStatus":"' + FORMAT(objMember.Status) + '.' +
+                      '","MobileNumber":"' + FORMAT(objMember."Mobile Phone No") + '.' +
+                      '","IdNumber":"' + FORMAT(objMember."ID No.") + '.' +
+                      '","AccountCategory":"' + FORMAT(objMember."Account Category") + '.' +
+                      '","PayrollNumber":"' + FORMAT(objMember."Payroll/Staff No") + '.' +
+                      '","DateofBirth":"' + Format(dateOfBirth) +
+                      '","Gender":"' + FORMAT(objMember.Gender) + '." }';
         end;
     end;
 
