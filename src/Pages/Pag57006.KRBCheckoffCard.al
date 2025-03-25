@@ -256,7 +256,7 @@ page 57006 "KRB Checkoff Card"
 
                                 // Co_op_Devt_LoanBalance := FnRunInterest(RcptBufLines, Co_op_Devt_LoanBalance, Rec."Loan CutOff Date", 'LT001');
                                 // Co_op_Devt_LoanBalance := FnRunPrinciple(RcptBufLines, Co_op_Devt_LoanBalance, Rec."Loan CutOff Date", 'LT001');
-                                Co_op_Devt_LoanBalance := FnRunLoanRepayment(RcptBufLines, Co_op_Devt_LoanBalance, Rec."Loan CutOff Date", 'LT001');
+                                Co_op_Devt_LoanBalance := FnRunLoanRepayment(RcptBufLines, Co_op_Devt_LoanBalance, Rec."Loan CutOff Date", 'LT002');
                                 FnTransferExcessToUnallocatedFunds(RcptBufLines, Co_op_Devt_LoanBalance, 'Excess Payments for Co-op Development Loan');
                                 dialogBox.Close();
                             end;
