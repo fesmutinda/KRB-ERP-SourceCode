@@ -465,7 +465,7 @@ page 57006 "KRB Checkoff Card"
         Gnljnline."Account No." := memberNo;
         Gnljnline.Validate(Gnljnline."Account No.");
         Gnljnline."Document No." := documentNo;
-        Gnljnline."Posting Date" := Today;
+        Gnljnline."Posting Date" := Rec."Posting date";
         Gnljnline.Description := transDescription;
         Gnljnline.Amount := transAmount * -1;
         Gnljnline.Validate(Gnljnline.Amount);
@@ -491,7 +491,7 @@ page 57006 "KRB Checkoff Card"
         Gnljnline."Account No." := memberNo;
         Gnljnline.Validate(Gnljnline."Account No.");
         Gnljnline."Document No." := documentNo;
-        Gnljnline."Posting Date" := Today;
+        Gnljnline."Posting Date" := Rec."Posting date";
         Gnljnline.Description := transDescription;
         Gnljnline.Amount := transAmount * -1;
         Gnljnline.Validate(Gnljnline.Amount);
@@ -517,7 +517,7 @@ page 57006 "KRB Checkoff Card"
         Gnljnline."Account No." := memberNo;
         Gnljnline.Validate(Gnljnline."Account No.");
         Gnljnline."Document No." := documentNo;
-        Gnljnline."Posting Date" := Today;
+        Gnljnline."Posting Date" := Rec."Posting date";
         Gnljnline.Description := transDescription;
         Gnljnline.Amount := transAmount * -1;
         Gnljnline.Validate(Gnljnline.Amount);
@@ -543,7 +543,7 @@ page 57006 "KRB Checkoff Card"
         Gnljnline."Account No." := memberNo;
         Gnljnline.Validate(Gnljnline."Account No.");
         Gnljnline."Document No." := documentNo;
-        Gnljnline."Posting Date" := Today;
+        Gnljnline."Posting Date" := Rec."Posting date";
         Gnljnline.Description := transDescription;
         Gnljnline.Amount := transAmount * -1;
         Gnljnline.Validate(Gnljnline.Amount);
