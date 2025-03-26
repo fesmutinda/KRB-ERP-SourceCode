@@ -66,12 +66,14 @@ Table 59051 "Instant Offset Details"
                         end;
                         "Principle Top Up" := Loans."Outstanding Balance";
                         // "Interest Top Up" := Loans."Oustanding Interest";
-                        "Total Top Up" := "Principle Top Up";// + "Interest Top Up" + Commision;
+                        // "Total Top Up" := "Principle Top Up";// + "Interest Top Up" + Commision;
                         "Outstanding Balance" := Loans."Outstanding Balance";
                         "Monthly Repayment" := Loans.Repayment;
 
 
-                        "Total Top Up" := "Principle Top Up";// + "Interest Top Up";
+                        // "Total Top Up" := "Principle Top Up";// + "Interest Top Up";
+
+                        "Total Top Up" := ROUND("Principle Top Up", 1, '=');
                     end;
                     Loans.Bridged := true;
                     Loans.Modify
@@ -104,8 +106,8 @@ Table 59051 "Instant Offset Details"
                         ObjLoans.Modify;
                     end;
                 end;
-                //END;
-                "Total Top Up" := "Principle Top Up";// + "Interest Top Up";
+
+                "Total Top Up" := ROUND("Principle Top Up", 1, '=');
 
             end;
         }
