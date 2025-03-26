@@ -372,6 +372,7 @@ page 57006 "KRB Checkoff Card"
             }
             action("Processed Checkoff")
             {
+                Caption = 'Mark as Posted';
                 ApplicationArea = Basic;
                 Image = POST;
                 Promoted = true;
@@ -383,6 +384,7 @@ page 57006 "KRB Checkoff Card"
                         Rec.Posted := true;
                         Rec."Posted By" := UserId;
                         Rec.Modify;
+                        CurrPage.close();
                     end;
                 end;
             }

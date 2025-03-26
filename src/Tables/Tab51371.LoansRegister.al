@@ -2099,6 +2099,18 @@ Table 51371 "Loans Register"
                 "top fee" := ("Requested Amount" - "Top Up Amount") * 0.1;
             end;
         }
+        field(6800412; "Instant Top Up Amount"; Decimal)
+        {
+            CalcFormula = sum("Instant Offset Details"."Total Top Up" where("Loan No." = field("Loan  No."),
+                                                                          "Client Code" = field("Client Code")));
+            Editable = false;
+            FieldClass = FlowField;
+
+            trigger OnValidate()
+            begin
+                "top fee" := ("Requested Amount" - "Instant Top Up Amount") * 0.1;
+            end;
+        }
         field(68005; "Loan Received"; Boolean)
         {
         }

@@ -324,7 +324,17 @@ page 57004 "Instant Loan Disbursement Card"
                         end;
                     end;
                 }
-
+                action("Loans to Offset")
+                {
+                    ApplicationArea = Basic;
+                    Caption = 'Loans to Offset';
+                    Image = AddAction;
+                    Promoted = true;
+                    PromotedCategory = Process;
+                    RunObject = Page "Instant Offset Detail List";
+                    RunPageLink = "Loan No." = field("Loan  No."),
+                                  "Client Code" = field("Client Code");
+                }
             }
         }
     }
@@ -785,8 +795,8 @@ page 57004 "Instant Loan Disbursement Card"
         SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, Rec."Loan  No.", LineNo, GenJournalLine."Transaction Type"::Loan, GenJournalLine."Account Type"::Customer, LoanApps."Client Code", DirbursementDate, VarAmounttoDisburse, 'BOSA', LoanApps."Loan  No.", 'Loan Disbursement - ' + LoanApps."Loan Product Type", LoanApps."Loan  No.");
 
         //...................Cater for Loan Offset Now !
-        Rec.CalcFields("Top Up Amount");
-        if Rec."Top Up Amount" > 0 then begin
+        Rec.CalcFields("Instant Top Up Amount");
+        if Rec."Instant Top Up Amount" > 0 then begin
             LoanTopUp.RESET;
             LoanTopUp.SETRANGE(LoanTopUp."Loan No.", Rec."Loan  No.");
             IF LoanTopUp.FIND('-') THEN BEGIN
