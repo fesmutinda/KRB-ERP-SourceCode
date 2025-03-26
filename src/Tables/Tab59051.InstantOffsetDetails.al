@@ -28,7 +28,6 @@ Table 59051 "Instant Offset Details"
 
                     "Loan Type" := '';
                     "Principle Top Up" := 0;
-                    "Interest Top Up" := 0;
                     "Total Top Up" := 0;
 
                     ObjRepaymentSchedule.Reset;
@@ -66,13 +65,13 @@ Table 59051 "Instant Offset Details"
                             "Interest Due at Clearance" := ((0.01 * Loans."Approved Amount" + 0.01 * Loans."Outstanding Balance") * Loans.Interest / 12 * ("Loan Age" + 1)) / 2 - "Interest Paid";
                         end;
                         "Principle Top Up" := Loans."Outstanding Balance";
-                        "Interest Top Up" := Loans."Oustanding Interest";
-                        "Total Top Up" := "Principle Top Up" + "Interest Top Up" + Commision;
+                        // "Interest Top Up" := Loans."Oustanding Interest";
+                        "Total Top Up" := "Principle Top Up";// + "Interest Top Up" + Commision;
                         "Outstanding Balance" := Loans."Outstanding Balance";
                         "Monthly Repayment" := Loans.Repayment;
 
 
-                        "Total Top Up" := "Principle Top Up" + "Interest Top Up";
+                        "Total Top Up" := "Principle Top Up";// + "Interest Top Up";
                     end;
                     Loans.Bridged := true;
                     Loans.Modify
@@ -106,18 +105,18 @@ Table 59051 "Instant Offset Details"
                     end;
                 end;
                 //END;
-                "Total Top Up" := "Principle Top Up" + "Interest Top Up";
+                "Total Top Up" := "Principle Top Up";// + "Interest Top Up";
 
             end;
         }
-        field(6; "Interest Top Up"; Decimal)
-        {
+        // field(6; "Interest Top Up"; Decimal)
+        // {
 
-            trigger OnValidate()
-            begin
+        //     trigger OnValidate()
+        //     begin
 
-            end;
-        }
+        //     end;
+        // }
         field(7; "Total Top Up"; Decimal)
         {
         }
@@ -244,7 +243,7 @@ Table 59051 "Instant Offset Details"
 
     fieldgroups
     {
-        fieldgroup(DropDown; "Client Code", "Loan Type", "Principle Top Up", "Interest Top Up", "Total Top Up", "Monthly Repayment", "Interest Paid", "Outstanding Balance", "Interest Rate", Commision)
+        fieldgroup(DropDown; "Client Code", "Loan Type", "Principle Top Up", "Total Top Up", "Monthly Repayment", "Interest Paid", "Outstanding Balance", "Interest Rate", Commision)
         {
         }
     }
