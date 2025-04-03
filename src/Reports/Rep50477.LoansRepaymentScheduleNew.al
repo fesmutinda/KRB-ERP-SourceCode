@@ -101,6 +101,8 @@ Report 50477 "Loans Repayment Schedule New"
                 column(LoanBalance; ROUND(LoanBalance, 1, '>'))
                 {
                 }
+
+                column(IncrementField; i) { } // Incrementing field
                 column(Loan_Repayment_Schedule__Repayment_Code_; "Repayment Code")
                 {
                 }

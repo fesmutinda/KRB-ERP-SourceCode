@@ -192,41 +192,41 @@ Page 56029 "Loan Application Card"
                     Editable = false;
                     ApplicationArea = all;
                 }
-                field("Main Sector"; Rec."Main-Sector")
-                {
-                    ApplicationArea = Basic;
-                    ShowMandatory = false;
-                    Style = Ambiguous;
-                    Editable = MNoEditable;
+                // field("Main Sector"; Rec."Main-Sector")
+                // {
+                //     ApplicationArea = Basic;
+                //     ShowMandatory = false;
+                //     Style = Ambiguous;
+                //     Editable = MNoEditable;
 
 
-                    trigger OnValidate()
-                    begin
-                        Rec.TestField(Posted, false);
-                    end;
-                }
-                field("Sub-Sector"; Rec."Sub-Sector")
-                {
-                    ApplicationArea = Basic;
-                    ShowMandatory = true;
-                    TableRelation = "Sub Sector".Code where(No = field("Main-Sector"));
+                //     trigger OnValidate()
+                //     begin
+                //         Rec.TestField(Posted, false);
+                //     end;
+                // }
+                // field("Sub-Sector"; Rec."Sub-Sector")
+                // {
+                //     ApplicationArea = Basic;
+                //     ShowMandatory = true;
+                //     TableRelation = "Sub Sector".Code where(No = field("Main-Sector"));
 
-                    trigger OnValidate()
-                    begin
-                        Rec.TestField(Posted, false);
-                    end;
-                }
-                field("Specific Sector"; Rec."Specific-Sector")
-                {
-                    ApplicationArea = Basic;
-                    ShowMandatory = true;
-                    TableRelation = "Specific Sector".Code where(No = field("Sub-Sector"));
+                //     trigger OnValidate()
+                //     begin
+                //         Rec.TestField(Posted, false);
+                //     end;
+                // }
+                // field("Specific Sector"; Rec."Specific-Sector")
+                // {
+                //     ApplicationArea = Basic;
+                //     ShowMandatory = true;
+                //     TableRelation = "Specific Sector".Code where(No = field("Sub-Sector"));
 
-                    trigger OnValidate()
-                    begin
-                        Rec.TestField(Posted, false);
-                    end;
-                }
+                //     trigger OnValidate()
+                //     begin
+                //         Rec.TestField(Posted, false);
+                //     end;
+                // }
 
                 field(Remarks; Rec.Remarks)
                 {
@@ -940,9 +940,9 @@ Page 56029 "Loan Application Card"
         if Rec.Appraised = false then
             Error('Please Appraise the Loan');
         Rec.TestField("Requested Amount");
-        Rec.TestField("Main-Sector");
-        Rec.TestField("Sub-Sector");
-        Rec.TestField("Specific-Sector");
+        // Rec.TestField("Main-Sector");
+        // Rec.TestField("Sub-Sector");
+        // Rec.TestField("Specific-Sector");
         Rec.TestField("Loan Product Type");
         Rec.TestField("Mode of Disbursement");
         //----------------------

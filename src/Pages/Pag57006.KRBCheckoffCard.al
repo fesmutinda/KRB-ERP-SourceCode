@@ -6,7 +6,7 @@ using Microsoft.Finance.GeneralLedger.Journal;
 
 page 57006 "KRB Checkoff Card"
 {
-    DeleteAllowed = false;
+    DeleteAllowed = true;
     PageType = Card;
     SourceTable = "KRB Checkoff Header";
     SourceTableView = where(Posted = const(false));

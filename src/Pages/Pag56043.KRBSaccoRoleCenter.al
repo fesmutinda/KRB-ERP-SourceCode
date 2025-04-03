@@ -302,7 +302,7 @@ Page 56043 "KRB Sacco Role Center"
                     {
                         ApplicationArea = Basic, Suite;
                         Caption = 'Bank Reconcilations Summary Report';
-                        RunObject = report BankReconiliationsummary;
+                        RunObject = report BankReconciliationsummary;
                         //Visible = false;
 
                     }

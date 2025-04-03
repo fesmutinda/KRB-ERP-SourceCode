@@ -299,7 +299,7 @@ Page 50009 "KRBAuditComitteeRoleCenter"
                     {
                         ApplicationArea = Basic, Suite;
                         Caption = 'Bank Reconcilations Summary Report';
-                        RunObject = report BankReconiliationsummary;
+                        RunObject = report BankReconciliationsummary;
                         //Visible = false;
 
                     }

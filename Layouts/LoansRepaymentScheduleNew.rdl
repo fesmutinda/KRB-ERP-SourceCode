@@ -805,7 +805,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Repayment Code</Value>
+                                  <Value>Repayment No.</Value>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontWeight>Bold</FontWeight>
@@ -1127,14 +1127,14 @@
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="RepaymentCode">
+                        <Textbox Name="IncrementField">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!RepaymentCode.Value</Value>
+                                  <Value>=Fields!IncrementField.Value</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
@@ -1143,7 +1143,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>RepaymentCode</rd:DefaultName>
+                          <rd:DefaultName>IncrementField</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -1515,7 +1515,7 @@
                                 <TextRun>
                                   <Value />
                                   <Style>
-                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -2348,6 +2348,9 @@ End Function
         </Field>
         <Field Name="LoanBalanceFormat">
           <DataField>LoanBalanceFormat</DataField>
+        </Field>
+        <Field Name="IncrementField">
+          <DataField>IncrementField</DataField>
         </Field>
         <Field Name="Loan_Repayment_Schedule__Repayment_Code_">
           <DataField>Loan_Repayment_Schedule__Repayment_Code_</DataField>

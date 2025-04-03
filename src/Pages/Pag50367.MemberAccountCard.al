@@ -2,7 +2,7 @@ page 50367 "Member Account Card"
 {
     ApplicationArea = Basic;
     Caption = 'Member Card';
-    DeleteAllowed = true;
+    DeleteAllowed = false;
     Editable = true;
     InsertAllowed = false;
     PageType = Card;
@@ -656,6 +656,24 @@ page 50367 "Member Account Card"
                         Cust.SetRange(Cust."No.", Rec."No.");
                         if Cust.Find('-') then begin
                             Report.Run(56523, true, false, Cust);
+                        END;
+                    end;
+                }
+
+                action("Junior Statement")
+                {
+                    ApplicationArea = Basic;
+                    Caption = 'Junior Statement';
+                    Image = "Report";
+                    Promoted = true;
+                    PromotedCategory = "Report";
+
+                    trigger OnAction()
+                    begin
+                        Cust.Reset;
+                        Cust.SetRange(Cust."No.", Rec."No.");
+                        if Cust.Find('-') then begin
+                            Report.Run(59052, true, false, Cust);
                         END;
                     end;
                 }

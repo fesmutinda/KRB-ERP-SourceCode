@@ -390,6 +390,33 @@ Codeunit 50009 "Swizzsoft Factory"
                     if VarGrInterest > 0 then
                         VarLInterest := 0;
 
+
+
+
+                    if (VarGrInterest <= 0) and (VarGrPrinciple <= 0) then begin
+
+
+                        ObjRepaymentschedule.Init;
+                        //ObjRepaymentschedule."Entry No" := ScheduleEntryNo;
+                        ObjRepaymentschedule."Repayment Code" := VarRepayCode;
+                        ObjRepaymentschedule."Loan No." := ObjLoans."Loan  No.";
+                        ObjRepaymentschedule."Loan Amount" := VarLoanAmount;
+                        ObjRepaymentschedule."Interest Rate" := ObjLoans.Interest;
+                        ObjRepaymentschedule."Instalment No" := VarInstalNo;
+                        ObjRepaymentschedule."Repayment Date" := VarRunDate;//CALCDATE('CM',RunDate);
+                        ObjRepaymentschedule."Member No." := ObjLoans."Client Code";
+                        ObjRepaymentschedule."Loan Category" := ObjLoans."Loan Product Type";
+                        ObjRepaymentschedule."Monthly Repayment" := VarLInterest + VarLPrincipal;
+                        ObjRepaymentschedule."Monthly Interest" := VarLInterest;
+                        ObjRepaymentschedule."Principal Repayment" := VarLPrincipal;
+                        //ERROR(FORMAT(VarLPrincipal));
+                        //ObjRepaymentschedule."Monthly Insurance" := VarLInsurance;
+                        ObjRepaymentschedule."Loan Balance" := VarLBalance;
+                        ObjRepaymentschedule.Insert;
+                        VarWhichDay := Date2dwy(ObjRepaymentschedule."Repayment Date", 1);
+
+                    end;
+
                     VarGrPrinciple := VarGrPrinciple - 1;
                     VarGrInterest := VarGrInterest - 1;
 
@@ -399,24 +426,6 @@ Codeunit 50009 "Swizzsoft Factory"
                         VarLInsurance := 0;
                     end;
 
-                    ObjRepaymentschedule.Init;
-                    //ObjRepaymentschedule."Entry No" := ScheduleEntryNo;
-                    ObjRepaymentschedule."Repayment Code" := VarRepayCode;
-                    ObjRepaymentschedule."Loan No." := ObjLoans."Loan  No.";
-                    ObjRepaymentschedule."Loan Amount" := VarLoanAmount;
-                    ObjRepaymentschedule."Interest Rate" := ObjLoans.Interest;
-                    ObjRepaymentschedule."Instalment No" := VarInstalNo;
-                    ObjRepaymentschedule."Repayment Date" := VarRunDate;//CALCDATE('CM',RunDate);
-                    ObjRepaymentschedule."Member No." := ObjLoans."Client Code";
-                    ObjRepaymentschedule."Loan Category" := ObjLoans."Loan Product Type";
-                    ObjRepaymentschedule."Monthly Repayment" := VarLInterest + VarLPrincipal;
-                    ObjRepaymentschedule."Monthly Interest" := VarLInterest;
-                    ObjRepaymentschedule."Principal Repayment" := VarLPrincipal;
-                    //ERROR(FORMAT(VarLPrincipal));
-                    //ObjRepaymentschedule."Monthly Insurance" := VarLInsurance;
-                    ObjRepaymentschedule."Loan Balance" := VarLBalance;
-                    ObjRepaymentschedule.Insert;
-                    VarWhichDay := Date2dwy(ObjRepaymentschedule."Repayment Date", 1);
                     //=======================================================================Get Next Repayment Date
                     VarMonthIncreament := Format(VarInstalNo) + 'M';
                     if ObjLoans."Repayment Frequency" = ObjLoans."repayment frequency"::Daily then
