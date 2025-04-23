@@ -288,179 +288,23 @@ Page 56046 "Loan Reschedule Card"
                     PromotedCategory = "Report";
                     ShortCutKey = 'Ctrl+F7';
 
+
                     trigger OnAction()
                     begin
-                        if Rec."Repayment Frequency" = Rec."repayment frequency"::Daily then
-                            Evaluate(InPeriod, '1D')
-                        else
-                            if Rec."Repayment Frequency" = Rec."repayment frequency"::Weekly then
-                                Evaluate(InPeriod, '1W')
-                            else
-                                if Rec."Repayment Frequency" = Rec."repayment frequency"::Monthly then
-                                    Evaluate(InPeriod, '1M')
-                                else
-                                    if Rec."Repayment Frequency" = Rec."repayment frequency"::Quaterly then
-                                        Evaluate(InPeriod, '1Q');
+                        if (Rec."Repayment Start Date" = 0D) then
+                            Error('Please enter Disbursement Date to continue');
 
-
-                        QCounter := 0;
-                        QCounter := 3;
-                        //EVALUATE(InPeriod,'1D');
-                        GrPrinciple := Rec."Grace Period - Principle (M)";
-                        GrInterest := Rec."Grace Period - Interest (M)";
-                        InitialGraceInt := Rec."Grace Period - Interest (M)";
-
-                        LoansR.Reset;
-                        LoansR.SetRange(LoansR."Loan  No.", Rec."Loan  No.");
-                        if LoansR.Find('-') then begin
-
-                            Rec.TestField("Loan Disbursement Date");
-                            Rec.TestField("Repayment Start Date");
-
-                            RSchedule.Reset;
-                            RSchedule.SetRange(RSchedule."Loan No.", Rec."Loan  No.");
-                            RSchedule.DeleteAll;
-
-                            LoanAmount := LoansR."Approved Amount";
-                            InterestRate := LoansR.Interest;
-                            RepayPeriod := LoansR.Installments;
-                            InitialInstal := LoansR.Installments + Rec."Grace Period - Principle (M)";
-                            LBalance := LoansR."Approved Amount";
-                            LNBalance := LoansR."Outstanding Balance";
-                            RunDate := Rec."Repayment Start Date";
-
-                            InstalNo := 0;
-                            Evaluate(RepayInterval, '1W');
-
-                            //Repayment Frequency
-                            if Rec."Repayment Frequency" = Rec."repayment frequency"::Daily then
-                                RunDate := CalcDate('-1D', RunDate)
-                            else
-                                if Rec."Repayment Frequency" = Rec."repayment frequency"::Weekly then
-                                    RunDate := CalcDate('-1W', RunDate)
-                                else
-                                    if Rec."Repayment Frequency" = Rec."repayment frequency"::Monthly then
-                                        RunDate := CalcDate('-1M', RunDate)
-                                    else
-                                        if Rec."Repayment Frequency" = Rec."repayment frequency"::Quaterly then
-                                            RunDate := CalcDate('-1Q', RunDate);
-                            //Repayment Frequency
-
-
-                            repeat
-                                InstalNo := InstalNo + 1;
-
-
-                                //*************Repayment Frequency***********************//
-                                if Rec."Repayment Frequency" = Rec."repayment frequency"::Daily then
-                                    RunDate := CalcDate('1D', RunDate)
-                                else
-                                    if Rec."Repayment Frequency" = Rec."repayment frequency"::Weekly then
-                                        RunDate := CalcDate('1W', RunDate)
-                                    else
-                                        if Rec."Repayment Frequency" = Rec."repayment frequency"::Monthly then
-                                            RunDate := CalcDate('1M', RunDate)
-                                        else
-                                            if Rec."Repayment Frequency" = Rec."repayment frequency"::Quaterly then
-                                                RunDate := CalcDate('1Q', RunDate);
-
-
-
-
-
-
-                                //*******************If Amortised****************************//
-                                if Rec."Repayment Method" = Rec."repayment method"::Amortised then begin
-                                    Rec.TestField(Installments);
-                                    Rec.TestField(Interest);
-                                    Rec.TestField(Installments);
-                                    TotalMRepay := ROUND((InterestRate / 12 / 100) / (1 - Power((1 + (InterestRate / 12 / 100)), -RepayPeriod)) * LoanAmount, 1, '>');
-                                    TotalMRepay := (InterestRate / 12 / 100) / (1 - Power((1 + (InterestRate / 12 / 100)), -RepayPeriod)) * LoanAmount;
-                                    LInterest := ROUND(LBalance / 100 / 12 * InterestRate);
-
-                                    LPrincipal := TotalMRepay - LInterest;
-                                end;
-
-
-
-                                if Rec."Repayment Method" = Rec."repayment method"::"Straight Line" then begin
-                                    Rec.TestField(Installments);
-                                    LPrincipal := ROUND(LoanAmount / RepayPeriod, 1, '>');
-                                    if (Rec."Loan Product Type" = 'INST') or (Rec."Loan Product Type" = 'MAZAO') then begin
-                                        LInterest := 0;
-                                    end else begin
-                                        LInterest := ROUND((InterestRate / 100) * LoanAmount, 1, '>');
-                                    end;
-
-                                    Rec.Repayment := LPrincipal + LInterest;
-                                    Rec."Loan Principle Repayment" := LPrincipal;
-                                    Rec."Loan Interest Repayment" := LInterest;
-                                end;
-
-
-                                if Rec."Repayment Method" = Rec."repayment method"::"Reducing Balance" then begin
-                                    Rec.TestField(Interest);
-                                    Rec.TestField(Installments);
-                                    LPrincipal := ROUND(LoanAmount / RepayPeriod, 1, '>');
-                                    LInterest := ROUND((InterestRate / 12 / 100) * LBalance, 1, '>');
-                                end;
-
-                                if Rec."Repayment Method" = Rec."repayment method"::Constants then begin
-                                    Rec.TestField(Repayment);
-                                    if LBalance < Rec.Repayment then
-                                        LPrincipal := LBalance
-                                    else
-                                        LPrincipal := Rec.Repayment;
-                                    LInterest := Rec.Interest;
-                                end;
-
-
-                                //Grace Period
-                                if GrPrinciple > 0 then begin
-                                    LPrincipal := 0
-                                end else begin
-                                    if Rec."Instalment Period" <> InPeriod then
-                                        LBalance := LBalance - LPrincipal;
-
-                                end;
-
-                                if GrInterest > 0 then
-                                    LInterest := 0;
-
-                                GrPrinciple := GrPrinciple - 1;
-                                GrInterest := GrInterest - 1;
-
-                                //Grace Period
-                                RSchedule.Init;
-                                RSchedule."Repayment Code" := RepayCode;
-                                RSchedule."Loan No." := Rec."Loan  No.";
-                                RSchedule."Loan Amount" := LoanAmount;
-                                RSchedule."Instalment No" := InstalNo;
-                                RSchedule."Repayment Date" := RunDate;
-                                RSchedule."Member No." := Rec."Client Code";
-                                RSchedule."Loan Category" := Rec."Loan Product Type";
-                                RSchedule."Monthly Repayment" := LInterest + LPrincipal;
-                                RSchedule."Monthly Interest" := LInterest;
-                                RSchedule."Principal Repayment" := LPrincipal;
-                                RSchedule.Insert;
-                                WhichDay := Date2dwy(RSchedule."Repayment Date", 1);
-
-
-                            until LBalance < 1
-
-                        end;
-
-                        Commit;
+                        SFactory.FnGenerateRepaymentSchedule(Rec."Loan  No.");
 
                         LoanApp.Reset;
                         LoanApp.SetRange(LoanApp."Loan  No.", Rec."Loan  No.");
-                        if LoanApp.Find('-') then
-                            if LoanApp."Loan Product Type" <> 'INST' then begin
-                                Report.Run(50477, true, false, LoanApp);
-                            end else begin
-                                Report.Run(50477, true, false, LoanApp);
-                            end;
+                        if LoanApp.Find('-') then begin
+                            Report.Run(50477, true, false, LoanApp);
+                        end;
                     end;
+
+
+
                 }
                 separator(Action1102755012)
                 {

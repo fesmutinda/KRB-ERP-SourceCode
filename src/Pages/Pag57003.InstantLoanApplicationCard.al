@@ -211,7 +211,7 @@ page 57003 "Instant Loan Application Card"
                     ApplicationArea = Basic;
                     Visible = false;
                 }
-                field("Legal Cost"; Rec."Legal Cost")
+                field("Facilitation Cost"; Rec."Facilitation Cost")
                 {
                     Visible = false;
 

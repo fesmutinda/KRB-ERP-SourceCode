@@ -223,7 +223,7 @@ Table 51398 "Sacco General Set-Up"
         {
             TableRelation = "G/L Account";
         }
-        field(1602; "Legal Fees"; Code[50])
+        field(1602; "Facilitation Fee"; Code[50])
         {
             DataClassification = ToBeClassified;
             TableRelation = "G/L Account";
@@ -241,6 +241,7 @@ Table 51398 "Sacco General Set-Up"
             DataClassification = ToBeClassified;
             TableRelation = "G/L Account";
         }
+
         field(70; "Boosting Fees Account"; Code[20])
         {
             TableRelation = "G/L Account";

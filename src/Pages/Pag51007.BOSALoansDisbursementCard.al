@@ -108,6 +108,8 @@ Page 51007 "BOSA Loans Disbursement Card"
                     trigger OnValidate()
                     begin
                         Rec.TestField(Posted, false);
+
+
                     end;
                 }
                 field("Main Sector"; Rec."Main-Sector")
@@ -182,8 +184,9 @@ Page 51007 "BOSA Loans Disbursement Card"
                 {
                     ApplicationArea = Basic;
                 }
-                field("Legal Cost"; Rec."Legal Cost")
+                field("Facilitation Cost"; Rec."Facilitation Cost")
                 {
+                    Editable = false;
 
                 }
                 field("Bank Transfer Charges"; Rec."Bank Transfer Charges")
@@ -1049,10 +1052,10 @@ Page 51007 "BOSA Loans Disbursement Card"
         LineNo := LineNo + 10000;
         SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, LoanApps."Loan  No.", LineNo, GenJournalLine."Transaction Type"::"Deposit Contribution", GenJournalLine."Account Type"::Customer, LoanApps."Client Code", DirbursementDate, LoanApps."Deboost Amount" * -1, 'BOSA', Rec."Batch No.", 'Debosted shares ' + Format(LoanApps."Loan  No."), '');
         VarAmounttoDisburse := VarAmounttoDisburse - LoanApps."Deboost Amount";
-        //..Legal Fees
+        //..Faciliation Fee
         LineNo := LineNo + 10000;
-        SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, LoanApps."Loan  No.", LineNo, GenJournalLine."Transaction Type"::" ", GenJournalLine."Account Type"::"G/L Account", GenSetUp."Legal Fees", DirbursementDate, LoanApps."Legal Cost" * -1, 'BOSA', Rec."Batch No.", 'Loan legal fees ' + Format(LoanApps."Loan  No."), '');
-        VarAmounttoDisburse := VarAmounttoDisburse - LoanApps."Legal Cost";
+        SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, LoanApps."Loan  No.", LineNo, GenJournalLine."Transaction Type"::" ", GenJournalLine."Account Type"::"G/L Account", GenSetUp."Facilitation Fee", DirbursementDate, LoanApps."Facilitation Cost" * -1, 'BOSA', Rec."Batch No.", 'Loan facilitation fees ' + Format(LoanApps."Loan  No."), '');
+        VarAmounttoDisburse := VarAmounttoDisburse - LoanApps."Facilitation Cost";
         //------------------------------------2. CREDIT MEMBER BANK A/C---------------------------------------------------------------------------------------------
         LineNo := LineNo + 10000;
         SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, Rec."Loan  No.", LineNo, GenJournalLine."Transaction Type"::" ", GenJournalLine."Account Type"::"Bank Account", LoanApps."Paying Bank Account No", DirbursementDate, VarAmounttoDisburse * -1, 'BOSA', LoanApps."Loan  No.", 'Loan net amount disbursement ' + Format(Rec."Loan  No."), '');
@@ -1152,4 +1155,7 @@ Page 51007 "BOSA Loans Disbursement Card"
         end;
         exit(false);
     end;
+
+
+
 }

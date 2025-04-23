@@ -59,7 +59,7 @@ report 50245 InstantLoanAppraisal
             column(PREMATURE; PREMATURE)
             {
             }
-            column(legalfee_LoansRegister; "Loans Register"."Legal Cost")
+            column(facilitationfee_LoansRegister; "Loans Register"."Facilitation Cost")
             {
             }
             column(Deboost_Amount; "Deboost Amount")

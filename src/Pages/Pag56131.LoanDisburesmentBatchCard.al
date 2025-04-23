@@ -502,8 +502,8 @@ Page 56131 "Loan Disburesment Batch Card"
                 VarAmounttoDisburse := VarAmounttoDisburse - LoanApps."Deboost Amount";
                 //..Legal Fees
                 LineNo := LineNo + 10000;
-                SFactory.FnCreateGnlJournalLine(BATCH_TEMPLATE, BATCH_NAME, LoanApps."Loan  No.", LineNo, GenJournalLine."Transaction Type"::" ", GenJournalLine."Account Type"::"G/L Account", GenSetUp."Legal Fees", DirbursementDate, Round(LoanApps."Legal Cost", 0.01, '=') * -1, 'BOSA', Rec."Batch No.", 'Loan Principle Amount ' + Format(LoanApps."Loan  No."), '');
-                VarAmounttoDisburse := VarAmounttoDisburse - LoanApps."Legal Cost";
+                SFactory.FnCreateGnlJournalLine(BATCH_TEMPLATE, BATCH_NAME, LoanApps."Loan  No.", LineNo, GenJournalLine."Transaction Type"::" ", GenJournalLine."Account Type"::"G/L Account", GenSetUp."Facilitation Fee", DirbursementDate, Round(LoanApps."Facilitation Cost", 0.01, '=') * -1, 'BOSA', Rec."Batch No.", 'Loan Principle Amount ' + Format(LoanApps."Loan  No."), '');
+                VarAmounttoDisburse := VarAmounttoDisburse - LoanApps."Facilitation Cost";
 
                 NetAmount := VarAmounttoDisburse - (LoanApps."Loan Processing Fee" + LoanApps."Loan Dirbusement Fee" + LoanApps."Loan Insurance");
                 //***************************Loan Product Charges code

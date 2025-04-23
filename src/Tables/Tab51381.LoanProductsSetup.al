@@ -419,6 +419,12 @@ Table 51381 "Loan Products Setup"
         field(131; "Show On Portal"; Boolean)
         {
         }
+
+        field(132; "Facilitation Fee"; Decimal)
+        {
+
+        }
+
     }
 
     keys

@@ -660,7 +660,7 @@ report 50006 "Instant LoanApplication"
             column(LeastRetainedAmount; "Least Retained Amount")
             {
             }
-            column(LegalCost; "Legal Cost")
+            column(FacilitationCost; "Facilitation Cost")
             {
             }
             column(LegalFees; "Legal Fees")

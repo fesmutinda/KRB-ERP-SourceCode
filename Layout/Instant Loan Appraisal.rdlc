@@ -1006,11 +1006,11 @@ TuWh4SNYtaGOXmtGlJesKmIhxgtR52VNmxHNCsbr9Xm9uuUsDjH6IdzKazjEL7XUUrOVe22AGSoS22sj
         <Field Name="PREMATUREFormat">
           <DataField>PREMATUREFormat</DataField>
         </Field>
-        <Field Name="legalfee_LoansRegister">
-          <DataField>legalfee_LoansRegister</DataField>
+        <Field Name="facilitationfee_LoansRegister">
+          <DataField>facilitationfee_LoansRegister</DataField>
         </Field>
-        <Field Name="legalfee_LoansRegisterFormat">
-          <DataField>legalfee_LoansRegisterFormat</DataField>
+        <Field Name="facilitationfee_LoansRegisterFormat">
+          <DataField>facilitationfee_LoansRegisterFormat</DataField>
         </Field>
         <Field Name="Deboost_Amount">
           <DataField>Deboost_Amount</DataField>

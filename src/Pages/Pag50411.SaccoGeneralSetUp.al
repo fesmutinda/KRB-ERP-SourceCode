@@ -121,7 +121,7 @@ page 50411 "Sacco General Set-Up"
                 {
                     ApplicationArea = all;
                 }
-                field("Legal Fees"; Rec."Legal Fees")
+                field("Facilitation Fee"; Rec."Facilitation Fee")
                 {
                     ApplicationArea = all;
                 }

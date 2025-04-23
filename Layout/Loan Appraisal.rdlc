@@ -6282,11 +6282,11 @@ UYrNnsJTRei43v51FKvHYOuFrNtSjIaCNMVPHT9xUIiGYjQtRMOK6CQvVnoK0fPtl+dQiP48FKKsiM5g
         <Field Name="PREMATUREFormat">
           <DataField>PREMATUREFormat</DataField>
         </Field>
-        <Field Name="legalfee_LoansRegister">
-          <DataField>legalfee_LoansRegister</DataField>
+        <Field Name="faciliationfee_LoansRegister">
+          <DataField>faciliationfee_LoansRegister</DataField>
         </Field>
-        <Field Name="legalfee_LoansRegisterFormat">
-          <DataField>legalfee_LoansRegisterFormat</DataField>
+        <Field Name="faciliationfee_LoansRegisterFormat">
+          <DataField>faciliationfee_LoansRegisterFormat</DataField>
         </Field>
         <Field Name="Deboost_Amount">
           <DataField>Deboost_Amount</DataField>

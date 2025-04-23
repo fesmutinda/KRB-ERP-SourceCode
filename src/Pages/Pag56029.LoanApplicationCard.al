@@ -185,6 +185,7 @@ Page 56029 "Loan Application Card"
                     trigger OnValidate()
                     begin
                         Rec.TestField(Posted, false);
+
                     end;
                 }
                 field("Recommended Amount"; Rec."Recommended Amount")
@@ -264,8 +265,11 @@ Page 56029 "Loan Application Card"
                 {
                     ApplicationArea = Basic;
                 }
-                field("Legal Cost"; Rec."Legal Cost")
+                field("Faciliation Cost"; Rec."Facilitation Cost")
                 {
+
+                    ApplicationArea = Basic;
+                    Editable = false;
 
                 }
                 field("Bank Transfer Charges"; Rec."Bank Transfer Charges")
@@ -1093,5 +1097,7 @@ Page 56029 "Loan Application Card"
         end;
         exit(Balance);
     end;
+
+
 }
 

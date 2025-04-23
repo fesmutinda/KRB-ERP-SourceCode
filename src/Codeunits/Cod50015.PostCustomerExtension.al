@@ -148,23 +148,23 @@ codeunit 50015 "PostCustomerExtension"
             end;
         end;
 
-        if (GenJournalLine."Transaction Type" = GenJournalLine."transaction type"::"Unallocated Funds") then begin
-            if GenJournalLine."Loan No" = '' then begin
-                Error('Loan No Field is empty! Loan No must be specified for %1', GenJournalLine."Account No.");
-            end;
-            LoanApp.Reset;
-            LoanApp.SetCurrentkey(LoanApp."Loan  No.");
-            LoanApp.SetRange(LoanApp."Loan  No.", GenJournalLine."Loan No");
-            if LoanApp.Find('-') then begin
-                repeat
-                    if LoanTypes.Get(LoanApp."Loan Product Type") then begin
-                        LoanTypes.TestField(LoanTypes."Loan Account");
-                        GenJournalLine."Posting Group" := FnHandlePostingGroup(LoanTypes."Loan Account", FORMAT(COPYSTR(LoanApp."Loan Product Type", 1, 19)));
-                        GenJournalLine.Modify();
-                    end;
-                until LoanApp.next = 0;
-            end;
-        end;
+        // if (GenJournalLine."Transaction Type" = GenJournalLine."transaction type"::"Unallocated Funds") then begin
+        //     // if GenJournalLine."Loan No" = '' then begin
+        //     //     Error('Loan No Field is empty! Loan No must be specified for %1', GenJournalLine."Account No.");
+        //     // end;
+        //     LoanApp.Reset;
+        //     LoanApp.SetCurrentkey(LoanApp."Loan  No.");
+        //     LoanApp.SetRange(LoanApp."Loan  No.", GenJournalLine."Loan No");
+        //     if LoanApp.Find('-') then begin
+        //         repeat
+        //             if LoanTypes.Get(LoanApp."Loan Product Type") then begin
+        //                 LoanTypes.TestField(LoanTypes."Loan Account");
+        //                 GenJournalLine."Posting Group" := FnHandlePostingGroup(LoanTypes."Loan Account", FORMAT(COPYSTR(LoanApp."Loan Product Type", 1, 19)));
+        //                 GenJournalLine.Modify();
+        //             end;
+        //         until LoanApp.next = 0;
+        //     end;
+        // end;
 
         if (GenJournalLine."Transaction Type" = GenJournalLine."transaction type"::"Interest Paid") then begin
             if GenJournalLine."Loan No" = '' then begin

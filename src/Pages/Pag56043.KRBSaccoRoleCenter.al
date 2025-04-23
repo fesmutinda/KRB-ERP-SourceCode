@@ -638,6 +638,30 @@ Page 56043 "KRB Sacco Role Center"
                         Visible = false;
                     }
 
+                    action("KRB Balance Sheet")
+                    {
+                        ApplicationArea = Basic, Suite;
+                        Caption = 'KRB Financial Position';
+                        RunObject = report "KRBFinancialPosition";
+
+                    }
+
+                    action("KRB Profit & Loss")
+                    {
+                        ApplicationArea = Basic, Suite;
+                        Caption = 'KRB Profit/Loss';
+                        RunObject = report "KRBProfitAndLoss";
+
+                    }
+
+                    action("KRB Account Activity")
+                    {
+                        ApplicationArea = Basic, Suite;
+                        Caption = 'KRB Account Activity';
+                        RunObject = report "KRBAccountActivity";
+
+                    }
+
                 }
 
 
@@ -1059,6 +1083,7 @@ Page 56043 "KRB Sacco Role Center"
                     ApplicationArea = Basic, Suite;
                     RunObject = page "Loans Reschedule  List";
                     Caption = 'Loans Reschedule List';
+                    Visible = false;
                 }
                 action("Loan Calculator")
                 {
@@ -1080,6 +1105,7 @@ Page 56043 "KRB Sacco Role Center"
                         Caption = 'Loans Defaulter Aging-SASRA';
                         RunObject = report "SASRA Loans Classification";
                         ToolTip = 'Loan Classification Report';
+                        Visible = false;
                     }
                     action("Loan Collection Targets Report")
                     {
@@ -1087,6 +1113,7 @@ Page 56043 "KRB Sacco Role Center"
                         RunObject = report "Loan Monthly Expectation";
                         ToolTip = 'Loan Collection Targets';
                         Caption = 'Loan Collection Targets';
+                        Visible = false;
                     }
 
                     action("Loans Guard Report")
@@ -1094,6 +1121,7 @@ Page 56043 "KRB Sacco Role Center"
                         ApplicationArea = all;
                         RunObject = report "Loan Guard Report";
                         ToolTip = 'Loans Guard Report';
+                        Visible = false;
                     }
                     action("Loan defaulter List")
                     {
@@ -1374,31 +1402,37 @@ Page 56043 "KRB Sacco Role Center"
                     {
                         Caption = 'New Members Report';
                         // RunObject = report "New Member Accounts";
+                        Visible = false;
                     }
                     action("Sacco Loan Disbursements")
                     {
                         Caption = 'Loan Disbursements Report';
                         // RunObject = report "Sacco Loan Disbursements";
+                        Visible = false;
                     }
                     action("Loan Totals Per Category")
                     {
                         Caption = 'Loan Totals Per Category';
                         // RunObject = report "Loan Totals Per Employer";
+                        Visible = false;
                     }
                     action("Loans Portfolio Reports")
                     {
                         Caption = 'Loans Portfolio Reports';
                         // RunObject = report "Loans Potfolio Analysis";
+                        Visible = false;
                     }
                     action("Loans Portfolio Concentration Reports")
                     {
                         Caption = 'Loans Portfolio Concentration Reports';
                         // RunObject = report "Loan Portifolio Concentration";
+                        Visible = false;
                     }
                     action("Loans Underpaid/OverPaid")
                     {
                         Caption = 'Loans Underpaid/OverPaid';
                         // RunObject = report "Loans Underpaid";
+                        Visible = false;
                     }
                 }
                 //.....................................End Of BOSA

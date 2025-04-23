@@ -826,6 +826,7 @@ Table 51371 "Loans Register"
 
             trigger OnValidate()
             begin
+                CalculateFacilitationCost();
                 if "Max. Loan Amount" <> 0 then begin
                     if "Requested Amount" > "Max. Loan Amount" then
                         Error('Requested amount cannot be greater than the Maximum Amount. %1', "Loan  No.");
@@ -3286,9 +3287,15 @@ Table 51371 "Loans Register"
         {
             DataClassification = ToBeClassified;
         }
-        field(68111; "Legal Cost"; Decimal)
+        // field(68111; "Legal Cost"; Decimal)
+        // {
+        //     DataClassification = ToBeClassified;
+        // }
+
+        field(68111; "Facilitation Cost"; Decimal)
         {
             DataClassification = ToBeClassified;
+
         }
         field(68110; "Valuation Cost"; Decimal)
         {
@@ -5524,6 +5531,17 @@ Table 51371 "Loans Register"
         if Cust.Get(MemberNo) then
             Contrib := Cust."Monthly Contribution";
         exit(Contrib);
+    end;
+
+    procedure CalculateFacilitationCost()
+    var
+        Setup: Record "Loan Products Setup";
+    begin
+        if Setup.Get(Rec."Loan Product Type") then begin
+            Rec."Facilitation Cost" := (Rec."Approved Amount" * Setup."Facilitation Fee") / 100;
+        end else begin
+            Rec."Facilitation Cost" := 0;
+        end;
     end;
 }
 

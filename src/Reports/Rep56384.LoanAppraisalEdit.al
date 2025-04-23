@@ -1164,7 +1164,7 @@ Report 56384 "Loan Appraisal Edit"
 
                     if "Approved Amount" > 0 then begin
                         //LOAN Charges
-                        LegalFee := "Loans Register"."Legal Cost";
+                        LegalFee := "Loans Register"."Facilitation Cost";
                         ValuationFee := "Loans Register"."Valuation Cost";
                         LoanInsurance := "Loans Register"."Loan Insurance";
 

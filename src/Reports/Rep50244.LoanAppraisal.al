@@ -53,7 +53,7 @@ Report 50244 "Loan Appraisal"
             column(PREMATURE; PREMATURE)
             {
             }
-            column(legalfee_LoansRegister; "Loans Register"."Legal Cost")
+            column(faciliationfee_LoansRegister; "Loans Register"."Facilitation Cost")
             {
             }
             column(Deboost_Amount; "Deboost Amount")
@@ -1100,14 +1100,14 @@ Report 50244 "Loan Appraisal"
                 ProccessingFee := 0;
                 DisbursementFee := 0;
                 InsuranceFee := 0;
-                LegalFee := 0;
+                FacilitationFee := 0;
                 LoanInsurance := 0;
                 ValuationFee := 0;
                 PREMATURE := 0;
                 //**********added************
-                LegalFee := "Loans Register"."Legal Cost";
+                FacilitationFee := "Loans Register"."Facilitation Cost";
                 ValuationFee := "Loans Register"."Valuation Cost";
-                TotalFee := LegalFee + ValuationFee;
+                TotalFee := FacilitationFee + ValuationFee;
                 //****************end********************
 
                 IF BRIGEDAMOUNT > 0 THEN BEGIN
@@ -1261,12 +1261,12 @@ Report 50244 "Loan Appraisal"
                     LoanProcessingFee := SFactory.FnGetChargeFee("Loans Register"."Loan Product Type", "Loans Register"."Approved Amount", 'PROCESSING');
                     // LoanInsurance := SFactory.FnGetChargeFee("Loans Register"."Loan Product Type", "Loans Register"."Approved Amount", 'INSURANCE');
 
-                    Upfronts := LoanProcessingFee + LoanInsurance + LegalFee + DisbursementFee + "Deboost Commision" + "Deboost Amount" + ValuationFee + TopUpFee + TopUpComm + BRIGEDAMOUNT;
+                    Upfronts := LoanProcessingFee + LoanInsurance + FacilitationFee + DisbursementFee + "Deboost Commision" + "Deboost Amount" + ValuationFee + TopUpFee + TopUpComm + BRIGEDAMOUNT;
                     Netdisbursed := ("Approved Amount" - Upfronts);
                     DisbursementFee := SFactory.FnGetChargeFee("Loans Register"."Loan Product Type", Netdisbursed, 'DISBURSEMENT');
 
                     if "Approved Amount" > 0 then begin
-                        Upfronts := LoanProcessingFee + LoanInsurance + "Deboost Commision" + "Deboost Amount" + LegalFee + DisbursementFee + ValuationFee + TopUpFee + TopUpComm + BRIGEDAMOUNT;
+                        Upfronts := LoanProcessingFee + LoanInsurance + "Deboost Commision" + "Deboost Amount" + FacilitationFee + DisbursementFee + ValuationFee + TopUpFee + TopUpComm + BRIGEDAMOUNT;
                         Netdisbursed := ("Approved Amount" - Upfronts);
                         //"Loan Disbursed Amount" := Netdisbursed;
                         "Loan Processing Fee" := LoanProcessingFee;
@@ -1307,7 +1307,7 @@ Report 50244 "Loan Appraisal"
 
     var
         CollateralGuarantee: Decimal;
-        LegalFee: Decimal;
+        FacilitationFee: Decimal;
         TotalFee: Decimal;
         ValuationFee: Decimal;
         AvailableG: Decimal;

@@ -82,6 +82,14 @@ Page 56033 "Loan Products Setup Card"
                 {
                     ApplicationArea = Basic;
                 }
+
+                field("Facilitation Fee"; Rec."Facilitation Fee")
+                {
+                    ApplicationArea = Basic;
+                    Caption = 'Facilitation Fee (%)';
+                    DecimalPlaces = 0 : 2; // Show up to 2 decimal places
+                    ToolTip = 'Facilitation fee as a percentage (e.g., enter 25 for 25%).';
+                }
                 field("Penalty Calculation Days"; Rec."Penalty Calculation Days")
                 {
                     ApplicationArea = Basic;

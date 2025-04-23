@@ -64,6 +64,11 @@ Page 56032 "Loan Products Setup List"
                 {
                     ApplicationArea = Basic;
                 }
+
+                field("Facilitation Fee"; Rec."Facilitation Fee")
+                {
+                    ApplicationArea = Basic;
+                }
                 field("Penalty Calculation Days"; Rec."Penalty Calculation Days")
                 {
                     ApplicationArea = Basic;
