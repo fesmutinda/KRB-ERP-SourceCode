@@ -241,6 +241,7 @@ Codeunit 50009 "Swizzsoft Factory"
         VarMonthIncreament: Text;
         ScheduleEntryNo: Integer;
         saccogen: Record "Sacco General Set-Up";
+        VarRemainingRepayments: Decimal;
     begin
         ObjLoans.Reset;
         ObjLoans.SetRange(ObjLoans."Loan  No.", LoanNumber);
@@ -291,6 +292,7 @@ Codeunit 50009 "Swizzsoft Factory"
                 VarLNBalance := ObjLoansII."Outstanding Balance";
                 VarRunDate := ObjLoansII."Repayment Start Date";
                 VarRepaymentStartDate := ObjLoansII."Repayment Start Date";
+
 
                 VarInstalNo := 0;
                 Evaluate(VarRepayInterval, '1W');
@@ -447,6 +449,9 @@ Codeunit 50009 "Swizzsoft Factory"
                                         VarRunDate := CalcDate('1Q', VarRunDate);
 
                     end;
+
+                    ObjLoansII."Repay Count" := varInstalNo;
+
 
                 until VarInstalNo = VarRepayPeriod;
             end;

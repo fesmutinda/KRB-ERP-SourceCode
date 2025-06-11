@@ -35,7 +35,7 @@
             </Paragraphs>
             <rd:DefaultName>CompanyName</rd:DefaultName>
             <Top>1.03709in</Top>
-            <Left>1.30224in</Left>
+            <Left>1.79148in</Left>
             <Height>0.25222in</Height>
             <Width>4.81111in</Width>
             <Style>
@@ -69,7 +69,7 @@
             </Paragraphs>
             <rd:DefaultName>CompanyAddress</rd:DefaultName>
             <Top>1.31709in</Top>
-            <Left>1.31612in</Left>
+            <Left>1.80536in</Left>
             <Height>0.25in</Height>
             <Width>4.81111in</Width>
             <ZIndex>1</ZIndex>
@@ -104,7 +104,7 @@
             </Paragraphs>
             <rd:DefaultName>CompanyPhone</rd:DefaultName>
             <Top>1.56709in</Top>
-            <Left>1.30224in</Left>
+            <Left>1.79148in</Left>
             <Height>0.25694in</Height>
             <Width>4.81111in</Width>
             <ZIndex>2</ZIndex>
@@ -139,7 +139,7 @@
             </Paragraphs>
             <rd:DefaultName>CompanyEmail</rd:DefaultName>
             <Top>1.86569in</Top>
-            <Left>1.28836in</Left>
+            <Left>1.7776in</Left>
             <Height>0.25in</Height>
             <Width>4.81111in</Width>
             <ZIndex>3</ZIndex>
@@ -158,25 +158,25 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>1in</Width>
+                  <Width>0.63704in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1in</Width>
+                  <Width>1.87886in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.86111in</Width>
+                  <Width>0.92815in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.125in</Width>
+                  <Width>1.77918in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.38667in</Width>
+                  <Width>1.05441in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1in</Width>
+                  <Width>0.90278in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.375in</Width>
+                  <Width>1.19129in</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -194,7 +194,7 @@
                                 <TextRun>
                                   <Value>Loan No</Value>
                                   <Style>
-                                    <FontSize>9pt</FontSize>
+                                    <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -205,11 +205,14 @@
                           <rd:DefaultName>Textbox6</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>Gainsboro</Color>
                               <Style>None</Style>
-                              <Width>3pt</Width>
                             </Border>
-                            <BackgroundColor>Gainsboro</BackgroundColor>
+                            <TopBorder>
+                              <Style>Solid</Style>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Style>Solid</Style>
+                            </BottomBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -227,9 +230,9 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Loan Product</Value>
+                                  <Value>Product</Value>
                                   <Style>
-                                    <FontSize>9pt</FontSize>
+                                    <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -240,11 +243,14 @@
                           <rd:DefaultName>Textbox8</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>Gainsboro</Color>
                               <Style>None</Style>
-                              <Width>3pt</Width>
                             </Border>
-                            <BackgroundColor>Gainsboro</BackgroundColor>
+                            <TopBorder>
+                              <Style>Solid</Style>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Style>Solid</Style>
+                            </BottomBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -262,9 +268,9 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Member No</Value>
+                                  <Value>Member No.</Value>
                                   <Style>
-                                    <FontSize>9pt</FontSize>
+                                    <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -275,11 +281,14 @@
                           <rd:DefaultName>Textbox10</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>Gainsboro</Color>
                               <Style>None</Style>
-                              <Width>3pt</Width>
                             </Border>
-                            <BackgroundColor>Gainsboro</BackgroundColor>
+                            <TopBorder>
+                              <Style>Solid</Style>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Style>Solid</Style>
+                            </BottomBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -299,7 +308,7 @@
                                 <TextRun>
                                   <Value>Member Name</Value>
                                   <Style>
-                                    <FontSize>9pt</FontSize>
+                                    <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -310,11 +319,14 @@
                           <rd:DefaultName>Textbox16</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>Gainsboro</Color>
                               <Style>None</Style>
-                              <Width>3pt</Width>
                             </Border>
-                            <BackgroundColor>Gainsboro</BackgroundColor>
+                            <TopBorder>
+                              <Style>Solid</Style>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Style>Solid</Style>
+                            </BottomBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -332,24 +344,29 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Org. Amt Guaranteed </Value>
+                                  <Value>Original Amount Guaranteed </Value>
                                   <Style>
-                                    <FontSize>9pt</FontSize>
+                                    <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox18</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>Gainsboro</Color>
                               <Style>None</Style>
-                              <Width>3pt</Width>
                             </Border>
-                            <BackgroundColor>Gainsboro</BackgroundColor>
+                            <TopBorder>
+                              <Style>Solid</Style>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Style>Solid</Style>
+                            </BottomBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -367,24 +384,29 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Loan Balance </Value>
+                                  <Value>Remaining Installments </Value>
                                   <Style>
-                                    <FontSize>9pt</FontSize>
+                                    <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox20</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>Gainsboro</Color>
                               <Style>None</Style>
-                              <Width>3pt</Width>
                             </Border>
-                            <BackgroundColor>Gainsboro</BackgroundColor>
+                            <TopBorder>
+                              <Style>Solid</Style>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Style>Solid</Style>
+                            </BottomBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -402,24 +424,29 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Outstanding Balance</Value>
+                                  <Value>Loan Balance</Value>
                                   <Style>
-                                    <FontSize>9pt</FontSize>
+                                    <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox22</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>Gainsboro</Color>
                               <Style>None</Style>
-                              <Width>3pt</Width>
                             </Border>
-                            <BackgroundColor>Gainsboro</BackgroundColor>
+                            <TopBorder>
+                              <Style>Solid</Style>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Style>Solid</Style>
+                            </BottomBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -454,9 +481,15 @@
                           <rd:DefaultName>LoanNo_LoanGuarantors</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
+                              <Style>None</Style>
                             </Border>
+                            <TopBorder>
+                              <Style>None</Style>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Style>None</Style>
+                            </BottomBorder>
+                            <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 = 0, "Gainsboro", "White")</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -467,14 +500,14 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Loan_Product">
+                        <Textbox Name="Loan_Product_Type_Name">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!Loan_Product.Value</Value>
+                                  <Value>=Fields!Loan_Product_Type_Name.Value</Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                   </Style>
@@ -483,12 +516,18 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Loan_Product</rd:DefaultName>
+                          <rd:DefaultName>Loan_Product_Type_Name</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
+                              <Style>None</Style>
                             </Border>
+                            <TopBorder>
+                              <Style>None</Style>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Style>None</Style>
+                            </BottomBorder>
+                            <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 = 0, "Gainsboro", "White")</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -499,14 +538,14 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="MemberNo_LoanGuarantors">
+                        <Textbox Name="ClientCode_LoansRegister">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!MemberNo_LoanGuarantors.Value</Value>
+                                  <Value>=Fields!ClientCode_LoansRegister.Value</Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                   </Style>
@@ -515,12 +554,18 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>MemberNo_LoanGuarantors</rd:DefaultName>
+                          <rd:DefaultName>ClientCode_LoansRegister</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
+                              <Style>None</Style>
                             </Border>
+                            <TopBorder>
+                              <Style>None</Style>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Style>None</Style>
+                            </BottomBorder>
+                            <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 = 0, "Gainsboro", "White")</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -531,14 +576,14 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Name_LoanGuarantors">
+                        <Textbox Name="ClientName_LoansRegister">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!Name_LoanGuarantors.Value</Value>
+                                  <Value>=Fields!ClientName_LoansRegister.Value</Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                   </Style>
@@ -547,12 +592,18 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Name_LoanGuarantors</rd:DefaultName>
+                          <rd:DefaultName>ClientName_LoansRegister</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
+                              <Style>None</Style>
                             </Border>
+                            <TopBorder>
+                              <Style>None</Style>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Style>None</Style>
+                            </BottomBorder>
+                            <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 = 0, "Gainsboro", "White")</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -563,28 +614,35 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="AmontGuaranteed_LoanGuarantors">
+                        <Textbox Name="ApprovedAmount_LoansRegister">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!AmontGuaranteed_LoanGuarantors.Value</Value>
+                                  <Value>=Fields!ApprovedAmount_LoansRegister.Value</Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
+                                    <Format>=Format("N2")</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>AmontGuaranteed_LoanGuarantors</rd:DefaultName>
+                          <rd:DefaultName>ApprovedAmount_LoansRegister</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
+                              <Style>None</Style>
                             </Border>
+                            <TopBorder>
+                              <Style>None</Style>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Style>None</Style>
+                            </BottomBorder>
+                            <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 = 0, "Gainsboro", "White")</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -595,14 +653,14 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="LoanBalance_LoanGuarantors">
+                        <Textbox Name="RemainingRepayment">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!LoanBalance_LoanGuarantors.Value</Value>
+                                  <Value>=Fields!RemainingRepayment.Value</Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                   </Style>
@@ -611,12 +669,18 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>LoanBalance_LoanGuarantors</rd:DefaultName>
+                          <rd:DefaultName>RemainingRepayment</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
+                              <Style>None</Style>
                             </Border>
+                            <TopBorder>
+                              <Style>None</Style>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Style>None</Style>
+                            </BottomBorder>
+                            <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 = 0, "Gainsboro", "White")</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -627,28 +691,126 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="OutstandingBalance_LoanGuarantors">
+                        <Textbox Name="OutstandingBalance_LoansRegister1">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!OutstandingBalance_LoanGuarantors.Value</Value>
+                                  <Value>=Fields!OutstandingBalance_LoansRegister.Value</Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
+                                    <Format>=Format("N2")</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>OutstandingBalance_LoanGuarantors</rd:DefaultName>
+                          <rd:DefaultName>OutstandingBalance_LoansRegister1</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
+                              <Style>None</Style>
                             </Border>
+                            <TopBorder>
+                              <Style>None</Style>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Style>None</Style>
+                            </BottomBorder>
+                            <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 = 0, "Gainsboro", "White")</BackgroundColor>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.25in</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox26">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>TOTAL AMOUNT GUARANTEED:</Value>
+                                  <Style>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox26</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
+                            <TopBorder>
+                              <Style>Solid</Style>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Style>Solid</Style>
+                            </BottomBorder>
+                            <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 = 0, "Gainsboro", "White")</BackgroundColor>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                        <ColSpan>6</ColSpan>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="OutstandingBalance_LoansRegister">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Sum(Fields!OutstandingBalance_LoansRegister.Value)</Value>
+                                  <Style>
+                                    <FontSize>9pt</FontSize>
+                                    <Format>=Format("N2")</Format>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>OutstandingBalance_LoansRegister</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
+                            <TopBorder>
+                              <Style>Solid</Style>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Style>Solid</Style>
+                            </BottomBorder>
+                            <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 = 0, "Gainsboro", "White")</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -679,14 +841,20 @@
                 </TablixMember>
                 <TablixMember>
                   <Group Name="Details" />
+                  <TablixMembers>
+                    <TablixMember />
+                  </TablixMembers>
+                </TablixMember>
+                <TablixMember>
+                  <KeepWithGroup>Before</KeepWithGroup>
                 </TablixMember>
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>DataSet_Result</DataSetName>
-            <Top>3.09344in</Top>
+            <Top>3.10733in</Top>
             <Left>0.05653in</Left>
-            <Height>0.5in</Height>
-            <Width>7.74778in</Width>
+            <Height>0.75in</Height>
+            <Width>8.37171in</Width>
             <ZIndex>4</ZIndex>
             <Style>
               <Border>
@@ -698,7 +866,7 @@
             <Source>Embedded</Source>
             <Value>krbsaccoLogo2</Value>
             <Sizing>FitProportional</Sizing>
-            <Left>3.23162in</Left>
+            <Left>3.72086in</Left>
             <Height>0.92708in</Height>
             <Width>0.99369in</Width>
             <ZIndex>5</ZIndex>
@@ -709,10 +877,10 @@
             </Style>
           </Image>
           <Line Name="Line5">
-            <Top>5.51496cm</Top>
+            <Top>5.55024cm</Top>
             <Left>0.05653in</Left>
             <Height>0cm</Height>
-            <Width>19.32915cm</Width>
+            <Width>21.26414cm</Width>
             <ZIndex>6</ZIndex>
             <Style>
               <Border>
@@ -730,7 +898,7 @@
                     <Value>LOANS GUARANTEED REPORT</Value>
                     <Style>
                       <FontFamily>Segoe UI</FontFamily>
-                      <FontSize>12pt</FontSize>
+                      <FontSize>9pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
@@ -741,10 +909,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox16</rd:DefaultName>
-            <Top>2.29852in</Top>
-            <Left>0.14359cm</Left>
+            <Top>2.31241in</Top>
+            <Left>0.14361cm</Left>
             <Height>0.45872cm</Height>
-            <Width>18.48521cm</Width>
+            <Width>21.26412cm</Width>
             <ZIndex>7</ZIndex>
             <Style>
               <Border>
@@ -766,6 +934,7 @@
                     <Value>Member No:</Value>
                     <Style>
                       <FontFamily>Segoe UI</FontFamily>
+                      <FontSize>9pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
@@ -774,10 +943,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox95</rd:DefaultName>
-            <Top>2.49891in</Top>
+            <Top>2.5128in</Top>
             <Left>0.05654in</Left>
-            <Height>0.19054in</Height>
-            <Width>1.72105in</Width>
+            <Height>0.22978in</Height>
+            <Width>1.73494in</Width>
             <ZIndex>8</ZIndex>
             <Style>
               <Border>
@@ -808,10 +977,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>LoanNumber</rd:DefaultName>
-            <Top>2.49891in</Top>
-            <Left>1.72824in</Left>
-            <Height>0.19054in</Height>
-            <Width>2.38144in</Width>
+            <Top>2.52079in</Top>
+            <Left>1.79148in</Left>
+            <Height>0.22978in</Height>
+            <Width>2.39533in</Width>
             <ZIndex>9</ZIndex>
             <Style>
               <Border>
@@ -833,6 +1002,7 @@
                     <Value>Member Name:</Value>
                     <Style>
                       <FontFamily>Segoe UI</FontFamily>
+                      <FontSize>9pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
@@ -841,8 +1011,8 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>ProductType</rd:DefaultName>
-            <Top>2.68945in</Top>
-            <Left>0.05654in</Left>
+            <Top>2.52079in</Top>
+            <Left>4.76954in</Left>
             <Height>0.22179in</Height>
             <Width>1.72105in</Width>
             <ZIndex>10</ZIndex>
@@ -876,10 +1046,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>ProductType1</rd:DefaultName>
-            <Top>2.68945in</Top>
-            <Left>1.72824in</Left>
+            <Top>2.52079in</Top>
+            <Left>6.44124in</Left>
             <Height>0.22179in</Height>
-            <Width>2.38144in</Width>
+            <Width>1.987in</Width>
             <ZIndex>11</ZIndex>
             <Style>
               <Border>
@@ -891,92 +1061,11 @@
               <PaddingBottom>2pt</PaddingBottom>
             </Style>
           </Textbox>
-          <Textbox Name="Textbox163">
-            <CanGrow>true</CanGrow>
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>Printed on:</Value>
-                    <Style>
-                      <FontFamily>Segoe UI</FontFamily>
-                      <FontWeight>Bold</FontWeight>
-                    </Style>
-                  </TextRun>
-                </TextRuns>
-                <Style />
-              </Paragraph>
-            </Paragraphs>
-            <rd:DefaultName>Textbox95</rd:DefaultName>
-            <Top>2.48502in</Top>
-            <Left>4.3074in</Left>
-            <Height>0.19054in</Height>
-            <Width>1.26157in</Width>
-            <ZIndex>12</ZIndex>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-              <PaddingLeft>2pt</PaddingLeft>
-              <PaddingRight>2pt</PaddingRight>
-              <PaddingTop>2pt</PaddingTop>
-              <PaddingBottom>2pt</PaddingBottom>
-            </Style>
-          </Textbox>
-          <Textbox Name="LoanNumber3">
-            <CanGrow>true</CanGrow>
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>=Globals!ExecutionTime</Value>
-                    <Style>
-                      <FontFamily>Segoe UI</FontFamily>
-                      <FontSize>9pt</FontSize>
-                      <FontWeight>Normal</FontWeight>
-                      <Format>MMMM d, yyyy</Format>
-                    </Style>
-                  </TextRun>
-                </TextRuns>
-                <Style>
-                  <TextAlign>Right</TextAlign>
-                </Style>
-              </Paragraph>
-            </Paragraphs>
-            <rd:DefaultName>LoanNumber</rd:DefaultName>
-            <Top>2.48502in</Top>
-            <Left>5.6165in</Left>
-            <Height>0.19054in</Height>
-            <Width>1.71768in</Width>
-            <ZIndex>13</ZIndex>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-              <PaddingLeft>2pt</PaddingLeft>
-              <PaddingRight>2pt</PaddingRight>
-              <PaddingTop>2pt</PaddingTop>
-              <PaddingBottom>2pt</PaddingBottom>
-            </Style>
-          </Textbox>
-          <Line Name="Line6">
-            <Top>7.68096cm</Top>
-            <Height>0cm</Height>
-            <Width>19.32915cm</Width>
-            <ZIndex>14</ZIndex>
-            <Style>
-              <Border>
-                <Style>Solid</Style>
-              </Border>
-            </Style>
-          </Line>
         </ReportItems>
-        <Height>4.8425in</Height>
+        <Height>4.85639in</Height>
         <Style />
       </Body>
-      <Width>7.92916in</Width>
+      <Width>8.42824in</Width>
       <Page>
         <PageHeader>
           <Height>0.55208in</Height>
@@ -1215,8 +1304,6 @@
             </Border>
           </Style>
         </PageHeader>
-        <LeftMargin>0.25in</LeftMargin>
-        <RightMargin>0.25in</RightMargin>
         <Style />
       </Page>
     </ReportSection>
@@ -1420,6 +1507,18 @@ kHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpBvD/AZI2
         </Field>
         <Field Name="EmployerCode_LoansRegister">
           <DataField>EmployerCode_LoansRegister</DataField>
+        </Field>
+        <Field Name="Repay_Count">
+          <DataField>Repay_Count</DataField>
+        </Field>
+        <Field Name="Loan_Product_Type_Name">
+          <DataField>Loan_Product_Type_Name</DataField>
+        </Field>
+        <Field Name="RemainingRepayment">
+          <DataField>RemainingRepayment</DataField>
+        </Field>
+        <Field Name="RemainingRepaymentFormat">
+          <DataField>RemainingRepaymentFormat</DataField>
         </Field>
       </Fields>
       <Query>

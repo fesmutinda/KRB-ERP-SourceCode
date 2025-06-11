@@ -140,28 +140,51 @@ Report 50226 "Loans Guaranteed"
                     column(EmployerCode_LoansRegister; "Loans Register"."Employer Code")
                     {
                     }
+
+                    column(Repay_Count; "Repay Count") { }
+
+                    column(Loan_Product_Type_Name; "Loan Product Type Name") { }
+
+                    column(RemainingRepayment; RemainingRepayment) { }
                 }
 
                 trigger OnAfterGetRecord()
+                var
+                    LoanSchedule: Record "Loan Repayment Schedule";
                 begin
                     Shares := 0;
-                    //"Transferable shares":='';
-                    if Loans.Get("Loan No") then begin
+                    RemainingRepayment := 0;
+
+                    // Use "Loan Guarantors"."Loan No" instead of "Loans Register"."Loan  No."
+                    if Loans.Get("Loan Guarantors"."Loan No") then begin
                         Loans.CalcFields(Loans."Outstanding Balance");
                         MemberGuar := Loans."Client Name";
                         MemberNo := Loans."Client Code";
+
                         if Loans."Issued Date" <> 0D then begin
                             expected := ROUND((Currdate - Loans."Issued Date") / 30, 1.0, '<');
                             Period := Loans.Installments - expected;
-
-
                         end;
 
                         if Cust.Get(Customer."No.") then begin
                             Cust.CalcFields(Cust."Current Shares");
                             Shares := -1 * Cust."Current Shares";
-
                         end;
+
+                        // Use the Loans record data instead of "Loans Register" 
+                        // LoanSchedule.SetRange("Loan No.", Loans."Loan  No.");
+                        // LoanSchedule.SetRange("Loan Balance", Loans."Outstanding Balance");
+
+                        // if LoanSchedule.FindFirst() then begin
+                        //     RemainingRepayment := Loans.Installments - LoanSchedule."Instalment No";
+                        // end;
+
+                        RemainingRepayment := FnCalculateLoanRemainingPeriod(
+    Loans."Outstanding Balance",
+    Loans."Approved Amount",
+    Loans.Installments,
+    Loans.Interest
+);
                     end;
                 end;
             }
@@ -238,5 +261,63 @@ Report 50226 "Loans Guaranteed"
         expected: Decimal;
         Currdate: Date;
         Company: Record "Company Information";
+
+        RemainingRepayment: Decimal;
+
+
+
+    procedure FnCalculateLoanRemainingPeriod(
+    LoanOutstandingBalance: Decimal;
+    OriginalAmount: Decimal;
+    TotalInstallments: Integer;
+    InterestRate: Decimal): Integer
+    var
+        RemainingPeriods: Integer;
+        MonthlyInterestRate: Decimal;
+        MonthlyPayment: Decimal;
+        Numerator: Decimal;
+        Denominator: Decimal;
+    begin
+
+        if (LoanOutstandingBalance <= 0) or (OriginalAmount <= 0) or (TotalInstallments <= 0) then
+            exit(0);
+
+        if LoanOutstandingBalance >= OriginalAmount then
+            exit(TotalInstallments);
+
+        // Handle zero interest rate loans
+        if InterestRate = 0 then begin
+            RemainingPeriods := Round((LoanOutstandingBalance / OriginalAmount) * TotalInstallments, 1, '>');
+            exit(RemainingPeriods);
+        end;
+
+
+        MonthlyInterestRate := InterestRate / 12 / 100;
+
+        MonthlyPayment := OriginalAmount *
+            (MonthlyInterestRate * Power(1 + MonthlyInterestRate, TotalInstallments)) /
+            (Power(1 + MonthlyInterestRate, TotalInstallments) - 1);
+
+
+        if MonthlyPayment > 0 then begin
+            RemainingPeriods := Round(LoanOutstandingBalance / MonthlyPayment, 1, '>');
+
+            // Adjust for interest effect (loans with interest need fewer periods than simple division)
+            if MonthlyInterestRate > 0 then begin
+                // Apply a correction factor based on interest rate
+                // Higher interest rates mean more of each payment goes to interest initially
+                RemainingPeriods := Round(RemainingPeriods * 0.95, 1, '>'); // Reduce by ~5%
+            end;
+        end else begin
+            RemainingPeriods := Round((LoanOutstandingBalance / OriginalAmount) * TotalInstallments, 1, '>');
+        end;
+
+        if RemainingPeriods > TotalInstallments then
+            RemainingPeriods := TotalInstallments;
+        if RemainingPeriods < 0 then
+            RemainingPeriods := 0;
+
+        exit(RemainingPeriods);
+    end;
 }
 
