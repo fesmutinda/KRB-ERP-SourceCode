@@ -26,24 +26,28 @@ Report 50244 "Loan Appraisal"
             column(USERID; UserId)
             {
             }
-            column(COMPANYNAME; COMPANYNAME)
+            column(Company_Name; CompanyInfo.Name)
             {
             }
-            column(CompanyInfo_Address; CompanyInfo.Address)
+            column(Company_Address; CompanyInfo.Address)
             {
             }
-            column(CompanyInfo__Phone_No__; CompanyInfo."Phone No.")
+            column(Company_Address_2; CompanyInfo."Address 2")
             {
             }
-            column(CompanyInfo__E_Mail_; CompanyInfo."E-Mail")
+            column(Company_Phone_No; CompanyInfo."Phone No.")
             {
             }
-            column(CompanyInfo_City; CompanyInfo.City)
+            column(Company_Fax_No; CompanyInfo."Fax No.")
             {
             }
-            column(CompanyInfo_Picture; CompanyInfo.Picture)
+            // column(Company_Picture; CompanyInfo.Picture)
+            // {
+            // }
+            column(Company_Email; CompanyInfo."E-Mail")
             {
             }
+
             column(Loans__Application_Date_; "Application Date")
             {
             }
@@ -582,7 +586,7 @@ Report 50244 "Loan Appraisal"
                 column(Guarantor_Memb_No; "Loans Guarantee Details"."Member No")
                 {
                 }
-                column(G_Shares; "Loans Guarantee Details".Shares)
+                column(G_Shares; "Loans Guarantee Details"."Member Liability")
                 {
                 }
                 column(AvailableG; AvailableG)
@@ -840,6 +844,7 @@ Report 50244 "Loan Appraisal"
                 TotalBand := 0;
                 CollateralGuarantee := 0;
                 TotalRepay := 0;
+                GuarantorMemberDeposits := 0;
 
 
                 LoanType.Get("Loans Register"."Loan Product Type");
@@ -947,6 +952,8 @@ Report 50244 "Loan Appraisal"
                     if "Loans Guarantee Details".Find('-') then begin
                         CalcFields("Outstanding Balance");
                         GuarOutstanding := "Outstanding Balance";
+
+                        GShares := "Loans Guarantee Details".Shares;
                     end;
 
 
@@ -1045,6 +1052,9 @@ Report 50244 "Loan Appraisal"
                         // "Net Loan Disbursed" := CollCharge;
                         MODIFY;
                     END;
+
+
+
 
 
 
@@ -1575,6 +1585,8 @@ Report 50244 "Loan Appraisal"
         SFactory: Codeunit "Swizzsoft Factory";
         Booster: Decimal;
         Prembal: Decimal;
+
+        GuarantorMemberDeposits: Decimal;
 
 
     procedure GetLoanCharges(ProductCode: Code[20]; ChargeCode: Code[20]; Amount: Decimal) Charge: Decimal

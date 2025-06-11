@@ -1683,6 +1683,7 @@ Table 51371 "Loans Register"
                                                                   "Posting Date" = field("Date filter")));
             FieldClass = FlowField;
         }
+
         field(53186; "Penalty Paid"; Decimal)
         {
             CalcFormula = sum("Cust. Ledger Entry"."Amount Posted" where("Customer No." = field("Client Code"),
@@ -5543,5 +5544,12 @@ Table 51371 "Loans Register"
             Rec."Facilitation Cost" := 0;
         end;
     end;
+
+
+    procedure GetInterestPaid(): Decimal
+    begin
+        exit("Loan Interest Repayment");
+    end;
+
 }
 

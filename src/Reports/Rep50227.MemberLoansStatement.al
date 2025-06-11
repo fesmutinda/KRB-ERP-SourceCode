@@ -10,6 +10,18 @@ Report 50227 "Member Loans Statement"
         dataitem(Customer; Customer)
         {
             RequestFilterFields = "No.", "Loan Product Filter", "Outstanding Balance";
+
+            column(Phone_No_; "Phone No.")
+            {
+
+            }
+
+            column(Registration_Date; "Registration Date")
+            {
+
+            }
+
+
             column(Payroll_Staff_No; "Payroll/Staff No")
             {
             }

@@ -32,7 +32,7 @@ Table 59047 "Online Loan Application"
                 end;
             end;
         }
-        field(24; "Loan Product Type Name"; Code[20]) { Editable = false; }
+        field(24; "Loan Product Type Name"; Code[50]) { Editable = false; }
         field(3; "BOSA No"; Code[20])
         {
             TableRelation = Customer."No.";
@@ -94,6 +94,11 @@ Table 59047 "Online Loan Application"
         }
         field(28; Installments; Integer) { }
         // field(7; Email; Code[20]) { }
+
+        field(29; "Application Status"; Option)
+        {
+            OptionMembers = Application,Submitted,Deleted;
+        }
     }
 
     keys

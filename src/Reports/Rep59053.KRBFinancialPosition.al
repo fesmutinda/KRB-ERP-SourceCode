@@ -17,7 +17,7 @@ report 59053 KRBFinancialPosition
         {
             DataItemTableView = sorting("No.") where(Blocked = filter(false), "Income/Balance" = const("Balance Sheet"));
 
-            RequestFilterFields = "No.", "Account Type", "Date Filter", "Account Category";
+            // RequestFilterFields = "No.", "Account Type", "Date Filter", "Account Category";
 
 
             column(SurplusOrLoss; Surplus) { }
@@ -76,7 +76,10 @@ report 59053 KRBFinancialPosition
             column(Account_Category; "Account Category") { }
             //column(Account_Subcategory; "Account SubCategory") { }
             column(StartDateText; Format(StartDate)) { }
-            column(EndDateText; Format(EndDate)) { }
+            // column(EndDateText; Format("Date Filter")) { }
+
+            column(EndDateText; Format(Today, 0, '<Month,2>/<Day,2>/<Year4>')) { }
+
 
             column(Company_Name; Company.Name)
             {
@@ -113,6 +116,24 @@ report 59053 KRBFinancialPosition
 
             end;
 
+            // trigger OnPreDataItem()
+            // begin
+            //     // 1. Set base filters (Income/Balance = "Balance Sheet")
+            //     SetRange("Income/Balance", "Income/Balance"::"Balance Sheet");
+
+            //     // 2. Apply user's date filter from request page
+            //     SetRange("Date Filter", StartDate, EndDate);
+
+            //     // 3. Preserve any additional date filtering from the UI
+            //     if GetFilter("Date Filter") <> '' then
+            //         SetFilter("Date Filter", GetFilter("Date Filter") + ' & %1..%2', StartDate, EndDate)
+            //     else
+            //         SetFilter("Date Filter", '%1..%2', StartDate, EndDate);
+
+            //     // Initialize variables
+            //     Clear(TotalNetChange);
+            // end;
+
             trigger OnAfterGetRecord()
             begin
                 // Recalculate fields after filtering
@@ -123,25 +144,25 @@ report 59053 KRBFinancialPosition
     }
     requestpage
     {
-        layout
-        {
-            area(Content)
-            {
-                group(Options)
-                {
-                    field(StartDateReq; StartDate)
-                    {
-                        ApplicationArea = All;
-                        Caption = 'Start Date';
-                    }
-                    field(EndDateReq; EndDate)
-                    {
-                        ApplicationArea = All;
-                        Caption = 'End Date';
-                    }
-                }
-            }
-        }
+        // layout
+        // {
+        //     area(Content)
+        //     {
+        //         group(Options)
+        //         {
+        //             field(StartDateReq; StartDate)
+        //             {
+        //                 ApplicationArea = All;
+        //                 Caption = 'Start Date';
+        //             }
+        //             field(EndDateReq; EndDate)
+        //             {
+        //                 ApplicationArea = All;
+        //                 Caption = 'End Date';
+        //             }
+        //         }
+        //     }
+        // }
         actions
         {
             area(Processing)

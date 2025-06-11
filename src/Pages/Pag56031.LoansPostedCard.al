@@ -415,6 +415,48 @@ Page 56031 "Loans Posted Card"
 
                 }
 
+
+                action(Appraise)
+                {
+                    ApplicationArea = all;
+                    Caption = 'Appraise';
+
+                    trigger OnAction()
+                    var
+                        LoanApp: Record "Loans Register";
+                        EntryNos: Integer;
+                        Audit: Record "Audit Entries";
+                    begin
+                        //Audit Entries
+                        if (UserId <> '') then begin
+                            EntryNos := 0;
+                            if Audit.FindLast then
+                                EntryNos := 1 + Audit."Entry No";
+                            Audit.Init;
+                            Audit."Entry No" := EntryNos;
+                            Audit."Transaction Type" := 'Loan Appraisal';
+                            Audit."Loan Number" := Rec."Loan  No.";
+                            Audit."Document Number" := Rec."Loan  No.";
+                            Audit.UsersId := UserId;
+                            Audit.Amount := Rec."Requested Amount";
+                            Audit.Date := Today;
+                            Audit.Time := Time;
+                            Audit.Source := 'LOAN APPLICATION';
+                            Audit.Insert;
+                            Commit;
+                        end;
+                        //End Audit Entries
+
+                        LoanApp.Reset;
+                        LoanApp.SetRange(LoanApp."Loan  No.", Rec."Loan  No.");
+                        if LoanApp.Find('-') then begin
+                            Report.Run(56384, true, false, LoanApp);
+                        end;
+
+                    end;
+
+                }
+
             }
         }
     }

@@ -19,6 +19,12 @@ Report 50051 "Members Deposits Statement"
             column(PayrollStaffNo_Members; "Payroll/Staff No")
             {
             }
+
+            column(Phone_No_; "Phone No.")
+            {
+
+            }
+
             column(No_Members; "No.")
             {
             }

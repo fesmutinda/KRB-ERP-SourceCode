@@ -70,6 +70,14 @@ Report 50280 "Post Monthly Interest."
 
             trigger OnAfterGetRecord()
             begin
+
+                // Check if Date filter is set, if not, set it to PostDate
+                if "Loans Register".GetFilter("Date filter") = '' then begin
+                    "Loans Register".SetFilter("Date filter", '..' + Format(PostDate));
+                end;
+
+
+
                 PDate := "Loans Register".GetRangemax("Loans Register"."Date filter");
                 SDATE := '..' + Format(PDate);
                 DocNo := Format(PostDate);
@@ -160,7 +168,8 @@ Report 50280 "Post Monthly Interest."
             trigger OnPreDataItem()
             begin
                 if PostDate = 0D then
-                    Error('Please create Interest period');
+                    PostDate := DMY2DATE(22, DATE2DMY(TODAY, 2), DATE2DMY(TODAY, 3));
+                //Error('Please create Interest period');
 
                 // if DocNo = '' then
                 //     Error('You must specify the Document No.');

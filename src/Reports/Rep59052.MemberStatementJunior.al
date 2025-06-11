@@ -9,8 +9,21 @@ Report 59052 "Member Statement Junior"
         dataitem("Members Register"; customer)
         {
             RequestFilterFields = "No.", "Date Filter";
+
+
+
             column(ReportForNavId_1102755000; 1102755000)
             {
+            }
+
+            column(Phone_No_; "Phone No.")
+            {
+
+            }
+
+            column(Registration_Date; "Registration Date")
+            {
+
             }
             column(USERID; UserId)
             {

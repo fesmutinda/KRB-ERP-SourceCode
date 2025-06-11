@@ -39,22 +39,25 @@ Report 56384 "Loan Appraisal Edit"
             column(USERID; UserId)
             {
             }
-            column(COMPANYNAME; COMPANYNAME)
+            column(Company_Name; CompanyInfo.Name)
             {
             }
-            column(CompanyInfo_Address; CompanyInfo.Address)
+            column(Company_Address; CompanyInfo.Address)
             {
             }
-            column(CompanyInfo__Phone_No__; CompanyInfo."Phone No.")
+            column(Company_Address_2; CompanyInfo."Address 2")
             {
             }
-            column(CompanyInfo__E_Mail_; CompanyInfo."E-Mail")
+            column(Company_Phone_No; CompanyInfo."Phone No.")
             {
             }
-            column(CompanyInfo_City; CompanyInfo.City)
+            column(Company_Fax_No; CompanyInfo."Fax No.")
             {
             }
-            column(CompanyInfo_Picture; CompanyInfo.Picture)
+            column(Company_Picture; CompanyInfo.Picture)
+            {
+            }
+            column(Company_Email; CompanyInfo."E-Mail")
             {
             }
             column(Loans__Application_Date_; "Application Date")
@@ -1104,6 +1107,7 @@ Report 56384 "Loan Appraisal Edit"
                         if "Loans Guarantee Details".Find('-') then begin
                             "Loans Guarantee Details".CalcSums("Loans Guarantee Details"."Amont Guaranteed");
                             TGAmount := "Loans Guarantee Details"."Amont Guaranteed";
+                            GShares := "Loans Guarantee Details".Shares;
                         end;
                     end;
 
@@ -1115,15 +1119,18 @@ Report 56384 "Loan Appraisal Edit"
                     LoanAmount := "Loans Register"."Approved Amount";
                     RepayPeriod := "Loans Register".Installments;
                     LBalance := "Loans Register"."Approved Amount";
+                    VarMonthlyInterest := "Loans Register".Interest / 12 / 100;
 
                     //..................................................................
                     if "Loans Register"."Repayment Method" = "Loans Register"."repayment method"::Amortised
                        then begin
                         "Loans Register".TestField("Loans Register".Installments);
                         "Loans Register".TestField("Loans Register".Interest);
-                        "Loans Register".repayment := ROUND(("Loans Register".Interest / 12 / 100) / (1 - Power((1 + ("Loans Register".Interest / 12 / 100)), -"Loans Register".Installments)) * "Loans Register"."Approved Amount", 1, '>');
+                        //"Loans Register".repayment := ROUND(("Loans Register".Interest / 12 / 100) / (1 - Power((1 + ("Loans Register".Interest / 12 / 100)), -"Loans Register".Installments)) * "Loans Register"."Approved Amount", 1, '>');
                         //"Loans Register"."Loan Interest Repayment" := ("Loans Register".Interest / 12 / 100) / (1 - Power((1 + ("Loans Register".Interest / 12 / 100)), -"Loans Register".Installments)) * "Loans Register"."Approved Amount";
-                        "Loans Register"."Loan Interest Repayment" := ROUND("Loans Register"."Approved Amount" / 100 / 12 * "Loans Register".Interest, 0.05, '>');//Interest repayment
+                        "Loans Register".repayment := Round("Loans Register"."Approved Amount" * ((VarMonthlyInterest * Power((1 + VarMonthlyInterest), "Loans Register".Installments)) / (Power((1 + VarMonthlyInterest), "Loans Register".Installments) - 1)), 1);
+                        //"Loans Register"."Loan Interest Repayment" := ROUND("Loans Register"."Approved Amount" / 100 / 12 * "Loans Register".Interest, 0.05, '>');//Interest repayment
+                        "Loans Register"."Loan Interest Repayment" := ROUND("Loans Register"."Outstanding Balance" * VarMonthlyInterest);
                         "Loans Register"."Loan Principle Repayment" := "Loans Register".repayment - "Loans Register"."Loan Interest Repayment";
                     end;
 
@@ -1570,6 +1577,8 @@ Report 56384 "Loan Appraisal Edit"
         AccruedinterestVisible: Decimal;
         AppraisalFeeVisible: Decimal;
         TotalOffsetCharge: Decimal;
+
+        VarMonthlyInterest: Decimal;
 
 
     procedure ComputeTax()

@@ -126,6 +126,16 @@ page 57006 "KRB Checkoff Card"
             group(ActionGroup1102755019)
             {
             }
+
+            action("Recalculate Scheduled Amount")
+            {
+                ApplicationArea = All;
+                trigger OnAction()
+                begin
+                    Rec.UpdateTotalAmount();
+                    Rec.Modify();
+                end;
+            }
             action("Validate Receipts")
             {
                 ApplicationArea = Basic;

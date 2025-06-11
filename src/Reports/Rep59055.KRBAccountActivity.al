@@ -113,6 +113,8 @@ report 59055 "KRBAccountActivity"
                 trigger OnPreDataItem()
                 begin
                     SetRange("Posting Date", StartDate, EndDate);
+                    if GLAccountFilter <> '' then
+                        SetFilter("G/L Account No.", GLAccountFilter);
                     //SetRange("Source Type", "Source Type"::Customer);
                 end;
 
@@ -151,6 +153,26 @@ report 59055 "KRBAccountActivity"
                         Caption = 'End Date';
                     }
                 }
+
+                group(Filters)
+                {
+                    field(GLAccountFilterField; GLAccountFilter)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'G/L Account Filter';
+                        ToolTip = 'Enter G/L Account numbers to filter (e.g., 1000..1999 or 1000|2000|3000)';
+
+                        trigger OnLookup(var Text: Text): Boolean
+                        var
+                            GLAccount: Record "G/L Account";
+                        begin
+                            if PAGE.RunModal(PAGE::"G/L Account List", GLAccount) = ACTION::LookupOK then begin
+                                Text := GLAccount."No.";
+                                exit(true);
+                            end;
+                        end;
+                    }
+                }
             }
         }
     }
@@ -176,6 +198,8 @@ report 59055 "KRBAccountActivity"
         AccountTotal: Decimal;
 
         RunningTotal: Decimal;
+
+        GLAccountFilter: Text;
 
     procedure GetCustomerName(CustomerNo: Code[20]): Text[100]
     var

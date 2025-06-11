@@ -714,6 +714,7 @@ page 50367 "Member Account Card"
                     Image = "Report";
                     Promoted = true;
                     PromotedCategory = "Report";
+                    Visible = false;
 
                     trigger OnAction()
                     var

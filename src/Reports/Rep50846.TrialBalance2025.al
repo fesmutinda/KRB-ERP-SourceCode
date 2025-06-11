@@ -24,6 +24,29 @@ Report 50846 "Trial Balance2025"
             column(COMPANYNAME; COMPANYNAME)
             {
             }
+
+            column(Company_Name; compyinfo.Name)
+            {
+            }
+            column(Company_Address; compyinfo.Address)
+            {
+            }
+            column(Company_Address_2; compyinfo."Address 2")
+            {
+            }
+            column(Company_Phone_No; compyinfo."Phone No.")
+            {
+            }
+            column(Company_Fax_No; compyinfo."Fax No.")
+            {
+            }
+            column(Company_Picture; compyinfo.Picture)
+            {
+            }
+            column(Company_Email; compyinfo."E-Mail")
+            {
+            }
+
             column(PeriodText; PeriodText)
             {
             }

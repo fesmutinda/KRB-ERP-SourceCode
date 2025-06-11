@@ -2222,6 +2222,12 @@ End Function
   <DataSets>
     <DataSet Name="DataSet_Result">
       <Fields>
+        <Field Name="Phone_No_">
+          <DataField>Phone_No_</DataField>
+        </Field>
+        <Field Name="Registration_Date">
+          <DataField>Registration_Date</DataField>
+        </Field>
         <Field Name="Payroll_Staff_No">
           <DataField>Payroll_Staff_No</DataField>
         </Field>

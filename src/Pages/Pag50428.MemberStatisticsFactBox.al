@@ -45,6 +45,7 @@ page 50428 "Member Statistics FactBox"
                     ApplicationArea = Basic;
                     Caption = 'Share Capital';
                 }
+
                 field("Current Shares"; Rec."Current Shares")
                 {
                     ApplicationArea = Basic;
@@ -136,6 +137,9 @@ page 50428 "Member Statistics FactBox"
 
     trigger OnAfterGetRecord()
     begin
+
+        Rec.CalculateJuniorSavings();
+
         if (Rec."Assigned System ID" <> '') then begin //AND ("Assigned System ID"<>USERID)
             if UserSetup.Get(UserId) then begin
                 // if UserSetup."View Special Accounts" = false then Error('You do not have permission to view this account Details, Contact your system administrator! ')

@@ -25,6 +25,16 @@ Report 56886 "Member Account Statement(Ver1)"
             column(Name_Members; "Members Register".Name)
             {
             }
+
+            column(Phone_No_; "Phone No.")
+            {
+
+            }
+
+            column(Registration_Date; "Registration Date")
+            {
+
+            }
             column(EmployerCode_Members; "Members Register"."Employer Code")
             {
             }

@@ -39,6 +39,19 @@ codeunit 50041 "Custom Workflow Responses"
         WFResponseHandler.AddResponsePredecessor(WFResponseHandler.CancelAllApprovalRequestsCode,
                                                  SwizzsoftWFEvents.RunWorkflowOnCancelInstantLoanApplicationApprovalRequestCode);
 
+        //BOSA Loan Application
+
+        WFResponseHandler.AddResponsePredecessor(WFResponseHandler.SetStatusToPendingApprovalCode,
+                                               SwizzsoftWFEvents.RunWorkflowOnSendLoanApplicationForApprovalCode);
+        WFResponseHandler.AddResponsePredecessor(WFResponseHandler.CreateApprovalRequestsCode,
+                                                 SwizzsoftWFEvents.RunWorkflowOnSendLoanApplicationForApprovalCode);
+        WFResponseHandler.AddResponsePredecessor(WFResponseHandler.SendApprovalRequestForApprovalCode,
+                                                 SwizzsoftWFEvents.RunWorkflowOnSendLoanApplicationForApprovalCode);
+        WFResponseHandler.AddResponsePredecessor(WFResponseHandler.OpenDocumentCode,
+                                                 SwizzsoftWFEvents.RunWorkflowOnCancelLoanApplicationApprovalRequestCode);
+        WFResponseHandler.AddResponsePredecessor(WFResponseHandler.CancelAllApprovalRequestsCode,
+                                                 SwizzsoftWFEvents.RunWorkflowOnCancelLoanApplicationApprovalRequestCode);
+
         //-----------------------------End AddOn--------------------------------------------------------------------------------------
     end;
 
@@ -409,14 +422,29 @@ codeunit 50041 "Custom Workflow Responses"
                 end;
 
             //Loan Application
+            // Database::"Loans Register":
+            //     begin
+            //         RecRef.SetTable(LoansRegister);
+            //         LoansRegister.Validate("Approval Status", LoansRegister."Approval Status"::Pending);
+            //         LoansRegister.Validate("loan status", LoansRegister."loan status"::Appraisal);
+            //         LoansRegister.Modify(true);
+            //         IsHandled := true;
+            //     end;
+
+            // Loan Application
             Database::"Loans Register":
                 begin
                     RecRef.SetTable(LoansRegister);
-                    LoansRegister.Validate("Approval Status", LoansRegister."Approval Status"::Pending);
-                    LoansRegister.Validate("loan status", LoansRegister."loan status"::Appraisal);
-                    LoansRegister.Modify(true);
-                    IsHandled := true;
+                    if LoansRegister.Get(LoansRegister."Loan  No.") then begin
+                        LoansRegister.Validate("Approval Status", LoansRegister."Approval Status"::Pending);
+                        LoansRegister.Validate("loan status", LoansRegister."loan status"::Appraisal);
+                        LoansRegister.Modify(true);  // Ensure record is not outdated
+                        //Variant := LoansRegister;
+                        IsHandled := true;
+                    end;
                 end;
+
+
 
             //BOSA Transfers
             Database::"BOSA Transfers":
@@ -462,147 +490,10 @@ codeunit 50041 "Custom Workflow Responses"
         end;
     end;
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Workflow Response Handling", 'OnExecuteWorkflowResponse', '', true, true)]
-    local procedure SetRecStatusToPendingApproval(var Variant: Variant)
-    var
-        RecRef: RecordRef;
-        IsHandled: Boolean;
-        MembershipApplication: Record "Membership Applications";
-        LoansRegister: Record "Loans Register";
-        BOSATransfers: Record "BOSA Transfers";
-        LoanBatchDisbursements: Record "Loan Disburesment-Batching";
-        LoanTopUp: Record "Loan Top Up.";
-        ChangeRequest: Record "Change Request";
-        // LeaveApplication: Record "HR Leave Application";
-        GuarantorSubstitution: Record "Guarantorship Substitution H";
-        PaymentVoucher: Record "Payment Header";
-        PettyCashReimbersement: Record "Funds Transfer Header";
-        FOSAProductApplication: Record "Accounts Applications Details";
-        LoanRecoveryApplication: Record "Loan Recovery Header";
-        MembershipExist: Record "Membership Exist";
-        MemberReapplication: Record "Member Reapplication";
-    begin
-        RecRef.GetTable(Variant);
-        case RecRef.Number of
-            //Membership Reapplication
-            Database::"Member Reapplication":
-                begin
-                    RecRef.SetTable(MemberReapplication);
-                    MemberReapplication.Validate(Status, MemberReapplication.Status::Pending);
-                    MemberReapplication.Modify(true);
-                    Variant := MemberReapplication;
-                end;
-            //Membership Exit
-            Database::"Membership Exist":
-                begin
-                    RecRef.SetTable(MembershipExist);
-                    MembershipExist.Validate(Status, MembershipExist.Status::Pending);
-                    MembershipExist.Modify(true);
-                    Variant := MembershipExist;
-                end;
-            //PettyCash Reimbursement
-            Database::"Funds Transfer Header":
-                begin
-                    RecRef.SetTable(PettyCashReimbersement);
-                    PettyCashReimbersement.Validate(Status, PettyCashReimbersement.Status::"Pending Approval");
-                    PettyCashReimbersement.Modify(true);
-                    Variant := PettyCashReimbersement;
-                end;
-            //Payment Voucher
-            Database::"Payment Header":
-                begin
-                    RecRef.SetTable(PaymentVoucher);
-                    PaymentVoucher.Validate(Status, PaymentVoucher.Status::"Pending Approval");
-                    PaymentVoucher.Modify(true);
-                    Variant := PaymentVoucher;
-                end;
-            //Guarantor Substitution
-            Database::"Guarantorship Substitution H":
-                begin
-                    RecRef.SetTable(GuarantorSubstitution);
-                    GuarantorSubstitution.Validate(Status, GuarantorSubstitution.Status::Pending);
-                    GuarantorSubstitution.Modify(true);
-                    Variant := GuarantorSubstitution;
-                end;
-            //Leave Application
-            // Database::"HR Leave Application":
-            //     begin
-            //         RecRef.SetTable(LeaveApplication);
-            //         LeaveApplication.Validate(Status, LeaveApplication.Status::"Pending Approval");
-            //         LeaveApplication.Modify(true);
-            //         Variant := LeaveApplication;
-            //     end;
-            //Membership Application
-            Database::"Membership Applications":
-                begin
-                    RecRef.SetTable(MembershipApplication);
-                    MembershipApplication.Validate(Status, MembershipApplication.Status::"Pending Approval");
-                    MembershipApplication.Modify(true);
-                    Variant := MembershipApplication;
-                end;
-            //----------------------FOSA Product Application
-            Database::"Accounts Applications Details":
-                begin
-                    RecRef.SetTable(FOSAProductApplication);
-                    FOSAProductApplication.Validate(Status, FOSAProductApplication.Status::Pending);
-                    FOSAProductApplication.Modify(true);
-                    Variant := FOSAProductApplication;
-                end;
-            //Loan Application
-            Database::"Loans Register":
-                begin
-                    RecRef.SetTable(LoansRegister);
-                    LoansRegister.Validate("Approval Status", LoansRegister."Approval Status"::Pending);
-                    LoansRegister.Validate("loan status", LoansRegister."loan status"::Appraisal);
-                    LoansRegister.Modify(true);
-                    Variant := LoansRegister;
-                end;
-            //BOSA Transfers
-            Database::"BOSA Transfers":
-                begin
-                    RecRef.SetTable(BOSATransfers);
-                    BOSATransfers.Validate(status, BOSATransfers.Status::"Pending Approval");
-                    BOSATransfers.Modify(true);
-                    Variant := BOSATransfers;
-                end;
-            //Loan Batch Disbursements
-            Database::"Loan Disburesment-Batching":
-                begin
-                    RecRef.SetTable(LoanBatchDisbursements);
-                    LoanBatchDisbursements.Validate(status, LoanBatchDisbursements.Status::"Pending Approval");
-                    LoanBatchDisbursements.Modify(true);
-                    Variant := LoanBatchDisbursements;
-                end;
-            //Loan TopUp
-            Database::"Loan Top Up.":
-                begin
-                    RecRef.SetTable(LoanTopUp);
-                    LoanTopUp.Validate(status, LoanTopUp.Status::Pending);
-                    LoanTopUp.Modify(true);
-                    Variant := LoanTopUp;
-                end;
-            //Change Request
-            Database::"Change Request":
-                begin
-                    RecRef.SetTable(ChangeRequest);
-                    ChangeRequest.Validate(status, ChangeRequest.Status::Pending);
-                    ChangeRequest.Modify(true);
-                    Variant := ChangeRequest;
-                end;
-            //Loan Recovery Application
-            Database::"Loan Recovery Header":
-                begin
-                    RecRef.SetTable(LoanRecoveryApplication);
-                    LoanRecoveryApplication.Validate(Status, LoanRecoveryApplication.Status::Pending);
-                    LoanRecoveryApplication.Modify(true);
-                    Variant := LoanRecoveryApplication;
-                end;
-
-        end;
-    end;
 
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Workflow Response Handling", 'OnReleaseDocument', '', true, true)]
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Workflow Response Handling", 'OnReleaseDocument', '', false, false)]
     local procedure OnReleaseDocument(RecRef: RecordRef; var Handled: Boolean)
     var
         MemberShipApp: Record "Membership Applications";
@@ -680,6 +571,7 @@ codeunit 50041 "Custom Workflow Responses"
                 end;
             //Loans Applications
             DATABASE::"Loans Register":
+
                 begin
                     RecRef.SetTable(LoansRegister);
                     LoansRegister."Approval Status" := LoansRegister."Approval Status"::Approved;
@@ -740,6 +632,153 @@ codeunit 50041 "Custom Workflow Responses"
         end;
 
     end;
+
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approvals Mgmt.", 'OnApproveApprovalRequest', '', false, false)]
+    local procedure OnAfterLoanApproval(var ApprovalEntry: Record "Approval Entry")
+    var
+        LoansRegister: Record "Loans Register";
+        ApprovalEntry2: Record "Approval Entry";
+        RecRef: RecordRef;
+    begin
+        // Check if this is for a loan record
+        if ApprovalEntry."Table ID" = Database::"Loans Register" then begin
+            // Check if ALL approval entries for this document are approved
+            ApprovalEntry2.SetRange("Table ID", Database::"Loans Register");
+            ApprovalEntry2.SetRange("Record ID to Approve", ApprovalEntry."Record ID to Approve");
+            ApprovalEntry2.SetFilter(Status, '<>%1', ApprovalEntry2.Status::Approved);
+
+            // If no pending approvals remain, update loan status
+            if ApprovalEntry2.IsEmpty then begin
+                RecRef.Get(ApprovalEntry."Record ID to Approve");
+                RecRef.SetTable(LoansRegister);
+
+                LoansRegister."Loan Status" := LoansRegister."Loan Status"::Approved;
+                LoansRegister."Approval Status" := LoansRegister."Approval Status"::Approved;
+                LoansRegister.Modify(true);
+            end;
+        end;
+    end;
+
+    [EventSubscriber(ObjectType::Report, Report::"Notification Email", 'OnSetReportFieldPlaceholders', '', false, false)]
+    local procedure OnSetLoanReportFieldPlaceholders(RecRef: RecordRef; var Field1Label: Text; var Field1Value: Text; var Field2Label: Text; var Field2Value: Text; var Field3Label: Text; var Field3Value: Text; var DetailsLabel: Text; var DetailsValue: Text; NotificationEntry: Record "Notification Entry")
+    var
+        LoansRegister: Record "Loans Register";
+    begin
+        if RecRef.Number = Database::"Loans Register" then begin
+            RecRef.SetTable(LoansRegister);
+
+
+            // Customize the field labels and values
+            Field1Label := 'Applicant Name';
+            Field1Value := LoansRegister."Client Name";
+
+            Field2Label := 'Applied Amount';
+            Field2Value := Format(LoansRegister."Approved Amount");
+
+            Field3Label := 'Loan Type';
+            Field3Value := LoansRegister."Loan Product Type Name";
+
+            DetailsLabel := 'Loan Type';
+            DetailsValue := LoansRegister."Loan Product Type Name"
+        end;
+
+    end;
+
+
+    [EventSubscriber(ObjectType::Report, Report::"Notification Email", 'OnSetReportFieldPlaceholdersOnAfterGetDocumentURL', '', false, false)]
+    local procedure OnSetReportFieldPlaceholdersOnAfterGetLoanDocumentURL(var DocumentURL: Text; var NotificationEntry: Record "Notification Entry")
+    var
+        RecRef: RecordRef;
+    begin
+        RecRef.Get(NotificationEntry."Triggered By Record");
+        if RecRef.Number = Database::"Loans Register" then begin
+            DocumentURL := ''; // Remove the custom link completely
+
+        end;
+    end;
+
+
+    [EventSubscriber(ObjectType::Report, Report::"Notification Email", 'OnBeforeGetDocumentTypeAndNumber', '', false, false)]
+    local procedure OnBeforeGetDocumentTypeAndNumberForLoan(var NotificationEntry: Record "Notification Entry"; var RecRef: RecordRef; var DocumentType: Text; var DocumentNo: Text; var IsHandled: Boolean)
+    var
+        LoansRegister: Record "Loans Register";
+    begin
+        if RecRef.Number = Database::"Loans Register" then begin
+            RecRef.SetTable(LoansRegister);
+            DocumentType := 'Loan Application' + LoansRegister."Loan Account No";
+            DocumentNo := LoansRegister."Loan Account No";
+            IsHandled := true;
+        end;
+    end;
+
+    [EventSubscriber(ObjectType::Report, Report::"Notification Email", 'OnAfterSetReportLinePlaceholders', '', false, false)]
+    local procedure OnAfterSetLoanReportLinePlaceholders(ReceipientUser: Record User; CompanyInformation: Record "Company Information"; var Line1: Text; var Line2: Text)
+    begin
+        // Customize header lines for loan notifications
+        Line1 := '';
+        Line2 := 'Dear ' + ReceipientUser."User Name" + ', you have a loan application pending approval.';
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Notification Management", 'OnBeforeGetActionTextFor', '', false, false)]
+    local procedure OnBeforeGetLoanActionText(var NotificationEntry: Record "Notification Entry"; var CustomText: Text; var IsHandled: Boolean)
+    var
+        RecRef: RecordRef;
+    begin
+        RecRef.Get(NotificationEntry."Triggered By Record");
+        if RecRef.Number = Database::"Loans Register" then begin
+            CustomText := ''; // Remove action text completely
+            IsHandled := true;
+            NotificationEntry.Text := '';
+
+        end;
+    end;
+
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approvals Mgmt.", 'OnBeforeCreateApprovalEntryNotification', '', false, false)]
+    local procedure OnBeforeCreateLoanApprovalNotification(ApprovalEntry: Record "Approval Entry"; var IsHandled: Boolean; WorkflowStepInstance: Record "Workflow Step Instance")
+    var
+        WorkflowStepArgument: Record "Workflow Step Argument";
+        NotificationEntry: Record "Notification Entry";
+    begin
+        if ApprovalEntry."Table ID" = Database::"Loans Register" then begin
+            WorkflowStepArgument.Get(WorkflowStepInstance.Argument);
+
+            NotificationEntry.CreateNotificationEntry(
+                NotificationEntry.Type::Approval,
+                ApprovalEntry."Approver ID",
+                ApprovalEntry,
+                WorkflowStepArgument."Link Target Page",
+                '', // Empty string removes custom link
+                CopyStr(UserId(), 1, 50)
+            );
+
+            IsHandled := true;
+        end;
+    end;
+
+
+    [EventSubscriber(ObjectType::Table, Database::"Approval Entry", 'OnBeforeShowRecord', '', false, false)]
+    local procedure OnBeforeShowLoanRecord(ApprovalEntry: Record "Approval Entry"; var IsHandled: Boolean)
+    var
+        LoansRegister: Record "Loans Register";
+        RecRef: RecordRef;
+        LoanCardPage: Page "Loan Application Card";
+    begin
+        if ApprovalEntry."Table ID" = Database::"Loans Register" then begin
+            RecRef.Get(ApprovalEntry."Record ID to Approve");
+            RecRef.SetTable(LoansRegister);
+
+
+            LoanCardPage.SetRecord(LoansRegister);
+            LoanCardPage.SetViewOnlyMode(true);
+            LoanCardPage.RunModal;
+
+            IsHandled := true;
+        end;
+    end;
+
+
 
 }
 

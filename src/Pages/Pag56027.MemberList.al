@@ -123,104 +123,104 @@ Page 56027 "Member List"
     {
         area(Processing)
         {
-            group(ActionGroup1102755007)
-            {
-                action(DetailedStatement)
-                {
-                    ApplicationArea = Basic;
-                    Caption = 'Detailed Statement';
-                    Image = Customer;
-                    Promoted = true;
-                    PromotedCategory = "process";
+            //     group(ActionGroup1102755007)
+            //     {
+            //         action(DetailedStatement)
+            //         {
+            //             ApplicationArea = Basic;
+            //             Caption = 'Detailed Statement';
+            //             Image = Customer;
+            //             Promoted = true;
+            //             PromotedCategory = "process";
 
-                    trigger OnAction()
-                    begin
-                        Cust.Reset;
-                        Cust.SetRange(Cust."No.", Rec."No.");
-                        if Cust.Find('-') then
-                            Report.Run(56886, true, false, Cust);
-                    end;
-                }
-                action(GStatement)
-                {
-                    ApplicationArea = Basic;
-                    Caption = 'Loans Guaranteed';
-                    Image = Customer;
-                    Promoted = true;
-                    PromotedCategory = "process";
+            //             trigger OnAction()
+            //             begin
+            //                 Cust.Reset;
+            //                 Cust.SetRange(Cust."No.", Rec."No.");
+            //                 if Cust.Find('-') then
+            //                     Report.Run(56886, true, false, Cust);
+            //             end;
+            //         }
+            //         action(GStatement)
+            //         {
+            //             ApplicationArea = Basic;
+            //             Caption = 'Loans Guaranteed';
+            //             Image = Customer;
+            //             Promoted = true;
+            //             PromotedCategory = "process";
 
-                    trigger OnAction()
-                    begin
-                        Cust.Reset;
-                        Cust.SetRange(Cust."No.", Rec."No.");
-                        if Cust.Find('-') then
-                            Report.Run(50226, true, false, Cust);
-                    end;
-                }
-                action("Shares Statement")
-                {
-                    ApplicationArea = Basic;
-                    Image = "Report";
-                    Promoted = true;
-                    visible = false;
-                    PromotedCategory = "Report";
+            //             trigger OnAction()
+            //             begin
+            //                 Cust.Reset;
+            //                 Cust.SetRange(Cust."No.", Rec."No.");
+            //                 if Cust.Find('-') then
+            //                     Report.Run(50226, true, false, Cust);
+            //             end;
+            //         }
+            //         action("Shares Statement")
+            //         {
+            //             ApplicationArea = Basic;
+            //             Image = "Report";
+            //             Promoted = true;
+            //             visible = false;
+            //             PromotedCategory = "Report";
 
-                    trigger OnAction()
-                    begin
-                        Cust.Reset;
-                        Cust.SetRange(Cust."No.", Rec."No.");
-                        if Cust.Find('-') then
-                            Report.Run(50302, true, false, Cust);
-                    end;
-                }
-                action("Loans Statement")
-                {
-                    ApplicationArea = Basic;
-                    Image = "Report";
-                    Promoted = true;
-                    visible = false;
-                    PromotedCategory = "Report";
+            //             trigger OnAction()
+            //             begin
+            //                 Cust.Reset;
+            //                 Cust.SetRange(Cust."No.", Rec."No.");
+            //                 if Cust.Find('-') then
+            //                     Report.Run(50302, true, false, Cust);
+            //             end;
+            //         }
+            //         action("Loans Statement")
+            //         {
+            //             ApplicationArea = Basic;
+            //             Image = "Report";
+            //             Promoted = true;
+            //             visible = false;
+            //             PromotedCategory = "Report";
 
-                    trigger OnAction()
-                    begin
-                        Cust.Reset;
-                        Cust.SetRange(Cust."No.", Rec."No.");
-                        if Cust.Find('-') then
-                            Report.Run(50608, true, false, Cust);
-                    end;
-                }
-                action("Shares Certificate")
-                {
-                    ApplicationArea = Basic;
-                    Promoted = true;
-                    //visible = false;
-                    PromotedCategory = "Report";
+            //             trigger OnAction()
+            //             begin
+            //                 Cust.Reset;
+            //                 Cust.SetRange(Cust."No.", Rec."No.");
+            //                 if Cust.Find('-') then
+            //                     Report.Run(50608, true, false, Cust);
+            //             end;
+            //         }
+            //         action("Shares Certificate")
+            //         {
+            //             ApplicationArea = Basic;
+            //             Promoted = true;
+            //             //visible = false;
+            //             PromotedCategory = "Report";
 
-                    trigger OnAction()
-                    begin
-                        Cust.Reset;
-                        Cust.SetRange(Cust."No.", Rec."No.");
-                        if Cust.Find('-') then
-                            Report.Run(50303, true, false, Cust);
-                    end;
-                }
-                action(Statement)
-                {
-                    ApplicationArea = Basic;
-                    Promoted = true;
-                    //visible = false;
-                    Caption = 'Member Statement';
-                    PromotedCategory = "Report";
+            //             trigger OnAction()
+            //             begin
+            //                 Cust.Reset;
+            //                 Cust.SetRange(Cust."No.", Rec."No.");
+            //                 if Cust.Find('-') then
+            //                     Report.Run(50303, true, false, Cust);
+            //             end;
+            //         }
+            //         action(Statement)
+            //         {
+            //             ApplicationArea = Basic;
+            //             Promoted = true;
+            //             //visible = false;
+            //             Caption = 'Member Statement';
+            //             PromotedCategory = "Report";
 
-                    trigger OnAction()
-                    begin
-                        Cust.Reset;
-                        Cust.SetRange(Cust."No.", Rec."No.");
-                        if Cust.Find('-') then
-                            Report.Run(50223, true, false, Cust);
-                    end;
-                }
-            }
+            //             trigger OnAction()
+            //             begin
+            //                 Cust.Reset;
+            //                 Cust.SetRange(Cust."No.", Rec."No.");
+            //                 if Cust.Find('-') then
+            //                     Report.Run(50223, true, false, Cust);
+            //             end;
+            //         }
+            //     }
         }
     }
     trigger OnAfterGetRecord()

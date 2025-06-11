@@ -574,6 +574,13 @@ Page 56029 "Loan Application Card"
         OpenApprovalEntriesExist := ApprovalsMgmt.HasOpenApprovalEntries(REC.RecordId);//Return No and allow sending of approval request.
 
         EnabledApprovalWorkflowsExist := true;
+
+        if IsViewOnlyMode then begin
+            CurrPage.Editable := false;
+            CanCancelApprovalForRecord := false;
+        end;
+
+
     end;
 
     trigger OnAfterGetRecord()
@@ -761,6 +768,15 @@ Page 56029 "Loan Application Card"
         SwizzApprovalsCodeUnit: Codeunit SwizzsoftApprovalsCodeUnit;
         CanCancelApprovalForRecord: Boolean;
         offsetTable: Record "Loan Offset Details";
+
+        IsViewOnlyMode: Boolean;
+
+
+    procedure SetViewOnlyMode(ViewOnly: Boolean)
+    begin
+        IsViewOnlyMode := ViewOnly;
+        CurrPage.Editable := not ViewOnly;
+    end;
 
     procedure updateLoanInfo()
     begin

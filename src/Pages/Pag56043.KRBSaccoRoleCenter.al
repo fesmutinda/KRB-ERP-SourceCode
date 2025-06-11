@@ -654,13 +654,30 @@ Page 56043 "KRB Sacco Role Center"
 
                     }
 
+
+                    action("KRB Bank Rec Summary")
+                    {
+                        ApplicationArea = Basic, Suite;
+                        Caption = 'Bank Reconcilliation Summary';
+                        RunObject = report "BankReconciliationsummary";
+                    }
+
                     action("KRB Account Activity")
                     {
                         ApplicationArea = Basic, Suite;
                         Caption = 'KRB Account Activity';
                         RunObject = report "KRBAccountActivity";
-
                     }
+
+
+                    action("Member Savings Report")
+                    {
+                        ApplicationArea = Basic, Suite;
+                        Caption = 'Member Savings Report';
+                        RunObject = report "Member Savings Report2";
+                    }
+
+
 
                 }
 
@@ -753,6 +770,7 @@ Page 56043 "KRB Sacco Role Center"
             }
 
             //.................................START OF MEMBERSHIP MANAGEMENT..................................
+
             group(MembershipManagement)
             {
                 Caption = 'Membership Management';
@@ -1528,6 +1546,27 @@ Page 56043 "KRB Sacco Role Center"
                             Image = Setup;
                             RunObject = report "Post Monthly Interest.";
                             ToolTip = 'Used to process Loans Monthly Interest';
+                        }
+                    }
+
+                    group("Bank Account Reconcilliations")
+                    {
+                        Caption = 'Bank Account Reconcilliations';
+
+                        action("Bank Account Statements")
+                        {
+                            Caption = 'Bank Account Statements';
+                            Image = Setup;
+                            RunObject = page "Bank Account Statement List";
+                            Visible = true;
+                        }
+
+                        action("Bank Account Reconcilliations List")
+                        {
+                            Caption = 'Bank Account Reconcilliation List';
+                            Image = Setup;
+                            RunObject = page "Bank Acc. Reconciliation List";
+                            Visible = true;
                         }
                     }
                     group(Dividends)

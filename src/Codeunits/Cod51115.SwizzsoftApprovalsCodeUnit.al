@@ -596,6 +596,9 @@ codeunit 51115 SwizzsoftApprovalsCodeUnit
     end;
     //...............................................................................
 
-
+    [IntegrationEvent(false, false)]
+    procedure FnOnLoanApplicationApprovalCompleted(var LoansRegister: Record "Loans Register")
+    begin
+    end;
 }
 

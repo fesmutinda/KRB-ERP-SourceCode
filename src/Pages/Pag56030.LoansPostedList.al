@@ -169,7 +169,7 @@ Page 56030 "Loans Posted List"
                 field("Repayment Start Date"; Rec."Repayment Start Date")
                 {
                     ApplicationArea = Basic;
-                    Visible = false;
+                    Visible = true;
                 }
 
                 field("Months in Arrears"; Rec."No of Months in Arrears")

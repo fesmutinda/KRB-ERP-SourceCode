@@ -9,7 +9,6 @@ codeunit 50004 "Custom Workflow Events"
     var
         WFHandler: Codeunit "Workflow Event Handling";
         WorkflowManagement: Codeunit "Workflow Management";
-        WFEventHandler: Codeunit "Workflow Event Handling";
         SurestepWFEvents: Codeunit "Custom Workflow Events";
         WFResponseHandler: Codeunit "Workflow Response Handling";
 

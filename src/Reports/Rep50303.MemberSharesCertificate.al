@@ -100,7 +100,7 @@ Report 50303 "Member Shares Certificate"
                     TotalSharecap := 0;
 
                     TotalShares := MembersReg."Current Shares" + MembersReg."Share Capital";
-                    CertificateNo := 'DEVS' + Format(MembersReg."No.");
+                    CertificateNo := 'KRBSC' + Format(MembersReg."No.");
                     IDnoMember := MembersReg."ID No.";
                     FullName := MembersReg.Name;
                     TotalCurrectshares := MembersReg."Current Shares";
@@ -109,7 +109,7 @@ Report 50303 "Member Shares Certificate"
                     //................................................
                     //Amount into words
                     CheckReport.InitTextVariable;
-                    CheckReport.FormatNoText(NumberText, TotalShares, '');
+                    CheckReport.FormatNoText(NumberText, TotalSharecap, 'KES');
                     //................................................
                     //AmountInWords:='';
                 end;

@@ -94,7 +94,6 @@ tableextension 50047 "CustomerExt" extends Customer
         {
             OptionCaption = 'Active,Non-Active,Blocked,Dormant,Re-instated,Deceased,Withdrawal,Retired,Termination,Resigned,Ex-Company,Casuals,Family Member,Defaulter,Applicant,Rejected,New,Awaiting Withdrawal';
             OptionMembers = Active,"Non-Active",Blocked,Dormant,"Re-instated",Deceased,Withdrawal,Retired,Termination,Resigned,"Ex-Company",Casuals,"Family Member",Defaulter,Applicant,Rejected,New,"Awaiting Withdrawal";
-
         }
         field(68013; "FOSA Account"; Code[20])
         {
@@ -270,7 +269,6 @@ tableextension 50047 "CustomerExt" extends Customer
                                                                    "Posting Date" = field("Date Filter"), Reversed = const(false)));
             Editable = false;
             FieldClass = FlowField;
-
         }
         field(68043; "Registration Fee Paid"; Decimal)
         {
@@ -820,18 +818,26 @@ tableextension 50047 "CustomerExt" extends Customer
         {
         }
 
+        // field(68204; "Junior Savings"; Decimal)
+        // {
+
+
+        //     CalcFormula = - sum("Cust. Ledger Entry"."Amount Posted" where("Customer No." = field("No."),
+        //                                                            "Transaction Type" = filter("Junior Savings"),
+        //                                                            "Posting Date" = field("Date Filter"), Reversed = const(false)
+        //                                                            ));
+
+
+
+        //     Editable = false;
+        //     FieldClass = FlowField;
+        // }
+
         field(68204; "Junior Savings"; Decimal)
         {
-
-
-            CalcFormula = - sum("Cust. Ledger Entry"."Amount Posted" where("Customer No." = field("No."),
-                                                                   "Transaction Type" = filter("Junior Savings"),
-                                                                   "Posting Date" = field("Date Filter"), Reversed = const(false)));
-
-
-
             Editable = false;
-            FieldClass = FlowField;
+            Caption = 'Junior Savings';
+            //FieldClass = FlowField;
         }
 
         // field(682016; "Junior Savings Two"; Decimal)
@@ -2174,5 +2180,47 @@ tableextension 50047 "CustomerExt" extends Customer
             // Clustered = true;
         }
     }
+
+    procedure CalculateJuniorSavings()
+    var
+        CustLedgerEntry: Record "Cust. Ledger Entry";
+        Customer: Record Customer;
+        TotalAmount: Decimal;
+        DateFilter: Text;
+    begin
+        DateFilter := GetFilter("Date Filter");
+
+        // Get own junior savings
+        CustLedgerEntry.SetRange("Customer No.", "No.");
+        CustLedgerEntry.SetRange("Transaction Type", CustLedgerEntry."Transaction Type"::"Junior Savings");
+        CustLedgerEntry.SetRange(Reversed, false);
+        if DateFilter <> '' then
+            CustLedgerEntry.SetFilter("Posting Date", DateFilter);
+
+        if CustLedgerEntry.FindSet() then
+            repeat
+                TotalAmount += CustLedgerEntry."Amount Posted";
+            until CustLedgerEntry.Next() = 0;
+
+        // Get junior accounts where this customer is guardian
+        Customer.SetRange("Guardian No.", "No.");
+        if Customer.FindSet() then
+            repeat
+                CustLedgerEntry.Reset();
+                CustLedgerEntry.SetRange("Customer No.", Customer."No.");
+                CustLedgerEntry.SetRange("Transaction Type", CustLedgerEntry."Transaction Type"::"Junior Savings");
+                CustLedgerEntry.SetRange(Reversed, false);
+                if DateFilter <> '' then
+                    CustLedgerEntry.SetFilter("Posting Date", DateFilter);
+
+                if CustLedgerEntry.FindSet() then
+                    repeat
+                        TotalAmount += CustLedgerEntry."Amount Posted";
+                    until CustLedgerEntry.Next() = 0;
+            until Customer.Next() = 0;
+
+        "Junior Savings" := -TotalAmount; // Negative to match the original field's convention
+        Modify();
+    end;
 }
 

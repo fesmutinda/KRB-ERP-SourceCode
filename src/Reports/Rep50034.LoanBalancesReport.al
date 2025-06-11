@@ -20,6 +20,10 @@ Report 50034 "Loan Balances Report"
             column(CompanyAddress; CompanyInfo.Address)
             {
             }
+
+            column(CompanyAddress2; CompanyInfo."Address 2")
+            {
+            }
             column(CompanyPhone; CompanyInfo."Phone No.")
             {
             }

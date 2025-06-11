@@ -13,6 +13,14 @@ Report 50225 "Member Share Capital Statement"
         dataitem(Customer; Customer)
         {
             RequestFilterFields = "No.", "Loan Product Filter", "Outstanding Balance", "Date Filter";
+
+
+            column(Phone_No_; "Phone No.")
+            {
+
+            }
+
+
             column(Payroll_Staff_No; "Payroll/Staff No")
             {
             }
@@ -74,6 +82,17 @@ Report 50225 "Member Share Capital Statement"
             column(Company_Email; Company."E-Mail")
             {
             }
+
+            column(Company_Address_2; Company."Address 2")
+            {
+            }
+            column(Company_Phone_No; Company."Phone No.")
+            {
+            }
+            column(Company_Fax_No; Company."Fax No.")
+            {
+            }
+
 
             dataitem(Share; "Cust. Ledger Entry")
             {
