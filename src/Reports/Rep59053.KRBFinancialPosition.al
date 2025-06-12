@@ -138,31 +138,41 @@ report 59053 KRBFinancialPosition
             begin
                 // Recalculate fields after filtering
                 CalcFields("Net Change", "GL Account Balance", "Balance at Date");
+
+                if not ShowZeroBalances then begin
+                    if ("Net Change" = 0) and ("Balance at Date" = 0) then
+                        CurrReport.Skip();
+                end;
             end;
         }
 
     }
     requestpage
     {
-        // layout
-        // {
-        //     area(Content)
-        //     {
-        //         group(Options)
-        //         {
-        //             field(StartDateReq; StartDate)
-        //             {
-        //                 ApplicationArea = All;
-        //                 Caption = 'Start Date';
-        //             }
-        //             field(EndDateReq; EndDate)
-        //             {
-        //                 ApplicationArea = All;
-        //                 Caption = 'End Date';
-        //             }
-        //         }
-        //     }
-        // }
+        layout
+        {
+            area(Content)
+            {
+                group(Options)
+                {
+                    // field(StartDateReq; StartDate)
+                    // {
+                    //     ApplicationArea = All;
+                    //     Caption = 'Start Date';
+                    // }
+                    // field(EndDateReq; EndDate)
+                    // {
+                    //     ApplicationArea = All;
+                    //     Caption = 'End Date';
+                    // }
+                    field(ShowZeroBalances; ShowZeroBalances)
+                    {
+                        ApplicationArea = Basoc;
+                        Caption = 'Show Accounts With No Balances';
+                    }
+                }
+            }
+        }
         actions
         {
             area(Processing)
@@ -186,6 +196,8 @@ report 59053 KRBFinancialPosition
 
         Surplus: Decimal;
         CorporateTax: Decimal;
+
+        ShowZeroBalances: Boolean;
 
 
     trigger OnPreReport()

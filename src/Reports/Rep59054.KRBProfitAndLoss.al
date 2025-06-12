@@ -18,8 +18,6 @@ report 59054 KRBProfitAndLoss
 
             RequestFilterFields = "No.", "Account Type", "Date Filter", "Account Category";
 
-
-
             column(SurplusOrLoss; Surplus) { }
             column(CorporateTax; CorporateTax) { }
             column(NetProfitAfterTax; NetProfitAfterTax) { }
@@ -34,7 +32,6 @@ report 59054 KRBProfitAndLoss
             column(TotalBalance; GetTotalBalance(GLAccount)) { }
 
             column(LevelNo; GetLevelNo("No.", "Account Type")) { }
-
 
             column(DisplayName; GetDisplayName("No.", Name, "Account Type", "Account Subcategory Descript.")) { }
             column(Company_Name; Company.Name)
@@ -58,9 +55,6 @@ report 59054 KRBProfitAndLoss
             column(Company_Email; Company."E-Mail")
             {
             }
-
-
-
 
             column(AccountCategory; "Account Category")
             {
@@ -115,14 +109,33 @@ report 59054 KRBProfitAndLoss
                 // Initialize variables
                 Clear(TotalNetChange);
 
+                // Build the list of accounts to hide if ShowZeroBalances is false
+                if not ShowZeroBalances then
+                    BuildHiddenAccountsList();
             end;
 
             trigger OnAfterGetRecord()
             begin
                 // Recalculate fields after filtering
                 CalcFields("Net Change", "GL Account Balance", "Balance at Date");
-            end;
 
+                if not ShowZeroBalances then begin
+                    // Check if this account should be hidden
+                    if ShouldHideAccount("No.", "Account Type", "Totaling") then
+                        CurrReport.Skip();
+
+                    // Original logic for Posting and End-Total accounts
+                    if ("Account Type" = "Account Type"::Posting) then begin
+                        if ("Net Change" = 0) and ("Balance at Date" = 0) then
+                            CurrReport.Skip();
+                    end;
+
+                    if ("Account Type" = "Account Type"::"End-Total") then begin
+                        if ("Net Change" = 0) and ("Balance at Date" = 0) then
+                            CurrReport.Skip();
+                    end;
+                end;
+            end;
         }
     }
 
@@ -134,6 +147,11 @@ report 59054 KRBProfitAndLoss
             {
                 group(Options)
                 {
+                    field(ShowZeroBalances; ShowZeroBalances)
+                    {
+                        ApplicationArea = Basic;
+                        Caption = 'Show Accounts With No Balances';
+                    }
                     field(StartDate; StartDate)
                     {
                         ApplicationArea = All;
@@ -155,28 +173,21 @@ report 59054 KRBProfitAndLoss
         }
     }
 
-
     var
         StartDate: Date;
         EndDate: Date;
         TotalNetChange: Decimal;
-
         SurplusLoss: Decimal;
-
         NetProfitAfterTax: Decimal;
-
         Company: Record "Company Information";
-
         AccountNameIndented: Text[100];
-
         Surplus: Decimal;
         CorporateTax: Decimal;
-    //NetProfit: Decimal;
-
+        ShowZeroBalances: Boolean;
+        HiddenAccounts: List of [Code[20]]; // List to store accounts that should be hidden
 
     trigger OnPreReport()
     begin
-
         Company.Get();
         Company.CalcFields(Company.Picture);
 
@@ -187,9 +198,117 @@ report 59054 KRBProfitAndLoss
             StartDate := CalcDate('<-CY>', EndDate);
 
         GetSurplusTaxAndNetProfit();
-
     end;
 
+    local procedure BuildHiddenAccountsList()
+    var
+        GLAcc: Record "G/L Account";
+        BeginTotalAcc: Record "G/L Account";
+        EndTotalAccountNo: Code[20];
+        BeginTotalAccountNo: Code[20];
+    begin
+        // Clear the list
+        Clear(HiddenAccounts);
+
+        // First pass: Find End-Total accounts with zero balances
+        GLAcc.SetRange("Income/Balance", GLAcc."Income/Balance"::"Income Statement");
+        GLAcc.SetFilter("Date Filter", '%1..%2', StartDate, EndDate);
+        GLAcc.SetRange("Account Type", GLAcc."Account Type"::"End-Total");
+
+        if GLAcc.FindSet() then
+            repeat
+                GLAcc.CalcFields("Net Change", "Balance at Date");
+
+                // If End-Total has zero balances, find its corresponding Begin-Total
+                if (GLAcc."Net Change" = 0) and (gLACC."Balance at Date" = 0) then begin
+                    EndTotalAccountNo := GLAcc."No.";
+                    BeginTotalAccountNo := FindCorrespondingBeginTotal(EndTotalAccountNo, GLAcc.Totaling);
+
+                    if BeginTotalAccountNo <> '' then begin
+                        // Add the Begin-Total account to hidden list
+                        HiddenAccounts.Add(BeginTotalAccountNo);
+
+                        // Also hide all accounts between Begin-Total and End-Total
+                        AddAccountsInRange(BeginTotalAccountNo, EndTotalAccountNo);
+                    end;
+                end;
+            until GLAcc.Next() = 0;
+    end;
+
+    local procedure FindCorrespondingBeginTotal(EndTotalAccountNo: Code[20]; TotalingFilter: Text): Code[20]
+    var
+        GLAcc: Record "G/L Account";
+        FilterParts: List of [Text];
+        RangeText: Text;
+        BeginAccountNo: Code[20];
+    begin
+        // Parse the Totaling field to find the range
+        // Typically format is like "4000..4999" or "4000|4100..4199"
+        FilterParts := TotalingFilter.Split('|');
+
+        foreach RangeText in FilterParts do begin
+            if RangeText.Contains('..') then begin
+                BeginAccountNo := CopyStr(RangeText.Split('..').Get(1), 1, MaxStrLen(BeginAccountNo));
+
+                // Look for Begin-Total account that starts this range
+                GLAcc.SetRange("Income/Balance", GLAcc."Income/Balance"::"Income Statement");
+                GLAcc.SetRange("Account Type", GLAcc."Account Type"::"Begin-Total");
+                GLAcc.SetFilter("No.", '<=%1', BeginAccountNo);
+                GLAcc.SetCurrentKey("No.");
+
+                if GLAcc.FindLast() then begin
+                    // Verify this Begin-Total corresponds to our End-Total
+                    if IsBeginTotalForEndTotal(GLAcc."No.", EndTotalAccountNo) then
+                        exit(GLAcc."No.");
+                end;
+            end;
+        end;
+
+        exit('');
+    end;
+
+    local procedure IsBeginTotalForEndTotal(BeginTotalNo: Code[20]; EndTotalNo: Code[20]): Boolean
+    var
+        GLAcc: Record "G/L Account";
+        NextEndTotal: Code[20];
+    begin
+        // Find the next End-Total after this Begin-Total
+        GLAcc.SetRange("Income/Balance", GLAcc."Income/Balance"::"Income Statement");
+        GLAcc.SetRange("Account Type", GLAcc."Account Type"::"End-Total");
+        GLAcc.SetFilter("No.", '>%1', BeginTotalNo);
+        GLAcc.SetCurrentKey("No.");
+
+        if GLAcc.FindFirst() then
+            NextEndTotal := GLAcc."No."
+        else
+            NextEndTotal := '';
+
+        exit(NextEndTotal = EndTotalNo);
+    end;
+
+    local procedure AddAccountsInRange(BeginTotalNo: Code[20]; EndTotalNo: Code[20])
+    var
+        GLAcc: Record "G/L Account";
+    begin
+        // Add all accounts between Begin-Total and End-Total to hidden list
+        GLAcc.SetRange("Income/Balance", GLAcc."Income/Balance"::"Income Statement");
+        GLAcc.SetFilter("No.", '>%1&<%2', BeginTotalNo, EndTotalNo);
+
+        if GLAcc.FindSet() then
+            repeat
+                if not HiddenAccounts.Contains(GLAcc."No.") then
+                    HiddenAccounts.Add(GLAcc."No.");
+            until GLAcc.Next() = 0;
+    end;
+
+    local procedure ShouldHideAccount(AccountNo: Code[20]; AccountType: Enum "G/L Account Type"; TotalingFilter: Text): Boolean
+    begin
+        // Check if this account is in the hidden accounts list
+        if HiddenAccounts.Contains(AccountNo) then
+            exit(true);
+
+        exit(false);
+    end;
 
     local procedure GetAccountNameByLength(AccountNo: Code[20]; LevelLength: Integer): Text
     var
@@ -210,8 +329,6 @@ report 59054 KRBProfitAndLoss
             exit('[Missing]');
     end;
 
-
-
     local procedure GetLevelNo(AccountNo: Code[20]; AccountType: Enum "G/L Account Type"): Integer
     var
         Length: Integer;
@@ -228,20 +345,9 @@ report 59054 KRBProfitAndLoss
                 exit(3);
             4:
                 exit(4);
-
             5:
                 exit(4);
-        //     if AccountType = AccountType::Posting then
-        //         exit(4);
-        // else if AccountType = AccountType::"End-Total" then
-        //     exit(5)
         end;
-
-        // Logical grouping types
-        // if AccountType = AccountType::"End-Total" then
-        //     exit(5)
-        // else if AccountType = AccountType::Total then
-        //     exit(6);
 
         exit(0); // Fallback
     end;
@@ -289,7 +395,6 @@ report 59054 KRBProfitAndLoss
         end;
     end;
 
-
     local procedure GetTotalBalance(Account: Record "G/L Account"): Decimal
     var
         GLAcc: Record "G/L Account";
@@ -303,7 +408,6 @@ report 59054 KRBProfitAndLoss
 
         exit(TotalBalance);
     end;
-
 
     local procedure GetOpeningBalance(Account: Record "G/L Account"; OpeningDate: Date): Decimal
     var
@@ -326,7 +430,6 @@ report 59054 KRBProfitAndLoss
         TempAcc.CalcFields("Net Change");
         exit(AbsDecimal(TempAcc."Net Change"));
     end;
-
 
     procedure GetSurplusTaxAndNetProfit()
     var
@@ -362,7 +465,4 @@ report 59054 KRBProfitAndLoss
         else
             exit(Value);
     end;
-
-
-
 }

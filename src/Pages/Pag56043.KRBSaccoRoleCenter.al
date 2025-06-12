@@ -649,7 +649,7 @@ Page 56043 "KRB Sacco Role Center"
                     action("KRB Profit & Loss")
                     {
                         ApplicationArea = Basic, Suite;
-                        Caption = 'KRB Profit/Loss';
+                        Caption = 'Statement of Comprehensive Income';
                         RunObject = report "KRBProfitAndLoss";
 
                     }

@@ -137,7 +137,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!OpeningBalance.Value</Value>
+                                  <Value>=IIF(Fields!AccountType.Value = "Heading" OR Fields!AccountType.Value = "Begin-Total", Nothing, Fields!OpeningBalance.Value)</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>7pt</FontSize>
@@ -176,7 +176,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!DebitAmount.Value</Value>
+                                  <Value>=IIF(Fields!AccountType.Value = "Heading" OR Fields!AccountType.Value = "Begin-Total", Nothing, Fields!DebitAmount.Value)</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>7pt</FontSize>
@@ -215,7 +215,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!CreditAmount.Value</Value>
+                                  <Value>=IIF(Fields!AccountType.Value = "Heading" OR Fields!AccountType.Value = "Begin-Total", Nothing, Fields!CreditAmount.Value)</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>7pt</FontSize>
@@ -254,7 +254,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!ClosingBalance.Value</Value>
+                                  <Value>=IIF(Fields!AccountType.Value = "Heading" OR Fields!AccountType.Value = "Begin-Total", Nothing, Fields!ClosingBalance.Value)</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>7pt</FontSize>

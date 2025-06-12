@@ -160,6 +160,12 @@ Report 50846 "Trial Balance2025"
             trigger OnAfterGetRecord()
             begin
                 CalcFields("Net Change", "Balance at Date");
+
+                if not ShowZeroBalances then begin
+                    if ("Net Change" = 0) and ("Balance at Date" = 0) then
+                        CurrReport.Skip();
+                end;
+
                 if PrintToExcel then
                     MakeExcelDataBody;
 
@@ -205,6 +211,12 @@ Report 50846 "Trial Balance2025"
                     {
                         ApplicationArea = Basic;
                         Caption = 'Print to Excel';
+                    }
+
+                    field(ShowZeroBalances; ShowZeroBalances)
+                    {
+                        ApplicationArea = Basoc;
+                        Caption = 'Show Accounts With No Balances';
                     }
                 }
             }
@@ -271,6 +283,8 @@ Report 50846 "Trial Balance2025"
 
         compyinfo: Record "Company Information";
         compyname: Text;
+
+        ShowZeroBalances: Boolean;
 
 
     procedure MakeExcelInfo()
