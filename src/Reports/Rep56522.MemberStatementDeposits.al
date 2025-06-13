@@ -18,6 +18,8 @@ Report 56522 "Member Statement Deposits"
             column(PayrollStaffNo_Members; "Members Register"."Payroll/Staff No")
             {
             }
+            column(Registration_Date; "Registration Date") { }
+            column(Phone_No_; "Phone No.") { }
             column(No_Members; "Members Register"."No.")
             {
             }

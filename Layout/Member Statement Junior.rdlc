@@ -932,7 +932,7 @@
             <Top>3.31745in</Top>
             <Left>0.13704in</Left>
             <Height>0.84201in</Height>
-            <Width>8.14352in</Width>
+            <Width>8.14351in</Width>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1395,6 +1395,21 @@
               <PaddingBottom>2pt</PaddingBottom>
             </Style>
           </Textbox>
+          <Image Name="Image3">
+            <Source>Embedded</Source>
+            <Value>krbsaccoLogo2</Value>
+            <Sizing>FitProportional</Sizing>
+            <Top>0in</Top>
+            <Left>3.40278in</Left>
+            <Height>1.05208in</Height>
+            <Width>1.10202in</Width>
+            <ZIndex>14</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+            </Style>
+          </Image>
           <Textbox Name="ProductType2">
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
@@ -1413,11 +1428,11 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>ProductType</rd:DefaultName>
-            <Top>2.43406in</Top>
-            <Left>4.6976in</Left>
-            <Height>0.19446in</Height>
-            <Width>1.79in</Width>
-            <ZIndex>14</ZIndex>
+            <Top>2.64197in</Top>
+            <Left>5.09306in</Left>
+            <Height>0.20441in</Height>
+            <Width>1.59238in</Width>
+            <ZIndex>15</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1448,11 +1463,11 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>ProductType1</rd:DefaultName>
-            <Top>2.43406in</Top>
-            <Left>6.12028in</Left>
-            <Height>0.21832in</Height>
-            <Width>2.16032in</Width>
-            <ZIndex>15</ZIndex>
+            <Top>2.64197in</Top>
+            <Left>6.68544in</Left>
+            <Height>0.20441in</Height>
+            <Width>1.4263in</Width>
+            <ZIndex>16</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1480,11 +1495,11 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
-            <Top>2.64241in</Top>
-            <Left>4.6976in</Left>
-            <Height>0.18706in</Height>
-            <Width>1.79in</Width>
-            <ZIndex>16</ZIndex>
+            <Top>2.45143in</Top>
+            <Left>5.10695in</Left>
+            <Height>0.16968in</Height>
+            <Width>1.59238in</Width>
+            <ZIndex>17</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1503,7 +1518,10 @@
                 <TextRuns>
                   <TextRun>
                     <Value>=First(Fields!Phone_No_.Value, "DataSet_Result")</Value>
-                    <Style />
+                    <Style>
+                      <FontFamily>Segoe UI</FontFamily>
+                      <FontSize>9pt</FontSize>
+                    </Style>
                   </TextRun>
                 </TextRuns>
                 <Style>
@@ -1512,11 +1530,11 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>PhoneNo_MemberRegister</rd:DefaultName>
-            <Top>2.6563in</Top>
-            <Left>6.12028in</Left>
-            <Height>0.18706in</Height>
-            <Width>2.16032in</Width>
-            <ZIndex>17</ZIndex>
+            <Top>2.45143in</Top>
+            <Left>6.69933in</Left>
+            <Height>0.16968in</Height>
+            <Width>1.41241in</Width>
+            <ZIndex>18</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1544,42 +1562,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox3</rd:DefaultName>
-            <Top>2.82947in</Top>
-            <Left>4.6976in</Left>
-            <Height>0.20743in</Height>
-            <Width>1.79in</Width>
-            <ZIndex>18</ZIndex>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-              <PaddingLeft>2pt</PaddingLeft>
-              <PaddingRight>2pt</PaddingRight>
-              <PaddingTop>2pt</PaddingTop>
-              <PaddingBottom>2pt</PaddingBottom>
-            </Style>
-          </Textbox>
-          <Textbox Name="Textbox4">
-            <CanGrow>true</CanGrow>
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>=First(Fields!Registration_Date.Value, "DataSet_Result")</Value>
-                    <Style />
-                  </TextRun>
-                </TextRuns>
-                <Style>
-                  <TextAlign>Right</TextAlign>
-                </Style>
-              </Paragraph>
-            </Paragraphs>
-            <rd:DefaultName>Textbox4</rd:DefaultName>
-            <Top>2.86372in</Top>
-            <Left>6.12028in</Left>
-            <Height>0.17317in</Height>
-            <Width>2.16031in</Width>
+            <Top>2.86375in</Top>
+            <Left>5.09306in</Left>
+            <Height>0.15924in</Height>
+            <Width>1.60627in</Width>
             <ZIndex>19</ZIndex>
             <Style>
               <Border>
@@ -1591,21 +1577,41 @@
               <PaddingBottom>2pt</PaddingBottom>
             </Style>
           </Textbox>
-          <Image Name="Image3">
-            <Source>Embedded</Source>
-            <Value>krbsaccoLogo2</Value>
-            <Sizing>FitProportional</Sizing>
-            <Top>0in</Top>
-            <Left>3.40278in</Left>
-            <Height>1.05208in</Height>
-            <Width>1.10202in</Width>
+          <Textbox Name="ProductType5">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>=First(Fields!Registration_Date.Value, "DataSet_Result")</Value>
+                    <Style>
+                      <FontFamily>Segoe UI</FontFamily>
+                      <FontSize>9pt</FontSize>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Right</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>ProductType1</rd:DefaultName>
+            <Top>2.86376in</Top>
+            <Left>6.68544in</Left>
+            <Height>0.15923in</Height>
+            <Width>1.4566in</Width>
             <ZIndex>20</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
               </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
             </Style>
-          </Image>
+          </Textbox>
         </ReportItems>
         <Height>4.98828in</Height>
         <Style>

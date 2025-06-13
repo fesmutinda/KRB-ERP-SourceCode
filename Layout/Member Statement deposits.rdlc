@@ -17,9 +17,9 @@
         <ReportItems>
           <Line Name="Line2">
             <Top>7.89015cm</Top>
-            <Left>0.34928in</Left>
+            <Left>0.06301in</Left>
             <Height>0cm</Height>
-            <Width>19.32915cm</Width>
+            <Width>20.98955cm</Width>
             <Style>
               <Border>
                 <Style>Solid</Style>
@@ -30,25 +30,25 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>0.82214in</Width>
+                  <Width>0.91553in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.14891in</Width>
+                  <Width>1.2423in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.88775in</Width>
+                  <Width>0.98114in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.80619in</Width>
+                  <Width>1.89958in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.89888in</Width>
+                  <Width>0.99227in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.88735in</Width>
+                  <Width>0.98074in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.15868in</Width>
+                  <Width>1.25207in</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -78,8 +78,13 @@
                           <Style>
                             <Border>
                               <Style>None</Style>
-                              <Width>3pt</Width>
                             </Border>
+                            <TopBorder>
+                              <Style>Solid</Style>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Style>Solid</Style>
+                            </BottomBorder>
                             <BackgroundColor>White</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -116,8 +121,13 @@
                           <Style>
                             <Border>
                               <Style>None</Style>
-                              <Width>3pt</Width>
                             </Border>
+                            <TopBorder>
+                              <Style>Solid</Style>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Style>Solid</Style>
+                            </BottomBorder>
                             <BackgroundColor>White</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -162,11 +172,12 @@
                           <rd:DefaultName>Textbox1</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>Gainsboro</Color>
                               <Style>None</Style>
-                              <Width>3pt</Width>
                             </Border>
-                            <BackgroundColor>Gainsboro</BackgroundColor>
+                            <BottomBorder>
+                              <Style>Solid</Style>
+                            </BottomBorder>
+                            <BackgroundColor>White</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -200,11 +211,12 @@
                           <rd:DefaultName>Textbox165</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>Gainsboro</Color>
                               <Style>None</Style>
-                              <Width>3pt</Width>
                             </Border>
-                            <BackgroundColor>Gainsboro</BackgroundColor>
+                            <BottomBorder>
+                              <Style>Solid</Style>
+                            </BottomBorder>
+                            <BackgroundColor>White</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -237,11 +249,12 @@
                           <rd:DefaultName>Textbox2</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>Gainsboro</Color>
                               <Style>None</Style>
-                              <Width>3pt</Width>
                             </Border>
-                            <BackgroundColor>Gainsboro</BackgroundColor>
+                            <BottomBorder>
+                              <Style>Solid</Style>
+                            </BottomBorder>
+                            <BackgroundColor>White</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -274,11 +287,12 @@
                           <rd:DefaultName>Textbox3</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>Gainsboro</Color>
                               <Style>None</Style>
-                              <Width>3pt</Width>
                             </Border>
-                            <BackgroundColor>Gainsboro</BackgroundColor>
+                            <BottomBorder>
+                              <Style>Solid</Style>
+                            </BottomBorder>
+                            <BackgroundColor>White</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -309,11 +323,12 @@
                           <rd:DefaultName>Textbox4</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>Gainsboro</Color>
                               <Style>None</Style>
-                              <Width>3pt</Width>
                             </Border>
-                            <BackgroundColor>Gainsboro</BackgroundColor>
+                            <BottomBorder>
+                              <Style>Solid</Style>
+                            </BottomBorder>
+                            <BackgroundColor>White</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -346,11 +361,12 @@
                           <rd:DefaultName>Textbox5</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>Gainsboro</Color>
                               <Style>None</Style>
-                              <Width>3pt</Width>
                             </Border>
-                            <BackgroundColor>Gainsboro</BackgroundColor>
+                            <BottomBorder>
+                              <Style>Solid</Style>
+                            </BottomBorder>
+                            <BackgroundColor>White</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -383,11 +399,12 @@
                           <rd:DefaultName>Textbox6</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>Gainsboro</Color>
                               <Style>None</Style>
-                              <Width>3pt</Width>
                             </Border>
-                            <BackgroundColor>Gainsboro</BackgroundColor>
+                            <BottomBorder>
+                              <Style>Solid</Style>
+                            </BottomBorder>
+                            <BackgroundColor>White</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -684,11 +701,15 @@
                           <rd:DefaultName>Textbox38</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>Gainsboro</Color>
                               <Style>None</Style>
-                              <Width>3pt</Width>
                             </Border>
-                            <BackgroundColor>Gainsboro</BackgroundColor>
+                            <TopBorder>
+                              <Style>Solid</Style>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Style>Solid</Style>
+                            </BottomBorder>
+                            <BackgroundColor>White</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -726,11 +747,15 @@
                           <rd:DefaultName>Textbox87</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>Gainsboro</Color>
                               <Style>None</Style>
-                              <Width>3pt</Width>
                             </Border>
-                            <BackgroundColor>Gainsboro</BackgroundColor>
+                            <TopBorder>
+                              <Style>Solid</Style>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Style>Solid</Style>
+                            </BottomBorder>
+                            <BackgroundColor>White</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -764,11 +789,15 @@
                           <rd:DefaultName>Textbox88</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>Gainsboro</Color>
                               <Style>None</Style>
-                              <Width>3pt</Width>
                             </Border>
-                            <BackgroundColor>Gainsboro</BackgroundColor>
+                            <TopBorder>
+                              <Style>Solid</Style>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Style>Solid</Style>
+                            </BottomBorder>
+                            <BackgroundColor>White</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -802,11 +831,15 @@
                           <rd:DefaultName>Textbox89</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>Gainsboro</Color>
                               <Style>None</Style>
-                              <Width>3pt</Width>
                             </Border>
-                            <BackgroundColor>Gainsboro</BackgroundColor>
+                            <TopBorder>
+                              <Style>Solid</Style>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Style>Solid</Style>
+                            </BottomBorder>
+                            <BackgroundColor>White</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -886,9 +919,9 @@
               </SortExpression>
             </SortExpressions>
             <Top>3.1758in</Top>
-            <Left>0.34928in</Left>
+            <Left>0.06301in</Left>
             <Height>0.84201in</Height>
-            <Width>7.6099in</Width>
+            <Width>8.2636in</Width>
             <ZIndex>1</ZIndex>
             <Style>
               <Border>
@@ -1086,9 +1119,9 @@
           </Textbox>
           <Line Name="Line5">
             <Top>5.20788cm</Top>
-            <Left>0.34928in</Left>
+            <Left>0.06302in</Left>
             <Height>0cm</Height>
-            <Width>19.32915cm</Width>
+            <Width>20.98954cm</Width>
             <ZIndex>6</ZIndex>
             <Style>
               <Border>
@@ -1117,10 +1150,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox16</rd:DefaultName>
-            <Top>2.15694in</Top>
-            <Left>0.88718cm</Left>
-            <Height>0.45872cm</Height>
-            <Width>19.32915cm</Width>
+            <Top>2.11979in</Top>
+            <Left>0.16006cm</Left>
+            <Height>0.71779cm</Height>
+            <Width>20.98954cm</Width>
             <ZIndex>7</ZIndex>
             <Style>
               <Border>
@@ -1150,10 +1183,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox95</rd:DefaultName>
-            <Top>2.36671in</Top>
-            <Left>0.34928in</Left>
+            <Top>2.48965in</Top>
+            <Left>0.06302in</Left>
             <Height>0.19054in</Height>
-            <Width>1.72105in</Width>
+            <Width>1.6717in</Width>
             <ZIndex>8</ZIndex>
             <Style>
               <Border>
@@ -1184,10 +1217,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>LoanNumber</rd:DefaultName>
-            <Top>2.36671in</Top>
-            <Left>2.02098in</Left>
+            <Top>2.48965in</Top>
+            <Left>1.73472in</Left>
             <Height>0.19054in</Height>
-            <Width>2.02727in</Width>
+            <Width>2.21311in</Width>
             <ZIndex>9</ZIndex>
             <Style>
               <Border>
@@ -1217,10 +1250,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>ProductType</rd:DefaultName>
-            <Top>2.55725in</Top>
-            <Left>0.34928in</Left>
+            <Top>2.69408in</Top>
+            <Left>0.06302in</Left>
             <Height>0.22179in</Height>
-            <Width>1.72105in</Width>
+            <Width>1.6717in</Width>
             <ZIndex>10</ZIndex>
             <Style>
               <Border>
@@ -1252,10 +1285,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>ProductType1</rd:DefaultName>
-            <Top>2.54335in</Top>
-            <Left>2.02098in</Left>
+            <Top>2.66629in</Top>
+            <Left>1.73472in</Left>
             <Height>0.22179in</Height>
-            <Width>2.02727in</Width>
+            <Width>2.21311in</Width>
             <ZIndex>11</ZIndex>
             <Style>
               <Border>
@@ -1285,10 +1318,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox95</rd:DefaultName>
-            <Top>2.77903in</Top>
-            <Left>0.34928in</Left>
+            <Top>2.88808in</Top>
+            <Left>0.06302in</Left>
             <Height>0.17662in</Height>
-            <Width>1.72105in</Width>
+            <Width>1.6717in</Width>
             <ZIndex>12</ZIndex>
             <Style>
               <Border>
@@ -1320,10 +1353,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>LoanNumber</rd:DefaultName>
-            <Top>2.76514in</Top>
-            <Left>2.02098in</Left>
+            <Top>2.88808in</Top>
+            <Left>1.73472in</Left>
             <Height>0.17662in</Height>
-            <Width>2.02727in</Width>
+            <Width>2.21311in</Width>
             <ZIndex>13</ZIndex>
             <Style>
               <Border>
@@ -1349,7 +1382,7 @@
               </Border>
             </Style>
           </Image>
-          <Textbox Name="ProductType3">
+          <Textbox Name="ProductType2">
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
             <Paragraphs>
@@ -1359,6 +1392,7 @@
                     <Value>Payroll No:</Value>
                     <Style>
                       <FontFamily>Segoe UI</FontFamily>
+                      <FontSize>9pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
@@ -1367,10 +1401,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>ProductType</rd:DefaultName>
-            <Top>2.56975in</Top>
-            <Left>5.21883in</Left>
-            <Height>0.22179in</Height>
-            <Width>1.31406in</Width>
+            <Top>2.47183in</Top>
+            <Left>5.25307in</Left>
+            <Height>0.20141in</Height>
+            <Width>1.72105in</Width>
             <ZIndex>15</ZIndex>
             <Style>
               <Border>
@@ -1382,7 +1416,7 @@
               <PaddingBottom>2pt</PaddingBottom>
             </Style>
           </Textbox>
-          <Textbox Name="ProductType5">
+          <Textbox Name="ProductType4">
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
             <Paragraphs>
@@ -1402,11 +1436,76 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>ProductType1</rd:DefaultName>
-            <Top>2.56975in</Top>
-            <Left>6.54678in</Left>
-            <Height>0.22179in</Height>
-            <Width>1.41241in</Width>
+            <Top>2.47183in</Top>
+            <Left>7.00476in</Left>
+            <Height>0.19838in</Height>
+            <Width>1.32185in</Width>
             <ZIndex>16</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="Textbox2">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>Phone No</Value>
+                    <Style>
+                      <FontSize>9pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox1</rd:DefaultName>
+            <Top>2.6971in</Top>
+            <Left>5.25307in</Left>
+            <Height>0.19098in</Height>
+            <Width>1.69948in</Width>
+            <ZIndex>17</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="PhoneNo_MemberRegister">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>=First(Fields!Phone_No_.Value, "DataSet_Result")</Value>
+                    <Style />
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Right</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>PhoneNo_MemberRegister</rd:DefaultName>
+            <Top>2.66629in</Top>
+            <Left>6.97412in</Left>
+            <Height>0.19401in</Height>
+            <Width>1.3386in</Width>
+            <ZIndex>18</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1424,8 +1523,9 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Phone No</Value>
+                    <Value>Registration Date:</Value>
                     <Style>
+                      <FontSize>9pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
@@ -1433,47 +1533,12 @@
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <rd:DefaultName>Textbox1</rd:DefaultName>
-            <Top>2.37921in</Top>
-            <Left>5.23272in</Left>
-            <Height>0.18706in</Height>
-            <Width>1.31406in</Width>
-            <ZIndex>17</ZIndex>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-              <PaddingLeft>2pt</PaddingLeft>
-              <PaddingRight>2pt</PaddingRight>
-              <PaddingTop>2pt</PaddingTop>
-              <PaddingBottom>2pt</PaddingBottom>
-            </Style>
-          </Textbox>
-          <Textbox Name="PhoneNo_MemberRegister2">
-            <CanGrow>true</CanGrow>
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>=First(Fields!Company_Phone_No.Value, "DataSet_Result")</Value>
-                    <Style>
-                      <FontFamily>Segoe UI</FontFamily>
-                      <FontSize>9pt</FontSize>
-                    </Style>
-                  </TextRun>
-                </TextRuns>
-                <Style>
-                  <TextAlign>Right</TextAlign>
-                </Style>
-              </Paragraph>
-            </Paragraphs>
-            <rd:DefaultName>PhoneNo_MemberRegister</rd:DefaultName>
-            <Top>2.37921in</Top>
-            <Left>6.54678in</Left>
-            <Height>0.18706in</Height>
-            <Width>1.41241in</Width>
-            <ZIndex>18</ZIndex>
+            <rd:DefaultName>Textbox3</rd:DefaultName>
+            <Top>2.88415in</Top>
+            <Left>5.25307in</Left>
+            <Height>0.18054in</Height>
+            <Width>1.27546in</Width>
+            <ZIndex>19</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1491,41 +1556,8 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Registration Date:</Value>
-                    <Style>
-                      <FontWeight>Bold</FontWeight>
-                    </Style>
-                  </TextRun>
-                </TextRuns>
-                <Style />
-              </Paragraph>
-            </Paragraphs>
-            <rd:DefaultName>Textbox3</rd:DefaultName>
-            <Top>2.79153in</Top>
-            <Left>5.23272in</Left>
-            <Height>0.17662in</Height>
-            <Width>1.31406in</Width>
-            <ZIndex>19</ZIndex>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-              <PaddingLeft>2pt</PaddingLeft>
-              <PaddingRight>2pt</PaddingRight>
-              <PaddingTop>2pt</PaddingTop>
-              <PaddingBottom>2pt</PaddingBottom>
-            </Style>
-          </Textbox>
-          <Textbox Name="ProductType6">
-            <CanGrow>true</CanGrow>
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
                     <Value>=First(Fields!Registration_Date.Value, "DataSet_Result")</Value>
                     <Style>
-                      <FontFamily>Segoe UI</FontFamily>
                       <FontSize>9pt</FontSize>
                     </Style>
                   </TextRun>
@@ -1535,11 +1567,11 @@
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <rd:DefaultName>ProductType1</rd:DefaultName>
-            <Top>2.79154in</Top>
-            <Left>6.54678in</Left>
-            <Height>0.17661in</Height>
-            <Width>1.41241in</Width>
+            <rd:DefaultName>Textbox4</rd:DefaultName>
+            <Top>2.88415in</Top>
+            <Left>6.54242in</Left>
+            <Height>0.18054in</Height>
+            <Width>1.78419in</Width>
             <ZIndex>20</ZIndex>
             <Style>
               <Border>
@@ -1560,7 +1592,7 @@
       <Width>8.7196in</Width>
       <Page>
         <PageHeader>
-          <Height>0.5in</Height>
+          <Height>0.28333in</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
@@ -1603,8 +1635,8 @@
                   <Style />
                 </Paragraph>
               </Paragraphs>
-              <Top>0.69646cm</Top>
-              <Left>2.02207cm</Left>
+              <Top>0.09708cm</Top>
+              <Left>19.27243cm</Left>
               <Height>0.423cm</Height>
               <Width>2.13224cm</Width>
               <ZIndex>1</ZIndex>
@@ -1661,8 +1693,8 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox1</rd:DefaultName>
-              <Top>0.69646cm</Top>
-              <Left>0.41513cm</Left>
+              <Top>0.09708cm</Top>
+              <Left>17.66549cm</Left>
               <Height>0.45889cm</Height>
               <Width>1.50111cm</Width>
               <ZIndex>3</ZIndex>
@@ -1716,8 +1748,8 @@
                   <Style />
                 </Paragraph>
               </Paragraphs>
-              <Top>0.69646cm</Top>
-              <Left>2.02207cm</Left>
+              <Top>0.09708cm</Top>
+              <Left>19.27243cm</Left>
               <Height>0.423cm</Height>
               <Width>2.13224cm</Width>
               <ZIndex>5</ZIndex>
@@ -1774,8 +1806,8 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox1</rd:DefaultName>
-              <Top>0.69646cm</Top>
-              <Left>0.41513cm</Left>
+              <Top>0.09708cm</Top>
+              <Left>17.66549cm</Left>
               <Height>0.45889cm</Height>
               <Width>1.50111cm</Width>
               <ZIndex>7</ZIndex>
@@ -1922,6 +1954,12 @@ kHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpBvD/AZI2
         </Field>
         <Field Name="PayrollStaffNo_Members">
           <DataField>PayrollStaffNo_Members</DataField>
+        </Field>
+        <Field Name="Registration_Date">
+          <DataField>Registration_Date</DataField>
+        </Field>
+        <Field Name="Phone_No_">
+          <DataField>Phone_No_</DataField>
         </Field>
         <Field Name="No_Members">
           <DataField>No_Members</DataField>
