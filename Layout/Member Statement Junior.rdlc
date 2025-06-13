@@ -2055,56 +2055,122 @@ kHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpBvD/AZI2
         <Field Name="ReportForNavId_1000000071">
           <DataField>ReportForNavId_1000000071</DataField>
         </Field>
-        <Field Name="PostingDate_Junior">
-          <DataField>PostingDate_Junior</DataField>
+        <Field Name="PostingDate_Own">
+          <DataField>PostingDate_Own</DataField>
         </Field>
-        <Field Name="DocumentNo_Junior">
-          <DataField>DocumentNo_Junior</DataField>
+        <Field Name="DocumentNo_Own">
+          <DataField>DocumentNo_Own</DataField>
         </Field>
-        <Field Name="Description_Junior">
-          <DataField>Description_Junior</DataField>
+        <Field Name="Description_Own">
+          <DataField>Description_Own</DataField>
         </Field>
-        <Field Name="Amount_Junior">
-          <DataField>Amount_Junior</DataField>
+        <Field Name="Amount_Own">
+          <DataField>Amount_Own</DataField>
         </Field>
-        <Field Name="Amount_JuniorFormat">
-          <DataField>Amount_JuniorFormat</DataField>
+        <Field Name="Amount_OwnFormat">
+          <DataField>Amount_OwnFormat</DataField>
         </Field>
-        <Field Name="UserID_Junior">
-          <DataField>UserID_Junior</DataField>
+        <Field Name="UserID_Own">
+          <DataField>UserID_Own</DataField>
         </Field>
-        <Field Name="DebitAmount_Junior">
-          <DataField>DebitAmount_Junior</DataField>
+        <Field Name="DebitAmount_Own">
+          <DataField>DebitAmount_Own</DataField>
         </Field>
-        <Field Name="DebitAmount_JuniorFormat">
-          <DataField>DebitAmount_JuniorFormat</DataField>
+        <Field Name="DebitAmount_OwnFormat">
+          <DataField>DebitAmount_OwnFormat</DataField>
         </Field>
-        <Field Name="CreditAmount_Junior">
-          <DataField>CreditAmount_Junior</DataField>
+        <Field Name="CreditAmount_Own">
+          <DataField>CreditAmount_Own</DataField>
         </Field>
-        <Field Name="CreditAmount_JuniorFormat">
-          <DataField>CreditAmount_JuniorFormat</DataField>
+        <Field Name="CreditAmount_OwnFormat">
+          <DataField>CreditAmount_OwnFormat</DataField>
         </Field>
-        <Field Name="TransactionType_Junior">
-          <DataField>TransactionType_Junior</DataField>
+        <Field Name="TransactionType_Own">
+          <DataField>TransactionType_Own</DataField>
         </Field>
-        <Field Name="OpenBalanceJunior">
-          <DataField>OpenBalanceJunior</DataField>
+        <Field Name="OpenBalanceOwnJunior">
+          <DataField>OpenBalanceOwnJunior</DataField>
         </Field>
-        <Field Name="OpenBalanceJuniorFormat">
-          <DataField>OpenBalanceJuniorFormat</DataField>
+        <Field Name="OpenBalanceOwnJuniorFormat">
+          <DataField>OpenBalanceOwnJuniorFormat</DataField>
         </Field>
-        <Field Name="ClosingBalanceJunior">
-          <DataField>ClosingBalanceJunior</DataField>
+        <Field Name="ClosingBalanceOwnJunior">
+          <DataField>ClosingBalanceOwnJunior</DataField>
         </Field>
-        <Field Name="ClosingBalanceJuniorFormat">
-          <DataField>ClosingBalanceJuniorFormat</DataField>
+        <Field Name="ClosingBalanceOwnJuniorFormat">
+          <DataField>ClosingBalanceOwnJuniorFormat</DataField>
         </Field>
-        <Field Name="JuniorBF">
-          <DataField>JuniorBF</DataField>
+        <Field Name="OwnJuniorBF">
+          <DataField>OwnJuniorBF</DataField>
         </Field>
-        <Field Name="JuniorBFFormat">
-          <DataField>JuniorBFFormat</DataField>
+        <Field Name="OwnJuniorBFFormat">
+          <DataField>OwnJuniorBFFormat</DataField>
+        </Field>
+        <Field Name="AccountHolder">
+          <DataField>AccountHolder</DataField>
+        </Field>
+        <Field Name="AccountNo">
+          <DataField>AccountNo</DataField>
+        </Field>
+        <Field Name="ReportForNavId_1000000072">
+          <DataField>ReportForNavId_1000000072</DataField>
+        </Field>
+        <Field Name="PostingDate_Guardian">
+          <DataField>PostingDate_Guardian</DataField>
+        </Field>
+        <Field Name="DocumentNo_Guardian">
+          <DataField>DocumentNo_Guardian</DataField>
+        </Field>
+        <Field Name="Description_Guardian">
+          <DataField>Description_Guardian</DataField>
+        </Field>
+        <Field Name="Amount_Guardian">
+          <DataField>Amount_Guardian</DataField>
+        </Field>
+        <Field Name="Amount_GuardianFormat">
+          <DataField>Amount_GuardianFormat</DataField>
+        </Field>
+        <Field Name="UserID_Guardian">
+          <DataField>UserID_Guardian</DataField>
+        </Field>
+        <Field Name="DebitAmount_Guardian">
+          <DataField>DebitAmount_Guardian</DataField>
+        </Field>
+        <Field Name="DebitAmount_GuardianFormat">
+          <DataField>DebitAmount_GuardianFormat</DataField>
+        </Field>
+        <Field Name="CreditAmount_Guardian">
+          <DataField>CreditAmount_Guardian</DataField>
+        </Field>
+        <Field Name="CreditAmount_GuardianFormat">
+          <DataField>CreditAmount_GuardianFormat</DataField>
+        </Field>
+        <Field Name="JuniorAccountNo">
+          <DataField>JuniorAccountNo</DataField>
+        </Field>
+        <Field Name="JuniorAccountName">
+          <DataField>JuniorAccountName</DataField>
+        </Field>
+        <Field Name="IsGuardianAccount">
+          <DataField>IsGuardianAccount</DataField>
+        </Field>
+        <Field Name="OpenBalanceGuardianJunior">
+          <DataField>OpenBalanceGuardianJunior</DataField>
+        </Field>
+        <Field Name="OpenBalanceGuardianJuniorFormat">
+          <DataField>OpenBalanceGuardianJuniorFormat</DataField>
+        </Field>
+        <Field Name="ClosingBalanceGuardianJunior">
+          <DataField>ClosingBalanceGuardianJunior</DataField>
+        </Field>
+        <Field Name="ClosingBalanceGuardianJuniorFormat">
+          <DataField>ClosingBalanceGuardianJuniorFormat</DataField>
+        </Field>
+        <Field Name="GuardianJuniorBF">
+          <DataField>GuardianJuniorBF</DataField>
+        </Field>
+        <Field Name="GuardianJuniorBFFormat">
+          <DataField>GuardianJuniorBFFormat</DataField>
         </Field>
         <Field Name="ReportForNavId_1102755024">
           <DataField>ReportForNavId_1102755024</DataField>
@@ -2136,29 +2202,11 @@ kHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpBvD/AZI2
         <Field Name="Installments">
           <DataField>Installments</DataField>
         </Field>
-        <Field Name="LoanPrincipleRepayment">
-          <DataField>LoanPrincipleRepayment</DataField>
-        </Field>
-        <Field Name="LoanPrincipleRepaymentFormat">
-          <DataField>LoanPrincipleRepaymentFormat</DataField>
-        </Field>
         <Field Name="ApprovedAmount_Loans">
           <DataField>ApprovedAmount_Loans</DataField>
         </Field>
         <Field Name="ApprovedAmount_LoansFormat">
           <DataField>ApprovedAmount_LoansFormat</DataField>
-        </Field>
-        <Field Name="LoanProductTypeName_Loans">
-          <DataField>LoanProductTypeName_Loans</DataField>
-        </Field>
-        <Field Name="Repayment_Loans">
-          <DataField>Repayment_Loans</DataField>
-        </Field>
-        <Field Name="Repayment_LoansFormat">
-          <DataField>Repayment_LoansFormat</DataField>
-        </Field>
-        <Field Name="ModeofDisbursement_Loans">
-          <DataField>ModeofDisbursement_Loans</DataField>
         </Field>
         <Field Name="OutstandingBalance_Loans">
           <DataField>OutstandingBalance_Loans</DataField>
@@ -2202,35 +2250,11 @@ kHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpBvD/AZI2
         <Field Name="Amount_LoanFormat">
           <DataField>Amount_LoanFormat</DataField>
         </Field>
-        <Field Name="openBalance_loan">
-          <DataField>openBalance_loan</DataField>
-        </Field>
-        <Field Name="openBalance_loanFormat">
-          <DataField>openBalance_loanFormat</DataField>
-        </Field>
-        <Field Name="CLosingBalance_loan">
-          <DataField>CLosingBalance_loan</DataField>
-        </Field>
-        <Field Name="CLosingBalance_loanFormat">
-          <DataField>CLosingBalance_loanFormat</DataField>
-        </Field>
         <Field Name="TransactionType_loan">
           <DataField>TransactionType_loan</DataField>
         </Field>
         <Field Name="LoanNo">
           <DataField>LoanNo</DataField>
-        </Field>
-        <Field Name="PrincipleBF_loans">
-          <DataField>PrincipleBF_loans</DataField>
-        </Field>
-        <Field Name="PrincipleBF_loansFormat">
-          <DataField>PrincipleBF_loansFormat</DataField>
-        </Field>
-        <Field Name="Loan_Description">
-          <DataField>Loan_Description</DataField>
-        </Field>
-        <Field Name="User7">
-          <DataField>User7</DataField>
         </Field>
       </Fields>
       <Query>
