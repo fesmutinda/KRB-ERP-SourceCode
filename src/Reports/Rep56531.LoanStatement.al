@@ -22,6 +22,8 @@ Report 56531 "Loan Statement"
             column(No_Members; "Members Register"."No.")
             {
             }
+            column(Phone_No_; "Phone No.") { }
+            column(Registration_Date; "Registration Date") { }
             column(Name_Members; "Members Register".Name)
             {
             }
