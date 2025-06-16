@@ -13,9 +13,11 @@ Report 59052 "Member Statement Junior"
             column(ReportForNavId_1102755000; 1102755000)
             {
             }
+
             column(Phone_No_; "Phone No.")
             {
             }
+
             column(Registration_Date; "Registration Date")
             {
             }
@@ -70,122 +72,154 @@ Report 59052 "Member Statement Junior"
             column(Company_Email; Company."E-Mail")
             {
             }
+            // Add guardian indicator columns
+            column(IsGuardian; IsGuardian)
+            {
+            }
+            column(HasJuniorAccounts; HasJuniorAccounts)
+            {
+            }
+            column(GuardianInfo; GuardianInfo)
+            {
+            }
 
-            // Own Junior Savings Account (if member has junior savings)
-            dataitem(OwnJuniorSavings; "Cust. Ledger Entry")
+            // Modified JuniorSavings dataitem to include guardian relationships
+            dataitem(JuniorSavings; "Cust. Ledger Entry")
             {
                 DataItemLink = "Customer No." = field("No."), "Posting Date" = field("Date Filter");
                 DataItemTableView = sorting("Posting Date") where("Transaction Type" = filter("Junior Savings"), Reversed = const(false));
-
                 column(ReportForNavId_1000000071; 1000000071)
                 {
                 }
-                column(PostingDate_Own; OwnJuniorSavings."Posting Date")
+                column(PostingDate_Junior; JuniorSavings."Posting Date")
                 {
                 }
-                column(DocumentNo_Own; OwnJuniorSavings."Document No.")
+                column(DocumentNo_Junior; JuniorSavings."Document No.")
                 {
                 }
-                column(Description_Own; OwnJuniorSavings.Description)
+                column(Description_Junior; JuniorSavings.Description)
                 {
                 }
-                column(Amount_Own; OwnJuniorSavings."Amount Posted")
+                column(Amount_Junior; JuniorSavings."Amount Posted")
                 {
                 }
-                column(UserID_Own; OwnJuniorSavings."User ID")
+                column(UserID_Junior; JuniorSavings."User ID")
                 {
                 }
-                column(DebitAmount_Own; OwnDebitAmount)
+                column(DebitAmount_Junior; debitamount)
                 {
                 }
-                column(CreditAmount_Own; OwnCreditAmount)
+                column(CreditAmount_Junior; creditamount)
                 {
                 }
-                column(TransactionType_Own; OwnJuniorSavings."Transaction Type")
+                column(TransactionType_Junior; JuniorSavings."Transaction Type")
                 {
                 }
-                column(OpenBalanceOwnJunior; OpenBalanceOwnJunior)
+                column(OpenBalanceJunior; OpenBalanceJunior)
                 {
                 }
-                column(ClosingBalanceOwnJunior; ClosingBalanceOwnJunior)
+                column(ClosingBalanceJunior; ClosingBalanceJunior)
                 {
                 }
-                column(OwnJuniorBF; OwnJuniorBF)
+                column(JuniorBF; JuniorBF)
                 {
                 }
-                column(AccountHolder; "Members Register".Name) // Own account
+                // Add junior member details
+                column(JuniorMemberNo; JuniorMemberNo)
                 {
                 }
-                column(AccountNo; "Members Register"."No.") // Own account number
+                column(JuniorMemberName; JuniorMemberName)
+                {
+                }
+                column(IsOwnAccount; IsOwnAccount)
                 {
                 }
 
                 trigger OnAfterGetRecord()
                 begin
-                    OwnCreditAmount := 0;
-                    OwnDebitAmount := 0;
-                    if OwnJuniorSavings."Amount Posted" < 0 then begin
-                        OwnCreditAmount := OwnJuniorSavings."Amount Posted" * -1;
+                    CreditAmount := 0;
+                    DebitAmount := 0;
+                    if JuniorSavings."Amount Posted" < 0 then begin
+                        CreditAmount := JuniorSavings."Amount Posted" * -1;
                     end else
-                        if OwnJuniorSavings."Amount Posted" > 0 then begin
-                            OwnDebitAmount := OwnJuniorSavings."Amount Posted";
+                        if JuniorSavings."Amount Posted" > 0 then begin
+                            DebitAmount := JuniorSavings."Amount Posted";
                         end;
-                    ClosingBalanceOwnJunior := ClosingBalanceOwnJunior + (OwnJuniorSavings."Amount Posted" * -1);
+                    ClosingBalanceJunior := ClosingBalanceJunior + (JuniorSavings."Amount Posted" * -1);
+
+                    // Get junior member details
+                    JuniorMemberNo := JuniorSavings."Customer No.";
+                    IsOwnAccount := (JuniorMemberNo = "Members Register"."No.");
+
+                    if JuniorMember.Get(JuniorMemberNo) then
+                        JuniorMemberName := JuniorMember.Name
+                    else
+                        JuniorMemberName := '';
                 end;
 
                 trigger OnPreDataItem()
                 begin
-                    ClosingBalanceOwnJunior := OwnJuniorBF;
-                    OpenBalanceOwnJunior := OwnJuniorBF;
+                    ClosingBalanceJunior := JuniorBF;
+                    OpenBalanceJunior := JuniorBF;
+
+                    // Apply filters for junior savings
+                    JuniorSavings.Reset();
+                    JuniorSavings.SetCurrentKey("Posting Date");
+                    JuniorSavings.SetRange("Transaction Type", JuniorSavings."Transaction Type"::"Junior Savings");
+                    JuniorSavings.SetRange(Reversed, false);
+
+                    // Apply date filter if exists
+                    if "Members Register".GetFilter("Date Filter") <> '' then
+                        JuniorSavings.SetFilter("Posting Date", "Members Register".GetFilter("Date Filter"));
+
+                    // Filter for appropriate accounts based on guardian status
+                    JuniorAccountFilter := GetJuniorAccountFilter("Members Register"."No.");
+                    if JuniorAccountFilter = '' then
+                        CurrReport.Break();
+
+                    JuniorSavings.SetFilter("Customer No.", JuniorAccountFilter);
                 end;
             }
 
-            // Guardian Junior Accounts (junior accounts where this member is the guardian)
+            // Enhanced Guardian's Junior Accounts dataitem
             dataitem(GuardianJuniorSavings; "Cust. Ledger Entry")
             {
                 DataItemLink = "Posting Date" = field("Date Filter");
                 DataItemTableView = sorting("Posting Date") where("Transaction Type" = filter("Junior Savings"), Reversed = const(false));
-
                 column(ReportForNavId_1000000072; 1000000072)
                 {
                 }
-                column(PostingDate_Guardian; GuardianJuniorSavings."Posting Date")
+                column(PostingDate_GuardianJunior; GuardianJuniorSavings."Posting Date")
                 {
                 }
-                column(DocumentNo_Guardian; GuardianJuniorSavings."Document No.")
+                column(DocumentNo_GuardianJunior; GuardianJuniorSavings."Document No.")
                 {
                 }
-                column(Description_Guardian; GuardianJuniorSavings.Description)
+                column(Description_GuardianJunior; GuardianJuniorSavings.Description)
                 {
                 }
-                column(Amount_Guardian; GuardianJuniorSavings."Amount Posted")
+                column(Amount_GuardianJunior; GuardianJuniorSavings."Amount Posted")
                 {
                 }
-                column(UserID_Guardian; GuardianJuniorSavings."User ID")
+                column(UserID_GuardianJunior; GuardianJuniorSavings."User ID")
                 {
                 }
-                column(DebitAmount_Guardian; GuardianDebitAmount)
+                column(DebitAmount_GuardianJunior; GuardianDebitAmount)
                 {
                 }
-                column(CreditAmount_Guardian; GuardianCreditAmount)
+                column(CreditAmount_GuardianJunior; GuardianCreditAmount)
                 {
                 }
-                column(JuniorAccountNo; GuardianJuniorSavings."Customer No.")
+                column(JuniorAccountNo_Guardian; GuardianJuniorSavings."Customer No.")
                 {
                 }
-                column(JuniorAccountName; GuardianJuniorAccountName)
-                {
-                }
-                column(IsGuardianAccount; true) // Flag to identify guardian accounts
-                {
-                }
-                column(OpenBalanceGuardianJunior; OpenBalanceGuardianJunior)
-                {
-                }
-                column(ClosingBalanceGuardianJunior; ClosingBalanceGuardianJunior)
+                column(JuniorAccountName_Guardian; GuardianJuniorAccountName)
                 {
                 }
                 column(GuardianJuniorBF; GuardianJuniorBF)
+                {
+                }
+                column(GuardianJuniorClosing; GuardianJuniorClosing)
                 {
                 }
 
@@ -200,7 +234,8 @@ Report 59052 "Member Statement Junior"
                             GuardianDebitAmount := GuardianJuniorSavings."Amount Posted";
                         end;
 
-                    ClosingBalanceGuardianJunior := ClosingBalanceGuardianJunior + (GuardianJuniorSavings."Amount Posted" * -1);
+                    // Update running balance
+                    GuardianJuniorClosing := GuardianJuniorClosing + (GuardianJuniorSavings."Amount Posted" * -1);
 
                     // Get junior account holder name
                     if JuniorMember.Get(GuardianJuniorSavings."Customer No.") then
@@ -211,32 +246,72 @@ Report 59052 "Member Statement Junior"
 
                 trigger OnPreDataItem()
                 begin
+                    // Only show if member is a guardian
+                    if not IsGuardian then
+                        CurrReport.Break();
+
                     // Initialize balances
-                    ClosingBalanceGuardianJunior := GuardianJuniorBF;
-                    OpenBalanceGuardianJunior := GuardianJuniorBF;
+                    GuardianJuniorBF := 0;
+                    GuardianJuniorClosing := 0;
+
+                    // Filter for junior accounts where current member is the guardian
+                    GuardianJuniorSavings.Reset();
+                    GuardianJuniorSavings.SetCurrentKey("Posting Date");
+                    GuardianJuniorSavings.SetRange("Transaction Type", GuardianJuniorSavings."Transaction Type"::"Junior Savings");
+                    GuardianJuniorSavings.SetRange(Reversed, false);
+
+                    // Apply date filter
+                    if "Members Register".GetFilter("Date Filter") <> '' then
+                        GuardianJuniorSavings.SetFilter("Posting Date", "Members Register".GetFilter("Date Filter"));
 
                     // Get junior accounts for this guardian
                     GuardianJuniorFilter := GetJuniorAccountsForGuardian("Members Register"."No.");
-
-                    // If no junior accounts found, skip this dataitem
                     if GuardianJuniorFilter = '' then
                         CurrReport.Break();
 
-                    // Apply filters
                     GuardianJuniorSavings.SetFilter("Customer No.", GuardianJuniorFilter);
 
-                    // Apply date filter if exists
-                    if "Members Register".GetFilter("Date Filter") <> '' then
-                        GuardianJuniorSavings.SetFilter("Posting Date", "Members Register".GetFilter("Date Filter"));
+                    // Calculate brought forward balance
+                    GuardianJuniorBF := CalculateGuardianJuniorBF("Members Register"."No.", DateFilterBF);
+                    GuardianJuniorClosing := GuardianJuniorBF;
                 end;
             }
 
-            // Keep loan section as is
+            // Add summary dataitem for guardian's junior accounts
+            dataitem(JuniorAccountsSummary; "Integer")
+            {
+                DataItemTableView = sorting(Number) where(Number = const(1));
+                column(ReportForNavId_1000000073; 1000000073)
+                {
+                }
+                column(TotalJuniorAccounts; TotalJuniorAccounts)
+                {
+                }
+                column(TotalJuniorBalance; TotalJuniorBalance)
+                {
+                }
+                column(JuniorAccountsList; JuniorAccountsList)
+                {
+                }
+
+                trigger OnAfterGetRecord()
+                begin
+                    if IsGuardian then begin
+                        CalculateJuniorAccountsSummary("Members Register"."No.");
+                    end;
+                end;
+
+                trigger OnPreDataItem()
+                begin
+                    if not IsGuardian then
+                        CurrReport.Break();
+                end;
+            }
+
             dataitem(Loans; "Loans Register")
             {
-                DataItemLink = "Client Code" = field("No."), "Date filter" = field("Date Filter");
+                DataItemLink = "Client Code" = field("No."), "Date filter" = field("Date Filter"), "Loan Product Type" = field("Loan Product Filter");
                 DataItemTableView = sorting("Loan  No.") where(Posted = const(true), Reversed = const(false));
-
                 column(ReportForNavId_1102755024; 1102755024)
                 {
                 }
@@ -258,7 +333,19 @@ Report 59052 "Member Statement Junior"
                 column(Installments; Loans.Installments)
                 {
                 }
+                column(LoanPrincipleRepayment; Loans."Loan Principle Repayment")
+                {
+                }
                 column(ApprovedAmount_Loans; Loans."Approved Amount")
+                {
+                }
+                column(LoanProductTypeName_Loans; Loans."Loan Product Type Name")
+                {
+                }
+                column(Repayment_Loans; Loans.Repayment)
+                {
+                }
+                column(ModeofDisbursement_Loans; Loans."Mode of Disbursement")
                 {
                 }
                 column(OutstandingBalance_Loans; Loans."Outstanding Balance")
@@ -267,12 +354,10 @@ Report 59052 "Member Statement Junior"
                 column(OustandingInterest_Loans; Loans."Oustanding Interest")
                 {
                 }
-
                 dataitem(loan; "Cust. Ledger Entry")
                 {
                     DataItemLink = "Customer No." = field("Client Code"), "Loan No" = field("Loan  No."), "Posting Date" = field("Date filter");
-                    DataItemTableView = sorting("Posting Date") where("Transaction Type" = filter(Loan | "Loan Repayment" | "Interest Due" | "Interest Paid"));
-
+                    DataItemTableView = sorting("Posting Date") where("Transaction Type" = filter(Loan | "Loan Repayment" | "Interest Due" | "Interest Paid" | "Loan Transfer Charges"));
                     column(ReportForNavId_1102755031; 1102755031)
                     {
                     }
@@ -294,21 +379,55 @@ Report 59052 "Member Statement Junior"
                     column(Amount_Loan; loan.Amount)
                     {
                     }
+                    column(openBalance_loan; OpenBalance)
+                    {
+                    }
+                    column(CLosingBalance_loan; CLosingBalance)
+                    {
+                    }
                     column(TransactionType_loan; loan."Transaction Type")
                     {
                     }
                     column(LoanNo; loan."Loan No")
                     {
                     }
+                    column(PrincipleBF_loans; PrincipleBF)
+                    {
+                    }
+                    column(Loan_Description; loan.Description)
+                    {
+                    }
+                    column(User7; loan."User ID")
+                    {
+                    }
 
                     trigger OnAfterGetRecord()
                     begin
+                        CLosingBalance := CLosingBalance + (loan."Amount Posted");
                         if loan."Amount Posted" < 0 then begin
                             loan."Credit Amount" := (loan."Amount Posted" * -1);
                         end else
                             if loan."Amount Posted" > 0 then begin
                                 loan."Debit Amount" := (loan."Amount Posted");
                             end;
+                        if loan."Transaction Type" = loan."transaction type"::"Interest Paid" then begin
+                            InterestPaid := 0;
+                            if loan."Amount Posted" < 0 then begin
+                                InterestPaid := loan."Amount Posted" * -1;
+                            end;
+                            SumInterestPaid := InterestPaid + SumInterestPaid;
+                        end;
+                        if loan."Transaction Type" = loan."transaction type"::"Loan Repayment" then begin
+                            if loan."Amount Posted" < 0 then begin
+                                loan."Credit Amount" := loan."Amount Posted" * -1;
+                            end;
+                        end;
+                    end;
+
+                    trigger OnPreDataItem()
+                    begin
+                        CLosingBalance := PrincipleBF;
+                        OpeningBal := PrincipleBF;
                     end;
                 }
 
@@ -316,7 +435,6 @@ Report 59052 "Member Statement Junior"
                 begin
                     if LoanSetup.Get(Loans."Loan Product Type") then
                         LoanName := LoanSetup."Product Description";
-
                     if DateFilterBF <> '' then begin
                         LoansR.Reset;
                         LoansR.SetRange(LoansR."Loan  No.", "Loan  No.");
@@ -327,26 +445,57 @@ Report 59052 "Member Statement Junior"
                         end;
                     end;
                 end;
+
+                trigger OnPreDataItem()
+                begin
+                    Loans.SetFilter(Loans."Date filter", "Members Register".GetFilter("Members Register"."Date Filter"));
+                end;
             }
 
             trigger OnAfterGetRecord()
             begin
-                // Get employer name
                 SaccoEmp.Reset;
                 SaccoEmp.SetRange(SaccoEmp.Code, "Members Register"."Employer Code");
                 if SaccoEmp.Find('-') then
                     EmployerName := SaccoEmp.Description;
 
-                // Initialize brought forward balances
-                OwnJuniorBF := 0;
-                GuardianJuniorBF := 0;
+                // Initialize variables
+                SharesBF := 0;
+                InsuranceBF := 0;
+                ShareCapBF := 0;
+                RiskBF := 0;
+                HseBF := 0;
+                Dep1BF := 0;
+                Dep2BF := 0;
+                JuniorBF := 0;
 
+                // Check if member is a guardian
+                IsGuardian := CheckIfGuardian("No.");
+                HasJuniorAccounts := (GetJuniorAccountsForGuardian("No.") <> '');
+
+                // Set guardian info
+                if IsGuardian then
+                    GuardianInfo := 'This member is a guardian for junior accounts'
+                else
+                    GuardianInfo := '';
+
+                // Calculate balances
                 if DateFilterBF <> '' then begin
-                    // Calculate own junior savings BF
-                    OwnJuniorBF := CalculateOwnJuniorSavingsBF("No.", DateFilterBF);
+                    Cust.Reset;
+                    Cust.SetRange(Cust."No.", "No.");
+                    Cust.SetFilter(Cust."Date Filter", DateFilterBF);
+                    if Cust.Find('-') then begin
+                        Cust.CalcFields(Cust."Current Shares");
+                        SharesBF := (Cust."Current Shares" * -1);
+                        RiskBF := Cust."Insurance Fund";
+                        DividendBF := Cust."Dividend Amount";
+                    end;
 
-                    // Calculate guardian junior savings BF
-                    GuardianJuniorBF := CalculateGuardianJuniorSavingsBF("No.", DateFilterBF);
+                    // Calculate Junior Savings BF
+                    if IsGuardian then
+                        JuniorBF := CalculateJuniorSavingsBF("No.", DateFilterBF)
+                    else
+                        JuniorBF := CalculateOwnJuniorSavingsBF("No.", DateFilterBF);
                 end;
             end;
 
@@ -379,18 +528,39 @@ Report 59052 "Member Statement Junior"
         Company.CalcFields(Company.Picture);
     end;
 
-    // Function to get junior accounts where this member is the guardian
+    // Enhanced functions to handle guardian-junior relationships
+    local procedure GetJuniorAccountFilter(MemberNo: Code[20]): Text
+    var
+        JuniorAccounts: Text;
+        TempMember: Record Customer temporary;
+    begin
+        // Always include the member's own account for junior savings
+        JuniorAccounts := MemberNo;
+
+        // If member is a guardian, include junior accounts
+        if CheckIfGuardian(MemberNo) then begin
+            TempMember.Reset();
+            TempMember.SetRange("Guardian No.", MemberNo);
+            if TempMember.FindSet() then
+                repeat
+                    if JuniorAccounts <> '' then
+                        JuniorAccounts := JuniorAccounts + '|' + TempMember."No."
+                    else
+                        JuniorAccounts := TempMember."No.";
+                until TempMember.Next() = 0;
+        end;
+
+        exit(JuniorAccounts);
+    end;
+
     local procedure GetJuniorAccountsForGuardian(GuardianNo: Code[20]): Text
     var
         JuniorAccounts: Text;
-        TempMember: Record Customer;
+        TempMember: Record Customer temporary;
     begin
-        JuniorAccounts := '';
-
         // Find junior accounts where this member is the guardian
-        // Adjust the field name based on your actual field name for guardian
         TempMember.Reset();
-        TempMember.SetRange("Guardian No.", GuardianNo); // Replace with your actual guardian field
+        TempMember.SetRange("Guardian No.", GuardianNo);
         if TempMember.FindSet() then
             repeat
                 if JuniorAccounts <> '' then
@@ -402,14 +572,50 @@ Report 59052 "Member Statement Junior"
         exit(JuniorAccounts);
     end;
 
-    // Calculate own junior savings brought forward
+    local procedure CheckIfGuardian(MemberNo: Code[20]): Boolean
+    var
+        TempMember: Record Customer temporary;
+    begin
+        TempMember.Reset();
+        TempMember.SetRange("Guardian No.", MemberNo);
+        exit(TempMember.FindFirst());
+    end;
+
+    local procedure CalculateJuniorSavingsBF(GuardianNo: Code[20]; DateFilter: Text): Decimal
+    var
+        CustLedgerEntry: Record "Cust. Ledger Entry";
+        JuniorAccountFilter: Text;
+        TotalBF: Decimal;
+    begin
+        TotalBF := 0;
+
+        // Include guardian's own junior savings
+        TotalBF := CalculateOwnJuniorSavingsBF(GuardianNo, DateFilter);
+
+        // Add junior accounts managed by guardian
+        JuniorAccountFilter := GetJuniorAccountsForGuardian(GuardianNo);
+        if JuniorAccountFilter <> '' then begin
+            CustLedgerEntry.Reset();
+            CustLedgerEntry.SetFilter("Customer No.", JuniorAccountFilter);
+            CustLedgerEntry.SetRange("Transaction Type", CustLedgerEntry."Transaction Type"::"Junior Savings");
+            CustLedgerEntry.SetRange(Reversed, false);
+            CustLedgerEntry.SetFilter("Posting Date", DateFilter);
+
+            if CustLedgerEntry.FindSet() then
+                repeat
+                    TotalBF := TotalBF + (CustLedgerEntry."Amount Posted" * -1);
+                until CustLedgerEntry.Next() = 0;
+        end;
+
+        exit(TotalBF);
+    end;
+
     local procedure CalculateOwnJuniorSavingsBF(MemberNo: Code[20]; DateFilter: Text): Decimal
     var
         CustLedgerEntry: Record "Cust. Ledger Entry";
         TotalBF: Decimal;
     begin
         TotalBF := 0;
-
         CustLedgerEntry.Reset();
         CustLedgerEntry.SetRange("Customer No.", MemberNo);
         CustLedgerEntry.SetRange("Transaction Type", CustLedgerEntry."Transaction Type"::"Junior Savings");
@@ -424,8 +630,7 @@ Report 59052 "Member Statement Junior"
         exit(TotalBF);
     end;
 
-    // Calculate guardian junior savings brought forward
-    local procedure CalculateGuardianJuniorSavingsBF(GuardianNo: Code[20]; DateFilter: Text): Decimal
+    local procedure CalculateGuardianJuniorBF(GuardianNo: Code[20]; DateFilter: Text): Decimal
     var
         CustLedgerEntry: Record "Cust. Ledger Entry";
         JuniorAccountFilter: Text;
@@ -450,47 +655,124 @@ Report 59052 "Member Statement Junior"
         exit(TotalBF);
     end;
 
+    local procedure CalculateJuniorAccountsSummary(GuardianNo: Code[20])
     var
-        // Balance variables
-        OpenBalanceOwnJunior: Decimal;
-        OwnJuniorBF: Decimal;
-        ClosingBalanceOwnJunior: Decimal;
-        OpenBalanceGuardianJunior: Decimal;
-        GuardianJuniorBF: Decimal;
-        ClosingBalanceGuardianJunior: Decimal;
+        TempMember: Record Customer temporary;
+        CustLedgerEntry: Record "Cust. Ledger Entry";
+        CurrentBalance: Decimal;
+    begin
+        TotalJuniorAccounts := 0;
+        TotalJuniorBalance := 0;
+        JuniorAccountsList := '';
 
-        // Amount variables
-        OwnCreditAmount: Decimal;
-        OwnDebitAmount: Decimal;
-        GuardianCreditAmount: Decimal;
-        GuardianDebitAmount: Decimal;
+        TempMember.Reset();
+        TempMember.SetRange("Guardian No.", GuardianNo);
+        if TempMember.FindSet() then
+            repeat
+                TotalJuniorAccounts += 1;
 
-        // Records
-        Company: Record "Company Information";
-        JuniorMember: Record Customer;
-        SaccoEmp: Record "Sacco Employers";
-        LoanSetup: Record "Loan Products Setup";
-        LoansR: Record "Loans Register";
+                // Calculate current balance for this junior account
+                CurrentBalance := 0;
+                CustLedgerEntry.Reset();
+                CustLedgerEntry.SetRange("Customer No.", TempMember."No.");
+                CustLedgerEntry.SetRange("Transaction Type", CustLedgerEntry."Transaction Type"::"Junior Savings");
+                CustLedgerEntry.SetRange(Reversed, false);
+
+                if CustLedgerEntry.FindSet() then
+                    repeat
+                        CurrentBalance := CurrentBalance + (CustLedgerEntry."Amount Posted" * -1);
+                    until CustLedgerEntry.Next() = 0;
+
+                TotalJuniorBalance += CurrentBalance;
+
+                // Build accounts list
+                if JuniorAccountsList <> '' then
+                    JuniorAccountsList := JuniorAccountsList + ', ';
+                JuniorAccountsList := JuniorAccountsList + TempMember."No." + ' (' + TempMember.Name + ')';
+
+            until TempMember.Next() = 0;
+    end;
+
+    var
+        OpenBalance: Decimal;
+        OpenBalanceJunior: Decimal;
+        JuniorBF: Decimal;
+        ClosingBalanceJunior: Decimal;
+        CLosingBalance: Decimal;
+        OpenBalanceXmas: Decimal;
+        CLosingBalanceXmas: Decimal;
         Cust: Record Customer;
-
-        // Text variables
-        GuardianJuniorFilter: Text;
-        GuardianJuniorAccountName: Text[100];
-        EmployerName: Text[100];
-        LoanName: Text[50];
+        OpeningBal: Decimal;
+        ClosingBal: Decimal;
+        FirstRec: Boolean;
+        PrevBal: Integer;
+        BalBF: Decimal;
+        CreditAmount: Decimal;
+        DebitAmount: Decimal;
+        LoansR: Record "Loans Register";
         DateFilterBF: Text[150];
-
-        // Other variables
-        PrincipleBF: Decimal;
         SharesBF: Decimal;
         InsuranceBF: Decimal;
+        LoanBF: Decimal;
+        PrincipleBF: Decimal;
+        InterestBF: Decimal;
+        ShowZeroBal: Boolean;
+        ClosingBalSHCAP: Decimal;
         ShareCapBF: Decimal;
         RiskBF: Decimal;
+        DividendBF: Decimal;
+        JuniorSavingsBF: Decimal;
+        Company: Record "Company Information";
+        OpenBalanceHse: Decimal;
+        CLosingBalanceHse: Decimal;
+        OpenBalanceDep1: Decimal;
+        CLosingBalanceDep1: Decimal;
+        OpenBalanceDep2: Decimal;
+        CLosingBalanceDep2: Decimal;
         HseBF: Decimal;
         Dep1BF: Decimal;
         Dep2BF: Decimal;
-        DividendBF: Decimal;
-        OpeningBal: Decimal;
+        OpeningBalInt: Decimal;
+        ClosingBalInt: Decimal;
         InterestPaid: Decimal;
         SumInterestPaid: Decimal;
+        OpenBalanceRisk: Decimal;
+        CLosingBalanceRisk: Decimal;
+        OpenBalanceHoliday: Decimal;
+        ClosingBalanceHoliday: Decimal;
+        LoanSetup: Record "Loan Products Setup";
+        LoanName: Text[50];
+        SaccoEmp: Record "Sacco Employers";
+        EmployerName: Text[100];
+        OpenBalanceShareCap: Decimal;
+        ClosingBalanceShareCap: Decimal;
+        OpenBalanceDeposits: Decimal;
+        ClosingBalanceDeposits: Decimal;
+        OpenBalanceDividend: Decimal;
+        ClosingBalanceDividend: Decimal;
+        OpenBalanceJuniorSavings: Decimal;
+        ClosingBalanceJuniorSavings: Decimal;
+
+        // Enhanced variables for guardian functionality
+        JuniorMember: Record Customer;
+        JuniorMemberNo: Code[20];
+        JuniorMemberName: Text[100];
+        GuardianJuniorFilter: Text;
+        GuardianCreditAmount: Decimal;
+        GuardianDebitAmount: Decimal;
+        GuardianJuniorAccountName: Text[100];
+        JuniorAccountFilter: Text;
+        IsOwnAccount: Boolean;
+
+        // New guardian status variables
+        IsGuardian: Boolean;
+        HasJuniorAccounts: Boolean;
+        GuardianInfo: Text[100];
+        GuardianJuniorBF: Decimal;
+        GuardianJuniorClosing: Decimal;
+
+        // Summary variables
+        TotalJuniorAccounts: Integer;
+        TotalJuniorBalance: Decimal;
+        JuniorAccountsList: Text[500];
 }
