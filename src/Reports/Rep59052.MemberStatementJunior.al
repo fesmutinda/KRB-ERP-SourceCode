@@ -348,12 +348,25 @@ Report 59052 "Member Statement Junior"
                 column(ModeofDisbursement_Loans; Loans."Mode of Disbursement")
                 {
                 }
+                column(IsGuardianLoan; IsGuardianLoan)
+                {
+                }
+                column(JuniorAccountNo; JuniorAccountNo)
+                {
+                }
+                column(JuniorAccountName; JuniorAccountName)
+                {
+                }
+                column(LoanDate; Loans."Date filter")
+                {
+                }
                 column(OutstandingBalance_Loans; Loans."Outstanding Balance")
                 {
                 }
                 column(OustandingInterest_Loans; Loans."Oustanding Interest")
                 {
                 }
+
                 dataitem(loan; "Cust. Ledger Entry")
                 {
                     DataItemLink = "Customer No." = field("Client Code"), "Loan No" = field("Loan  No."), "Posting Date" = field("Date filter");
@@ -444,11 +457,38 @@ Report 59052 "Member Statement Junior"
                             PrincipleBF := LoansR."Outstanding Balance";
                         end;
                     end;
+
+                    // Check if this is a loan for a junior account where member is guardian
+                    IsGuardianLoan := false;
+                    JuniorAccountNo := '';
+                    JuniorAccountName := '';
+
+                    if IsGuardian then begin
+                        TempMember.Reset();
+                        TempMember.SetRange("Guardian No.", "Members Register"."No.");
+                        if TempMember.FindSet() then
+                            repeat
+                                if Loans."Client Code" = TempMember."No." then begin
+                                    IsGuardianLoan := true;
+                                    JuniorAccountNo := TempMember."No.";
+                                    JuniorAccountName := TempMember.Name;
+                                    break;
+                                end;
+                            until TempMember.Next() = 0;
+                    end;
                 end;
 
                 trigger OnPreDataItem()
                 begin
+                    // Apply date filter
                     Loans.SetFilter(Loans."Date filter", "Members Register".GetFilter("Members Register"."Date Filter"));
+
+                    // If member is a guardian, include loans from junior accounts
+                    if IsGuardian then begin
+                        GuardianLoanFilter := GetGuardianLoanFilter("Members Register"."No.");
+                        if GuardianLoanFilter <> '' then
+                            Loans.SetFilter("Client Code", GuardianLoanFilter);
+                    end;
                 end;
             }
 
@@ -469,14 +509,16 @@ Report 59052 "Member Statement Junior"
                 Dep2BF := 0;
                 JuniorBF := 0;
 
-                // Check if member is a guardian
+                // Enhanced guardian check
                 IsGuardian := CheckIfGuardian("No.");
                 HasJuniorAccounts := (GetJuniorAccountsForGuardian("No.") <> '');
 
-                // Set guardian info
-                if IsGuardian then
-                    GuardianInfo := 'This member is a guardian for junior accounts'
-                else
+                // Set guardian info with more details
+                if IsGuardian then begin
+                    GuardianInfo := 'This member is a guardian for junior accounts';
+                    // Get list of junior accounts
+                    JuniorAccountsList := GetJuniorAccountsList("No.");
+                end else
                     GuardianInfo := '';
 
                 // Calculate balances
@@ -491,9 +533,9 @@ Report 59052 "Member Statement Junior"
                         DividendBF := Cust."Dividend Amount";
                     end;
 
-                    // Calculate Junior Savings BF
+                    // Calculate Junior Savings BF with enhanced guardian handling
                     if IsGuardian then
-                        JuniorBF := CalculateJuniorSavingsBF("No.", DateFilterBF)
+                        JuniorBF := CalculateGuardianJuniorBF("No.", DateFilterBF)
                     else
                         JuniorBF := CalculateOwnJuniorSavingsBF("No.", DateFilterBF);
                 end;
@@ -532,7 +574,7 @@ Report 59052 "Member Statement Junior"
     local procedure GetJuniorAccountFilter(MemberNo: Code[20]): Text
     var
         JuniorAccounts: Text;
-        TempMember: Record Customer temporary;
+        TempMember: Record Customer;
     begin
         // Always include the member's own account for junior savings
         JuniorAccounts := MemberNo;
@@ -553,35 +595,33 @@ Report 59052 "Member Statement Junior"
         exit(JuniorAccounts);
     end;
 
-    local procedure GetJuniorAccountsForGuardian(GuardianNo: Code[20]): Text
+    local procedure GetJuniorAccountsList(GuardianNo: Code[20]): Text
     var
-        JuniorAccounts: Text;
-        TempMember: Record Customer temporary;
+        TempMember: Record Customer;
+        AccountList: Text;
     begin
-        // Find junior accounts where this member is the guardian
+        AccountList := '';
         TempMember.Reset();
         TempMember.SetRange("Guardian No.", GuardianNo);
         if TempMember.FindSet() then
             repeat
-                if JuniorAccounts <> '' then
-                    JuniorAccounts := JuniorAccounts + '|' + TempMember."No."
-                else
-                    JuniorAccounts := TempMember."No.";
+                if AccountList <> '' then
+                    AccountList := AccountList + ', ';
+                AccountList := AccountList + TempMember."No." + ' (' + TempMember.Name + ')';
             until TempMember.Next() = 0;
-
-        exit(JuniorAccounts);
+        exit(AccountList);
     end;
 
     local procedure CheckIfGuardian(MemberNo: Code[20]): Boolean
     var
-        TempMember: Record Customer temporary;
+        TempMember: Record Customer;
     begin
         TempMember.Reset();
         TempMember.SetRange("Guardian No.", MemberNo);
         exit(TempMember.FindFirst());
     end;
 
-    local procedure CalculateJuniorSavingsBF(GuardianNo: Code[20]; DateFilter: Text): Decimal
+    local procedure CalculateGuardianJuniorBF(GuardianNo: Code[20]; DateFilter: Text): Decimal
     var
         CustLedgerEntry: Record "Cust. Ledger Entry";
         JuniorAccountFilter: Text;
@@ -630,34 +670,52 @@ Report 59052 "Member Statement Junior"
         exit(TotalBF);
     end;
 
-    local procedure CalculateGuardianJuniorBF(GuardianNo: Code[20]; DateFilter: Text): Decimal
+    // Enhanced loan handling for guardians
+    local procedure GetGuardianLoanFilter(MemberNo: Code[20]): Text
     var
-        CustLedgerEntry: Record "Cust. Ledger Entry";
-        JuniorAccountFilter: Text;
-        TotalBF: Decimal;
+        LoanFilter: Text;
+        TempMember: Record Customer;
     begin
-        TotalBF := 0;
-        JuniorAccountFilter := GetJuniorAccountsForGuardian(GuardianNo);
+        LoanFilter := MemberNo; // Include guardian's own loans
 
-        if JuniorAccountFilter <> '' then begin
-            CustLedgerEntry.Reset();
-            CustLedgerEntry.SetFilter("Customer No.", JuniorAccountFilter);
-            CustLedgerEntry.SetRange("Transaction Type", CustLedgerEntry."Transaction Type"::"Junior Savings");
-            CustLedgerEntry.SetRange(Reversed, false);
-            CustLedgerEntry.SetFilter("Posting Date", DateFilter);
-
-            if CustLedgerEntry.FindSet() then
+        // Add loans from junior accounts where this member is guardian
+        if CheckIfGuardian(MemberNo) then begin
+            TempMember.Reset();
+            TempMember.SetRange("Guardian No.", MemberNo);
+            if TempMember.FindSet() then
                 repeat
-                    TotalBF := TotalBF + (CustLedgerEntry."Amount Posted" * -1);
-                until CustLedgerEntry.Next() = 0;
+                    if LoanFilter <> '' then
+                        LoanFilter := LoanFilter + '|' + TempMember."No."
+                    else
+                        LoanFilter := TempMember."No.";
+                until TempMember.Next() = 0;
         end;
 
-        exit(TotalBF);
+        exit(LoanFilter);
+    end;
+
+    local procedure GetJuniorAccountsForGuardian(GuardianNo: Code[20]): Text
+    var
+        JuniorAccounts: Text;
+        TempMember: Record Customer;
+    begin
+        // Find junior accounts where this member is the guardian
+        TempMember.Reset();
+        TempMember.SetRange("Guardian No.", GuardianNo);
+        if TempMember.FindSet() then
+            repeat
+                if JuniorAccounts <> '' then
+                    JuniorAccounts := JuniorAccounts + '|' + TempMember."No."
+                else
+                    JuniorAccounts := TempMember."No.";
+            until TempMember.Next() = 0;
+
+        exit(JuniorAccounts);
     end;
 
     local procedure CalculateJuniorAccountsSummary(GuardianNo: Code[20])
     var
-        TempMember: Record Customer temporary;
+        TempMember: Record Customer;
         CustLedgerEntry: Record "Cust. Ledger Entry";
         CurrentBalance: Decimal;
     begin
@@ -775,4 +833,9 @@ Report 59052 "Member Statement Junior"
         TotalJuniorAccounts: Integer;
         TotalJuniorBalance: Decimal;
         JuniorAccountsList: Text[500];
+        IsGuardianLoan: Boolean;
+        JuniorAccountNo: Code[20];
+        JuniorAccountName: Text[100];
+        GuardianLoanFilter: Text;
+        TempMember: Record Customer;
 }

@@ -2244,6 +2244,18 @@ kHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpBvD/AZI2
         <Field Name="ModeofDisbursement_Loans">
           <DataField>ModeofDisbursement_Loans</DataField>
         </Field>
+        <Field Name="IsGuardianLoan">
+          <DataField>IsGuardianLoan</DataField>
+        </Field>
+        <Field Name="JuniorAccountNo">
+          <DataField>JuniorAccountNo</DataField>
+        </Field>
+        <Field Name="JuniorAccountName">
+          <DataField>JuniorAccountName</DataField>
+        </Field>
+        <Field Name="LoanDate">
+          <DataField>LoanDate</DataField>
+        </Field>
         <Field Name="OutstandingBalance_Loans">
           <DataField>OutstandingBalance_Loans</DataField>
         </Field>
