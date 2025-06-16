@@ -39,9 +39,8 @@ Report 50034 "Loan Balances Report"
             column(ClientName; MemberName)
             {
             }
-            column(LoanProductTypeName; LoanProductType)
-            {
-            }
+
+            column(Loan_Product_Type_Name; "Loan Product Type Name") { }
             column(Loan__No_; LoanNo)
             {
             }
@@ -67,6 +66,26 @@ Report 50034 "Loan Balances Report"
             column(Oustanding_Interest; OutstandingInterest)
             {
             }
+
+            column(Issued_Date; "Issued Date") { }
+
+            column(RemainingRepayment; RemainingRepayment) { }
+
+            dataitem(Customer; Customer)
+            {
+
+                DataItemLink = "No." = FIELD("Client Code");
+
+                column(ID_No_; "ID No.") { }
+
+                column(Phone_No_; "Phone No.") { }
+
+                column(Date_of_Birth; "Date of Birth") { }
+
+                column(Gender; Gender) { }
+            }
+
+
             trigger OnPreDataItem()
             begin
                 MemberNo := '';
@@ -95,6 +114,14 @@ Report 50034 "Loan Balances Report"
                     OutstandingBalance := LoansTable."Outstanding Balance";
                     OutstandingInterest := LoansTable."Oustanding Interest";
                     EntryNo := EntryNo + 1;
+
+
+                    RemainingRepayment := FnCalculateLoanRemainingPeriod(
+LoansTable."Outstanding Balance",
+LoansTable."Approved Amount",
+LoansTable.Installments,
+LoansTable.Interest
+);
                 end;
             end;
         }
@@ -148,5 +175,61 @@ Report 50034 "Loan Balances Report"
         IssuedAmount: Decimal;
         OutstandingBalance: Decimal;
         OutstandingInterest: Decimal;
+
+        RemainingRepayment: Decimal;
+
+    procedure FnCalculateLoanRemainingPeriod(
+LoanOutstandingBalance: Decimal;
+OriginalAmount: Decimal;
+TotalInstallments: Integer;
+InterestRate: Decimal): Integer
+    var
+        RemainingPeriods: Integer;
+        MonthlyInterestRate: Decimal;
+        MonthlyPayment: Decimal;
+        Numerator: Decimal;
+        Denominator: Decimal;
+    begin
+
+        if (LoanOutstandingBalance <= 0) or (OriginalAmount <= 0) or (TotalInstallments <= 0) then
+            exit(0);
+
+        if LoanOutstandingBalance >= OriginalAmount then
+            exit(TotalInstallments);
+
+        // Handle zero interest rate loans
+        if InterestRate = 0 then begin
+            RemainingPeriods := Round((LoanOutstandingBalance / OriginalAmount) * TotalInstallments, 1, '>');
+            exit(RemainingPeriods);
+        end;
+
+
+        MonthlyInterestRate := InterestRate / 12 / 100;
+
+        MonthlyPayment := OriginalAmount *
+            (MonthlyInterestRate * Power(1 + MonthlyInterestRate, TotalInstallments)) /
+            (Power(1 + MonthlyInterestRate, TotalInstallments) - 1);
+
+
+        if MonthlyPayment > 0 then begin
+            RemainingPeriods := Round(LoanOutstandingBalance / MonthlyPayment, 1, '>');
+
+            // Adjust for interest effect (loans with interest need fewer periods than simple division)
+            if MonthlyInterestRate > 0 then begin
+                // Apply a correction factor based on interest rate
+                // Higher interest rates mean more of each payment goes to interest initially
+                RemainingPeriods := Round(RemainingPeriods * 0.95, 1, '>'); // Reduce by ~5%
+            end;
+        end else begin
+            RemainingPeriods := Round((LoanOutstandingBalance / OriginalAmount) * TotalInstallments, 1, '>');
+        end;
+
+        if RemainingPeriods > TotalInstallments then
+            RemainingPeriods := TotalInstallments;
+        if RemainingPeriods < 0 then
+            RemainingPeriods := 0;
+
+        exit(RemainingPeriods);
+    end;
 
 }
