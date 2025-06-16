@@ -890,6 +890,7 @@
             <Left>0.20464in</Left>
             <Height>0.89757in</Height>
             <Width>8.3561in</Width>
+            <Width>8.3561in</Width>
             <ZIndex>1</ZIndex>
             <Style>
               <Border>
@@ -1458,6 +1459,7 @@
                 <TextRuns>
                   <TextRun>
                     <Value>=First(Fields!Phone_No_.Value, "DataSet_Result")</Value>
+                    <Value>=First(Fields!Phone_No_.Value, "DataSet_Result")</Value>
                     <Style />
                   </TextRun>
                 </TextRuns>
@@ -1521,8 +1523,11 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=Fields!Registration_Date.Value</Value>
-                    <Style />
+                    <Value>=First(Fields!Registration_Date.Value, "DataSet_Result")</Value>
+                    <Style>
+                      <FontFamily>Segoe UI</FontFamily>
+                      <FontSize>9pt</FontSize>
+                    </Style>
                   </TextRun>
                 </TextRuns>
                 <Style>
