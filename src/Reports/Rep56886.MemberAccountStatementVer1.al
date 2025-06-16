@@ -153,10 +153,10 @@ Report 56886 "Member Account Statement(Ver1)"
                 column(Amount_Deposits; Deposits."Amount Posted")
                 {
                 }
-                column(DebitAmount_Deposits; debitamount)
+                column(DebitAmount_Deposits; DebitAmount)
                 {
                 }
-                column(CreditAmount_Deposits; creditamount)
+                column(CreditAmount_Deposits; CreditAmount)
                 {
                 }
                 column(TransactionType_Deposits; Deposits."Transaction Type")
@@ -219,10 +219,10 @@ Report 56886 "Member Account Statement(Ver1)"
                 column(TransactionType_Dividend; Dividend."Transaction Type")
                 {
                 }
-                column(DebitAmount_Dividend; debitamount)
+                column(DebitAmount_Dividend; DebitAmount)
                 {
                 }
-                column(CreditAmount_Dividend; creditamount)
+                column(CreditAmount_Dividend; CreditAmount)
                 {
                 }
                 column(OpenBalanceDividend; OpenBalanceDividend)
@@ -276,10 +276,10 @@ Report 56886 "Member Account Statement(Ver1)"
                 column(UserID_Withdrawable; WithdrawableSavings."User ID")
                 {
                 }
-                column(DebitAmount_Withdrawable; debitamount)
+                column(DebitAmount_Withdrawable; DebitAmount)
                 {
                 }
-                column(CreditAmount_Withdrawable; creditamount)
+                column(CreditAmount_Withdrawable; CreditAmount)
                 {
                 }
                 column(TransactionType_Withdrawable; WithdrawableSavings."Transaction Type")
@@ -314,11 +314,13 @@ Report 56886 "Member Account Statement(Ver1)"
                     OpenBalanceWithdrawable := WithdrawableBF;
                 end;
             }
+
+            // Fixed and Enhanced Junior Savings Section
             dataitem(JuniorSavings; "Cust. Ledger Entry")
             {
-                DataItemLink = "Customer No." = field("No."), "Posting Date" = field("Date Filter");
+                DataItemLink = "Posting Date" = field("Date Filter");
                 DataItemTableView = sorting("Posting Date") where("Transaction Type" = filter("Junior Savings"), Reversed = const(false));
-                column(ReportForNavId_1000000072; 1000000071)
+                column(ReportForNavId_1000000072; 1000000072)
                 {
                 }
                 column(PostingDate_Junior; JuniorSavings."Posting Date")
@@ -336,10 +338,10 @@ Report 56886 "Member Account Statement(Ver1)"
                 column(UserID_Junior; JuniorSavings."User ID")
                 {
                 }
-                column(DebitAmount_Junior; debitamount)
+                column(DebitAmount_Junior; DebitAmount)
                 {
                 }
-                column(CreditAmount_Junior; creditamount)
+                column(CreditAmount_Junior; CreditAmount)
                 {
                 }
                 column(TransactionType_Junior; JuniorSavings."Transaction Type")
@@ -354,6 +356,16 @@ Report 56886 "Member Account Statement(Ver1)"
                 column(JuniorBF; JuniorBF)
                 {
                 }
+                // Add junior member details
+                column(JuniorMemberNo; JuniorMemberNo)
+                {
+                }
+                column(JuniorMemberName; JuniorMemberName)
+                {
+                }
+                column(JuniorAccountNo_Junior; JuniorSavings."Customer No.")
+                {
+                }
 
                 trigger OnAfterGetRecord()
                 begin
@@ -366,14 +378,34 @@ Report 56886 "Member Account Statement(Ver1)"
                             DebitAmount := JuniorSavings."Amount Posted";
                         end;
                     ClosingBalanceJunior := ClosingBalanceJunior + (JuniorSavings."Amount Posted" * -1);
+
+                    // Get junior member details
+                    JuniorMemberNo := JuniorSavings."Customer No.";
+                    if JuniorMember.Get(JuniorMemberNo) then
+                        JuniorMemberName := JuniorMember.Name
+                    else
+                        JuniorMemberName := '';
                 end;
 
                 trigger OnPreDataItem()
                 begin
                     ClosingBalanceJunior := JuniorBF;
                     OpenBalanceJunior := JuniorBF;
+
+                    // Get junior accounts filter for this member (both own and as guardian)
+                    JuniorAccountFilter := GetJuniorAccountFilter("Members Register"."No.");
+
+                    if JuniorAccountFilter = '' then
+                        CurrReport.Break();
+
+                    JuniorSavings.SetFilter("Customer No.", JuniorAccountFilter);
+
+                    // Apply date filter if exists
+                    if "Members Register".GetFilter("Date Filter") <> '' then
+                        JuniorSavings.SetFilter("Posting Date", "Members Register".GetFilter("Date Filter"));
                 end;
             }
+
             dataitem(Loans; "Loans Register")
             {
                 DataItemLink = "Client Code" = field("No."), "Date filter" = field("Date Filter"), "Loan Product Type" = field("Loan Product Filter");
@@ -532,6 +564,10 @@ Report 56886 "Member Account Statement(Ver1)"
                 HseBF := 0;
                 Dep1BF := 0;
                 Dep2BF := 0;
+                JuniorBF := 0;
+                WithdrawableBF := 0;
+                DividendBF := 0;
+
                 if DateFilterBF <> '' then begin
                     Cust.Reset;
                     Cust.SetRange(Cust."No.", "No.");
@@ -543,12 +579,17 @@ Report 56886 "Member Account Statement(Ver1)"
                         RiskBF := Cust."Insurance Fund";
                         DividendBF := Cust."Dividend Amount";
                     end;
+
+                    // Calculate Junior Savings BF (own and as guardian)
+                    JuniorBF := CalculateJuniorSavingsBF("No.", DateFilterBF);
+
+                    // Calculate Withdrawable Savings BF
+                    WithdrawableBF := CalculateWithdrawableSavingsBF("No.", DateFilterBF);
                 end;
             end;
 
             trigger OnPreDataItem()
             begin
-
                 if "Members Register".GetFilter("Members Register"."Date Filter") <> '' then
                     DateFilterBF := '..' + Format(CalcDate('-1D', "Members Register".GetRangeMin("Members Register"."Date Filter")));
             end;
@@ -557,7 +598,6 @@ Report 56886 "Member Account Statement(Ver1)"
 
     requestpage
     {
-
         layout
         {
         }
@@ -575,6 +615,75 @@ Report 56886 "Member Account Statement(Ver1)"
     begin
         Company.Get();
         Company.CalcFields(Company.Picture);
+    end;
+
+    // Add functions to handle guardian-junior relationships
+    local procedure GetJuniorAccountFilter(MemberNo: Code[20]): Text
+    var
+        JuniorAccounts: Text;
+        TempMember: Record Customer;
+    begin
+        JuniorAccounts := MemberNo; // Include member's own account
+
+        // Add junior accounts where this member is the guardian
+        // Assuming you have a "Guardian No." field in Customer table
+        TempMember.Reset();
+        TempMember.SetRange("Guardian No.", MemberNo);
+        if TempMember.FindSet() then
+            repeat
+                if JuniorAccounts <> '' then
+                    JuniorAccounts := JuniorAccounts + '|' + TempMember."No."
+                else
+                    JuniorAccounts := TempMember."No.";
+            until TempMember.Next() = 0;
+
+        exit(JuniorAccounts);
+    end;
+
+    local procedure CalculateJuniorSavingsBF(MemberNo: Code[20]; DateFilter: Text): Decimal
+    var
+        CustLedgerEntry: Record "Cust. Ledger Entry";
+        JuniorAccountFilter: Text;
+        TotalBF: Decimal;
+    begin
+        TotalBF := 0;
+        JuniorAccountFilter := GetJuniorAccountFilter(MemberNo);
+
+        if JuniorAccountFilter <> '' then begin
+            CustLedgerEntry.Reset();
+            CustLedgerEntry.SetFilter("Customer No.", JuniorAccountFilter);
+            CustLedgerEntry.SetRange("Transaction Type", CustLedgerEntry."Transaction Type"::"Junior Savings");
+            CustLedgerEntry.SetRange(Reversed, false);
+            CustLedgerEntry.SetFilter("Posting Date", DateFilter);
+
+            if CustLedgerEntry.FindSet() then
+                repeat
+                    TotalBF := TotalBF + (CustLedgerEntry."Amount Posted" * -1);
+                until CustLedgerEntry.Next() = 0;
+        end;
+
+        exit(TotalBF);
+    end;
+
+    local procedure CalculateWithdrawableSavingsBF(MemberNo: Code[20]; DateFilter: Text): Decimal
+    var
+        CustLedgerEntry: Record "Cust. Ledger Entry";
+        TotalBF: Decimal;
+    begin
+        TotalBF := 0;
+
+        CustLedgerEntry.Reset();
+        CustLedgerEntry.SetRange("Customer No.", MemberNo);
+        CustLedgerEntry.SetRange("Transaction Type", CustLedgerEntry."Transaction Type"::"Withdrawable Savings");
+        CustLedgerEntry.SetRange(Reversed, false);
+        CustLedgerEntry.SetFilter("Posting Date", DateFilter);
+
+        if CustLedgerEntry.FindSet() then
+            repeat
+                TotalBF := TotalBF + (CustLedgerEntry."Amount Posted" * -1);
+            until CustLedgerEntry.Next() = 0;
+
+        exit(TotalBF);
     end;
 
     var
@@ -636,7 +745,10 @@ Report 56886 "Member Account Statement(Ver1)"
         ClosingBalanceDeposits: Decimal;
         OpenBalanceDividend: Decimal;
         ClosingBalanceDividend: Decimal;
-    // OpenBalanceKhoja: Decimal;
-    // ClosingBalanceKhoja: Decimal;
-}
 
+        // New variables for junior savings functionality
+        JuniorMember: Record Customer;
+        JuniorMemberNo: Code[20];
+        JuniorMemberName: Text[100];
+        JuniorAccountFilter: Text;
+}

@@ -19,25 +19,25 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>0.82214in</Width>
+                  <Width>0.89837in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.14891in</Width>
+                  <Width>1.22514in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.88775in</Width>
+                  <Width>0.96398in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.80619in</Width>
+                  <Width>1.88242in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.89888in</Width>
+                  <Width>0.97511in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.88735in</Width>
+                  <Width>0.96358in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.15868in</Width>
+                  <Width>1.23491in</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -67,7 +67,7 @@
                             <Border>
                               <Style>None</Style>
                             </Border>
-                            <BackgroundColor>#d7a826</BackgroundColor>
+                            <BackgroundColor>White</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -104,7 +104,7 @@
                             <Border>
                               <Style>None</Style>
                             </Border>
-                            <BackgroundColor>#d7a826</BackgroundColor>
+                            <BackgroundColor>White</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -150,6 +150,12 @@
                             <Border>
                               <Style>None</Style>
                             </Border>
+                            <TopBorder>
+                              <Style>Solid</Style>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Style>Solid</Style>
+                            </BottomBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -185,6 +191,12 @@
                             <Border>
                               <Style>None</Style>
                             </Border>
+                            <TopBorder>
+                              <Style>Solid</Style>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Style>Solid</Style>
+                            </BottomBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -219,6 +231,12 @@
                             <Border>
                               <Style>None</Style>
                             </Border>
+                            <TopBorder>
+                              <Style>Solid</Style>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Style>Solid</Style>
+                            </BottomBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -253,6 +271,12 @@
                             <Border>
                               <Style>None</Style>
                             </Border>
+                            <TopBorder>
+                              <Style>Solid</Style>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Style>Solid</Style>
+                            </BottomBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -287,6 +311,12 @@
                             <Border>
                               <Style>None</Style>
                             </Border>
+                            <TopBorder>
+                              <Style>Solid</Style>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Style>Solid</Style>
+                            </BottomBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -321,6 +351,12 @@
                             <Border>
                               <Style>None</Style>
                             </Border>
+                            <TopBorder>
+                              <Style>Solid</Style>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Style>Solid</Style>
+                            </BottomBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -355,6 +391,12 @@
                             <Border>
                               <Style>None</Style>
                             </Border>
+                            <TopBorder>
+                              <Style>Solid</Style>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Style>Solid</Style>
+                            </BottomBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -392,28 +434,11 @@
                           <rd:DefaultName>PostingDate_Deposits</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Style>Solid</Style>
+                              <Color>White</Color>
+                              <Style>None</Style>
+                              <Width>2pt</Width>
                             </Border>
-                            <TopBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </TopBorder>
-                            <BottomBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </BottomBorder>
-                            <LeftBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </LeftBorder>
-                            <RightBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </RightBorder>
+                            <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 = 0, "Gainsboro", "White")</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -445,28 +470,11 @@
                           <rd:DefaultName>TransactionType_loan</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Style>Solid</Style>
+                              <Color>White</Color>
+                              <Style>None</Style>
+                              <Width>2pt</Width>
                             </Border>
-                            <TopBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </TopBorder>
-                            <BottomBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </BottomBorder>
-                            <LeftBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </LeftBorder>
-                            <RightBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </RightBorder>
+                            <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 = 0, "Gainsboro", "White")</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -498,28 +506,11 @@
                           <rd:DefaultName>DocumentNo_Deposits</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Style>Solid</Style>
+                              <Color>White</Color>
+                              <Style>None</Style>
+                              <Width>2pt</Width>
                             </Border>
-                            <TopBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </TopBorder>
-                            <BottomBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </BottomBorder>
-                            <LeftBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </LeftBorder>
-                            <RightBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </RightBorder>
+                            <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 = 0, "Gainsboro", "White")</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -551,28 +542,11 @@
                           <rd:DefaultName>Description_Deposits</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Style>Solid</Style>
+                              <Color>White</Color>
+                              <Style>None</Style>
+                              <Width>2pt</Width>
                             </Border>
-                            <TopBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </TopBorder>
-                            <BottomBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </BottomBorder>
-                            <LeftBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </LeftBorder>
-                            <RightBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </RightBorder>
+                            <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 = 0, "Gainsboro", "White")</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -605,28 +579,11 @@
                           <rd:DefaultName>DebitAmount_Deposits</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Style>Solid</Style>
+                              <Color>White</Color>
+                              <Style>None</Style>
+                              <Width>2pt</Width>
                             </Border>
-                            <TopBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </TopBorder>
-                            <BottomBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </BottomBorder>
-                            <LeftBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </LeftBorder>
-                            <RightBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </RightBorder>
+                            <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 = 0, "Gainsboro", "White")</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -659,28 +616,11 @@
                           <rd:DefaultName>CreditAmount_Deposits</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Style>Solid</Style>
+                              <Color>White</Color>
+                              <Style>None</Style>
+                              <Width>2pt</Width>
                             </Border>
-                            <TopBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </TopBorder>
-                            <BottomBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </BottomBorder>
-                            <LeftBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </LeftBorder>
-                            <RightBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </RightBorder>
+                            <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 = 0, "Gainsboro", "White")</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -713,28 +653,11 @@
                           <rd:DefaultName>ClosingBal</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Style>Solid</Style>
+                              <Color>White</Color>
+                              <Style>None</Style>
+                              <Width>2pt</Width>
                             </Border>
-                            <TopBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </TopBorder>
-                            <BottomBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </BottomBorder>
-                            <LeftBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </LeftBorder>
-                            <RightBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </RightBorder>
+                            <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 = 0, "Gainsboro", "White")</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -774,10 +697,12 @@
                             <Border>
                               <Style>None</Style>
                             </Border>
+                            <TopBorder>
+                              <Style>Solid</Style>
+                            </TopBorder>
                             <BottomBorder>
                               <Color>Black</Color>
                               <Style>Solid</Style>
-                              <Width>1pt</Width>
                             </BottomBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -818,6 +743,9 @@
                             <Border>
                               <Style>None</Style>
                             </Border>
+                            <TopBorder>
+                              <Style>Solid</Style>
+                            </TopBorder>
                             <BottomBorder>
                               <Color>Black</Color>
                               <Style>Solid</Style>
@@ -858,6 +786,9 @@
                             <Border>
                               <Style>None</Style>
                             </Border>
+                            <TopBorder>
+                              <Style>Solid</Style>
+                            </TopBorder>
                             <BottomBorder>
                               <Color>Black</Color>
                               <Style>Solid</Style>
@@ -898,6 +829,9 @@
                             <Border>
                               <Style>None</Style>
                             </Border>
+                            <TopBorder>
+                              <Style>Solid</Style>
+                            </TopBorder>
                             <BottomBorder>
                               <Color>Black</Color>
                               <Style>Solid</Style>
@@ -995,10 +929,10 @@
                 <Value>=Fields!PostingDate_loan.Value</Value>
               </SortExpression>
             </SortExpressions>
-            <Top>2.75358in</Top>
-            <Left>0.15495in</Left>
+            <Top>3.31745in</Top>
+            <Left>0.13704in</Left>
             <Height>0.84201in</Height>
-            <Width>7.6099in</Width>
+            <Width>8.14351in</Width>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1006,14 +940,13 @@
             </Style>
           </Tablix>
           <Line Name="Line2">
-            <Top>6.95475cm</Top>
-            <Left>0.1586in</Left>
+            <Top>8.24991cm</Top>
+            <Left>0.15861in</Left>
             <Height>0cm</Height>
-            <Width>19.32915cm</Width>
+            <Width>20.62983cm</Width>
             <ZIndex>1</ZIndex>
             <Style>
               <Border>
-                <Color>#3aa655</Color>
                 <Style>Solid</Style>
               </Border>
             </Style>
@@ -1031,14 +964,16 @@
                     </Style>
                   </TextRun>
                 </TextRuns>
-                <Style />
+                <Style>
+                  <TextAlign>Center</TextAlign>
+                </Style>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Company_Address</rd:DefaultName>
-            <Top>0.18009in</Top>
-            <Left>1.66445in</Left>
-            <Height>0.17708in</Height>
-            <Width>5.31307in</Width>
+            <Top>1.09676in</Top>
+            <Left>0.98658in</Left>
+            <Height>0.14375in</Height>
+            <Width>5.95882in</Width>
             <ZIndex>2</ZIndex>
             <Style>
               <Border>
@@ -1076,14 +1011,16 @@
                     </Style>
                   </TextRun>
                 </TextRuns>
-                <Style />
+                <Style>
+                  <TextAlign>Center</TextAlign>
+                </Style>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Company_Address_2</rd:DefaultName>
-            <Top>0.35717in</Top>
-            <Left>1.66445in</Left>
-            <Height>0.25in</Height>
-            <Width>5.31307in</Width>
+            <Top>1.28773in</Top>
+            <Left>0.98658in</Left>
+            <Height>0.21667in</Height>
+            <Width>5.95882in</Width>
             <ZIndex>3</ZIndex>
             <Style>
               <Border>
@@ -1115,20 +1052,27 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=First(Fields!Company_Phone_No.Value, "DataSet_Result")</Value>
+                    <Value>020 4980181/111</Value>
                     <Style>
-                      <FontSize>9pt</FontSize>
+                      <FontStyle>Normal</FontStyle>
+                      <FontFamily>Times New Roman</FontFamily>
+                      <FontSize>12pt</FontSize>
+                      <FontWeight>Normal</FontWeight>
+                      <TextDecoration>None</TextDecoration>
+                      <Color>#000000</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
-                <Style />
+                <Style>
+                  <TextAlign>Center</TextAlign>
+                </Style>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Company_Fax_No</rd:DefaultName>
-            <Top>0.60717in</Top>
-            <Left>1.66445in</Left>
-            <Height>0.25in</Height>
-            <Width>5.31307in</Width>
+            <Top>1.53773in</Top>
+            <Left>0.98658in</Left>
+            <Height>0.21667in</Height>
+            <Width>5.95882in</Width>
             <ZIndex>4</ZIndex>
             <Style>
               <Border>
@@ -1166,14 +1110,16 @@
                     </Style>
                   </TextRun>
                 </TextRuns>
-                <Style />
+                <Style>
+                  <TextAlign>Center</TextAlign>
+                </Style>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Company_Email</rd:DefaultName>
-            <Top>0.85717in</Top>
-            <Left>1.66445in</Left>
-            <Height>0.25in</Height>
-            <Width>5.31307in</Width>
+            <Top>1.78773in</Top>
+            <Left>0.98658in</Left>
+            <Height>0.21667in</Height>
+            <Width>5.95882in</Width>
             <ZIndex>5</ZIndex>
             <Style>
               <Border>
@@ -1199,14 +1145,13 @@
             </Style>
           </Textbox>
           <Line Name="Line5">
-            <Top>3.41636cm</Top>
-            <Left>0.19988in</Left>
+            <Top>5.42014cm</Top>
+            <Left>0.16508in</Left>
             <Height>0cm</Height>
-            <Width>19.32915cm</Width>
+            <Width>20.26147cm</Width>
             <ZIndex>6</ZIndex>
             <Style>
               <Border>
-                <Color>#3aa655</Color>
                 <Style>Solid</Style>
               </Border>
             </Style>
@@ -1218,7 +1163,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>MEMBER DEPOSITS STATEMENT</Value>
+                    <Value>MEMBER JUNIOR STATEMENT</Value>
                     <Style>
                       <FontFamily>Segoe UI</FontFamily>
                       <FontSize>12pt</FontSize>
@@ -1232,10 +1177,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox16</rd:DefaultName>
-            <Top>1.50265in</Top>
-            <Left>0.40351cm</Left>
+            <Top>2.17558in</Top>
+            <Left>0.4193cm</Left>
             <Height>0.45872cm</Height>
-            <Width>18.48521cm</Width>
+            <Width>20.26147cm</Width>
             <ZIndex>7</ZIndex>
             <Style>
               <Border>
@@ -1265,10 +1210,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox95</rd:DefaultName>
-            <Top>1.70304in</Top>
-            <Left>0.15886in</Left>
+            <Top>2.44795in</Top>
+            <Left>0.18665in</Left>
             <Height>0.19054in</Height>
-            <Width>1.72105in</Width>
+            <Width>1.72193in</Width>
             <ZIndex>8</ZIndex>
             <Style>
               <Border>
@@ -1299,10 +1244,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>LoanNumber</rd:DefaultName>
-            <Top>1.70304in</Top>
-            <Left>1.83056in</Left>
+            <Top>2.44795in</Top>
+            <Left>1.93635in</Left>
             <Height>0.19054in</Height>
-            <Width>2.38144in</Width>
+            <Width>2.59003in</Width>
             <ZIndex>9</ZIndex>
             <Style>
               <Border>
@@ -1332,10 +1277,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>ProductType</rd:DefaultName>
-            <Top>1.89358in</Top>
-            <Left>0.15886in</Left>
+            <Top>2.63849in</Top>
+            <Left>0.18665in</Left>
             <Height>0.22179in</Height>
-            <Width>1.72105in</Width>
+            <Width>1.72193in</Width>
             <ZIndex>10</ZIndex>
             <Style>
               <Border>
@@ -1367,10 +1312,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>ProductType1</rd:DefaultName>
-            <Top>1.89358in</Top>
-            <Left>1.83056in</Left>
+            <Top>2.62459in</Top>
+            <Left>1.93635in</Left>
             <Height>0.22179in</Height>
-            <Width>2.38144in</Width>
+            <Width>2.56845in</Width>
             <ZIndex>11</ZIndex>
             <Style>
               <Border>
@@ -1400,10 +1345,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox95</rd:DefaultName>
-            <Top>2.11536in</Top>
-            <Left>0.15886in</Left>
+            <Top>2.86027in</Top>
+            <Left>0.18665in</Left>
             <Height>0.17662in</Height>
-            <Width>1.72105in</Width>
+            <Width>1.72193in</Width>
             <ZIndex>12</ZIndex>
             <Style>
               <Border>
@@ -1435,10 +1380,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>LoanNumber</rd:DefaultName>
-            <Top>2.11536in</Top>
-            <Left>1.85213in</Left>
+            <Top>2.86027in</Top>
+            <Left>1.90858in</Left>
             <Height>0.17662in</Height>
-            <Width>2.38144in</Width>
+            <Width>2.6178in</Width>
             <ZIndex>13</ZIndex>
             <Style>
               <Border>
@@ -1450,6 +1395,21 @@
               <PaddingBottom>2pt</PaddingBottom>
             </Style>
           </Textbox>
+          <Image Name="Image3">
+            <Source>Embedded</Source>
+            <Value>krbsaccoLogo2</Value>
+            <Sizing>FitProportional</Sizing>
+            <Top>0in</Top>
+            <Left>3.40278in</Left>
+            <Height>1.05208in</Height>
+            <Width>1.10202in</Width>
+            <ZIndex>14</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+            </Style>
+          </Image>
           <Textbox Name="ProductType2">
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
@@ -1468,11 +1428,11 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>ProductType</rd:DefaultName>
-            <Top>2.29199in</Top>
-            <Left>0.15886in</Left>
-            <Height>0.1389in</Height>
-            <Width>1.72105in</Width>
-            <ZIndex>14</ZIndex>
+            <Top>2.64197in</Top>
+            <Left>5.09306in</Left>
+            <Height>0.20441in</Height>
+            <Width>1.59238in</Width>
+            <ZIndex>15</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1498,187 +1458,16 @@
                   </TextRun>
                 </TextRuns>
                 <Style>
-                  <TextAlign>Left</TextAlign>
+                  <TextAlign>Right</TextAlign>
                 </Style>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>ProductType1</rd:DefaultName>
-            <Top>2.29199in</Top>
-            <Left>1.83056in</Left>
-            <Height>0.1389in</Height>
-            <Width>2.38144in</Width>
-            <ZIndex>15</ZIndex>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-              <PaddingLeft>2pt</PaddingLeft>
-              <PaddingRight>2pt</PaddingRight>
-              <PaddingTop>2pt</PaddingTop>
-              <PaddingBottom>2pt</PaddingBottom>
-            </Style>
-          </Textbox>
-          <Textbox Name="Textbox163">
-            <CanGrow>true</CanGrow>
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>Printed on:</Value>
-                    <Style>
-                      <FontFamily>Segoe UI</FontFamily>
-                      <FontWeight>Bold</FontWeight>
-                    </Style>
-                  </TextRun>
-                </TextRuns>
-                <Style />
-              </Paragraph>
-            </Paragraphs>
-            <rd:DefaultName>Textbox95</rd:DefaultName>
-            <Top>1.68915in</Top>
-            <Left>4.40972in</Left>
-            <Height>0.19054in</Height>
-            <Width>1.26157in</Width>
+            <Top>2.64197in</Top>
+            <Left>6.68544in</Left>
+            <Height>0.20441in</Height>
+            <Width>1.4263in</Width>
             <ZIndex>16</ZIndex>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-              <PaddingLeft>2pt</PaddingLeft>
-              <PaddingRight>2pt</PaddingRight>
-              <PaddingTop>2pt</PaddingTop>
-              <PaddingBottom>2pt</PaddingBottom>
-            </Style>
-          </Textbox>
-          <Textbox Name="LoanNumber3">
-            <CanGrow>true</CanGrow>
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>=Globals!ExecutionTime</Value>
-                    <Style>
-                      <FontFamily>Segoe UI</FontFamily>
-                      <FontSize>9pt</FontSize>
-                      <FontWeight>Normal</FontWeight>
-                      <Format>MMMM d, yyyy</Format>
-                    </Style>
-                  </TextRun>
-                </TextRuns>
-                <Style>
-                  <TextAlign>Right</TextAlign>
-                </Style>
-              </Paragraph>
-            </Paragraphs>
-            <rd:DefaultName>LoanNumber</rd:DefaultName>
-            <Top>1.68915in</Top>
-            <Left>5.71882in</Left>
-            <Height>0.19054in</Height>
-            <Width>1.71768in</Width>
-            <ZIndex>17</ZIndex>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-              <PaddingLeft>2pt</PaddingLeft>
-              <PaddingRight>2pt</PaddingRight>
-              <PaddingTop>2pt</PaddingTop>
-              <PaddingBottom>2pt</PaddingBottom>
-            </Style>
-          </Textbox>
-          <Textbox Name="Textbox164">
-            <CanGrow>true</CanGrow>
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>User ID:</Value>
-                    <Style>
-                      <FontFamily>Segoe UI</FontFamily>
-                      <FontWeight>Bold</FontWeight>
-                    </Style>
-                  </TextRun>
-                </TextRuns>
-                <Style />
-              </Paragraph>
-            </Paragraphs>
-            <rd:DefaultName>Textbox95</rd:DefaultName>
-            <Top>1.90747in</Top>
-            <Left>4.39583in</Left>
-            <Height>0.16274in</Height>
-            <Width>1.72105in</Width>
-            <ZIndex>18</ZIndex>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-              <PaddingLeft>2pt</PaddingLeft>
-              <PaddingRight>2pt</PaddingRight>
-              <PaddingTop>2pt</PaddingTop>
-              <PaddingBottom>2pt</PaddingBottom>
-            </Style>
-          </Textbox>
-          <Textbox Name="ProductType7">
-            <CanGrow>true</CanGrow>
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>Employer:</Value>
-                    <Style>
-                      <FontFamily>Segoe UI</FontFamily>
-                      <FontWeight>Bold</FontWeight>
-                    </Style>
-                  </TextRun>
-                </TextRuns>
-                <Style />
-              </Paragraph>
-            </Paragraphs>
-            <rd:DefaultName>ProductType</rd:DefaultName>
-            <Top>2.0841in</Top>
-            <Left>4.40972in</Left>
-            <Height>0.19445in</Height>
-            <Width>1.03853in</Width>
-            <ZIndex>19</ZIndex>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-              <PaddingLeft>2pt</PaddingLeft>
-              <PaddingRight>2pt</PaddingRight>
-              <PaddingTop>2pt</PaddingTop>
-              <PaddingBottom>2pt</PaddingBottom>
-            </Style>
-          </Textbox>
-          <Textbox Name="ProductType8">
-            <CanGrow>true</CanGrow>
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>=First(Fields!EmployerCode_Members.Value, "DataSet_Result")</Value>
-                    <Style>
-                      <FontFamily>Segoe UI</FontFamily>
-                      <FontSize>9pt</FontSize>
-                    </Style>
-                  </TextRun>
-                </TextRuns>
-                <Style>
-                  <TextAlign>Right</TextAlign>
-                </Style>
-              </Paragraph>
-            </Paragraphs>
-            <rd:DefaultName>ProductType1</rd:DefaultName>
-            <Top>2.13965in</Top>
-            <Left>5.47603in</Left>
-            <Height>0.13889in</Height>
-            <Width>1.94658in</Width>
-            <ZIndex>20</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1706,11 +1495,11 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
-            <Top>2.43089in</Top>
-            <Left>0.15886in</Left>
-            <Height>0.18706in</Height>
-            <Width>1.69948in</Width>
-            <ZIndex>21</ZIndex>
+            <Top>2.45143in</Top>
+            <Left>5.10695in</Left>
+            <Height>0.16968in</Height>
+            <Width>1.59238in</Width>
+            <ZIndex>17</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1728,19 +1517,24 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value />
-                    <Style />
+                    <Value>=First(Fields!Phone_No_.Value, "DataSet_Result")</Value>
+                    <Style>
+                      <FontFamily>Segoe UI</FontFamily>
+                      <FontSize>9pt</FontSize>
+                    </Style>
                   </TextRun>
                 </TextRuns>
-                <Style />
+                <Style>
+                  <TextAlign>Right</TextAlign>
+                </Style>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>PhoneNo_MemberRegister</rd:DefaultName>
-            <Top>2.43089in</Top>
-            <Left>1.85834in</Left>
-            <Height>0.18706in</Height>
-            <Width>2.35366in</Width>
-            <ZIndex>22</ZIndex>
+            <Top>2.45143in</Top>
+            <Left>6.69933in</Left>
+            <Height>0.16968in</Height>
+            <Width>1.41241in</Width>
+            <ZIndex>18</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1768,11 +1562,11 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox3</rd:DefaultName>
-            <Top>2.3341in</Top>
-            <Left>4.40972in</Left>
-            <Height>0.15928in</Height>
-            <Width>1.26157in</Width>
-            <ZIndex>23</ZIndex>
+            <Top>2.86375in</Top>
+            <Left>5.09306in</Left>
+            <Height>0.15924in</Height>
+            <Width>1.60627in</Width>
+            <ZIndex>19</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1783,15 +1577,18 @@
               <PaddingBottom>2pt</PaddingBottom>
             </Style>
           </Textbox>
-          <Textbox Name="Textbox4">
+          <Textbox Name="ProductType5">
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
             <Paragraphs>
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value />
-                    <Style />
+                    <Value>=First(Fields!Registration_Date.Value, "DataSet_Result")</Value>
+                    <Style>
+                      <FontFamily>Segoe UI</FontFamily>
+                      <FontSize>9pt</FontSize>
+                    </Style>
                   </TextRun>
                 </TextRuns>
                 <Style>
@@ -1799,12 +1596,12 @@
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <rd:DefaultName>Textbox4</rd:DefaultName>
-            <Top>2.32021in</Top>
-            <Left>5.74073in</Left>
-            <Height>0.15928in</Height>
-            <Width>1.69577in</Width>
-            <ZIndex>24</ZIndex>
+            <rd:DefaultName>ProductType1</rd:DefaultName>
+            <Top>2.86376in</Top>
+            <Left>6.68544in</Left>
+            <Height>0.15923in</Height>
+            <Width>1.4566in</Width>
+            <ZIndex>20</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1815,65 +1612,253 @@
               <PaddingBottom>2pt</PaddingBottom>
             </Style>
           </Textbox>
-          <Textbox Name="UserID">
-            <CanGrow>true</CanGrow>
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>=User!UserID</Value>
-                    <Style />
-                  </TextRun>
-                </TextRuns>
-                <Style>
-                  <TextAlign>Right</TextAlign>
-                </Style>
-              </Paragraph>
-            </Paragraphs>
-            <rd:DefaultName>UserID</rd:DefaultName>
-            <Top>1.89358in</Top>
-            <Left>6.15855in</Left>
-            <Height>0.17663in</Height>
-            <Width>1.27795in</Width>
-            <ZIndex>25</ZIndex>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-              <PaddingLeft>2pt</PaddingLeft>
-              <PaddingRight>2pt</PaddingRight>
-              <PaddingTop>2pt</PaddingTop>
-              <PaddingBottom>2pt</PaddingBottom>
-            </Style>
-          </Textbox>
-          <Image Name="Image3">
-            <Source>Embedded</Source>
-            <Value>krbsaccoLogo2</Value>
-            <Sizing>FitProportional</Sizing>
-            <Top>0.18009in</Top>
-            <Left>0.29912in</Left>
-            <Height>0.92708in</Height>
-            <Width>0.99369in</Width>
-            <ZIndex>26</ZIndex>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-            </Style>
-          </Image>
         </ReportItems>
         <Height>4.98828in</Height>
         <Style>
           <Border />
         </Style>
       </Body>
-      <Width>7.86981in</Width>
+      <Width>8.46907in</Width>
       <Page>
         <PageHeader>
-          <Height>1in</Height>
+          <Height>0.28581in</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
+          <ReportItems>
+            <Textbox Name="ExecutionTimeTextBox">
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>=Globals!ExecutionTime</Value>
+                      <Style>
+                        <FontSize>6pt</FontSize>
+                        <Format>g</Format>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style>
+                    <TextAlign>Left</TextAlign>
+                  </Style>
+                </Paragraph>
+              </Paragraphs>
+              <Top>0.07689in</Top>
+              <Left>2.05617cm</Left>
+              <Height>0.423cm</Height>
+              <Width>2.46627cm</Width>
+              <Style>
+                <VerticalAlign>Middle</VerticalAlign>
+              </Style>
+            </Textbox>
+            <Textbox Name="UserIdTextBox">
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>=User!UserID</Value>
+                      <Style>
+                        <FontSize>6pt</FontSize>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style>
+                    <TextAlign>Left</TextAlign>
+                  </Style>
+                </Paragraph>
+              </Paragraphs>
+              <Top>0.26708cm</Top>
+              <Left>18.90046cm</Left>
+              <Height>0.423cm</Height>
+              <Width>2.13224cm</Width>
+              <ZIndex>1</ZIndex>
+              <Style>
+                <VerticalAlign>Middle</VerticalAlign>
+              </Style>
+            </Textbox>
+            <Textbox Name="Textbox5">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>Printed Date:</Value>
+                      <Style>
+                        <FontSize>6pt</FontSize>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style />
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>Textbox1</rd:DefaultName>
+              <Top>0.1953cm</Top>
+              <Left>0.40284cm</Left>
+              <Height>0.45889cm</Height>
+              <Width>1.61806cm</Width>
+              <ZIndex>2</ZIndex>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+            <Textbox Name="Textbox6">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>Printed By:</Value>
+                      <Style>
+                        <FontSize>6pt</FontSize>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style />
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>Textbox1</rd:DefaultName>
+              <Top>0.26708cm</Top>
+              <Left>17.29352cm</Left>
+              <Height>0.45889cm</Height>
+              <Width>1.50111cm</Width>
+              <ZIndex>3</ZIndex>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+            <Textbox Name="ExecutionTimeTextBox2">
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>=Globals!ExecutionTime</Value>
+                      <Style>
+                        <FontSize>6pt</FontSize>
+                        <Format>g</Format>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style>
+                    <TextAlign>Left</TextAlign>
+                  </Style>
+                </Paragraph>
+              </Paragraphs>
+              <Top>0.07689in</Top>
+              <Left>2.05617cm</Left>
+              <Height>0.423cm</Height>
+              <Width>2.46627cm</Width>
+              <ZIndex>4</ZIndex>
+              <Style>
+                <VerticalAlign>Middle</VerticalAlign>
+              </Style>
+            </Textbox>
+            <Textbox Name="UserIdTextBox2">
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>=User!UserID</Value>
+                      <Style>
+                        <FontSize>6pt</FontSize>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style>
+                    <TextAlign>Left</TextAlign>
+                  </Style>
+                </Paragraph>
+              </Paragraphs>
+              <Top>0.26708cm</Top>
+              <Left>18.90046cm</Left>
+              <Height>0.423cm</Height>
+              <Width>2.13224cm</Width>
+              <ZIndex>5</ZIndex>
+              <Style>
+                <VerticalAlign>Middle</VerticalAlign>
+              </Style>
+            </Textbox>
+            <Textbox Name="Textbox7">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>Printed Date:</Value>
+                      <Style>
+                        <FontSize>6pt</FontSize>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style />
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>Textbox1</rd:DefaultName>
+              <Top>0.1953cm</Top>
+              <Left>0.40284cm</Left>
+              <Height>0.45889cm</Height>
+              <Width>1.61806cm</Width>
+              <ZIndex>6</ZIndex>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+            <Textbox Name="Textbox8">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>Printed By:</Value>
+                      <Style>
+                        <FontSize>6pt</FontSize>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style />
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>Textbox1</rd:DefaultName>
+              <Top>0.26708cm</Top>
+              <Left>17.29352cm</Left>
+              <Height>0.45889cm</Height>
+              <Width>1.50111cm</Width>
+              <ZIndex>7</ZIndex>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+          </ReportItems>
           <Style>
             <Border>
               <Style>None</Style>
@@ -1923,7 +1908,13 @@
         </PageFooter>
         <PageHeight>11.69in</PageHeight>
         <PageWidth>8.27in</PageWidth>
-        <Style />
+        <Style>
+          <Border>
+            <Style>None</Style>
+            <Width>2pt</Width>
+          </Border>
+          <BackgroundColor>White</BackgroundColor>
+        </Style>
       </Page>
     </ReportSection>
   </ReportSections>
@@ -2061,6 +2052,15 @@ kHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpBvD/AZI2
         <Field Name="Company_Email">
           <DataField>Company_Email</DataField>
         </Field>
+        <Field Name="IsGuardian">
+          <DataField>IsGuardian</DataField>
+        </Field>
+        <Field Name="HasJuniorAccounts">
+          <DataField>HasJuniorAccounts</DataField>
+        </Field>
+        <Field Name="GuardianInfo">
+          <DataField>GuardianInfo</DataField>
+        </Field>
         <Field Name="ReportForNavId_1000000071">
           <DataField>ReportForNavId_1000000071</DataField>
         </Field>
@@ -2115,6 +2115,81 @@ kHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpBvD/AZI2
         <Field Name="JuniorBFFormat">
           <DataField>JuniorBFFormat</DataField>
         </Field>
+        <Field Name="JuniorMemberNo">
+          <DataField>JuniorMemberNo</DataField>
+        </Field>
+        <Field Name="JuniorMemberName">
+          <DataField>JuniorMemberName</DataField>
+        </Field>
+        <Field Name="IsOwnAccount">
+          <DataField>IsOwnAccount</DataField>
+        </Field>
+        <Field Name="ReportForNavId_1000000072">
+          <DataField>ReportForNavId_1000000072</DataField>
+        </Field>
+        <Field Name="PostingDate_GuardianJunior">
+          <DataField>PostingDate_GuardianJunior</DataField>
+        </Field>
+        <Field Name="DocumentNo_GuardianJunior">
+          <DataField>DocumentNo_GuardianJunior</DataField>
+        </Field>
+        <Field Name="Description_GuardianJunior">
+          <DataField>Description_GuardianJunior</DataField>
+        </Field>
+        <Field Name="Amount_GuardianJunior">
+          <DataField>Amount_GuardianJunior</DataField>
+        </Field>
+        <Field Name="Amount_GuardianJuniorFormat">
+          <DataField>Amount_GuardianJuniorFormat</DataField>
+        </Field>
+        <Field Name="UserID_GuardianJunior">
+          <DataField>UserID_GuardianJunior</DataField>
+        </Field>
+        <Field Name="DebitAmount_GuardianJunior">
+          <DataField>DebitAmount_GuardianJunior</DataField>
+        </Field>
+        <Field Name="DebitAmount_GuardianJuniorFormat">
+          <DataField>DebitAmount_GuardianJuniorFormat</DataField>
+        </Field>
+        <Field Name="CreditAmount_GuardianJunior">
+          <DataField>CreditAmount_GuardianJunior</DataField>
+        </Field>
+        <Field Name="CreditAmount_GuardianJuniorFormat">
+          <DataField>CreditAmount_GuardianJuniorFormat</DataField>
+        </Field>
+        <Field Name="JuniorAccountNo_Guardian">
+          <DataField>JuniorAccountNo_Guardian</DataField>
+        </Field>
+        <Field Name="JuniorAccountName_Guardian">
+          <DataField>JuniorAccountName_Guardian</DataField>
+        </Field>
+        <Field Name="GuardianJuniorBF">
+          <DataField>GuardianJuniorBF</DataField>
+        </Field>
+        <Field Name="GuardianJuniorBFFormat">
+          <DataField>GuardianJuniorBFFormat</DataField>
+        </Field>
+        <Field Name="GuardianJuniorClosing">
+          <DataField>GuardianJuniorClosing</DataField>
+        </Field>
+        <Field Name="GuardianJuniorClosingFormat">
+          <DataField>GuardianJuniorClosingFormat</DataField>
+        </Field>
+        <Field Name="ReportForNavId_1000000073">
+          <DataField>ReportForNavId_1000000073</DataField>
+        </Field>
+        <Field Name="TotalJuniorAccounts">
+          <DataField>TotalJuniorAccounts</DataField>
+        </Field>
+        <Field Name="TotalJuniorBalance">
+          <DataField>TotalJuniorBalance</DataField>
+        </Field>
+        <Field Name="TotalJuniorBalanceFormat">
+          <DataField>TotalJuniorBalanceFormat</DataField>
+        </Field>
+        <Field Name="JuniorAccountsList">
+          <DataField>JuniorAccountsList</DataField>
+        </Field>
         <Field Name="ReportForNavId_1102755024">
           <DataField>ReportForNavId_1102755024</DataField>
         </Field>
@@ -2168,6 +2243,18 @@ kHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpBvD/AZI2
         </Field>
         <Field Name="ModeofDisbursement_Loans">
           <DataField>ModeofDisbursement_Loans</DataField>
+        </Field>
+        <Field Name="IsGuardianLoan">
+          <DataField>IsGuardianLoan</DataField>
+        </Field>
+        <Field Name="JuniorAccountNo">
+          <DataField>JuniorAccountNo</DataField>
+        </Field>
+        <Field Name="JuniorAccountName">
+          <DataField>JuniorAccountName</DataField>
+        </Field>
+        <Field Name="LoanDate">
+          <DataField>LoanDate</DataField>
         </Field>
         <Field Name="OutstandingBalance_Loans">
           <DataField>OutstandingBalance_Loans</DataField>

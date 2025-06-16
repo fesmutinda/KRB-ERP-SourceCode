@@ -16,10 +16,10 @@
       <Body>
         <ReportItems>
           <Line Name="Line2">
-            <Top>8.07767cm</Top>
+            <Top>7.74688cm</Top>
             <Left>0.2047in</Left>
             <Height>0cm</Height>
-            <Width>18.98629cm</Width>
+            <Width>21.22435cm</Width>
             <Style>
               <Border>
                 <Style>Solid</Style>
@@ -30,25 +30,25 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>0.80286in</Width>
+                  <Width>0.92874in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.12963in</Width>
+                  <Width>1.25551in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.86847in</Width>
+                  <Width>0.99435in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.78691in</Width>
+                  <Width>1.91279in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.8796in</Width>
+                  <Width>1.00548in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.86807in</Width>
+                  <Width>0.99395in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.1394in</Width>
+                  <Width>1.26528in</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -888,10 +888,10 @@
                 <Value>=Fields!PostingDate_loan.Value</Value>
               </SortExpression>
             </SortExpressions>
-            <Top>3.2913in</Top>
+            <Top>3.16107in</Top>
             <Left>0.20468in</Left>
             <Height>0.89757in</Height>
-            <Width>7.47494in</Width>
+            <Width>8.35607in</Width>
             <ZIndex>1</ZIndex>
             <Style>
               <Border>
@@ -918,7 +918,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Company_Address</rd:DefaultName>
-            <Top>1.09898in</Top>
+            <Top>0.96875in</Top>
             <Left>1.63707in</Left>
             <Height>0.17708in</Height>
             <Width>5.31307in</Width>
@@ -965,7 +965,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Company_Address_2</rd:DefaultName>
-            <Top>1.27606in</Top>
+            <Top>1.14583in</Top>
             <Left>1.63707in</Left>
             <Height>0.25in</Height>
             <Width>5.31307in</Width>
@@ -1012,7 +1012,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Company_Fax_No</rd:DefaultName>
-            <Top>1.52606in</Top>
+            <Top>1.39583in</Top>
             <Left>1.63707in</Left>
             <Height>0.25in</Height>
             <Width>5.31307in</Width>
@@ -1059,7 +1059,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Company_Email</rd:DefaultName>
-            <Top>1.77606in</Top>
+            <Top>1.64583in</Top>
             <Left>1.63707in</Left>
             <Height>0.25in</Height>
             <Width>5.31307in</Width>
@@ -1088,10 +1088,10 @@
             </Style>
           </Textbox>
           <Line Name="Line5">
-            <Top>5.32257cm</Top>
+            <Top>4.99178cm</Top>
             <Left>0.2047in</Left>
             <Height>0cm</Height>
-            <Width>19.05155cm</Width>
+            <Width>21.22436cm</Width>
             <ZIndex>6</ZIndex>
             <Style>
               <Border>
@@ -1120,10 +1120,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox16</rd:DefaultName>
-            <Top>2.27055in</Top>
+            <Top>2.14032in</Top>
             <Left>0.51995cm</Left>
             <Height>0.45872cm</Height>
-            <Width>18.98629cm</Width>
+            <Width>21.22435cm</Width>
             <ZIndex>7</ZIndex>
             <Style>
               <Border>
@@ -1187,7 +1187,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>LoanNumber</rd:DefaultName>
-            <Top>2.46504in</Top>
+            <Top>2.33481in</Top>
             <Left>1.92784in</Left>
             <Height>0.19054in</Height>
             <Width>2.38144in</Width>
@@ -1255,7 +1255,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>ProductType1</rd:DefaultName>
-            <Top>2.65558in</Top>
+            <Top>2.52535in</Top>
             <Left>1.92784in</Left>
             <Height>0.22179in</Height>
             <Width>2.38144in</Width>
@@ -1323,7 +1323,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>LoanNumber</rd:DefaultName>
-            <Top>2.87736in</Top>
+            <Top>2.74713in</Top>
             <Left>1.94941in</Left>
             <Height>0.17662in</Height>
             <Width>2.38144in</Width>
@@ -1394,7 +1394,7 @@
             <Top>2.66599in</Top>
             <Left>5.78246in</Left>
             <Height>0.21138in</Height>
-            <Width>1.89716in</Width>
+            <Width>2.77829in</Width>
             <ZIndex>15</ZIndex>
             <Style>
               <Border>
@@ -1458,7 +1458,7 @@
             <Top>2.46504in</Top>
             <Left>5.79635in</Left>
             <Height>0.19054in</Height>
-            <Width>1.88327in</Width>
+            <Width>2.7644in</Width>
             <ZIndex>17</ZIndex>
             <Style>
               <Border>
@@ -1522,7 +1522,7 @@
             <Top>2.86691in</Top>
             <Left>5.79635in</Left>
             <Height>0.18707in</Height>
-            <Width>1.88327in</Width>
+            <Width>2.7644in</Width>
             <ZIndex>19</ZIndex>
             <Style>
               <Border>
@@ -1538,8 +1538,8 @@
             <Source>Embedded</Source>
             <Value>krbsaccoLogo2</Value>
             <Sizing>FitProportional</Sizing>
-            <Top>0.06944in</Top>
-            <Left>3.79887in</Left>
+            <Top>0in</Top>
+            <Left>3.79886in</Left>
             <Height>0.92708in</Height>
             <Width>0.99369in</Width>
             <ZIndex>20</ZIndex>
@@ -1558,7 +1558,7 @@
       <Width>8.63936in</Width>
       <Page>
         <PageHeader>
-          <Height>0.5625in</Height>
+          <Height>0.24343in</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
@@ -1605,8 +1605,8 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>0.72292cm</Top>
-              <Left>1.86725cm</Left>
+              <Top>0.12352cm</Top>
+              <Left>19.61206cm</Left>
               <Height>0.423cm</Height>
               <Width>2.13224cm</Width>
               <ZIndex>1</ZIndex>
@@ -1663,8 +1663,8 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox1</rd:DefaultName>
-              <Top>0.72292cm</Top>
-              <Left>0.26031cm</Left>
+              <Top>0.12352cm</Top>
+              <Left>18.00512cm</Left>
               <Height>0.45889cm</Height>
               <Width>1.50111cm</Width>
               <ZIndex>3</ZIndex>
@@ -1722,8 +1722,8 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>0.72292cm</Top>
-              <Left>1.86725cm</Left>
+              <Top>0.12352cm</Top>
+              <Left>19.61206cm</Left>
               <Height>0.423cm</Height>
               <Width>2.13224cm</Width>
               <ZIndex>5</ZIndex>
@@ -1780,8 +1780,8 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox1</rd:DefaultName>
-              <Top>0.72292cm</Top>
-              <Left>0.26031cm</Left>
+              <Top>0.12352cm</Top>
+              <Left>18.00512cm</Left>
               <Height>0.45889cm</Height>
               <Width>1.50111cm</Width>
               <ZIndex>7</ZIndex>
