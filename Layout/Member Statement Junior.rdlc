@@ -930,7 +930,7 @@
               </SortExpression>
             </SortExpressions>
             <Top>3.31745in</Top>
-            <Left>0.13704in</Left>
+            <Left>0.06714in</Left>
             <Height>0.84201in</Height>
             <Width>8.14351in</Width>
             <Style>
@@ -941,7 +941,7 @@
           </Tablix>
           <Line Name="Line2">
             <Top>8.24991cm</Top>
-            <Left>0.15861in</Left>
+            <Left>0.08871in</Left>
             <Height>0cm</Height>
             <Width>20.62983cm</Width>
             <ZIndex>1</ZIndex>
@@ -971,7 +971,7 @@
             </Paragraphs>
             <rd:DefaultName>Company_Address</rd:DefaultName>
             <Top>1.09676in</Top>
-            <Left>0.98658in</Left>
+            <Left>1.1463in</Left>
             <Height>0.14375in</Height>
             <Width>5.95882in</Width>
             <ZIndex>2</ZIndex>
@@ -1018,7 +1018,7 @@
             </Paragraphs>
             <rd:DefaultName>Company_Address_2</rd:DefaultName>
             <Top>1.28773in</Top>
-            <Left>0.98658in</Left>
+            <Left>1.1463in</Left>
             <Height>0.21667in</Height>
             <Width>5.95882in</Width>
             <ZIndex>3</ZIndex>
@@ -1052,11 +1052,10 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>020 4980181/111</Value>
+                    <Value>=Fields!Company_Phone_No.Value</Value>
                     <Style>
                       <FontStyle>Normal</FontStyle>
-                      <FontFamily>Times New Roman</FontFamily>
-                      <FontSize>12pt</FontSize>
+                      <FontSize>9pt</FontSize>
                       <FontWeight>Normal</FontWeight>
                       <TextDecoration>None</TextDecoration>
                       <Color>#000000</Color>
@@ -1070,7 +1069,7 @@
             </Paragraphs>
             <rd:DefaultName>Company_Fax_No</rd:DefaultName>
             <Top>1.53773in</Top>
-            <Left>0.98658in</Left>
+            <Left>1.1463in</Left>
             <Height>0.21667in</Height>
             <Width>5.95882in</Width>
             <ZIndex>4</ZIndex>
@@ -1117,7 +1116,7 @@
             </Paragraphs>
             <rd:DefaultName>Company_Email</rd:DefaultName>
             <Top>1.78773in</Top>
-            <Left>0.98658in</Left>
+            <Left>1.1463in</Left>
             <Height>0.21667in</Height>
             <Width>5.95882in</Width>
             <ZIndex>5</ZIndex>
@@ -1146,7 +1145,7 @@
           </Textbox>
           <Line Name="Line5">
             <Top>5.42014cm</Top>
-            <Left>0.16508in</Left>
+            <Left>0.09518in</Left>
             <Height>0cm</Height>
             <Width>20.26147cm</Width>
             <ZIndex>6</ZIndex>
@@ -1178,7 +1177,7 @@
             </Paragraphs>
             <rd:DefaultName>Textbox16</rd:DefaultName>
             <Top>2.17558in</Top>
-            <Left>0.4193cm</Left>
+            <Left>0.24175cm</Left>
             <Height>0.45872cm</Height>
             <Width>20.26147cm</Width>
             <ZIndex>7</ZIndex>
@@ -1211,7 +1210,7 @@
             </Paragraphs>
             <rd:DefaultName>Textbox95</rd:DefaultName>
             <Top>2.44795in</Top>
-            <Left>0.18665in</Left>
+            <Left>0.11675in</Left>
             <Height>0.19054in</Height>
             <Width>1.72193in</Width>
             <ZIndex>8</ZIndex>
@@ -1245,7 +1244,7 @@
             </Paragraphs>
             <rd:DefaultName>LoanNumber</rd:DefaultName>
             <Top>2.44795in</Top>
-            <Left>1.93635in</Left>
+            <Left>1.86645in</Left>
             <Height>0.19054in</Height>
             <Width>2.59003in</Width>
             <ZIndex>9</ZIndex>
@@ -1278,7 +1277,7 @@
             </Paragraphs>
             <rd:DefaultName>ProductType</rd:DefaultName>
             <Top>2.63849in</Top>
-            <Left>0.18665in</Left>
+            <Left>0.11675in</Left>
             <Height>0.22179in</Height>
             <Width>1.72193in</Width>
             <ZIndex>10</ZIndex>
@@ -1313,7 +1312,7 @@
             </Paragraphs>
             <rd:DefaultName>ProductType1</rd:DefaultName>
             <Top>2.62459in</Top>
-            <Left>1.93635in</Left>
+            <Left>1.86645in</Left>
             <Height>0.22179in</Height>
             <Width>2.56845in</Width>
             <ZIndex>11</ZIndex>
@@ -1346,7 +1345,7 @@
             </Paragraphs>
             <rd:DefaultName>Textbox95</rd:DefaultName>
             <Top>2.86027in</Top>
-            <Left>0.18665in</Left>
+            <Left>0.11675in</Left>
             <Height>0.17662in</Height>
             <Width>1.72193in</Width>
             <ZIndex>12</ZIndex>
@@ -1381,7 +1380,7 @@
             </Paragraphs>
             <rd:DefaultName>LoanNumber</rd:DefaultName>
             <Top>2.86027in</Top>
-            <Left>1.90858in</Left>
+            <Left>1.83868in</Left>
             <Height>0.17662in</Height>
             <Width>2.6178in</Width>
             <ZIndex>13</ZIndex>
@@ -1399,8 +1398,7 @@
             <Source>Embedded</Source>
             <Value>krbsaccoLogo2</Value>
             <Sizing>FitProportional</Sizing>
-            <Top>0in</Top>
-            <Left>3.40278in</Left>
+            <Left>3.5625in</Left>
             <Height>1.05208in</Height>
             <Width>1.10202in</Width>
             <ZIndex>14</ZIndex>
@@ -1429,7 +1427,7 @@
             </Paragraphs>
             <rd:DefaultName>ProductType</rd:DefaultName>
             <Top>2.64197in</Top>
-            <Left>5.09306in</Left>
+            <Left>5.02316in</Left>
             <Height>0.20441in</Height>
             <Width>1.59238in</Width>
             <ZIndex>15</ZIndex>
@@ -1464,7 +1462,7 @@
             </Paragraphs>
             <rd:DefaultName>ProductType1</rd:DefaultName>
             <Top>2.64197in</Top>
-            <Left>6.68544in</Left>
+            <Left>6.61554in</Left>
             <Height>0.20441in</Height>
             <Width>1.4263in</Width>
             <ZIndex>16</ZIndex>
@@ -1496,7 +1494,7 @@
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
             <Top>2.45143in</Top>
-            <Left>5.10695in</Left>
+            <Left>5.03705in</Left>
             <Height>0.16968in</Height>
             <Width>1.59238in</Width>
             <ZIndex>17</ZIndex>
@@ -1531,7 +1529,7 @@
             </Paragraphs>
             <rd:DefaultName>PhoneNo_MemberRegister</rd:DefaultName>
             <Top>2.45143in</Top>
-            <Left>6.69933in</Left>
+            <Left>6.62943in</Left>
             <Height>0.16968in</Height>
             <Width>1.41241in</Width>
             <ZIndex>18</ZIndex>
@@ -1563,7 +1561,7 @@
             </Paragraphs>
             <rd:DefaultName>Textbox3</rd:DefaultName>
             <Top>2.86375in</Top>
-            <Left>5.09306in</Left>
+            <Left>5.02316in</Left>
             <Height>0.15924in</Height>
             <Width>1.60627in</Width>
             <ZIndex>19</ZIndex>
@@ -1598,7 +1596,7 @@
             </Paragraphs>
             <rd:DefaultName>ProductType1</rd:DefaultName>
             <Top>2.86376in</Top>
-            <Left>6.68544in</Left>
+            <Left>6.61554in</Left>
             <Height>0.15923in</Height>
             <Width>1.4566in</Width>
             <ZIndex>20</ZIndex>
