@@ -4,7 +4,7 @@ report 50200 "Loan Portfolio Analysis"
     ApplicationArea = All;
     DefaultLayout = RDLC;
     RDLCLayout = './Layout/LoanPortfolioAnalysis.rdlc';
-    Caption = 'Loan Portfolio Analysis';
+    ProcessingOnly = false;
 
     dataset
     {
@@ -13,88 +13,147 @@ report 50200 "Loan Portfolio Analysis"
             RequestFilterFields = "No.", "Loan Product Filter", "Outstanding Balance", "Date Filter";
             DataItemTableView = sorting("No.");
 
-            column(No_; "No.") { }
-            column(Name; Name) { }
-            column(PayrollStaffNo; "Payroll/Staff No") { }
-            column(Phone_No; "Phone No.") { }
+            column(CustomerName; Name) { }
+            column(CustomerNo; "No.") { }
+            column(USERID; UserId) { }
+            column(PayrollStaffNo_Members; "Members Register"."Payroll/Staff No") { }
+            column(No_Members; "Members Register"."No.") { }
+            column(Name_Members; "Members Register".Name) { }
+            column(Phone_No_; "Phone No.") { }
             column(Registration_Date; "Registration Date") { }
-            column(Employer_Code; "Employer Code") { }
-            column(Employer_Name; gEmployerName) { }
-            column(PageNo; CurrReport.PAGENO) { }
-            column(Shares_Retained; "Shares Retained") { }
-            column(ID_No; "ID No.") { }
-            column(Global_Dimension_2_Code; "Global Dimension 2 Code") { }
-            column(CompanyName; gCompanyInfo.Name) { }
-            column(CompanyAddress; gCompanyInfo.Address) { }
-            column(CompanyAddress2; gCompanyInfo."Address 2") { }
-            column(CompanyPhoneNo; gCompanyInfo."Phone No.") { }
-            column(CompanyFaxNo; gCompanyInfo."Fax No.") { }
-            column(CompanyPicture; gCompanyInfo.Picture) { }
-            column(CompanyEmail; gCompanyInfo."E-Mail") { }
-            column(UserID; USERID) { }
+            column(EmployerCode_Members; "Members Register"."Employer Code") { }
+            column(EmployerName; EmployerName) { }
+            column(PageNo_Members; CurrReport.PageNo) { }
+            column(Shares_Retained; "Members Register"."Shares Retained") { }
+            column(IDNo_Members; "Members Register"."ID No.") { }
+            column(GlobalDimension2Code_Members; "Members Register"."Global Dimension 2 Code") { }
+            column(Company_Name; CompanyInfo.Name) { }
+            column(Company_Address; CompanyInfo.Address) { }
+            column(Company_Address_2; CompanyInfo."Address 2") { }
+            column(Company_Phone_No; CompanyInfo."Phone No.") { }
+            column(Company_Fax_No; CompanyInfo."Fax No.") { }
+            column(Company_Picture; CompanyInfo.Picture) { }
+            column(Company_Email; CompanyInfo."E-Mail") { }
 
             dataitem(Loans; "Loans Register")
             {
-                DataItemLink = "Client Code" = field("No.");
+                DataItemLink = "Client Code" = field("No."),
+                             "Date Filter" = field("Date Filter"),
+                             "Loan Product Type" = field("Loan Product Filter");
                 DataItemTableView = sorting("Loan  No.") where(Posted = const(true), Reversed = const(false));
 
                 column(LoanNumber; "Loan  No.") { }
                 column(ProductType; "Loan Product Type Name") { }
-                column(Amount_in_Arrears; "Amount in Arrears") { }
-                column(Interest_In_Arrears; "Interest In Arrears") { }
-                column(Principal_In_Arrears; "Principal In Arrears") { }
-                column(Outstanding_Balance; "Outstanding Balance") { }
-                column(Active_Loans; gActiveLoanCount) { }
-                column(Interest_Earned; gInterestEarned) { }
+                column(Amount_in_Arrears; "Amount in Arrears") { DecimalPlaces = 2 : 2; }
+                column(Interest_In_Arrears; "Interest In Arrears") { DecimalPlaces = 2 : 2; }
+                column(Principal_In_Arrears; "Principal In Arrears") { DecimalPlaces = 2 : 2; }
+                column(DaysInArrears; DaysInArrears) { }
+                column(IsDefaulted; IsLoanDefaulted) { }
+                column(RepaymentCompliance; RepaymentCompliance) { DecimalPlaces = 2 : 2; }
+
+                trigger OnPreDataItem()
+                var
+                    RecordCount: Integer;
+                begin
+                    RecordCount := Count;
+                    if RecordCount > BatchSize then
+                        ProcessInBatches := true;
+                end;
 
                 trigger OnAfterGetRecord()
-                var
-                    LoansReg: Record "Loans Register";
-                    CustLedger: Record "Cust. Ledger Entry";
                 begin
-                    Clear(LoansReg);
-                    Clear(CustLedger);
+                    if not ProcessCurrentRecord() then
+                        CurrReport.Skip();
 
-                    if GetFilter("Date Filter") <> '' then begin
-                        gStartDate := GetRangeMin("Date Filter");
-                        gEndDate := GetRangeMax("Date Filter");
-                    end;
+                    CalcFields("Outstanding Balance", "Interest Due", "Oustanding Interest");
 
-                    // Count active loans
-                    gActiveLoanCount := 0;
-                    LoansReg.SetRange("Loan Product Type", "Loan Product Type");
-                    LoansReg.SetFilter("Outstanding Balance", '>0');
-                    if LoansReg.FindSet() then
-                        repeat
-                            if LoansReg.Posted then
-                                gActiveLoanCount += 1;
-                        until LoansReg.Next() = 0;
+                    // Calculate key metrics
+                    DaysInArrears := GetDaysInArrears(Loans);
+                    IsLoanDefaulted := IsDefaulted(Loans);
+                    RepaymentCompliance := CalcRepaymentCompliance(Loans);
 
-                    // Calculate interest earned
-                    gInterestEarned := 0;
-                    CustLedger.SetRange("Customer No.", "Client Code");
-                    CustLedger.SetRange("Document No.", "Loan  No.");
-                    if gStartDate <> 0D then
-                        CustLedger.SetRange("Posting Date", gStartDate, gEndDate);
-                    CustLedger.SetFilter("Document Type", '%1|%2',
-                        CustLedger."Document Type"::"Finance Charge Memo",
-                        CustLedger."Document Type"::Invoice);
-                    if CustLedger.FindSet() then
-                        repeat
-                            gInterestEarned += Abs(CustLedger.Amount);
-                        until CustLedger.Next() = 0;
-                    if CheckLoanDefaulted(Loans) then
-                        UpdateLoanStatus(Loans);
+                    // Update loan status
+                    UpdateLoanStatus();
+
+                    // Calculate and update arrears
+                    CalcManualArrears(Loans);
                 end;
             }
+        }
+        dataitem("Loan Products Setup"; "Loan Products Setup")
+        {
+            RequestFilterFields = "Code", Source;
+
+            column(ProductCode; "Code") { }
+            column(ProductDescription; "Product Description") { }
+            column(Interest_rate; "Interest rate") { DecimalPlaces = 2 : 2; }
+            column(TotalDisbursed; TotalDisbursed) { DecimalPlaces = 2 : 2; }
+            column(InterestEarned; InterestEarned) { DecimalPlaces = 2 : 2; }
+            column(ArrearsAmount; ArrearsAmount) { DecimalPlaces = 2 : 2; }
+            column(Max__Loan_Amount; "Max. Loan Amount") { DecimalPlaces = 2 : 2; }
+            column(Loan_Account; "Loan Account") { }
+            column(ActiveLoans; ActiveLoans) { }
+            column(Repayment_Method; "Repayment Method") { }
+            column(DefaultRate; DefaultRate) { DecimalPlaces = 2 : 2; }
+            // column(RepaymentRate; RepaymentRate) { DecimalPlaces = 2 : 2; }
+            column(Instalment_Period; "Instalment Period") { }
+            column(Max_Installments; "No of Installment") { }
+            column(TotalRepaymentsDue; TotalRepaymentsDue) { }
+            column(TotalRepaidOnTime; TotalRepaidOnTime) { }
+            column(Issued_Amount; "Issued Amount") { DecimalPlaces = 2 : 2; }
 
             trigger OnAfterGetRecord()
             var
-                Employer: Record Customer;
+                LoansReg: Record "Loans Register";
+                CustLedger: Record "Cust. Ledger Entry";
             begin
-                gEmployerName := '';
-                if Employer.Get("Employer Code") then
-                    gEmployerName := Employer.Name;
+                Clear(TotalDisbursed);
+                Clear(InterestEarned);
+                Clear(ArrearsAmount);
+                Clear(ActiveLoans);
+                Clear(DefaultCount);
+                Clear(DefaultRate);
+                Clear(TotalRepaymentsDue);
+                Clear(TotalRepaidOnTime);
+                Clear(RepaymentRate);
+
+                LoansReg.Reset();
+                LoansReg.SetRange("Loan Product Type", Code);
+                if (StartDate <> 0D) and (EndDate <> 0D) then
+                    LoansReg.SetRange("Application Date", StartDate, EndDate);
+                LoansReg.SetRange(Posted, true);
+
+                if LoansReg.FindSet() then begin
+                    repeat
+                        TotalDisbursed += LoansReg."Approved Amount";
+                        LoansReg.CalcFields("Outstanding Balance", "Interest Due", "Oustanding Interest");
+
+                        if LoansReg."Outstanding Balance" > 0 then
+                            ActiveLoans += 1;
+
+                        CustLedger.Reset();
+                        CustLedger.SetRange("Loan No", LoansReg."Loan  No.");
+                        CustLedger.SetRange("Transaction Type", CustLedger."Transaction Type"::"Interest Paid");
+                        if (StartDate <> 0D) and (EndDate <> 0D) then
+                            CustLedger.SetRange("Posting Date", StartDate, EndDate);
+                        if CustLedger.FindSet() then
+                            repeat
+                                InterestEarned += Abs(CustLedger.Amount);
+                            until CustLedger.Next() = 0;
+
+                        InterestEarned += LoansReg."Interest Due" + LoansReg."Oustanding Interest";
+                        ArrearsAmount += LoansReg."Amount in Arrears";
+
+                        if IsDefaulted(LoansReg) then
+                            DefaultCount += 1;
+                    until LoansReg.Next() = 0;
+
+                    if ActiveLoans > 0 then
+                        DefaultRate := (DefaultCount / ActiveLoans) * 100;
+
+                    if TotalRepaymentsDue > 0 then
+                        RepaymentRate := (TotalRepaidOnTime / TotalRepaymentsDue) * 100;
+                end;
             end;
         }
     }
@@ -105,17 +164,25 @@ report 50200 "Loan Portfolio Analysis"
         {
             area(Content)
             {
-                group(Options)
+                group(Filters)
                 {
-                    field(StartDateField; gStartDate)
+                    field(StartDateField; StartDate)
                     {
                         ApplicationArea = All;
                         Caption = 'Start Date';
                     }
-                    field(EndDateField; gEndDate)
+                    field(EndDateField; EndDate)
                     {
                         ApplicationArea = All;
                         Caption = 'End Date';
+                    }
+                    field(BatchSizeField; BatchSize)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Batch Size';
+                        ToolTip = 'Specify the number of records to process in each batch';
+                        MinValue = 100;
+                        MaxValue = 5000;
                     }
                 }
             }
@@ -123,47 +190,383 @@ report 50200 "Loan Portfolio Analysis"
 
         trigger OnOpenPage()
         begin
-            if (gStartDate = 0D) then
-                gStartDate := WORKDATE;
-            if (gEndDate = 0D) then
-                gEndDate := WORKDATE;
-        end;
-
-        trigger OnQueryClosePage(CloseAction: Action): Boolean
-        begin
-            if CloseAction = ACTION::OK then
-                if (gStartDate > gEndDate) and (gStartDate <> 0D) and (gEndDate <> 0D) then begin
-                    ERROR('Start Date must be before End Date');
-                    exit(false);
-                end;
-            exit(true);
+            if BatchSize = 0 then
+                BatchSize := 1000;
         end;
     }
 
-    var
-        gCompanyInfo: Record "Company Information";
-        gEmployerName: Text[100];
-        gStartDate: Date;
-        gEndDate: Date;
-        gActiveLoanCount: Integer;
-        gInterestEarned: Decimal;
-
-    local procedure CheckLoanDefaulted(LoanRec: Record "Loans Register"): Boolean
+    trigger OnPreReport()
     begin
-        exit(LoanRec."Amount in Arrears" > 0);
+        if (StartDate > EndDate) and (StartDate <> 0D) and (EndDate <> 0D) then
+            Error('Start Date must be before End Date');
+
+        CompanyInfo.Get();
+        CompanyInfo.TestField(Name);
+
+        InitializeVariables();
     end;
 
-    local procedure UpdateLoanStatus(var LoanRec: Record "Loans Register")
+    var
+        CompanyInfo: Record "Company Information";
+        StartDate: Date;
+        EndDate: Date;
+        BatchSize: Integer;
+        ProcessInBatches: Boolean;
+        Window: Dialog;
+        DaysInArrears: Integer;
+        IsLoanDefaulted: Boolean;
+        RepaymentCompliance: Decimal;
+        EmployerName: Text[100];
+        TotalRecords: Integer;
+        CurrentRecord: Integer;
+        DialogText: Label 'Processing Record #@1@@ of @2@@';
+
+    local procedure InitializeVariables()
     begin
-        if LoanRec."Amount in Arrears" > 0 then begin
-            // Mark loan as having arrears without changing status
-            LoanRec."Principal In Arrears" := LoanRec."Amount in Arrears";
-            LoanRec.Modify(true);
+        ProcessInBatches := false;
+        TotalRecords := 0;
+        CurrentRecord := 0;
+
+        if GuiAllowed then
+            Window.Open(DialogText);
+    end;
+
+    local procedure ProcessCurrentRecord(): Boolean
+    begin
+        CurrentRecord += 1;
+
+        if GuiAllowed then begin
+            Window.Update(1, CurrentRecord);
+            Window.Update(2, TotalRecords);
+        end;
+
+        exit(true);
+    end;
+
+    local procedure IsDefaulted(var Loan: Record "Loans Register"): Boolean
+    var
+        MinimumPaymentsMissed: Integer;
+        ConsecutiveMissedPayments: Integer;
+    begin
+        if GetDaysInArrears(Loan) > 90 then
+            exit(true);
+
+        MinimumPaymentsMissed := GetMissedPayments(Loan);
+        ConsecutiveMissedPayments := GetConsecutiveMissedPayments(Loan);
+
+        exit((MinimumPaymentsMissed >= 3) or (ConsecutiveMissedPayments >= 2));
+    end;
+
+    local procedure GetDaysInArrears(var Loan: Record "Loans Register"): Integer
+    var
+        LastPaymentDate: Date;
+    begin
+        if Loan."Issued Date" = 0D then
+            exit(0);
+
+        LastPaymentDate := GetLastPaymentDate(Loan);
+        if LastPaymentDate = 0D then
+            exit(Today - Loan."Issued Date")
+        else
+            exit(Today - LastPaymentDate);
+    end;
+
+    local procedure GetLastPaymentDate(var Loan: Record "Loans Register"): Date
+    var
+        CustLedger: Record "Cust. Ledger Entry";
+    begin
+        CustLedger.Reset();
+        CustLedger.SetRange("Loan No", Loan."Loan  No.");
+        CustLedger.SetRange("Transaction Type", CustLedger."Transaction Type"::"Loan Repayment");
+        CustLedger.SetRange(Reversed, false);
+        if CustLedger.FindLast() then
+            exit(CustLedger."Posting Date");
+        exit(0D);
+    end;
+
+    local procedure GetMissedPayments(var Loan: Record "Loans Register"): Integer
+    var
+        RepaymentSchedule: Record "Loan Repayment Schedule";
+        MissedCount: Integer;
+    begin
+        RepaymentSchedule.Reset();
+        RepaymentSchedule.SetRange("Loan No.", Loan."Loan  No.");
+        RepaymentSchedule.SetFilter("Repayment Date", '..%1', Today);
+
+        if RepaymentSchedule.FindSet() then
+            repeat
+                if not IsPaymentMade(Loan."Loan  No.", RepaymentSchedule."Repayment Date") then
+                    MissedCount += 1;
+            until RepaymentSchedule.Next() = 0;
+
+        exit(MissedCount);
+    end;
+
+    local procedure GetConsecutiveMissedPayments(var Loan: Record "Loans Register"): Integer
+    var
+        RepaymentSchedule: Record "Loan Repayment Schedule";
+        ConsecutiveCount: Integer;
+        MaxConsecutive: Integer;
+    begin
+        RepaymentSchedule.Reset();
+        RepaymentSchedule.SetRange("Loan No.", Loan."Loan  No.");
+        RepaymentSchedule.SetFilter("Repayment Date", '..%1', Today);
+        RepaymentSchedule.SetCurrentKey("Repayment Date");
+
+        if RepaymentSchedule.FindSet() then
+            repeat
+                if not IsPaymentMade(Loan."Loan  No.", RepaymentSchedule."Repayment Date") then
+                    ConsecutiveCount += 1
+                else begin
+                    if ConsecutiveCount > MaxConsecutive then
+                        MaxConsecutive := ConsecutiveCount;
+                    ConsecutiveCount := 0;
+                end;
+            until RepaymentSchedule.Next() = 0;
+
+        if ConsecutiveCount > MaxConsecutive then
+            MaxConsecutive := ConsecutiveCount;
+
+        exit(MaxConsecutive);
+    end;
+
+    local procedure IsPaymentMade(LoanNo: Code[20]; DueDate: Date): Boolean
+    var
+        CustLedger: Record "Cust. Ledger Entry";
+        PaymentAmount: Decimal;
+    begin
+        CustLedger.Reset();
+        CustLedger.SetRange("Loan No", LoanNo);
+        CustLedger.SetRange("Transaction Type", CustLedger."Transaction Type"::"Loan Repayment");
+        CustLedger.SetRange("Posting Date", 0D, DueDate);
+        CustLedger.SetRange(Reversed, false);
+
+        if CustLedger.FindSet() then begin
+            repeat
+                PaymentAmount += Abs(CustLedger.Amount);
+            until CustLedger.Next() = 0;
+            exit(PaymentAmount > 0);
+        end;
+        exit(false);
+    end;
+
+    local procedure CalcManualArrears(var Loan: Record "Loans Register")
+    var
+        TotalExpected: Decimal;
+        TotalPaid: Decimal;
+    begin
+        if Loan."Issued Date" = 0D then
+            exit;
+
+        // Calculate total expected payments
+        TotalExpected := GetTotalExpectedPayments(Loan);
+
+        // Calculate total actual payments
+        TotalPaid := GetTotalActualPayments(Loan);
+
+        // Update arrears with proper validation
+        if TotalExpected > TotalPaid then begin
+            Loan."Amount in Arrears" := TotalExpected - TotalPaid;
+            Loan."Principal In Arrears" := GetPrincipalInArrears(Loan);
+            Loan."Interest In Arrears" := GetInterestInArrears(Loan);
+            Loan.Modify();
         end;
     end;
 
-    trigger OnPreReport()
+    local procedure GetTotalExpectedPayments(var Loan: Record "Loans Register"): Decimal
+    var
+        RepaymentSchedule: Record "Loan Repayment Schedule";
+        TotalExpected: Decimal;
     begin
-        gCompanyInfo.Get();
+        RepaymentSchedule.Reset();
+        RepaymentSchedule.SetRange("Loan No.", Loan."Loan  No.");
+        RepaymentSchedule.SetFilter("Repayment Date", '..%1', Today);
+
+        if RepaymentSchedule.FindSet() then
+            repeat
+                TotalExpected += RepaymentSchedule."Principal Repayment" + RepaymentSchedule."Monthly Interest";
+            until RepaymentSchedule.Next() = 0;
+
+        exit(TotalExpected);
     end;
+
+    local procedure GetTotalActualPayments(var Loan: Record "Loans Register"): Decimal
+    var
+        CustLedger: Record "Cust. Ledger Entry";
+        TotalPaid: Decimal;
+    begin
+        CustLedger.Reset();
+        CustLedger.SetRange("Loan No", Loan."Loan  No.");
+        CustLedger.SetRange("Transaction Type", CustLedger."Transaction Type"::"Loan Repayment");
+        CustLedger.SetRange(Reversed, false);
+
+        if CustLedger.FindSet() then
+            repeat
+                TotalPaid += Abs(CustLedger.Amount);
+            until CustLedger.Next() = 0;
+
+        exit(TotalPaid);
+    end;
+
+    local procedure GetPrincipalInArrears(var Loan: Record "Loans Register"): Decimal
+    var
+        RepaymentSchedule: Record "Loan Repayment Schedule";
+        ExpectedPrincipal: Decimal;
+        PaidPrincipal: Decimal;
+    begin
+        RepaymentSchedule.Reset();
+        RepaymentSchedule.SetRange("Loan No.", Loan."Loan  No.");
+        RepaymentSchedule.SetFilter("Repayment Date", '..%1', Today);
+
+        if RepaymentSchedule.FindSet() then
+            repeat
+                ExpectedPrincipal += RepaymentSchedule."Principal Repayment";
+            until RepaymentSchedule.Next() = 0;
+
+        PaidPrincipal := GetPaidPrincipal(Loan);
+
+        if ExpectedPrincipal > PaidPrincipal then
+            exit(ExpectedPrincipal - PaidPrincipal)
+        else
+            exit(0);
+    end;
+
+    local procedure GetInterestInArrears(var Loan: Record "Loans Register"): Decimal
+    var
+        RepaymentSchedule: Record "Loan Repayment Schedule";
+        ExpectedInterest: Decimal;
+        PaidInterest: Decimal;
+    begin
+        RepaymentSchedule.Reset();
+        RepaymentSchedule.SetRange("Loan No.", Loan."Loan  No.");
+        RepaymentSchedule.SetFilter("Repayment Date", '..%1', Today);
+
+        if RepaymentSchedule.FindSet() then
+            repeat
+                ExpectedInterest += RepaymentSchedule."Monthly Interest";
+            until RepaymentSchedule.Next() = 0;
+
+        PaidInterest := GetPaidInterest(Loan);
+
+        if ExpectedInterest > PaidInterest then
+            exit(ExpectedInterest - PaidInterest)
+        else
+            exit(0);
+    end;
+
+    local procedure GetPaidPrincipal(var Loan: Record "Loans Register"): Decimal
+    var
+        CustLedger: Record "Cust. Ledger Entry";
+        PaidAmount: Decimal;
+    begin
+        CustLedger.Reset();
+        CustLedger.SetRange("Loan No", Loan."Loan  No.");
+        CustLedger.SetRange("Transaction Type", CustLedger."Transaction Type"::"Loan Repayment");
+        CustLedger.SetRange(Reversed, false);
+
+        if CustLedger.FindSet() then
+            repeat
+                PaidAmount += Abs(CustLedger.Amount);
+            until CustLedger.Next() = 0;
+
+        exit(PaidAmount);
+    end;
+
+    local procedure GetPaidInterest(var Loan: Record "Loans Register"): Decimal
+    var
+        CustLedger: Record "Cust. Ledger Entry";
+        PaidAmount: Decimal;
+    begin
+        CustLedger.Reset();
+        CustLedger.SetRange("Loan No", Loan."Loan  No.");
+        CustLedger.SetRange("Transaction Type", CustLedger."Transaction Type"::"Interest Paid");
+        CustLedger.SetRange(Reversed, false);
+
+        if CustLedger.FindSet() then
+            repeat
+                PaidAmount += Abs(CustLedger.Amount);
+            until CustLedger.Next() = 0;
+
+        exit(PaidAmount);
+    end;
+
+    local procedure CalcRepaymentCompliance(var Loan: Record "Loans Register"): Decimal
+    var
+        TotalScheduled: Integer;
+        OnTimePayments: Integer;
+    begin
+        GetRepaymentStats(Loan, TotalScheduled, OnTimePayments);
+
+        if TotalScheduled > 0 then
+            exit(Round((OnTimePayments / TotalScheduled) * 100, 0.01))
+        else
+            exit(0);
+    end;
+
+    local procedure GetRepaymentStats(var Loan: Record "Loans Register"; var TotalScheduled: Integer; var OnTimePayments: Integer)
+    var
+        RepaymentSchedule: Record "Loan Repayment Schedule";
+    begin
+        RepaymentSchedule.Reset();
+        RepaymentSchedule.SetRange("Loan No.", Loan."Loan  No.");
+        RepaymentSchedule.SetFilter("Repayment Date", '..%1', Today);
+
+        if RepaymentSchedule.FindSet() then
+            repeat
+                TotalScheduled += 1;
+                if IsPaymentOnTime(Loan."Loan  No.", RepaymentSchedule."Repayment Date",
+                   RepaymentSchedule."Principal Repayment" + RepaymentSchedule."Monthly Interest") then
+                    OnTimePayments += 1;
+            until RepaymentSchedule.Next() = 0;
+    end;
+
+    local procedure IsPaymentOnTime(LoanNo: Code[20]; DueDate: Date; ExpectedAmount: Decimal): Boolean
+    var
+        CustLedger: Record "Cust. Ledger Entry";
+        PaymentAmount: Decimal;
+        GracePeriod: Integer;
+        LastPaymentDate: Date;
+    begin
+        GracePeriod := 5; // 5 days grace period for payment
+
+        CustLedger.Reset();
+        CustLedger.SetRange("Loan No", LoanNo);
+        CustLedger.SetRange("Transaction Type", CustLedger."Transaction Type"::"Loan Repayment");
+        CustLedger.SetRange("Posting Date", 0D, DueDate + GracePeriod);
+        CustLedger.SetRange(Reversed, false);
+
+        if CustLedger.FindSet() then begin
+            repeat
+                PaymentAmount += Abs(CustLedger.Amount);
+                if CustLedger."Posting Date" > LastPaymentDate then
+                    LastPaymentDate := CustLedger."Posting Date";
+            until CustLedger.Next() = 0;
+
+            exit((PaymentAmount >= ExpectedAmount) and (LastPaymentDate <= (DueDate + GracePeriod)));
+        end;
+        exit(false);
+    end;
+
+    local procedure UpdateLoanStatus()
+    begin
+        if IsLoanDefaulted then begin
+            Loans."Loan Status" := Loans."Loan Status"::Rejected;
+            Loans.Modify();
+        end;
+    end;
+
+    var
+        TotalDisbursed: Decimal;
+        InterestEarned: Decimal;
+        ArrearsAmount: Decimal;
+        ActiveLoans: Integer;
+        DefaultCount: Integer;
+        DefaultRate: Decimal;
+        TotalRepaymentsDue: Integer;
+        TotalRepaidOnTime: Integer;
+        RepaymentRate: Decimal;
+        PrincipleBF: Decimal;
+        CalcAmountInArrears: Decimal;
+        CalcInterestArrears: Decimal;
+        CalcPrincipalArrears: Decimal;
 }
