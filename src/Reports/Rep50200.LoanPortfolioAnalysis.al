@@ -45,13 +45,11 @@ report 50200 "Loan Portfolio Analysis"
 
                 column(LoanNumber; "Loan  No.") { }
                 column(ProductType; "Loan Product Type Name") { }
+                column(LoanProductType; "Loan Product Type") { }
                 column(Amount_in_Arrears; "Amount in Arrears") { DecimalPlaces = 2 : 2; }
                 column(Interest_In_Arrears; "Interest In Arrears") { DecimalPlaces = 2 : 2; }
                 column(Principal_In_Arrears; "Principal In Arrears") { DecimalPlaces = 2 : 2; }
-                column(DaysInArrears; DaysInArrears) { }
-                column(IsDefaulted; IsLoanDefaulted)
-                {
-                }
+
 
                 column(RepaymentCompliance; RepaymentCompliance) { DecimalPlaces = 2 : 2; }
                 column(Outstanding_Balance; "Outstanding Balance") { DecimalPlaces = 2 : 2; }
@@ -113,15 +111,11 @@ report 50200 "Loan Portfolio Analysis"
             column(TotalRepaymentsDue; TotalRepaymentsDue) { }
             column(TotalRepaidOnTime; TotalRepaidOnTime) { }
             column(Issued_Amount; "Issued Amount") { DecimalPlaces = 2 : 2; }
-            column(MemberLoanNumber; MemberLoanNumber) { }
-            column(MemberOutstandingBalance; MemberOutstandingBalance) { DecimalPlaces = 2 : 2; }
-            column(MemberOutstandingInterest; MemberOutstandingInterest) { DecimalPlaces = 2 : 2; }
-            column(MemberExpectedOustandingBalance; MemberExpectedOustandingBalance) { DecimalPlaces = 2 : 2; }
-            column(MemberExpectedOustandingInterest; MemberExpectedOustandingInterest) { DecimalPlaces = 2 : 2; }
 
             trigger OnAfterGetRecord()
             var
-                Loans: Record "Loans Register";
+                LoansReg: Record "Loans Register";
+                CustLedger: Record "Cust. Ledger Entry";
             begin
                 Clear(TotalDisbursed);
                 Clear(InterestEarned);
@@ -132,28 +126,43 @@ report 50200 "Loan Portfolio Analysis"
                 Clear(TotalRepaymentsDue);
                 Clear(TotalRepaidOnTime);
                 Clear(RepaymentRate);
-                Clear(MemberLoanNumber);
-                Clear(MemberOutstandingBalance);
-                Clear(MemberOutstandingInterest);
-                Clear(MemberExpectedOustandingBalance);
-                Clear(MemberExpectedOustandingInterest);
 
-                Loans.Reset();
-                Loans.SetRange("Client Code", "Members Register"."No.");
-                Loans.SetRange("Loan Product Type", "Loan Products Setup".Code);
-                Loans.SetRange(Posted, true);
-                Loans.SetRange(Reversed, false);
-                if Loans.FindFirst() then begin
-                    Loans.CalcFields("Outstanding Balance", "Oustanding Interest");
+                LoansReg.Reset();
+                LoansReg.SetRange("Loan Product Type", Code);
+                if (StartDate <> 0D) and (EndDate <> 0D) then
+                    LoansReg.SetRange("Application Date", StartDate, EndDate);
+                LoansReg.SetRange(Posted, true);
 
-                    MemberLoanNumber := Loans."Loan  No.";
-                    MemberOutstandingBalance := Loans."Outstanding Balance";
-                    MemberOutstandingInterest := Loans."Oustanding Interest";
+                if LoansReg.FindSet() then begin
+                    repeat
+                        TotalDisbursed += LoansReg."Approved Amount";
+                        LoansReg.CalcFields("Outstanding Balance", "Interest Due", "Oustanding Interest");
 
-                    MemberExpectedOustandingBalance := GetExpectedOutstandingBalance(Loans, Today);
-                    MemberExpectedOustandingInterest := GetExpectedOutstandingInterest(Loans, Today);
+                        if LoansReg."Outstanding Balance" > 0 then
+                            ActiveLoans += 1;
 
-                    TotalMemberOutstandingBalance += MemberOutstandingBalance;
+                        CustLedger.Reset();
+                        CustLedger.SetRange("Loan No", LoansReg."Loan  No.");
+                        CustLedger.SetRange("Transaction Type", CustLedger."Transaction Type"::"Interest Paid");
+                        if (StartDate <> 0D) and (EndDate <> 0D) then
+                            CustLedger.SetRange("Posting Date", StartDate, EndDate);
+                        if CustLedger.FindSet() then
+                            repeat
+                                InterestEarned += Abs(CustLedger.Amount);
+                            until CustLedger.Next() = 0;
+
+                        InterestEarned += LoansReg."Interest Due" + LoansReg."Oustanding Interest";
+                        ArrearsAmount += LoansReg."Amount in Arrears";
+
+                        if IsDefaulted(LoansReg) then
+                            DefaultCount += 1;
+                    until LoansReg.Next() = 0;
+
+                    if ActiveLoans > 0 then
+                        DefaultRate := (DefaultCount / ActiveLoans) * 100;
+
+                    if TotalRepaymentsDue > 0 then
+                        RepaymentRate := (TotalRepaidOnTime / TotalRepaymentsDue) * 100;
                 end;
             end;
         }
@@ -224,11 +233,6 @@ report 50200 "Loan Portfolio Analysis"
         ExpectedOutstandingBalance: Decimal;
         ExpectedOutstandingInterest: Decimal;
         TotalMemberOutstandingBalance: Decimal;
-        MemberLoanNumber: Code[20];
-        MemberOutstandingBalance: Decimal;
-        MemberOutstandingInterest: Decimal;
-        MemberExpectedOustandingBalance: Decimal;
-        MemberExpectedOustandingInterest: Decimal;
 
     local procedure InitializeVariables()
     begin
@@ -613,4 +617,3 @@ report 50200 "Loan Portfolio Analysis"
         exit(ScheduledInterestUnpaid);
     end;
 }
-

@@ -88,7 +88,7 @@ Page 50003 "KRBCreditComitteeRoleCenter"
             part(Control122; "Power BI Report Spinner Part")
             {
                 ApplicationArea = Basic, Suite;
-                Visible = false;
+                Visible = true;
             }
 
             systempart(Control1901377608; MyNotes)
