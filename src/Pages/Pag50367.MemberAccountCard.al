@@ -799,6 +799,23 @@ page 50367 "Member Account Card"
                         END;
                     end;
                 }
+                /*  action("Loan Arrears list")
+                 {
+                     ApplicationArea = Basic;
+                     Caption = 'Loan Arrears List';
+                     Image = "Report";
+                     Promoted = true;
+                     PromotedCategory = "Report";
+
+                     trigger OnAction()
+                     begin
+                         Cust.Reset;
+                         Cust.SetRange(Cust."No.", Rec."No.");
+                         if Cust.Find('-') then begin
+                             Report.Run(50500, true, false, Cust);
+                         END;
+                     end;
+                 } */
                 action("Recover Loans from Gurantors")
                 {
                     ApplicationArea = Basic;

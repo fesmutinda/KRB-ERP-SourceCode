@@ -9,6 +9,7 @@ Page 56027 "Member List"
     PageType = List;
     SourceTable = Customer;
     SourceTableView = sorting("No.")
+
                       order(ascending)
                       where("Customer Type" = filter(Member),
                             "Customer Posting Group" = filter('MEMBER'));

@@ -34,6 +34,7 @@ report 50200 "Loan Portfolio Analysis"
             column(Company_Fax_No; CompanyInfo."Fax No.") { }
             column(Company_Picture; CompanyInfo.Picture) { }
             column(Company_Email; CompanyInfo."E-Mail") { }
+            column(TotalMemberOutstandingBalance; TotalMemberOutstandingBalance) { DecimalPlaces = 2 : 2; }
 
             dataitem(Loans; "Loans Register")
             {
@@ -44,12 +45,17 @@ report 50200 "Loan Portfolio Analysis"
 
                 column(LoanNumber; "Loan  No.") { }
                 column(ProductType; "Loan Product Type Name") { }
+                column(LoanProductType; "Loan Product Type") { }
                 column(Amount_in_Arrears; "Amount in Arrears") { DecimalPlaces = 2 : 2; }
                 column(Interest_In_Arrears; "Interest In Arrears") { DecimalPlaces = 2 : 2; }
                 column(Principal_In_Arrears; "Principal In Arrears") { DecimalPlaces = 2 : 2; }
-                column(DaysInArrears; DaysInArrears) { }
-                column(IsDefaulted; IsLoanDefaulted) { }
+
+
                 column(RepaymentCompliance; RepaymentCompliance) { DecimalPlaces = 2 : 2; }
+                column(Outstanding_Balance; "Outstanding Balance") { DecimalPlaces = 2 : 2; }
+                column(Outstanding_Interest; "Oustanding Interest") { DecimalPlaces = 2 : 2; }
+                column(ExpectedOutstandingBalance; ExpectedOutstandingBalance) { DecimalPlaces = 2 : 2; }
+                column(ExpectedOutstandingInterest; ExpectedOutstandingInterest) { DecimalPlaces = 2 : 2; }
 
                 trigger OnPreDataItem()
                 var
@@ -77,6 +83,10 @@ report 50200 "Loan Portfolio Analysis"
 
                     // Calculate and update arrears
                     CalcManualArrears(Loans);
+
+                    // Calculate expected outstanding balance and interest
+                    ExpectedOutstandingBalance := GetExpectedOutstandingBalance(Loans, Today);
+                    ExpectedOutstandingInterest := GetExpectedOutstandingInterest(Loans, Today);
                 end;
             }
         }
@@ -220,6 +230,9 @@ report 50200 "Loan Portfolio Analysis"
         TotalRecords: Integer;
         CurrentRecord: Integer;
         DialogText: Label 'Processing Record #@1@@ of @2@@';
+        ExpectedOutstandingBalance: Decimal;
+        ExpectedOutstandingInterest: Decimal;
+        TotalMemberOutstandingBalance: Decimal;
 
     local procedure InitializeVariables()
     begin
@@ -569,4 +582,38 @@ report 50200 "Loan Portfolio Analysis"
         CalcAmountInArrears: Decimal;
         CalcInterestArrears: Decimal;
         CalcPrincipalArrears: Decimal;
+
+    local procedure GetExpectedOutstandingBalance(var Loan: Record "Loans Register"; AsOfDate: Date): Decimal
+    var
+        RepaymentSchedule: Record "Loan Repayment Schedule";
+        ScheduledPrincipalPaid: Decimal;
+    begin
+        RepaymentSchedule.Reset();
+        RepaymentSchedule.SetRange("Loan No.", Loan."Loan  No.");
+        RepaymentSchedule.SetFilter("Repayment Date", '..%1', AsOfDate);
+
+        if RepaymentSchedule.FindSet() then
+            repeat
+                ScheduledPrincipalPaid += RepaymentSchedule."Principal Repayment";
+            until RepaymentSchedule.Next() = 0;
+
+        exit(Loan."Approved Amount" - ScheduledPrincipalPaid);
+    end;
+
+    local procedure GetExpectedOutstandingInterest(var Loan: Record "Loans Register"; AsOfDate: Date): Decimal
+    var
+        RepaymentSchedule: Record "Loan Repayment Schedule";
+        ScheduledInterestUnpaid: Decimal;
+    begin
+        RepaymentSchedule.Reset();
+        RepaymentSchedule.SetRange("Loan No.", Loan."Loan  No.");
+        RepaymentSchedule.SetFilter("Repayment Date", '%1..', AsOfDate + 1); // Payments after AsOfDate
+
+        if RepaymentSchedule.FindSet() then
+            repeat
+                ScheduledInterestUnpaid += RepaymentSchedule."Monthly Interest";
+            until RepaymentSchedule.Next() = 0;
+
+        exit(ScheduledInterestUnpaid);
+    end;
 }

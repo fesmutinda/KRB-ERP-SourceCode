@@ -3,7 +3,7 @@ report 50201 "Loan Defaulters List Print"
     UsageCategory = ReportsAndAnalysis;
     ApplicationArea = All;
     DefaultLayout = RDLC;
-    RDLCLayout = './Layouts/LoanDefaultersList.rdlc';
+    RDLCLayout = './Layout/LoanDefaultersList.rdlc';
     Caption = 'Loan Defaulters List';
 
     dataset
