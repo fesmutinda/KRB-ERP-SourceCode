@@ -174,45 +174,50 @@ Report 50225 "Member Share Capital Statement"
                 Dep1BF := 0;
                 Dep2BF := 0;
                 if DateFilterBF <> '' then begin
-                    Cust.Reset;
-                    Cust.SetRange(Cust."Customer No.", "No.");
-                    //ABEL COMMENT
-                    Cust.SetFilter(Cust."Date Filter", DateFilterBF);
-                    //ABEL COMMENT
-                    if Cust.Find('-') then begin
-                        // Cust.CalcFields(Cust.sha, Cust."Current Shares", Cust."Insurance Fund", Cust."Holiday Savings");
-                        // SharesBF := Cust."Current Shares";
-                        // ShareCapBF := Cust."Shares Retained";
-                        // RiskBF := Cust."Insurance Fund";
-                        // HolidayBF := Cust."Holiday Savings";
+                    BFCust.Reset;
+                    BFCust.SetRange("No.", "No.");
+                    BFCust.SetFilter("Date Filter", DateFilterBF);
+                    if BFCust.Find('-') then begin
+                        BFCust.CalcFields("Shares Retained");
+                        ShareCapBF := BFCust."Shares Retained";
                     end;
                 end;
             end;
 
             trigger OnPreDataItem()
             begin
-                /*
-                IF GETFILTER("Date Filter") <> '' THEN
-                DateFilterBF:='..'+ FORMAT(CALCDATE('-1D',GETRANGEMIN("Date Filter")));
-                */
+                if Customer.GetFilter("Date Filter") <> '' then
+                    DateFilterBF := '..' + Format(CalcDate('-1D', Customer.GetRangeMin("Date Filter")));
 
-                if GetFilter("Date Filter") <> '' then
-                    DateFilterBF := '..' + Format(CalcDate('-1D', GetRangeMin("Date Filter")));
-                //DateFilterBF:='..'+ FORMAT(GETRANGEMIN("Date Filter"));
-
+                if (StartDate <> 0D) and (EndDate <> 0D) then
+                    Customer.SetFilter("Date Filter", Format(StartDate) + '..' + Format(EndDate));
             end;
         }
     }
 
     requestpage
     {
-
         layout
         {
-        }
-
-        actions
-        {
+            area(content)
+            {
+                group(DateRange)
+                {
+                    Caption = 'Date Range';
+                    field(StartDate; StartDate)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Start Date';
+                        ToolTip = 'Select the start date for the report.';
+                    }
+                    field(EndDate; EndDate)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'End Date';
+                        ToolTip = 'Select the end date for the report.';
+                    }
+                }
+            }
         }
     }
 
@@ -237,6 +242,7 @@ Report 50225 "Member Share Capital Statement"
         FirstRec: Boolean;
         PrevBal: Integer;
         BalBF: Decimal;
+        BFCust: Record Customer;
         LoansR: Record "Loans Register";
         DateFilterBF: Text[150];
         SharesBF: Decimal;
@@ -297,6 +303,11 @@ Report 50225 "Member Share Capital Statement"
         BankCodeVanShares: Code[50];
         ApprovedAmount_Interest: Decimal;
         LonRepaymentSchedule: Record "Loan Repayment Schedule";
+        ClosingBalanceShareCap: Decimal;
+        OpenBalanceDeposits: Decimal;
+        ClosingBalanceDeposits: Decimal;
+        StartDate: Date;
+        EndDate: Date;
 
 
     local procedure GetBankCode(MembLedger: Record "Cust. Ledger Entry"): Text

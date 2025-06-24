@@ -1997,6 +1997,15 @@ kHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpBvD/AZI2
         <Field Name="Company_Email">
           <DataField>Company_Email</DataField>
         </Field>
+        <Field Name="StartDate_Filter">
+          <DataField>StartDate_Filter</DataField>
+        </Field>
+        <Field Name="EndDate_Filter">
+          <DataField>EndDate_Filter</DataField>
+        </Field>
+        <Field Name="DateRange_Text">
+          <DataField>DateRange_Text</DataField>
+        </Field>
         <Field Name="ReportForNavId_1000000009">
           <DataField>ReportForNavId_1000000009</DataField>
         </Field>

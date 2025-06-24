@@ -269,22 +269,38 @@ Report 56531 "Loan Statement"
 
             trigger OnPreDataItem()
             begin
-
                 if "Members Register".GetFilter("Members Register"."Date Filter") <> '' then
                     DateFilterBF := '..' + Format(CalcDate('-1D', "Members Register".GetRangeMin("Members Register"."Date Filter")));
+
+                if (StartDate <> 0D) and (EndDate <> 0D) then
+                    "Members Register".SetFilter("Date Filter", Format(StartDate) + '..' + Format(EndDate));
             end;
         }
     }
 
     requestpage
     {
-
         layout
         {
-        }
-
-        actions
-        {
+            area(content)
+            {
+                group(DateRange)
+                {
+                    Caption = 'Date Range';
+                    field(StartDate; StartDate)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Start Date';
+                        ToolTip = 'Select the start date for the report.';
+                    }
+                    field(EndDate; EndDate)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'End Date';
+                        ToolTip = 'Select the end date for the report.';
+                    }
+                }
+            }
         }
     }
 
@@ -350,5 +366,7 @@ Report 56531 "Loan Statement"
         LoansR6: Record "Loans Register";
         Rshedule: Record "Loan Repayment Schedule";
         Totalrepayment: Decimal;
+        StartDate: Date;
+        EndDate: Date;
 }
 

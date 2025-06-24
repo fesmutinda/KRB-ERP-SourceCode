@@ -65,6 +65,15 @@ Report 56522 "Member Statement Deposits"
             column(Company_Email; Company."E-Mail")
             {
             }
+            column(StartDate_Filter; StartDate)
+            {
+            }
+            column(EndDate_Filter; EndDate)
+            {
+            }
+            column(DateRange_Text; 'From ' + Format(StartDate) + ' To ' + Format(EndDate))
+            {
+            }
             dataitem(ShareCapital; "Cust. Ledger Entry")
             {
                 DataItemLink = "Customer No." = field("No."), "Posting Date" = field("Date Filter");
@@ -123,6 +132,8 @@ Report 56522 "Member Statement Deposits"
                 begin
                     ClosingBalanceShareCap := ShareCapBF;
                     OpenBalanceShareCap := ShareCapBF;
+                    if (StartDate <> 0D) and (EndDate <> 0D) then
+                        ShareCapital.SetFilter("Posting Date", Format(StartDate) + '..' + Format(EndDate));
                 end;
             }
             dataitem(Deposits; "Cust. Ledger Entry")
@@ -183,6 +194,8 @@ Report 56522 "Member Statement Deposits"
                 begin
                     ClosingBalanceDeposits := SharesBF;
                     OpenBalanceDeposits := SharesBF;
+                    if (StartDate <> 0D) and (EndDate <> 0D) then
+                        Deposits.SetFilter("Posting Date", Format(StartDate) + '..' + Format(EndDate));
                 end;
             }
             dataitem(Dividend; "Cust. Ledger Entry")
@@ -243,6 +256,8 @@ Report 56522 "Member Statement Deposits"
                 begin
                     ClosingBalanceDividend := DividendBF;
                     OpenBalanceDividend := DividendBF;
+                    if (StartDate <> 0D) and (EndDate <> 0D) then
+                        Dividend.SetFilter("Posting Date", Format(StartDate) + '..' + Format(EndDate));
                 end;
             }
             dataitem(Khoja; "Cust. Ledger Entry")
@@ -303,6 +318,8 @@ Report 56522 "Member Statement Deposits"
                 begin
                     ClosingBalanceKhoja := KhojaBF;
                     OpenBalanceKhoja := KhojaBF;
+                    if (StartDate <> 0D) and (EndDate <> 0D) then
+                        Khoja.SetFilter("Posting Date", Format(StartDate) + '..' + Format(EndDate));
                 end;
             }
             dataitem(Loans; "Loans Register")
@@ -426,6 +443,8 @@ Report 56522 "Member Statement Deposits"
                     begin
                         CLosingBalance := PrincipleBF;
                         OpeningBal := PrincipleBF;
+                        if (StartDate <> 0D) and (EndDate <> 0D) then
+                            loan.SetFilter("Posting Date", Format(StartDate) + '..' + Format(EndDate));
                     end;
                 }
 
@@ -447,6 +466,8 @@ Report 56522 "Member Statement Deposits"
                 trigger OnPreDataItem()
                 begin
                     Loans.SetFilter(Loans."Date filter", "Members Register".GetFilter("Members Register"."Date Filter"));
+                    if (StartDate <> 0D) and (EndDate <> 0D) then
+                        Loans.SetFilter("Date filter", Format(StartDate) + '..' + Format(EndDate));
                 end;
             }
             trigger OnAfterGetRecord()
@@ -478,22 +499,37 @@ Report 56522 "Member Statement Deposits"
 
             trigger OnPreDataItem()
             begin
-
                 if "Members Register".GetFilter("Members Register"."Date Filter") <> '' then
                     DateFilterBF := '..' + Format(CalcDate('-1D', "Members Register".GetRangeMin("Members Register"."Date Filter")));
+                if (StartDate <> 0D) and (EndDate <> 0D) then
+                    "Members Register".SetFilter("Date Filter", Format(StartDate) + '..' + Format(EndDate));
             end;
         }
     }
 
     requestpage
     {
-
         layout
         {
-        }
-
-        actions
-        {
+            area(content)
+            {
+                group(DateRange)
+                {
+                    Caption = 'Date Range';
+                    field(StartDate; StartDate)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Start Date';
+                        ToolTip = 'Select the start date for the report.';
+                    }
+                    field(EndDate; EndDate)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'End Date';
+                        ToolTip = 'Select the end date for the report.';
+                    }
+                }
+            }
         }
     }
 
@@ -563,5 +599,7 @@ Report 56522 "Member Statement Deposits"
         ClosingBalanceDividend: Decimal;
         OpenBalanceKhoja: Decimal;
         ClosingBalanceKhoja: Decimal;
+        StartDate: Date;
+        EndDate: Date;
 }
 

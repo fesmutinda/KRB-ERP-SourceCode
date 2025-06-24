@@ -180,12 +180,18 @@ Report 50226 "Loans Guaranteed"
                         // end;
 
                         RemainingRepayment := FnCalculateLoanRemainingPeriod(
-    Loans."Outstanding Balance",
-    Loans."Approved Amount",
-    Loans.Installments,
-    Loans.Interest
-);
+                            Loans."Outstanding Balance",
+                            Loans."Approved Amount",
+                            Loans.Installments,
+                            Loans.Interest
+                        );
                     end;
+                end;
+
+                trigger OnPreDataItem()
+                begin
+                    if (StartDate <> 0D) and (EndDate <> 0D) then
+                        "Loan Guarantors".SetFilter("Date", Format(StartDate) + '..' + Format(EndDate));
                 end;
             }
         }
@@ -193,21 +199,27 @@ Report 50226 "Loans Guaranteed"
 
     requestpage
     {
-
         layout
         {
-            area(Content)
+            area(content)
             {
-                field(Currdate; Currdate)
+                group(DateRange)
                 {
-                    ApplicationArea = all;
-
+                    Caption = 'Date Range';
+                    field(StartDate; StartDate)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Start Date';
+                        ToolTip = 'Select the start date for the report.';
+                    }
+                    field(EndDate; EndDate)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'End Date';
+                        ToolTip = 'Select the end date for the report.';
+                    }
                 }
             }
-        }
-
-        actions
-        {
         }
     }
 
@@ -263,8 +275,11 @@ Report 50226 "Loans Guaranteed"
         Company: Record "Company Information";
 
         RemainingRepayment: Decimal;
-
-
+        Amortized: Boolean;
+        TotalGuaranteed: Decimal;
+        GuaBalance: Decimal;
+        StartDate: Date;
+        EndDate: Date;
 
     procedure FnCalculateLoanRemainingPeriod(
     LoanOutstandingBalance: Decimal;
@@ -320,4 +335,5 @@ Report 50226 "Loans Guaranteed"
         exit(RemainingPeriods);
     end;
 }
+
 
