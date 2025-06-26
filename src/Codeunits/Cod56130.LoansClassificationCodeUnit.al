@@ -70,7 +70,7 @@ codeunit 56130 "LoansClassificationCodeUnit"
     begin
         TotalPayments := 0;
         MemberLedgerEntry.Reset;
-        MemberLedgerEntry.SetFilter(MemberLedgerEntry."Transaction Type", '%1|%2', MemberLedgerEntry."transaction type"::Loan, MemberLedgerEntry."transaction type"::"Loan Repayment");
+        MemberLedgerEntry.SetFilter(MemberLedgerEntry."Transaction Type", '%1|%2|%3|%4|%5', MemberLedgerEntry."transaction type"::Loan, MemberLedgerEntry."transaction type"::"Loan Repayment", MemberLedgerEntry."Transaction Type"::"Interest Due", MemberLedgerEntry."Transaction Type"::"Interest Paid", MemberLedgerEntry."Transaction Type"::"Loan Transfer Charges");
         MemberLedgerEntry.SetRange(MemberLedgerEntry."Loan No", LoanNos);
         MemberLedgerEntry.SetFilter(MemberLedgerEntry."Posting Date", '%1..%2', 0D, FilterDate);
         MemberLedgerEntry.SetRange(MemberLedgerEntry.Reversed, false);
@@ -99,7 +99,8 @@ codeunit 56130 "LoansClassificationCodeUnit"
         RepaymentSchedule.SetFilter(RepaymentSchedule."Repayment Date", '%1..%2', 0D, DateFiltering);
         if RepaymentSchedule.FindLast then begin
             repeat
-                ScheduleExpectedBal := ROUND(RepaymentSchedule."Loan Balance" + RepaymentSchedule."Principal Repayment");
+                //ScheduleExpectedBal := ROUND(RepaymentSchedule."Loan Balance" + RepaymentSchedule."Principal Repayment");
+                ScheduleExpectedBal := ROUND(RepaymentSchedule."Loan Balance");
 
             until RepaymentSchedule.Next = 0;
         end;
@@ -115,9 +116,10 @@ codeunit 56130 "LoansClassificationCodeUnit"
         if LoansReg.Find('-') then begin
             LoansReg."Amount in Arrears" := 0;
             LoansReg."No of Months in Arrears" := 0;
-            LoansReg."Loans Category-SASRA" := LoansReg."loans category-sasra"::Perfoming;
+            LoansReg."Loans Category" := LoansReg."loans category"::Perfoming;
             LoansReg."Loans Category-SASRA" := LoansReg."Loans Category-SASRA"::Perfoming;
             LoansReg.Modify(true);
+            Commit();
         end;
     end;
 
@@ -141,29 +143,44 @@ codeunit 56130 "LoansClassificationCodeUnit"
             if RepaymentScheduleAmount <= 0 then
                 RepaymentScheduleAmount := LoansReg."Loan Principle Repayment";
             //..................................................................................Repayment
-            IF LoansRegTablw.Installments = 0 THEN begin
-                LoansRegTablw.Installments := 12;
+            IF LoansReg.Installments = 0 THEN begin
+                LoansReg.Installments := 12;
             end;
-            LoansReg."No of Months in Arrears" := ROUND(LoansReg."Amount in Arrears" / RepaymentScheduleAmount, 1, '=');
 
-            DaysInArreas := LoansReg."No of Months in Arrears" * 30;
+            if RepaymentScheduleAmount > 0 then begin
+                LoansReg."No of Months in Arrears" := ROUND(LoansReg."Amount in Arrears" / RepaymentScheduleAmount, 1, '=');
+                DaysInArreas := LoansReg."No of Months in Arrears" * 30;
+                LoansReg."Days In Arrears" := DaysInArreas;
+            end else begin
+                LoansReg."No of Months in Arrears" := 0;
+                LoansReg."Days In Arrears" := 0;
+            end;
+
             if (DaysInArreas <= 30) then begin
                 LoansReg."Loans Category-SASRA" := LoansReg."Loans Category-SASRA"::Perfoming;
+                LoansReg."Loans Category" := LoansReg."Loans Category"::Perfoming;
             end else
                 if (DaysInArreas > 30) and (DaysInArreas <= 60) then begin
                     LoansReg."Loans Category-SASRA" := LoansReg."loans category-sasra"::Watch;
+                    LoansReg."Loans Category" := LoansReg."Loans Category"::Watch;
                 end
                 else
                     if (DaysInArreas > 60) and (DaysInArreas <= 180) then begin
                         LoansReg."Loans Category-SASRA" := LoansReg."loans category-sasra"::Substandard;
+                        LoansReg."Loans Category" := LoansReg."Loans Category"::Substandard;
                     end else
                         if (DaysInArreas > 180) and (DaysInArreas <= 360) then begin
                             LoansReg."Loans Category-SASRA" := LoansReg."loans category-sasra"::Doubtful;
+                            LoansReg."Loans Category" := LoansReg."Loans Category"::Doubtful;
                         end else
-                            if (LoansReg."No of Months in Arrears" > 360) then begin
+                            if (DaysInArreas > 360) then begin
                                 LoansReg."Loans Category-SASRA" := LoansReg."loans category-sasra"::Loss;
+                                LoansReg."Loans Category" := LoansReg."Loans Category"::Loss;
                             end;
+
+            LoansReg."Days In Arrears" := DaysInArreas;
             LoansReg.Modify(true);
+            Commit();
         end;
     end;
 

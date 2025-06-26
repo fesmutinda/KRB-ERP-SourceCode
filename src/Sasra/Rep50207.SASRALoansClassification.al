@@ -83,18 +83,18 @@ Report 50207 "SASRA Loans Classification"
                         LoansClassificationCodeUnit.FnClassifyLoan(LoansReg."Loan  No.", AsAt);
                     until LoansReg.Next = 0;
                 end else
-                    if not Find('-') then begin
-                        repeat
-                            //...................Loan is not within the specified range
-                            if LoansReg.Posted = true then begin
-                                LoansReg."Loans Category-SASRA" := LoansReg."loans category-sasra"::Perfoming;
-                                LoansReg.Modify(true);
-                            end;
-                        until LoansReg.Next = 0;
-                    end;
-                //...........Current Loan Balance
+                    // if not Find('-') then begin
+                    //     repeat
+                    //         //...................Loan is not within the specified range
+                    //         if LoansReg.Posted = true then begin
+                    //             LoansReg."Loans Category-SASRA" := LoansReg."loans category-sasra"::Perfoming;
+                    //             LoansReg.Modify(true);
+                    //         end;
+                    //     until LoansReg.Next = 0;
+                    // end;
+                    //...........Current Loan Balance
 
-                CurrentLoanBalance := 0;
+                    CurrentLoanBalance := 0;
                 CurrentLoanBalance := LoansReg."Outstanding Balance";
                 //...........Calculate Principle Arrears
                 LoanArrears := 0;

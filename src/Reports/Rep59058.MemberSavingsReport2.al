@@ -125,19 +125,19 @@ report 59058 "Member Savings Report2"
                         until TempCustomerBuffer.Next() = 0;
                     end;
 
-                    OtherCustomerBuffer.Reset();
-                    if OtherCustomerBuffer.FindSet() then begin
-                        repeat
-                            if Counter = Number then begin
-                                CustomerCode := OtherCustomerBuffer."No.";
-                                CalculateCustomerTotals(GLAccount."No.", CustomerCode);
-                                CustomerCode := IdentifiedCustomerNo;
-                                CustomerName := IdentifiedCustomerName;
-                                exit;
-                            end;
-                            Counter += 1;
-                        until OtherCustomerBuffer.Next() = 0;
-                    end
+                    // OtherCustomerBuffer.Reset();
+                    // if OtherCustomerBuffer.FindSet() then begin
+                    //     repeat
+                    //         if Counter = Number then begin
+                    //             CustomerCode := OtherCustomerBuffer."No.";
+                    //             CalculateCustomerTotals(GLAccount."No.", CustomerCode);
+                    //             CustomerCode := IdentifiedCustomerNo;
+                    //             CustomerName := IdentifiedCustomerName;
+                    //             exit;
+                    //         end;
+                    //         Counter += 1;
+                    //     until OtherCustomerBuffer.Next() = 0;
+                    // end
                 end;
             }
 
@@ -152,8 +152,8 @@ report 59058 "Member Savings Report2"
                         SetRange("No.", '2233');
                     SelectedGLAccount::"2310":
                         SetRange("No.", '2310');
-                    SelectedGLAccount::"2234":
-                        SetRange("No.", '2234');
+                    // SelectedGLAccount::"2234":
+                    //     SetRange("No.", '2234');
                     SelectedGLAccount::"1211":
                         SetRange("No.", '1211');
                     SelectedGLAccount::"1212":
@@ -208,7 +208,7 @@ report 59058 "Member Savings Report2"
                     {
                         ApplicationArea = All;
                         Caption = 'G/L Account';
-                        OptionCaption = ' ,2231 - Children Savings,2232 - Withdrawable Savings,2233 - Members Deposits,2310 - Share Capital,2234 - Excess,1211 - Development Loan,1212 - Development Loan 2, 1213 - Investment Loan,1214 - Emergency Loan,1215 - School Fee Loan,1217 - Instant Loan,1218 - Sheria Compliant Loan,1219 - Development Loan 2 (14%)';
+                        OptionCaption = ' ,2231 - Children Savings,2232 - Withdrawable Savings,2233 - Members Deposits,2310 - Share Capital,1211 - Development Loan,1212 - Development Loan 2, 1213 - Investment Loan,1214 - Emergency Loan,1215 - School Fee Loan,1217 - Instant Loan,1218 - Sheria Compliant Loan,1219 - Development Loan 2 (14%)';
                     }
                 }
             }
@@ -236,7 +236,7 @@ report 59058 "Member Savings Report2"
         TotalCredits: Decimal;
         OpeningBalance: Decimal;
         ClosingBalance: Decimal;
-        SelectedGLAccount: Option " ","2231","2232","2233","2310","2234","1211","1212","1213","1214","1215","1217","1218","1219";
+        SelectedGLAccount: Option " ","2231","2232","2233","2310","1211","1212","1213","1214","1215","1217","1218","1219";
         TempCustomerBuffer: Record Customer temporary;
 
         OtherCustomerBuffer: Record Customer temporary;
@@ -298,24 +298,25 @@ report 59058 "Member Savings Report2"
                             CustomerCount += 1;
                         end;
                     end;
-                end else begin
+                end
+            // end else begin
 
 
-                    OtherCustomerBuffer.Reset();
-                    TempCustomerBuffer.SetRange("No.", CustomerNo);
+            //     OtherCustomerBuffer.Reset();
+            //     TempCustomerBuffer.SetRange("No.", CustomerNo);
 
-                    if OtherCustomerBuffer.IsEmpty() then begin
-                        TempEntryRec.SetRange("Transaction No.", GLEntryRec."Transaction No.");
-                        TempEntryRec.SetRange("Source No.", CustomerNo);
-                        OtherCustomerBuffer.Init();
-                        OtherCustomerBuffer."No." := CustomerNo;
-                        OtherCustomerBuffer.Name := 'Unknown Customer';
-                        OtherCustomerBuffer.Insert();
-                        CustomerCount += 1;
+            //     if OtherCustomerBuffer.IsEmpty() then begin
+            //         TempEntryRec.SetRange("Transaction No.", GLEntryRec."Transaction No.");
+            //         TempEntryRec.SetRange("Source No.", CustomerNo);
+            //         OtherCustomerBuffer.Init();
+            //         OtherCustomerBuffer."No." := CustomerNo;
+            //         OtherCustomerBuffer.Name := 'Unknown Customer';
+            //         OtherCustomerBuffer.Insert();
+            //         CustomerCount += 1;
 
-                    end;
+            //     end;
 
-                end;
+            // end;
             until GLEntryRec.Next() = 0;
     end;
 
@@ -384,28 +385,29 @@ report 59058 "Member Savings Report2"
         // Third pass: Handle direct postings (entries without source)
         // This section processes entries that don't have a Source No. but are part of 
         // transactions that may relate to the customer
-        if CustomerNo = '' then begin
-            GLEntryRec.Reset();
-            GLEntryRec.SetRange("G/L Account No.", GLAccountNo);
-            GLEntryRec.SetRange("Source No.", ''); // Direct postings
-            GLEntryRec.SetRange("Posting Date", StartDate, EndDate);
+        // if CustomerNo = '' then begin
+        // GLEntryRec.Reset();
+        // GLEntryRec.SetRange("G/L Account No.", GLAccountNo);
+        // GLEntryRec.SetRange("Source No.", ''); // Direct postings
+        // GLEntryRec.SetRange("Posting Date", StartDate, EndDate);
+        // GLEntryRec.SetFilter("Document No.", '<>OB 123124');
 
-            if GLEntryRec.FindSet() then
-                repeat
-                    TransactionNo := GLEntryRec."Transaction No.";
+        // if GLEntryRec.FindSet() then
+        //     repeat
+        //         TransactionNo := GLEntryRec."Transaction No.";
 
-                    // Only process transactions that haven't been processed yet
-                    if not ProcessedTransactions.Contains(TransactionNo) then begin
+        //         // Only process transactions that haven't been processed yet
+        //         if not ProcessedTransactions.Contains(TransactionNo) then begin
 
-                        FnCalculateDirectPostingTotals(TransactionNo, CustomerNo, TransactionSummary,
-                            NetAmount, TotalDebits, TotalCredits, OpeningBalance, Balance);
-                        ProcessedTransactions.Add(TransactionNo);
+        //             FnCalculateDirectPostingTotals(TransactionNo, CustomerNo, TransactionSummary,
+        //                 NetAmount, TotalDebits, TotalCredits, OpeningBalance, Balance);
+        //             ProcessedTransactions.Add(TransactionNo);
 
-                        IdentifiedCustomerNo := CustomerNo;
-                        IdentifiedCustomerName := 'Unknown Customer';
-                    end;
-                until GLEntryRec.Next() = 0;
-        end;
+        //             IdentifiedCustomerNo := CustomerNo;
+        //             IdentifiedCustomerName := 'Unknown Customer';
+        //         end;
+        //     until GLEntryRec.Next() = 0;
+        // end;
 
         // Calculate final balance
         if IsAssetAccount then

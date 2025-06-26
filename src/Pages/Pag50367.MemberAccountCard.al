@@ -692,6 +692,22 @@ page 50367 "Member Account Card"
                             Report.Run(50225, true, false, Cust);
                     end;
                 }
+
+                action("Excess Statement")
+                {
+                    ApplicationArea = Basic;
+                    Image = "Report";
+                    Promoted = true;
+                    PromotedCategory = "Report";
+
+                    trigger OnAction()
+                    begin
+                        Cust.Reset;
+                        Cust.SetRange(Cust."No.", Rec."No.");
+                        if Cust.Find('-') then
+                            Report.Run(59059, true, false, Cust);
+                    end;
+                }
                 action("Loans Statement")
                 {
                     ApplicationArea = Basic;

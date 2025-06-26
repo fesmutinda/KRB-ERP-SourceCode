@@ -314,6 +314,20 @@ Page 56030 "Loans Posted List"
                     PromotedCategory = Process;
 
                 }
+
+
+                action("Appraise Old Loans")
+                {
+                    ApplicationArea = all;
+                    ToolTip = 'Appraise Old Loans';
+
+                    trigger OnAction()
+                    var
+                        SwiszzFactory: Codeunit 50009;
+                    begin
+                        SwiszzFactory.FnHandleOldKRBLOANS();
+                    end;
+                }
                 separator(Action6)
                 {
                 }
