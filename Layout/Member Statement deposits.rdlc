@@ -917,7 +917,7 @@
             <Top>3.1758in</Top>
             <Left>0.25194in</Left>
             <Height>0.84201in</Height>
-            <Width>7.86586in</Width>
+            <Width>7.86589in</Width>
             <ZIndex>1</ZIndex>
             <Style>
               <Border>
@@ -1996,6 +1996,15 @@ kHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpBvD/AZI2
         </Field>
         <Field Name="Company_Email">
           <DataField>Company_Email</DataField>
+        </Field>
+        <Field Name="StartDate_Filter">
+          <DataField>StartDate_Filter</DataField>
+        </Field>
+        <Field Name="EndDate_Filter">
+          <DataField>EndDate_Filter</DataField>
+        </Field>
+        <Field Name="DateRange_Text">
+          <DataField>DateRange_Text</DataField>
         </Field>
         <Field Name="ReportForNavId_1000000009">
           <DataField>ReportForNavId_1000000009</DataField>

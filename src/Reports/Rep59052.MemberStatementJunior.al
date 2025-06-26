@@ -545,6 +545,8 @@ Report 59052 "Member Statement Junior"
             begin
                 if "Members Register".GetFilter("Members Register"."Date Filter") <> '' then
                     DateFilterBF := '..' + Format(CalcDate('-1D', "Members Register".GetRangeMin("Members Register"."Date Filter")));
+                if (StartDate <> 0D) and (EndDate <> 0D) then
+                    "Members Register".SetFilter("Date Filter", Format(StartDate) + '..' + Format(EndDate));
             end;
         }
     }
@@ -553,10 +555,25 @@ Report 59052 "Member Statement Junior"
     {
         layout
         {
-        }
-
-        actions
-        {
+            area(content)
+            {
+                group(DateRange)
+                {
+                    Caption = 'Date Range';
+                    field(StartDate; StartDate)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Start Date';
+                        ToolTip = 'Select the start date for the report.';
+                    }
+                    field(EndDate; EndDate)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'End Date';
+                        ToolTip = 'Select the end date for the report.';
+                    }
+                }
+            }
         }
     }
 
@@ -838,4 +855,6 @@ Report 59052 "Member Statement Junior"
         JuniorAccountName: Text[100];
         GuardianLoanFilter: Text;
         TempMember: Record Customer;
+        StartDate: Date;
+        EndDate: Date;
 }

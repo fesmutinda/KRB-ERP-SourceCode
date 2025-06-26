@@ -16,7 +16,7 @@
       <Body>
         <ReportItems>
           <Line Name="Line2">
-            <Top>8.22315cm</Top>
+            <Top>7.67838cm</Top>
             <Left>0.2047in</Left>
             <Height>0cm</Height>
             <Width>21.22435cm</Width>
@@ -886,10 +886,9 @@
                 <Value>=Fields!PostingDate_loan.Value</Value>
               </SortExpression>
             </SortExpressions>
-            <Top>3.3069in</Top>
+            <Top>3.09243in</Top>
             <Left>0.20464in</Left>
             <Height>0.89757in</Height>
-            <Width>8.3561in</Width>
             <Width>8.3561in</Width>
             <ZIndex>1</ZIndex>
             <Style>
@@ -1121,7 +1120,7 @@
             <rd:DefaultName>Textbox16</rd:DefaultName>
             <Top>2.14032in</Top>
             <Left>0.51995cm</Left>
-            <Height>0.62145cm</Height>
+            <Height>0.27418cm</Height>
             <Width>21.22435cm</Width>
             <ZIndex>7</ZIndex>
             <Style>
@@ -1134,7 +1133,7 @@
               <PaddingBottom>2pt</PaddingBottom>
             </Style>
           </Textbox>
-          <Image Name="Image3">
+          <Image Name="Image4">
             <Source>Embedded</Source>
             <Value>krbsaccoLogo2</Value>
             <Sizing>FitProportional</Sizing>
@@ -1166,11 +1165,11 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox95</rd:DefaultName>
-            <Top>2.41276in</Top>
-            <Left>0.22906in</Left>
-            <Height>0.19054in</Height>
-            <Width>1.83518in</Width>
-            <ZIndex>9</ZIndex>
+            <Top>2.30382in</Top>
+            <Left>0.20464in</Left>
+            <Height>0.18259in</Height>
+            <Width>1.66832in</Width>
+            <ZIndex>8</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1200,11 +1199,11 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>LoanNumber</rd:DefaultName>
-            <Top>2.41276in</Top>
-            <Left>2.01488in</Left>
-            <Height>0.19054in</Height>
-            <Width>2.13634in</Width>
-            <ZIndex>10</ZIndex>
+            <Top>2.30382in</Top>
+            <Left>1.87302in</Left>
+            <Height>0.18259in</Height>
+            <Width>2.31826in</Width>
+            <ZIndex>9</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1233,11 +1232,11 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>ProductType</rd:DefaultName>
-            <Top>2.6033in</Top>
-            <Left>0.22906in</Left>
-            <Height>0.22179in</Height>
-            <Width>1.83518in</Width>
-            <ZIndex>11</ZIndex>
+            <Top>2.52807in</Top>
+            <Left>0.2047in</Left>
+            <Height>0.22108in</Height>
+            <Width>1.66832in</Width>
+            <ZIndex>10</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1268,11 +1267,11 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>ProductType1</rd:DefaultName>
-            <Top>2.6033in</Top>
-            <Left>2.01488in</Left>
-            <Height>0.22179in</Height>
-            <Width>2.13634in</Width>
-            <ZIndex>12</ZIndex>
+            <Top>2.52807in</Top>
+            <Left>1.90074in</Left>
+            <Height>0.20719in</Height>
+            <Width>2.31826in</Width>
+            <ZIndex>11</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1301,11 +1300,11 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox95</rd:DefaultName>
-            <Top>2.82508in</Top>
-            <Left>0.22906in</Left>
-            <Height>0.17662in</Height>
-            <Width>1.83518in</Width>
-            <ZIndex>13</ZIndex>
+            <Top>2.77693in</Top>
+            <Left>0.20464in</Left>
+            <Height>0.17661in</Height>
+            <Width>1.66832in</Width>
+            <ZIndex>12</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1336,11 +1335,11 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>LoanNumber</rd:DefaultName>
-            <Top>2.82508in</Top>
-            <Left>2.03645in</Left>
-            <Height>0.17662in</Height>
-            <Width>2.11477in</Width>
-            <ZIndex>14</ZIndex>
+            <Top>2.77693in</Top>
+            <Left>1.90074in</Left>
+            <Height>0.17661in</Height>
+            <Width>2.30437in</Width>
+            <ZIndex>13</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1351,6 +1350,20 @@
               <PaddingBottom>2pt</PaddingBottom>
             </Style>
           </Textbox>
+          <Image Name="Image4">
+            <Source>Embedded</Source>
+            <Value>krbsaccoLogo2</Value>
+            <Sizing>FitProportional</Sizing>
+            <Left>3.79886in</Left>
+            <Height>0.92708in</Height>
+            <Width>0.99369in</Width>
+            <ZIndex>14</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+            </Style>
+          </Image>
           <Textbox Name="ProductType2">
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
@@ -1361,6 +1374,7 @@
                     <Value>Payroll No:</Value>
                     <Style>
                       <FontFamily>Segoe UI</FontFamily>
+                      <FontSize>9pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
@@ -1369,10 +1383,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>ProductType</rd:DefaultName>
-            <Top>2.6033in</Top>
-            <Left>4.70841in</Left>
-            <Height>0.22179in</Height>
-            <Width>1.36435in</Width>
+            <Top>2.3646in</Top>
+            <Left>5.4872in</Left>
+            <Height>0.19749in</Height>
+            <Width>1.72105in</Width>
             <ZIndex>15</ZIndex>
             <Style>
               <Border>
@@ -1404,10 +1418,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>ProductType1</rd:DefaultName>
-            <Top>2.58941in</Top>
-            <Left>6.08666in</Left>
-            <Height>0.22179in</Height>
-            <Width>2.3313in</Width>
+            <Top>2.3646in</Top>
+            <Left>7.23889in</Left>
+            <Height>0.19446in</Height>
+            <Width>1.32185in</Width>
             <ZIndex>16</ZIndex>
             <Style>
               <Border>
@@ -1428,6 +1442,7 @@
                   <TextRun>
                     <Value>Phone No</Value>
                     <Style>
+                      <FontSize>9pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
@@ -1436,10 +1451,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
-            <Top>2.41276in</Top>
-            <Left>4.70841in</Left>
-            <Height>0.19054in</Height>
-            <Width>1.36435in</Width>
+            <Top>2.58987in</Top>
+            <Left>5.4872in</Left>
+            <Height>0.18706in</Height>
+            <Width>1.69948in</Width>
             <ZIndex>17</ZIndex>
             <Style>
               <Border>
@@ -1459,7 +1474,6 @@
                 <TextRuns>
                   <TextRun>
                     <Value>=First(Fields!Phone_No_.Value, "DataSet_Result")</Value>
-                    <Value>=First(Fields!Phone_No_.Value, "DataSet_Result")</Value>
                     <Style />
                   </TextRun>
                 </TextRuns>
@@ -1469,10 +1483,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>PhoneNo_MemberRegister</rd:DefaultName>
-            <Top>2.39887in</Top>
-            <Left>6.07276in</Left>
-            <Height>0.19054in</Height>
-            <Width>2.35284in</Width>
+            <Top>2.55906in</Top>
+            <Left>7.22214in</Left>
+            <Height>0.19009in</Height>
+            <Width>1.3386in</Width>
             <ZIndex>18</ZIndex>
             <Style>
               <Border>
@@ -1493,6 +1507,7 @@
                   <TextRun>
                     <Value>Registration Date:</Value>
                     <Style>
+                      <FontSize>9pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
@@ -1501,11 +1516,45 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox3</rd:DefaultName>
-            <Top>2.82508in</Top>
-            <Left>4.70841in</Left>
+            <Top>2.77692in</Top>
+            <Left>5.4872in</Left>
             <Height>0.17662in</Height>
-            <Width>1.36435in</Width>
+            <Width>1.27546in</Width>
             <ZIndex>19</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="Textbox4">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>=First(Fields!Registration_Date.Value, "DataSet_Result")</Value>
+                    <Style>
+                      <FontSize>9pt</FontSize>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Right</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox4</rd:DefaultName>
+            <Top>2.77692in</Top>
+            <Left>6.77655in</Left>
+            <Height>0.17662in</Height>
+            <Width>1.78419in</Width>
+            <ZIndex>20</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>

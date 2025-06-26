@@ -135,13 +135,27 @@ Report 56504 "Members Loans Guarantors"
 
     requestpage
     {
-
         layout
         {
-        }
-
-        actions
-        {
+            area(content)
+            {
+                group(DateRange)
+                {
+                    Caption = 'Date Range';
+                    field(StartDate; StartDate)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Start Date';
+                        ToolTip = 'Select the start date for the report.';
+                    }
+                    field(EndDate; EndDate)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'End Date';
+                        ToolTip = 'Select the end date for the report.';
+                    }
+                }
+            }
         }
     }
 
@@ -162,5 +176,7 @@ Report 56504 "Members Loans Guarantors"
         OutStandingBal: Decimal;
         FNo: Integer;
         Company: Record "Company Information";
+        StartDate: Date;
+        EndDate: Date;
 }
 

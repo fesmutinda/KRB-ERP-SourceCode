@@ -97,7 +97,7 @@ table 50056 "loans Cuess"
             CalcFormula = count("Loans Register" where("Approval Status" = const(Approved), "Outstanding Balance" = filter(<= 0), "Loan Status" = const(Issued), Source = const(BOSA)));
             FieldClass = FlowField;
         }
-
+        
     }
 
     keys

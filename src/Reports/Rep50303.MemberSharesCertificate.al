@@ -127,19 +127,35 @@ Report 50303 "Member Shares Certificate"
                 TotalFOSA := 0;
                 TotalPepea := 0;
                 TotalVan := 0;
+                if (StartDate <> 0D) and (EndDate <> 0D) then
+                    "Members Register".SetFilter("Date Filter", Format(StartDate) + '..' + Format(EndDate));
             end;
         }
     }
 
     requestpage
     {
-
         layout
         {
-        }
-
-        actions
-        {
+            area(content)
+            {
+                group(DateRange)
+                {
+                    Caption = 'Date Range';
+                    field(StartDate; StartDate)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Start Date';
+                        ToolTip = 'Select the start date for the report.';
+                    }
+                    field(EndDate; EndDate)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'End Date';
+                        ToolTip = 'Select the end date for the report.';
+                    }
+                }
+            }
         }
     }
 
@@ -237,5 +253,9 @@ Report 50303 "Member Shares Certificate"
         TotalFOSA: Decimal;
         TotalPepea: Decimal;
         TotalVan: Decimal;
+        CompanyInfo: Record "Company Information";
+        NoSeriesMgt: Codeunit NoSeriesManagement;
+        StartDate: Date;
+        EndDate: Date;
 }
 

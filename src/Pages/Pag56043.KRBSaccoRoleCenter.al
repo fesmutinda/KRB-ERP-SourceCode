@@ -45,11 +45,17 @@ Page 56043 "KRB Sacco Role Center"
             //     Visible = true;
             // }
 
+
             part("Emails"; "Email Activities")
+
+
+
             {
                 ApplicationArea = Basic, Suite;
                 Visible = true;
             }
+
+
             part(Control123; "Team Member Activities")
             {
                 ApplicationArea = Suite;
@@ -90,7 +96,7 @@ Page 56043 "KRB Sacco Role Center"
             part(Control122; "Power BI Report Spinner Part")
             {
                 ApplicationArea = Basic, Suite;
-                Visible = false;
+                Visible = true;
             }
 
             systempart(Control1901377608; MyNotes)
@@ -1158,7 +1164,7 @@ Page 56043 "KRB Sacco Role Center"
                         ApplicationArea = all;
                         RunObject = Report "Loan Arrears Report";
                         ToolTip = 'Loan Arreas Report';
-                        visible = false;
+                        // visible = false;
                     }
 
                     action("Loans Guarantor Details Report")

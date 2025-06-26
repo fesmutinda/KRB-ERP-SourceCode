@@ -1,4 +1,4 @@
-Report 50014 "Loan Arrears Report"
+Report 50500 "Loan Arrears Report"
 {
     DefaultLayout = RDLC;
     RDLCLayout = './Layouts/Loan Arrears Report.rdlc';
@@ -96,10 +96,26 @@ Report 50014 "Loan Arrears Report"
             {
             }
 
+            /*  trigger OnAfterGetRecord()
+             var
+                 LoanArrearsCU: Codeunit "Loan Arrears Calculation";
+                 RecRef: RecordRef;
+             begin
+                 // Call Codeunit to calculate arrears
+                 LoanArrearsCU.CalculateLoanArrears("Loan  No.");
 
+                 // Optional: Refresh current record after calculation
+                 RecRef.GetTable("Loans Register");
+                 "Loans Register".CalcFields("Principal In Arrears", "Interest In Arrears", "Amount in Arrears", "No of Months in Arrears");
+
+                 Counting := Counting + 1;
+                 ClientBranchCode := '';
+             end;
+  */
 
             trigger OnAfterGetRecord()
             begin
+
                 Counting := Counting + 1;
                 ClientBranchCode := '';
 
