@@ -247,7 +247,7 @@ Codeunit 50009 "Swizzsoft Factory"
         ObjLoansII.Reset;
         ObjLoansII.SetRange(ObjLoansII."Loan  No.", LoanNumber);
         ObjLoansII.CalcFields(ObjLoansII."Outstanding Balance");
-        ObjLoansII.SetFilter(ObjLoansII."Outstanding Balance", '>0');
+        //ObjLoansII.SetFilter(ObjLoansII."Outstanding Balance", '>0');
         if ObjLoansII.FindSet then begin
 
             if ObjLoansII."Repayment Frequency" = ObjLoansII."repayment frequency"::Daily then
