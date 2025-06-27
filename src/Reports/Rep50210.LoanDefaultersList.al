@@ -65,7 +65,7 @@ Report 50210 "Loan Defaulters List"
 
             column(No_of_Months_in_Arrears; "No of Months in Arrears") { }
 
-            column(Days_In_Arrears; "Days In Arrears") { }
+            column(Days_In_Arrears; "No of Days In Arrears") { }
             column(Loans_Installments; Installments)
             {
             }

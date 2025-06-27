@@ -635,10 +635,13 @@
                                   <Value>=Fields!Loans__Arrears_.Value</Value>
                                   <Style>
                                     <FontSize>7pt</FontSize>
+                                    <Format>#,0.00;#,0.00-;''</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Loans__Arrears_</rd:DefaultName>
@@ -1416,9 +1419,6 @@ kHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpBvD/AZI2
         </Field>
         <Field Name="Days_In_Arrears">
           <DataField>Days_In_Arrears</DataField>
-        </Field>
-        <Field Name="Days_In_ArrearsFormat">
-          <DataField>Days_In_ArrearsFormat</DataField>
         </Field>
         <Field Name="Loans_Installments">
           <DataField>Loans_Installments</DataField>

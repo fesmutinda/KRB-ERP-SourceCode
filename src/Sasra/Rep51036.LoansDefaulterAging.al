@@ -237,6 +237,7 @@ Report 51036 "Loans Defaulter Aging"
         "Loans Register"."Amount in Arrears" := CalculatedAmountInArrears;
         "Loans Register"."No of Days in Arrears" := CalculatedDaysInArrears;
         "Loans Register"."No of Months in Arrears" := CalculatedMonthsInArrears;
+        "Loans Register"."Days In Arrears" := CalculatedDaysInArrears;
 
         case CalculatedLoanCategory of
             CalculatedLoanCategory::Performing:
