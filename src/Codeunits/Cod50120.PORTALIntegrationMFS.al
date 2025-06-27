@@ -101,6 +101,7 @@ Codeunit 50120 "PORTALIntegration MFS"
     procedure fnUpdatePassword(MemberNo: Code[50]; idNo: Code[50]; NewPassword: Text; smsport: Text) emailAddress: Boolean
     var
         OutStream: OutStream;
+        EmailCodeunt: Codeunit Emailcodeunit;
     begin
         sms := smsport + NewPassword;
         objMember.Reset;
@@ -252,26 +253,6 @@ Codeunit 50120 "PORTALIntegration MFS"
         END;
     end;
 
-    // procedure FnGetMonthlyDeduction(MemberNo: Code[20]) Amount: Decimal
-    // begin
-    //     Amount := 0;
-    //     objMember.RESET();
-    //     objMember.SETRANGE(objMember."No.", MemberNo);
-    //     IF objMember.FIND('-') THEN BEGIN
-    //         Amount += objMember."Monthly Contribution";
-
-    //         // objLoanRegister.RESET();
-    //         // objLoanRegister.SETRANGE("Client Code", objMember."No.");
-    //         // objLoanRegister.SETFILTER("Outstanding Balance", '>%1', 0);
-    //         // IF objLoanRegister.FINDSET() THEN BEGIN
-    //         //     REPEAT
-    //         //         Amount += objLoanRegister.Repayment;
-    //         //     UNTIL objLoanRegister.NEXT = 0;
-    //         // END;
-    //         EXIT(Amount);
-    //     END;
-    // end;
-
     procedure GetLastContribution(MemberNo: Code[20]) Amount: Decimal
     var
         CustomerLedgerEntry: Record 21;
@@ -291,21 +272,7 @@ Codeunit 50120 "PORTALIntegration MFS"
 
     end;
 
-    procedure GetMonthlyContribution(MemberNo: Code[20]) Amount: Decimal
-    var
-        CustomerLedgerEntry: Record 21;
-    begin
-        Amount := 0;
-        objMember.Reset();
-        objMember.SetRange("No.", MemberNo);
-        if (objMember.find('-')) then begin//si calcfield
-            //objMember.CalcFields(objMember."Monthly Contribution");
-            Amount := objMember."Monthly Contribution";
-        end;
-        // Amount := 0;
 
-
-    end;
 
     procedure fnLoanGuranteed(MemberNo: Code[50]; "filter": Text; BigText: BigText) exitString: Text
     var
@@ -765,7 +732,7 @@ Codeunit 50120 "PORTALIntegration MFS"
                 ImageBase64 := '';
             END;
 
-            info := objMember."No." + ':' + objMember.Name + ':' + objMember."E-Mail" + ':' + FORMAT(objMember.Status) + ':' +
+            info := objMember."No." + ':' + objMember.Name + ':' + objMember."E-Mail (Personal)" + ':' + FORMAT(objMember.Status) + ':' +
                     objMember."Mobile Phone No" + ':' + objMember."ID No." + ':' + FORMAT(objMember."Date of Birth") + ':' +
                     FORMAT(objMember."Payroll/Staff No") + ':' + FORMAT(objMember.Gender) + ':' + FORMAT(objMember.Pin) + ':' +
                     FORMAT(objMember."Country/Region Code") + ':' + FORMAT(objMember.City) + ':' + FORMAT(objMember."Registration Date") + ':' +
@@ -902,6 +869,11 @@ Codeunit 50120 "PORTALIntegration MFS"
 
 
     procedure FnSMSMessage(accfrom: Text[30]; phone: Text[20]; message: Text[250])
+    var
+        EmailCodeunit: Codeunit Emailcodeunit;
+
+        TempCustomerRec: Record Customer;
+
     begin
 
         SMSMessages.Reset;
@@ -926,7 +898,48 @@ Codeunit 50120 "PORTALIntegration MFS"
         SMSMessages."Telephone No" := phone;
         if SMSMessages."Telephone No" <> '' then
             SMSMessages.Insert;
+
+
+        TempCustomerRec.SetRange("No.", accfrom);
+
+        if TempCustomerRec.FindFirst() then begin
+
+            EmailCodeunit.SendMail(
+                TempCustomerRec."E-Mail (Personal)",
+                'KRB SACCO NOTIFICATIONS',
+                message
+            );
+
+        end;
+
+
     end;
+
+    procedure FnTestSendEmail(RecipientEmail: Text): Text
+    var
+        EmailCodeunit: Codeunit Emailcodeunit;
+
+        TempCustomerRec: Record Customer;
+    begin
+
+
+        //TempCustomerRec.SetRange("No.", accfrom);
+
+        //if TempCustomerRec.FindFirst() then begin
+
+        EmailCodeunit.SendMail(
+             RecipientEmail,
+            'KRB SACCO OTP',
+            'test'
+        //StrSubstNo('Dear %1, please use %2 to complete your authorization process', TempCustomerRec.Name, message)
+
+        );
+
+        //end;
+
+
+    end;
+
 
 
     procedure FnLoanApplication(Member: Code[30]; LoanProductType: Code[10]; AmountApplied: Decimal; LoanPurpose: Code[30]; RepaymentFrequency: Integer) Result: Boolean
@@ -958,9 +971,10 @@ Codeunit 50120 "PORTALIntegration MFS"
             Result := true;
             phoneNumber := objMember."Mobile Phone No";
             ClientName := objMember.Name;
+
             sms := 'We have received your ' + LoanProductType + ' loan application of  amount : ' + Format(AmountApplied) +
             '. We are processing your loan, you will hear from us soon. Thanks for using SWIZZSOFT SACCO  Portal.';
-            FnSMSMessage(ClientName, phoneNumber, sms);
+            FnSMSMessage(objMember."No.", phoneNumber, sms);
             PortaLuPS.Init;
             // PortaLuPS.INSERT(TRUE);
             objLoanRegister.Reset;
@@ -1461,117 +1475,27 @@ Codeunit 50120 "PORTALIntegration MFS"
     //     end;
     // end;
 
-
-    // procedure Fnloanssetup(): Text
-    // var
-    //     loanType: Text;
-    // begin
-    //     loanType := '';
-    //     Loansetup.Reset();
-    //     Loansetup.SetRange(Source, Loansetup.Source::BOSA);
-
-    //     if Loansetup.FindSet() then begin
-    //         repeat
-    //             loanType +=
-    //                 'Loan Code: ' + Format(Loansetup.Code) + '\n' +
-    //                 'Product Description: ' + Loansetup."Product Description" + '\n' +
-    //                 'Repayment Method: ' + Format(Loansetup."Repayment Method") + '\n' +
-    //                 'Max Loan Amount: ' + Format(Loansetup."Max. Loan Amount") + '\n' +
-    //                 'Installment Period: ' + Format(Loansetup."Instalment Period") + '\n' +
-    //                 'Interest Rate: ' + Format(Loansetup."Interest rate") + '%\n' +
-    //                 'Repayment Frequency: ' + Format(Loansetup."Repayment Frequency") + '\n' +
-    //                 '--------------------------------------------------\n';
-    //         until Loansetup.Next() = 0;
-    //     end else begin
-    //         loanType := 'No BOSA loan products found.';
-    //     end;
-
-    //     exit(loanType);
-    // end;
-
-
-    // procedure Fnloanssetup(): Text
-    // var
-    //     loanType: Text;
-    // begin
-    //     loanType := '';
-    //     Loansetup.Reset();
-    //     Loansetup.SetRange(Source, Loansetup.Source::BOSA);
-    //     if Loansetup.FindSet() then begin
-    //         repeat
-    //             loanType +=
-    //                 'Loan Code: ' + Format(Loansetup.Code) + '\n' +
-    //                 'Product Description: ' + Loansetup."Product Description" + '\n' +
-    //                 'Repayment Method: ' + Format(Loansetup."Repayment Method") + '\n' +
-    //                 'Max Loan Amount: ' + Format(Loansetup."Max. Loan Amount") + '\n' +
-    //                 'Installment Period: ' + Format(Loansetup."Instalment Period") + '\n' +
-    //                 'Interest Rate: ' + Format(Loansetup."Interest rate") + '%\n' +
-    //                 'Repayment Frequency: ' + Format(Loansetup."Repayment Frequency") + '\n' +
-    //                 '--------------------------------------------------\n';
-    //         until Loansetup.Next() = 0;
-    //     end else begin
-    //         loanType := 'No BOSA loan products found.';
-    //     end;
-    //     exit(loanType);
-    // end;
-
-
     procedure Fnloanssetup() loanType: Text
+    var
+        InterestRate: Decimal;
     begin
         Loansetup.Reset;
         Loansetup.SETRANGE(Source, Loansetup.Source::BOSA);
         if Loansetup.Find('-') then begin
             //loanType:='';
             repeat
+
+                if Loansetup.Code = 'LT007' then
+                    InterestRate := Loansetup."Interest rate" / 12
+                else
+                    InterestRate := Loansetup."Interest rate";
+
                 loanType := Format(Loansetup.Code) + ':' + Loansetup."Product Description" + ':::' + loanType;
-                loanType := loanType + Loansetup."Product Description" + '!!' + FORMAT(Loansetup."Repayment Method") + '!!' + FORMAT(Loansetup."Max. Loan Amount") + '!!' + FORMAT(Loansetup."Instalment Period") + '!!' + FORMAT(Loansetup."Interest rate") + '!!'
-               + FORMAT(Loansetup."Repayment Frequency") + '??';
+                loanType := loanType + Loansetup."Product Description" + '!!' + FORMAT(Loansetup."Repayment Method") + '!!' + FORMAT(Loansetup."Max. Loan Amount") + '!!' + FORMAT(Loansetup."Instalment Period") + '!!' + FORMAT(InterestRate) + '!!'
+                + FORMAT(Loansetup."Repayment Frequency") + '??';
             until Loansetup.Next = 0;
         end;
     end;
-
-
-
-    // procedure Fnloanssetup() loanType: Text
-    // begin
-    //     Loansetup.Reset;
-    //     Loansetup.SETRANGE(Source, Loansetup.Source::BOSA);
-    //     // Loansetup.SetRange(Loansetup."Loan Calculator", true);
-    //     if Loansetup.Find('-') then begin
-    //         //loanType:='';
-    //         repeat
-    //             loanType := Format(Loansetup.Code) + ':' + Loansetup."Product Description" + ':::' + loanType;
-    //             loanType := loanType + Loansetup."Product Description" + '!!' + FORMAT(Loansetup."Repayment Method") + '!!' + FORMAT(Loansetup."Max. Loan Amount") + '!!' + FORMAT(Loansetup."Instalment Period") + '!!' + FORMAT(Loansetup."Interest rate") + '!!'
-    //            + FORMAT(Loansetup."Repayment Frequency") + '??';
-    //         until Loansetup.Next = 0;
-    //     end;
-    // end;
-
-    // procedure Fnloanssetup(): Text
-    // var
-    //     loanType: Text;
-    // begin
-    //     loanType := '';
-    //     Loansetup.Reset();
-    //     Loansetup.SetRange(Source, Loansetup.Source::BOSA);
-
-    //     if Loansetup.FindSet() then begin
-    //         repeat
-    //             loanType += Format(Loansetup.Code) + ':' +
-    //                         Loansetup."Product Description" + ':::' +
-    //                         Loansetup."Product Description" + '!!' +
-    //                         Format(Loansetup."Repayment Method") + '!!' +
-    //                         Format(Loansetup."Max. Loan Amount") + '!!' +
-    //                         Format(Loansetup."Instalment Period") + '!!' +
-    //                         Format(Loansetup."Interest rate") + '!!' +
-    //                         Format(Loansetup."Repayment Frequency") + '??';
-    //         until Loansetup.Next() = 0;
-    //     end else begin
-    //         loanType := 'No BOSA loan setups found.';
-    //     end;
-
-    //     exit(loanType);
-    // end;
 
 
     procedure fnLoanDetails2(Loancode: Code[20]) loandetail: Text
@@ -1981,6 +1905,210 @@ Codeunit 50120 "PORTALIntegration MFS"
         end;
     end;
 
+    procedure fnGetNominees(MemberNumber: Code[20]) return: Text
+    var
+        objNominees: Record "Members Nominee";
+    begin
+        objNominees.Reset;
+        objNominees.SetRange("Account No", MemberNumber);
+        if objNominees.Find('-') then begin
+            repeat
+                return := return + objNominees."Name" + ':::' + objNominees.Relationship + ':::' + objNominees.Email + ':::' + Format(objNominees."%Allocation") + '::::';
+            until objNominees.Next = 0;
+        end;
+    end;
+
+    procedure fnUpdateMemberNextOfKin(
+     MemberNumber: Code[20];
+     NextOfKinName: Text[100];
+     NextOfKinAddress: Text[100];
+     NextOfKinIsBeneficiary: Boolean;
+     NextOfKinEmail: Text[100];
+     NextOfKinIdNumber: Text[100];
+     NextOfKinRelationshipType: Text[100];
+     NextOfKinDOB: Text[100];
+     NextOfKinTelephone: Text[100]
+ ): Text
+    var
+        objNextKin: Record "Members Next Kin Details";
+    begin
+
+
+        if NextOfKinRelationshipType = '' then
+            exit('Relationship type is required');
+
+        objNextKin.SetRange("Account No", MemberNumber);
+        objNextKin.SetRange(Name, NextOfKinName);
+
+
+        if not objNextKin.FindFirst() then begin
+
+            objNextKin.Init();
+            objNextKin."Account No" := MemberNumber;
+            objNextKin.Name := NextOfKinName;
+
+
+            objNextKin.Beneficiary := NextOfKinIsBeneficiary;
+            objNextKin.Relationship := NextOfKinRelationshipType;
+
+
+            if NextOfKinName <> '' then
+                objNextKin.Name := NextOfKinName;
+
+            if NextOfKinTelephone <> '' then
+                objNextKin.Telephone := NextOfKinTelephone;
+
+            if NextOfKinAddress <> '' then
+                objNextKin.Address := NextOfKinAddress;
+
+            if NextOfKinEmail <> '' then
+                objNextKin.Email := NextOfKinEmail;
+
+            if NextOfKinDOB <> '' then
+                Evaluate(objNextKin."Date of Birth", NextOfKinDOB);
+
+
+
+            objNextKin.Insert(true);
+            exit('Next of kin added successfuly');
+
+        end else begin
+
+            objNextKin.Beneficiary := NextOfKinIsBeneficiary;
+            objNextKin.Relationship := NextOfKinRelationshipType;
+
+
+            if NextOfKinName <> '' then
+                objNextKin.Name := NextOfKinName;
+
+            if NextOfKinTelephone <> '' then
+                objNextKin.Telephone := NextOfKinTelephone;
+
+            if NextOfKinAddress <> '' then
+                objNextKin.Address := NextOfKinAddress;
+
+            if NextOfKinEmail <> '' then
+                objNextKin.Email := NextOfKinEmail;
+
+            if NextOfKinDOB <> '' then
+                Evaluate(objNextKin."Date of Birth", NextOfKinDOB);
+
+
+            objNextKin.Modify(true);
+            exit('Next of kin updated successfuly');
+
+        end;
+
+
+    end;
+
+
+
+    procedure fnUpdateMemberNominees(
+    MemberNumber: Code[20];
+    NomineeName: Text[100];
+    NomineeAddress: Text[100];
+    NomineeIsBeneficiary: Boolean;
+    NomineeEmail: Text[100];
+    NomineeIdNumber: Text[100];
+    NomineeRelationshipType: Text[100];
+    NomineeDOB: Text[100];
+    NomineeAllocation: Decimal;
+    NomineeGuardian: Text[100];
+    NomineeTelephone: Text[100]
+): Text
+    var
+        objNominees: Record "Members Nominee";
+    begin
+
+
+        if NomineeRelationshipType = '' then
+            exit('Relationship type is required');
+
+        if NomineeAllocation < 1 then
+            exit('Nominee Has to have allocation');
+
+
+        objNominees.SetRange("Account No", MemberNumber);
+        objNominees.SetRange(Name, NomineeName);
+
+
+        if not objNominees.FindFirst() then begin
+
+
+            objNominees.Init();
+            objNominees."Account No" := MemberNumber;
+            objNominees.Name := NomineeName;
+
+
+            objNominees.Beneficiary := NomineeIsBeneficiary;
+            objNominees.Relationship := NomineeRelationshipType;
+
+            objNominees."%Allocation" := NomineeAllocation;
+
+
+            if NomineeName <> '' then
+                objNominees.Name := NomineeName;
+
+            if NomineeTelephone <> '' then
+                objNominees.Telephone := NomineeName;
+
+            if NomineeGuardian <> '' then
+                objNominees.Guardian := NomineeGuardian;
+
+            if NomineeAddress <> '' then
+                objNominees.Address := NomineeAddress;
+
+            if NomineeEmail <> '' then
+                objNominees.Email := NomineeEmail;
+
+            if NomineeDOB <> '' then
+                Evaluate(objNominees."Date of Birth", NomineeDOB);
+
+
+
+            objNominees.Insert(true);
+
+            exit('Nominee added successfuly');
+
+
+        end else begin
+
+            objNominees.Beneficiary := NomineeIsBeneficiary;
+            objNominees.Relationship := NomineeRelationshipType;
+
+            objNominees."%Allocation" := NomineeAllocation;
+
+
+            if NomineeName <> '' then
+                objNominees.Name := NomineeName;
+
+            if NomineeTelephone <> '' then
+                objNominees.Telephone := NomineeName;
+
+            if NomineeGuardian <> '' then
+                objNominees.Guardian := NomineeGuardian;
+
+            if NomineeAddress <> '' then
+                objNominees.Address := NomineeAddress;
+
+            if NomineeEmail <> '' then
+                objNominees.Email := NomineeEmail;
+
+            if NomineeDOB <> '' then
+                Evaluate(objNominees."Date of Birth", NomineeDOB);
+
+
+
+            objNominees.Modify(true);
+
+            exit('Nominee modified successfuly');
+
+
+        end;
+
+
+    end;
 
     procedure FNFosaBalance(Acc: Code[30]) Bal: Text[1024]
     var
@@ -2032,6 +2160,7 @@ Codeunit 50120 "PORTALIntegration MFS"
     procedure OnlineLoanApplication(BosaNo: Code[30]; LoanType: Code[50]; LoanAmount: Decimal; loanpurpose: Text; repaymentPeriod: Integer) GeneratedApplicationNo: Code[20]
     var
         ObjLoanApplications: Record "Online Loan Application";
+        ObjLoanRegister: Record "Loans Register";
     begin
         ObjLoanApplications.Reset;
 
@@ -2039,10 +2168,31 @@ Codeunit 50120 "PORTALIntegration MFS"
 
         objMember.Reset;
         objMember.SetRange(objMember."No.", BosaNo);
+
         if objMember.Find('-') then begin
 
-            // ObjLoanApplications."Application No" := NewApplicationNo;
-            ObjLoanApplications."Application Date" := Date;
+
+            if LoanType = 'LT007' then begin
+                ObjLoanRegister.Reset;
+                ObjLoanRegister.SetRange("Client Code", BosaNo);
+                ObjLoanRegister.SetFilter("Amount in Arrears", '>0');
+                ObjLoanRegister.SetRange(Posted, true);
+                ObjLoanRegister.SetRange(Reversed, false);
+
+                if ObjLoanRegister.FindSet() then begin
+                    GeneratedApplicationNo := '';
+                    exit('Application failed, member has existing loans with arrears');
+                end;
+            end;
+
+
+            if LoanProductType.Get(LoanType) then;
+
+
+            ObjLoanApplications.Init();
+
+
+            ObjLoanApplications."Application Date" := Today;
             ObjLoanApplications."Id No" := objMember."ID No.";
             ObjLoanApplications."BOSA No" := objMember."No.";
             ObjLoanApplications."Employment No" := objMember."Payroll/Staff No";
@@ -2052,29 +2202,47 @@ Codeunit 50120 "PORTALIntegration MFS"
             ObjLoanApplications."Membership No" := objMember."No.";
             ObjLoanApplications.Telephone := objMember."Mobile Phone No";
             ObjLoanApplications."Loan Type" := LoanType;
+
+
             ObjLoanApplications.Validate("BOSA No");
             ObjLoanApplications.Validate("Loan Type");
+
+
             ObjLoanApplications."Home Address" := objMember.Address;
             ObjLoanApplications.Station := objMember."Station/Department";
+
             ObjLoanApplications."Loan Amount" := LoanAmount;
             ObjLoanApplications."Repayment Period" := repaymentPeriod;
-            ObjLoanApplications.Source := LoanProductType.Source;
-            ObjLoanApplications."Interest Rate" := LoanProductType."Interest rate";
-            // ObjLoanApplications."Min No Of Guarantors" := LoanProductType."Min No. Of Guarantors";
             ObjLoanApplications."Loan Purpose" := loanpurpose;
+
+
+            if LoanProductType.Code <> '' then begin
+                ObjLoanApplications.Source := LoanProductType.Source;
+                ObjLoanApplications."Interest Rate" := LoanProductType."Interest rate";
+                // ObjLoanApplications."Min No Of Guarantors" := LoanProductType."Min No. Of Guarantors";
+            end;
+
+            // Set application status
             ObjLoanApplications."Sent To Bosa Loans" := false;
             ObjLoanApplications.submitted := false;
             ObjLoanApplications."Application Status" := ObjLoanApplications."Application Status"::Application;
             ObjLoanApplications.Posted := false;
             ObjLoanApplications.Refno := '0';
             ObjLoanApplications."Loan No" := '0';
-            //objLoanApplications."Payment Mode" :=disbursementMode;
-            ObjLoanApplications.Insert(true);
 
-            GeneratedApplicationNo := ObjLoanApplications."Application No";
+
+            if ObjLoanApplications.Insert(true) then begin
+                GeneratedApplicationNo := ObjLoanApplications."Application No";
+            end else begin
+                GeneratedApplicationNo := '';
+                exit('Failed to create loan application');
+            end;
+
+        end else begin
+            GeneratedApplicationNo := '';
+            exit('Member not found');
         end;
     end;
-
 
     procedure SubmitLoan(memberNumber: Code[20]; loanNumber: Code[20]): Text
     var
@@ -2095,7 +2263,50 @@ Codeunit 50120 "PORTALIntegration MFS"
                 ObjLoanApplications."Application Status" := ObjLoanApplications."Application Status"::Submitted;
                 ObjLoanApplications.Modify();
 
-                response := 'Success, loan submitted';
+                if ObjLoanApplications."Guarantorship Requested" = false then begin
+
+                    ObjLoansregister.Reset();
+                    ObjLoansregister.Init();
+
+                    ObjLoansregister."BOSA No" := ObjLoanApplications."BOSA No";
+                    ObjLoansregister.Source := ObjLoansregister.Source::BOSA;
+                    SalesSetup.Get();
+                    ObjLoansregister."Loan  No." := NoSeriesMgt.GetNextNo(SalesSetup."BOSA Loans Nos", Today, true);
+
+                    ObjLoansregister."Client Code" := ObjLoanApplications."Membership No";
+                    ObjLoansregister."Client Name" := ObjLoanApplications."Member Names";
+
+                    ObjLoansregister."Application Date" := ObjLoanApplications."Application Date";
+                    ObjLoansregister."Loan Product Type" := ObjLoanApplications."Loan Type";
+                    ObjLoansregister."Loan Status" := ObjLoansregister."Loan Status"::Application;
+                    ObjLoansregister.Validate(ObjLoansregister."BOSA No");
+                    ObjLoansregister.Validate(ObjLoansregister."Loan Product Type");
+
+
+                    ObjLoansregister.Installments := ObjLoanApplications."Repayment Period";
+                    ObjLoansregister."Requested Amount" := ObjLoanApplications."Loan Amount";
+                    if ObjLoansregister.Insert() then begin
+                        ObjLoanApplications."Sent To Bosa Loans" := true;
+
+                        ObjLoanApplications.Posted := true;
+                        ObjLoanApplications.Modify;
+
+                        if (objMember."Phone No." <> '') then
+                            FnSMSMessage(objMember."No.", objMember."Phone No.", 'Dear Member, you have submitted Loan,' + 'No,' + Format(ObjLoanApplications."Application No") + 'for loan type' + ObjLoanApplications."Loan Type" + 'your  loan application for appraisal.');
+                        response := 'Success, your loan has been submitted to Credit for Appraisal';
+                    end else begin
+                        response := 'Failed, Please contact the office for assistance';
+                    end;
+
+                end else begin
+
+                    response := 'Success, loan submitted, awaiting approval by guarantors';
+
+                end;
+
+
+
+
                 exit;
             end else
                 response := 'Failed, loan not found';
@@ -2180,9 +2391,20 @@ Codeunit 50120 "PORTALIntegration MFS"
                 //send sms to guarantor
                 ReturnList := 'Dear Member, ' + ObjLoanApplications."Member Names" + ' has requested loan Guarantorship,' + 'of.' + Format(Amount) + 'Kindly login to the portal to accept or reject the request';
                 // SMSMessage('PORTALTRAN',FAccNo,objMember."Phone No.",ReturnList);
-                FnSMSMessage('PORTAL', objMember."Mobile Phone No", ReturnList);
+                FnSMSMessage(objMember."No.", objMember."Mobile Phone No", ReturnList);
+
+
+                if ObjLoanApplications.Get(LoanNumber) then begin
+                    ObjLoanApplications."Guarantorship Requested" := true;
+                    ObjLoanApplications.Modify(true);
+                end;
+
+
 
             end;
+
+
+            //ObjLoanApplications."Guarantorship Requested" := true;
 
         end;
     end;
@@ -2252,7 +2474,7 @@ Codeunit 50120 "PORTALIntegration MFS"
                 OnlineLoanGuarantors.Modify;
 
                 ReturnList := 'Dear Member, your loan guarantorship has been approved by ' + OnlineLoanGuarantors.Names + '. Login to the members portal to submit for appraisal.';
-                FnSMSMessage('WebPortal', objMember."Mobile Phone No", ReturnList);
+                FnSMSMessage(objMember."No.", objMember."Mobile Phone No", ReturnList);
             end else if ApprovedStatus = 1 then begin
                 // Rejected
                 OnlineLoanGuarantors.Approved := OnlineLoanGuarantors.Approved::Rejected;
@@ -2260,7 +2482,7 @@ Codeunit 50120 "PORTALIntegration MFS"
                 OnlineLoanGuarantors.Modify;
 
                 ReturnList := 'Dear Member, you have rejected loan guarantorship.';
-                FnSMSMessage('WebPortal', objMember."Mobile Phone No", ReturnList);
+                FnSMSMessage(Objmember."No.", objMember."Mobile Phone No", ReturnList);
 
 
                 LoanApplication.Reset;
@@ -2270,7 +2492,7 @@ Codeunit 50120 "PORTALIntegration MFS"
                     LoanApplicant.SetRange("No.", LoanApplication."Membership No");
                     if LoanApplicant.Find('-') then begin
                         ReturnList := 'Dear Member, your loan guarantorship request has been rejected by ' + OnlineLoanGuarantors.Names + '. Please find another guarantor to proceed with your loan application.';
-                        FnSMSMessage('WebPortal', LoanApplicant."Mobile Phone No", ReturnList);
+                        FnSMSMessage(objMember."No.", LoanApplicant."Mobile Phone No", ReturnList);
                     end;
                 end;
             end;
@@ -2325,7 +2547,7 @@ Codeunit 50120 "PORTALIntegration MFS"
                         end;
                         localsms := 'Dear Member, you have submitted Loan,' + 'No,' + Format(ObjLoanApplications."Application No") + 'for loan type' + ObjLoanApplications."Loan Type" + 'your  loan application for appraisal.';
                         if (objMember."Phone No." <> '') then
-                            FnSMSMessage(ClientName, objMember."Phone No.", localsms);
+                            FnSMSMessage(objMember."No.", objMember."Phone No.", localsms);
                         response := 'Success, your loan has been submitted to Credit for Appraisal';
                     end else begin
                         response := 'Failed, Please contact the office for assistance';
@@ -2588,22 +2810,18 @@ Codeunit 50120 "PORTALIntegration MFS"
     end;
 
 
-    // procedure fnGetMonthlyContribution(memberNumber: Code[20]) monthlyContribution: Decimal
-    // var
-    //     customers: Record Customer;
-
-    // begin
-    //     monthlyContribution := 0;
-
-    //     customers.Reset();
-    //     customers.SetRange(customers."No.", memberNumber);
-    //     if customers.Find('-') then begin
-    //         monthlyContribution := customers."Monthly contribution";
-    //     end;
-    // end;
-
-
-    procedure fnEditMemberDetails(memberNumber: Code[20]; fullNames: Code[100]; phoneNumber: Code[20]; email: Code[250]; IDNumber: Code[20]; KRAPin: Code[20]; ImageBlob: Text) isEdited: Boolean
+    procedure fnEditMemberDetails(
+    memberNumber: Code[20];
+    fullNames: Code[100];
+    phoneNumber: Code[20];
+    email: Code[250];
+    IDNumber: Code[20];
+    KRAPin: Code[20];
+    ImageBlob: Text;
+    KRAPinDocumentPic: Text;
+    IdFront: Text;
+    IdBack: Text
+    ) isEdited: Boolean
     var
         customer: Record Customer;
         TempBlob: Codeunit "Temp Blob";
@@ -2614,27 +2832,60 @@ Codeunit 50120 "PORTALIntegration MFS"
         isEdited := false;
 
         customer.Reset();
-        customer.SetRange(customer."No.", memberNumber);
+        customer.SetRange("No.", memberNumber);
         if customer.Find('-') then begin
-            customer."Mobile Phone No." := phoneNumber;
-            customer."E-Mail (Personal)" := email;
-            customer."ID No." := IDNumber;
-            customer.Pin := KRAPin;
+            if phoneNumber <> '' then
+                customer."Mobile Phone No." := phoneNumber;
 
-            // Handle Media image
+            if email <> '' then
+                customer."E-Mail (Personal)" := email;
+
+            if IDNumber <> '' then
+                customer."ID No." := IDNumber;
+
+            if KRAPin <> '' then
+                customer.Pin := KRAPin;
+
+            // Handle KRA Pin Document Picture
+            if KRAPinDocumentPic <> '' then begin
+                Clear(TempBlob);
+                TempBlob.CreateOutStream(OutStream);
+                Base64Convert.FromBase64(KRAPinDocumentPic, OutStream);
+                TempBlob.CreateInStream(InStream);
+                customer."KRA Pin Picture".ImportStream(InStream, 'KRA Doc Image');
+            end;
+
+
+            if IdBack <> '' then begin
+                Clear(TempBlob);
+                TempBlob.CreateOutStream(OutStream);
+                Base64Convert.FromBase64(IdBack, OutStream);
+                TempBlob.CreateInStream(InStream);
+                customer."Identification Document Back".ImportStream(InStream, 'ID Document Back');
+            end;
+
+
+            if IdFront <> '' then begin
+                Clear(TempBlob);
+                TempBlob.CreateOutStream(OutStream);
+                Base64Convert.FromBase64(IdFront, OutStream);
+                TempBlob.CreateInStream(InStream);
+                customer."Identification Document Front".ImportStream(InStream, 'ID Document Front');
+            end;
+
             if ImageBlob <> '' then begin
                 Clear(TempBlob);
                 TempBlob.CreateOutStream(OutStream);
-                Base64Convert.FromBase64(ImageBlob, OutStream); // Convert base64 to stream
+                Base64Convert.FromBase64(ImageBlob, OutStream);
                 TempBlob.CreateInStream(InStream);
-                customer.Image.ImportStream(InStream, 'Member Image'); // Import to Media field
+                customer.Image.ImportStream(InStream, 'Member Image');
             end;
 
-            if customer.Modify() then begin
-                isEdited := true;
-            end;
+            customer.Modify();
+            isEdited := true;
         end;
     end;
+
 
 
     procedure MemberDepositContributions(MemberNo: Text[100]) MonthlyContributions: Text
@@ -2718,7 +2969,7 @@ Codeunit 50120 "PORTALIntegration MFS"
         Online.Reset();
         Online.SetRange("User Name", memberNumber);
         if Online.Find('-') then begin
-            sms := 'Your Portal verification code is ' + otpCode;
+            sms := 'Your login otp code is ' + otpCode;
             Online."Login OTP" := otpCode;
             FnSMSMessage(memberNumber, Online.MobileNumber, sms);
             Online.Modify(true);
@@ -2740,109 +2991,103 @@ Codeunit 50120 "PORTALIntegration MFS"
     end;
 
 
-    procedure FnGetMonthlyDeductionDetails(MemberNo: Code[20]) DeductionSummary: Text
-    var
-        TotalDeductions: Decimal;
-        TotalLoanDeductions: Decimal;
-        MonthlyContribution: Decimal;
-        MinShareCapital: Decimal;
-        ShareCapital: Decimal;
-        IndividualLoanAmount: Decimal;
-        MemberFound: Boolean;
-    begin
-        // Initialize variables
-        TotalDeductions := 0;
-        TotalLoanDeductions := 0;
-        ShareCapital := 0;
-        DeductionSummary := '';
-        MemberFound := false;
 
-        // Get setup values with error handling
-        if GenSetup.GET() then begin
-            MonthlyContribution := GenSetup."Min. Contribution";
-            MinShareCapital := GenSetup."Monthly Share Contributions";
-        end else begin
-            DeductionSummary := 'Error: Unable to retrieve system setup values';
-            exit;
-        end;
 
-        // Find the member
-        objMember.RESET();
-        objMember.SETRANGE("No.", MemberNo);
+    // procedure FnGetMonthlyDeductionDetails(MemberNo: Code[20]) DeductionSummary: Text
+    // var
+    //     TotalDeductions: Decimal;
+    //     TotalLoanDeductions: Decimal;
+    //     MonthlyContribution: Decimal;
+    //     MinShareCapital: Decimal;
+    //     ShareCapital: Decimal;
+    //     IndividualLoanAmount: Decimal;
+    //     MemberFound: Boolean;
+    // begin
+    //     // Initialize variables
+    //     TotalDeductions := 0;
+    //     TotalLoanDeductions := 0;
+    //     ShareCapital := 0;
+    //     DeductionSummary := '';
+    //     MemberFound := false;
 
-        IF objMember.FINDFIRST() THEN BEGIN
-            MemberFound := true;
 
-            // Calculate member-specific monthly contribution
-            // Use member's specific contribution if set, otherwise use minimum
-            if objMember."Monthly Contribution" > 0 then
-                MonthlyContribution := objMember."Monthly Contribution"
-            else
-                MonthlyContribution := GenSetup."Min. Contribution";
 
-            // Calculate required share capital contribution
-            if objMember."Shares Retained" < MinShareCapital then
-                ShareCapital := MinShareCapital - objMember."Shares Retained";
+    //     //MinShareCapital := GenSetup."Monthly Share Contributions";
 
-            // Calculate base deductions (contributions + share capital)
-            TotalDeductions := MonthlyContribution + ShareCapital;
 
-            // Build formatted summary header
-            DeductionSummary := STRSUBSTNO('MONTHLY DEDUCTION SUMMARY\n');
-            DeductionSummary += STRSUBSTNO('================================\n');
-            DeductionSummary += STRSUBSTNO('MEMBER: %1\n', MemberNo);
-            if objMember.Name <> '' then
-                DeductionSummary += STRSUBSTNO('NAME: %1\n', objMember.Name);
-            DeductionSummary += STRSUBSTNO('DATE: %1\n\n', FORMAT(TODAY));
+    //     // Find the member
+    //     objMember.RESET();
+    //     objMember.SETRANGE("No.", MemberNo);
 
-            // Add contribution details
-            DeductionSummary += STRSUBSTNO('CONTRIBUTIONS:\n');
-            DeductionSummary += STRSUBSTNO('- Monthly Contribution: %1\n', FORMAT(MonthlyContribution, 0, '<Precision,2:2><Standard Format,0>'));
-            DeductionSummary += STRSUBSTNO('- Share Capital Due: %1\n', FORMAT(ShareCapital, 0, '<Precision,2:2><Standard Format,0>'));
-            //DeductionSummary += STRSUBSTNO('- Current Shares: %1\n\n', FORMAT(objMember."Shares Retained", 0, '<Precision,2:2><Standard Format,0>'));
+    //     IF objMember.FINDFIRST() THEN BEGIN
+    //         MemberFound := true;
 
-            // Process loan deductions
-            DeductionSummary += STRSUBSTNO('LOAN DEDUCTIONS:\n');
+    //         MonthlyContribution := GetLatestDepositContribution(MemberNo);
 
-            objLoanRegister.RESET();
-            objLoanRegister.SETRANGE("Client Code", objMember."No.");
-            objLoanRegister.SETFILTER("Outstanding Balance", '>%1', 0);
-            objLoanRegister.SETFILTER(Repayment, '>%1', 0); // Only loans with repayment amount
 
-            IF objLoanRegister.FINDSET() THEN BEGIN
-                REPEAT
-                    IndividualLoanAmount := objLoanRegister.Repayment;
-                    TotalLoanDeductions += IndividualLoanAmount;
+    //         // Calculate required share capital contribution
+    //         if objMember."Shares Retained" < MinShareCapital then
+    //             //ShareCapital := MinShareCapital - objMember."Shares Retained";
 
-                    // Add detailed loan information
-                    DeductionSummary += STRSUBSTNO('- Loan No: %1\n', objLoanRegister."Loan  No.");
-                    DeductionSummary += STRSUBSTNO('  Type: %1 (%2)\n',
-                        objLoanRegister."Loan Product Type Name",
-                        objLoanRegister."Loan Product Type");
-                    DeductionSummary += STRSUBSTNO('  Monthly Repayment: %1\n\n',
-                        FORMAT(IndividualLoanAmount, 0, '<Precision,2:2><Standard Format,0>'));
+    //         // Calculate base deductions (contributions + share capital)
+    //         TotalDeductions := MonthlyContribution;
 
-                UNTIL objLoanRegister.NEXT = 0;
-            END ELSE BEGIN
-                DeductionSummary += '- No active loans requiring payment\n\n';
-            END;
+    //         // Build formatted summary header
+    //         DeductionSummary := STRSUBSTNO('MONTHLY DEDUCTION SUMMARY\n');
+    //         DeductionSummary += STRSUBSTNO('================================\n');
+    //         DeductionSummary += STRSUBSTNO('MEMBER: %1\n', MemberNo);
+    //         if objMember.Name <> '' then
+    //             DeductionSummary += STRSUBSTNO('NAME: %1\n', objMember.Name);
+    //         DeductionSummary += STRSUBSTNO('DATE: %1\n\n', FORMAT(TODAY));
 
-            // Calculate final total
-            TotalDeductions += TotalLoanDeductions;
+    //         // Add contribution details
+    //         DeductionSummary += STRSUBSTNO('CONTRIBUTIONS:\n');
+    //         DeductionSummary += STRSUBSTNO('- Monthly Contribution: %1\n', FORMAT(MonthlyContribution, 0, '<Precision,2:2><Standard Format,0>'));
+    //         // DeductionSummary += STRSUBSTNO('- Share Capital Due: %1\n', FORMAT(ShareCapital, 0, '<Precision,2:2><Standard Format,0>'));
+    //         //DeductionSummary += STRSUBSTNO('- Current Shares: %1\n\n', FORMAT(objMember."Shares Retained", 0, '<Precision,2:2><Standard Format,0>'));
 
-            // Add summary section
-            DeductionSummary += STRSUBSTNO('SUMMARY:\n');
-            DeductionSummary += STRSUBSTNO('================================\n');
-            DeductionSummary += STRSUBSTNO('Total Loan Reayments: %1\n', FORMAT(TotalLoanDeductions, 0, '<Precision,2:2><Standard Format,0>'));
-            DeductionSummary += STRSUBSTNO('TOTAL MONTHLY DEDUCTIONS: %1\n', FORMAT(TotalDeductions, 0, '<Precision,2:2><Standard Format,0>'));
+    //         // Process loan deductions
+    //         DeductionSummary += STRSUBSTNO('LOAN DEDUCTIONS:\n');
 
-            // Add processing timestamp
-            DeductionSummary += STRSUBSTNO('\nGenerated: %1 at %2', FORMAT(TODAY), FORMAT(TIME));
+    //         objLoanRegister.RESET();
+    //         objLoanRegister.SETRANGE("Client Code", objMember."No.");
+    //         objLoanRegister.SETFILTER("Outstanding Balance", '>%1', 0);
+    //         objLoanRegister.SETFILTER(Repayment, '>%1', 0); // Only loans with repayment amount
 
-        END ELSE BEGIN
-            DeductionSummary := STRSUBSTNO('ERROR: Member %1 not found in the system', MemberNo);
-        END;
-    end;
+    //         IF objLoanRegister.FINDSET() THEN BEGIN
+    //             REPEAT
+    //                 IndividualLoanAmount := objLoanRegister.Repayment;
+    //                 TotalLoanDeductions += IndividualLoanAmount;
+
+    //                 // Add detailed loan information
+    //                 DeductionSummary += STRSUBSTNO('- Loan No: %1\n', objLoanRegister."Loan  No.");
+    //                 DeductionSummary += STRSUBSTNO('  Type: %1 (%2)\n',
+    //                     objLoanRegister."Loan Product Type Name",
+    //                     objLoanRegister."Loan Product Type");
+    //                 DeductionSummary += STRSUBSTNO('  Monthly Repayment: %1\n\n',
+    //                     FORMAT(IndividualLoanAmount, 0, '<Precision,2:2><Standard Format,0>'));
+
+    //             UNTIL objLoanRegister.NEXT = 0;
+    //         END ELSE BEGIN
+    //             DeductionSummary += '- No active loans requiring payment\n\n';
+    //         END;
+
+    //         // Calculate final total
+    //         TotalDeductions += TotalLoanDeductions;
+
+    //         // Add summary section
+    //         DeductionSummary += STRSUBSTNO('SUMMARY:\n');
+    //         DeductionSummary += STRSUBSTNO('================================\n');
+    //         DeductionSummary += STRSUBSTNO('Total Loan Reayments: %1\n', FORMAT(TotalLoanDeductions, 0, '<Precision,2:2><Standard Format,0>'));
+    //         DeductionSummary += STRSUBSTNO('TOTAL MONTHLY DEDUCTIONS: %1\n', FORMAT(TotalDeductions, 0, '<Precision,2:2><Standard Format,0>'));
+
+    //         // Add processing timestamp
+    //         DeductionSummary += STRSUBSTNO('\nGenerated: %1 at %2', FORMAT(TODAY), FORMAT(TIME));
+
+    //     END ELSE BEGIN
+    //         DeductionSummary := STRSUBSTNO('ERROR: Member %1 not found in the system', MemberNo);
+    //     END;
+    // end;
 
 
     procedure submitGuarantors(memberNumber: Code[20]; onlineLoanApplicationNumber: Code[20]; loanRegisterNumber: Code[20])
@@ -2883,6 +3128,163 @@ Codeunit 50120 "PORTALIntegration MFS"
             end;
         end;
     end;
+
+
+
+    procedure GetLatestDepositContribution(CustomerNo: Code[20]): Decimal
+    var
+        CustLedgerEntry: Record "Cust. Ledger Entry";
+    begin
+        CustLedgerEntry.SetRange("Customer No.", CustomerNo);
+        CustLedgerEntry.SetRange("Transaction Type", CustLedgerEntry."Transaction Type"::"Deposit Contribution");
+        CustLedgerEntry.SetFilter(Description, 'DEPOSITS KRB CHECKOFF');
+        CustLedgerEntry.SetRange(Reversed, false);
+        if CustLedgerEntry.FindLast() then
+            exit(-CustLedgerEntry."Amount Posted");
+        exit(0);
+    end;
+
+    procedure GetLatestLoanContribution(CustomerNo: Code[20]): Decimal
+    var
+        CustLedgerEntry: Record "Cust. Ledger Entry";
+    begin
+        CustLedgerEntry.SetRange("Customer No.", CustomerNo);
+        CustLedgerEntry.SetRange("Transaction Type", CustLedgerEntry."Transaction Type"::"Deposit Contribution");
+        CustLedgerEntry.SetFilter(Description, 'DEPOSITS KRB CHECKOFF');
+        CustLedgerEntry.SetRange(Reversed, false);
+        if CustLedgerEntry.FindLast() then
+            exit(CustLedgerEntry."Amount Posted");
+        exit(0);
+    end;
+
+    procedure GetLatestLoanRepayment(CustomerNo: Code[20]): Decimal
+    var
+        CustLedgerEntry: Record "Cust. Ledger Entry";
+    begin
+        CustLedgerEntry.SetRange("Customer No.", CustomerNo);
+        CustLedgerEntry.SetRange("Transaction Type", CustLedgerEntry."Transaction Type"::"Loan Repayment");
+        CustLedgerEntry.SetFilter("Customer Posting Group", 'LT001|LT002|LT003|LT004|LT005|LT006|LT007|LT008|LT009|LT010');
+        CustLedgerEntry.SetFilter("Document No.", '*CHECKOFF*');
+        CustLedgerEntry.SetRange(Reversed, false);
+
+        if CustLedgerEntry.FindLast() then
+            exit(-CustLedgerEntry."Amount Posted");
+        exit(0);
+    end;
+
+    procedure FnGetMonthlyDeductionDetails(MemberNo: Code[20]) DeductionSummary: Text
+    var
+        TotalDeductions: Decimal;
+        TotalLoanDeductions: Decimal;
+        MonthlyContribution: Decimal;
+        MinShareCapital: Decimal;
+        ShareCapital: Decimal;
+        IndividualLoanAmount: Decimal;
+        MemberFound: Boolean;
+        LatestLoanRepayment: Decimal;
+    begin
+        // Initialize variables
+        TotalDeductions := 0;
+        TotalLoanDeductions := 0;
+        ShareCapital := 0;
+        DeductionSummary := '';
+        MemberFound := false;
+
+        //MinShareCapital := GenSetup."Monthly Share Contributions";
+
+        // Find the member
+        objMember.RESET();
+        objMember.SETRANGE("No.", MemberNo);
+
+        IF objMember.FINDFIRST() THEN BEGIN
+            MemberFound := true;
+
+            MonthlyContribution := GetLatestDepositContribution(MemberNo);
+
+
+            TotalDeductions += MonthlyContribution;
+
+            // Build formatted summary header
+            DeductionSummary := STRSUBSTNO('MONTHLY DEDUCTION SUMMARY\n');
+            DeductionSummary += STRSUBSTNO('================================\n');
+            DeductionSummary += STRSUBSTNO('MEMBER: %1\n', MemberNo);
+            if objMember.Name <> '' then
+                DeductionSummary += STRSUBSTNO('NAME: %1\n', objMember.Name);
+            DeductionSummary += STRSUBSTNO('DATE: %1\n\n', FORMAT(TODAY));
+
+            // Add contribution details
+            DeductionSummary += STRSUBSTNO('CONTRIBUTIONS:\n');
+            DeductionSummary += STRSUBSTNO('- Monthly Contribution: %1\n\n', FORMAT(MonthlyContribution, 0, '<Precision,2:2><Standard Format,0>'));
+            // DeductionSummary += STRSUBSTNO('- Share Capital Due: %1\n', FORMAT(ShareCapital, 0, '<Precision,2:2><Standard Format,0>'));
+            //DeductionSummary += STRSUBSTNO('- Current Shares: %1\n\n', FORMAT(objMember."Shares Retained", 0, '<Precision,2:2><Standard Format,0>'));
+
+            // Process loan deductions
+            DeductionSummary += STRSUBSTNO('LOAN DEDUCTIONS:\n');
+
+            objLoanRegister.RESET();
+            objLoanRegister.SETRANGE("Client Code", objMember."No.");
+            objLoanRegister.SETFILTER("Outstanding Balance", '>%1', 0);
+
+            IF objLoanRegister.FINDSET() THEN BEGIN
+                REPEAT
+                    // First try to get repayment from loan register
+                    IndividualLoanAmount := objLoanRegister.Repayment;
+
+                    // If no repayment amount in register, try to get from checkoff
+                    if IndividualLoanAmount = 0 then begin
+                        IndividualLoanAmount := GetLatestLoanRepaymentByProduct(MemberNo, objLoanRegister."Loan Product Type");
+                    end;
+
+                    // Only include loans that have some repayment amount
+                    if IndividualLoanAmount > 0 then begin
+                        TotalLoanDeductions += IndividualLoanAmount;
+
+                        // Add detailed loan information
+                        DeductionSummary += STRSUBSTNO('- Loan No: %1\n', objLoanRegister."Loan  No.");
+                        DeductionSummary += STRSUBSTNO('  Type: %1 (%2)\n',
+                            objLoanRegister."Loan Product Type Name",
+                            objLoanRegister."Loan Product Type");
+                        DeductionSummary += STRSUBSTNO('  Monthly Repayment: %1\n\n',
+                            FORMAT(IndividualLoanAmount, 0, '<Precision,2:2><Standard Format,0>'));
+                    end;
+
+                UNTIL objLoanRegister.NEXT = 0;
+            END ELSE BEGIN
+                DeductionSummary += '- No active loans found\n\n';
+            END;
+
+            // Calculate final total
+            TotalDeductions += TotalLoanDeductions;
+
+            // summary section
+            DeductionSummary += STRSUBSTNO('SUMMARY:\n');
+            DeductionSummary += STRSUBSTNO('================================\n');
+            DeductionSummary += STRSUBSTNO('Total Loan Repayments: %1\n', FORMAT(TotalLoanDeductions, 0, '<Precision,2:2><Standard Format,0>'));
+            DeductionSummary += STRSUBSTNO('TOTAL MONTHLY DEDUCTIONS: %1\n', FORMAT(TotalDeductions, 0, '<Precision,2:2><Standard Format,0>'));
+
+            //  processing timestamp
+            DeductionSummary += STRSUBSTNO('\nGenerated: %1 at %2', FORMAT(TODAY), FORMAT(TIME));
+
+        END ELSE BEGIN
+            DeductionSummary := STRSUBSTNO('ERROR: Member %1 not found in the system', MemberNo);
+        END;
+    end;
+
+    procedure GetLatestLoanRepaymentByProduct(CustomerNo: Code[20]; LoanProductCode: Code[20]): Decimal
+    var
+        CustLedgerEntry: Record "Cust. Ledger Entry";
+    begin
+        CustLedgerEntry.SetRange("Customer No.", CustomerNo);
+        CustLedgerEntry.SetRange("Transaction Type", CustLedgerEntry."Transaction Type"::"Loan Repayment"); // Adjust as needed
+        CustLedgerEntry.SetRange("Customer Posting Group", LoanProductCode); // Filter by specific loan product
+        CustLedgerEntry.SetFilter("Document No.", '*CHECKOFF*'); // Filter for documents containing "CHECKOFF"
+        CustLedgerEntry.SetRange(Reversed, false);
+
+        if CustLedgerEntry.FindLast() then
+            exit(-CustLedgerEntry."Amount Posted");
+        exit(0);
+    end;
+
 
 
 

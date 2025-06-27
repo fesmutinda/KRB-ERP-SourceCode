@@ -2171,6 +2171,16 @@ tableextension 50047 "CustomerExt" extends Customer
         }
         field(69512; "Middle Name"; Code[20]) { }
         field(69513; "Surname"; Code[20]) { }
+
+        field(69514; "KRA Pin Picture"; Media) { }
+
+        field(69515; "Identification Document Front"; Media) { }
+
+        field(69516; "Identification Document Back"; Media) { }
+
+
+
+
     }
 
     keys

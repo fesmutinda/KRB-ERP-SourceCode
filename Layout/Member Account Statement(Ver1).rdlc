@@ -1054,7 +1054,6 @@
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>#4d4d4d</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -2901,7 +2900,6 @@
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>#4d4d4d</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -2911,8 +2909,7 @@
                           <rd:DefaultName>Textbox116</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Style>Solid</Style>
-                              <Width>2pt</Width>
+                              <Style>None</Style>
                             </Border>
                             <TopBorder>
                               <Style>None</Style>
@@ -2955,8 +2952,7 @@
                           <rd:DefaultName>Textbox49</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Style>Solid</Style>
-                              <Width>2pt</Width>
+                              <Style>None</Style>
                             </Border>
                             <TopBorder>
                               <Style>None</Style>
@@ -4570,7 +4566,9 @@
                                 <TextRun>
                                   <Value>JUNIOR DEPOSITS</Value>
                                   <Style>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>#4d4d4d</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -5456,7 +5454,7 @@
             </Style>
           </Tablix>
         </ReportItems>
-        <Height>11.1252in</Height>
+        <Height>11.20149in</Height>
         <Style>
           <Border>
             <Color>White</Color>
@@ -6130,9 +6128,6 @@ kHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpBvD/AZI2
   <DataSets>
     <DataSet Name="DataSet_Result">
       <Fields>
-        <Field Name="ReportForNavId_1102755000">
-          <DataField>ReportForNavId_1102755000</DataField>
-        </Field>
         <Field Name="USERID">
           <DataField>USERID</DataField>
         </Field>
@@ -6193,9 +6188,6 @@ kHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpBvD/AZI2
         <Field Name="Company_Email">
           <DataField>Company_Email</DataField>
         </Field>
-        <Field Name="ReportForNavId_1000000009">
-          <DataField>ReportForNavId_1000000009</DataField>
-        </Field>
         <Field Name="PostingDate_ShareCapital">
           <DataField>PostingDate_ShareCapital</DataField>
         </Field>
@@ -6246,9 +6238,6 @@ kHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpBvD/AZI2
         </Field>
         <Field Name="ShareCapBFFormat">
           <DataField>ShareCapBFFormat</DataField>
-        </Field>
-        <Field Name="ReportForNavId_1000000036">
-          <DataField>ReportForNavId_1000000036</DataField>
         </Field>
         <Field Name="PostingDate_Deposits">
           <DataField>PostingDate_Deposits</DataField>
@@ -6301,63 +6290,6 @@ kHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpBvD/AZI2
         <Field Name="SharesBFFormat">
           <DataField>SharesBFFormat</DataField>
         </Field>
-        <Field Name="ReportForNavId_1000000059">
-          <DataField>ReportForNavId_1000000059</DataField>
-        </Field>
-        <Field Name="PostingDate_Dividend">
-          <DataField>PostingDate_Dividend</DataField>
-        </Field>
-        <Field Name="DocumentNo_Dividend">
-          <DataField>DocumentNo_Dividend</DataField>
-        </Field>
-        <Field Name="Description_Dividend">
-          <DataField>Description_Dividend</DataField>
-        </Field>
-        <Field Name="Amount_Dividend">
-          <DataField>Amount_Dividend</DataField>
-        </Field>
-        <Field Name="Amount_DividendFormat">
-          <DataField>Amount_DividendFormat</DataField>
-        </Field>
-        <Field Name="UserID_Dividend">
-          <DataField>UserID_Dividend</DataField>
-        </Field>
-        <Field Name="TransactionType_Dividend">
-          <DataField>TransactionType_Dividend</DataField>
-        </Field>
-        <Field Name="DebitAmount_Dividend">
-          <DataField>DebitAmount_Dividend</DataField>
-        </Field>
-        <Field Name="DebitAmount_DividendFormat">
-          <DataField>DebitAmount_DividendFormat</DataField>
-        </Field>
-        <Field Name="CreditAmount_Dividend">
-          <DataField>CreditAmount_Dividend</DataField>
-        </Field>
-        <Field Name="CreditAmount_DividendFormat">
-          <DataField>CreditAmount_DividendFormat</DataField>
-        </Field>
-        <Field Name="OpenBalanceDividend">
-          <DataField>OpenBalanceDividend</DataField>
-        </Field>
-        <Field Name="OpenBalanceDividendFormat">
-          <DataField>OpenBalanceDividendFormat</DataField>
-        </Field>
-        <Field Name="ClosingBalanceDividend">
-          <DataField>ClosingBalanceDividend</DataField>
-        </Field>
-        <Field Name="ClosingBalanceDividendFormat">
-          <DataField>ClosingBalanceDividendFormat</DataField>
-        </Field>
-        <Field Name="DividendBF">
-          <DataField>DividendBF</DataField>
-        </Field>
-        <Field Name="DividendBFFormat">
-          <DataField>DividendBFFormat</DataField>
-        </Field>
-        <Field Name="ReportForNavId_1000000071">
-          <DataField>ReportForNavId_1000000071</DataField>
-        </Field>
         <Field Name="PostingDate_Withdrawable">
           <DataField>PostingDate_Withdrawable</DataField>
         </Field>
@@ -6408,9 +6340,6 @@ kHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpBvD/AZI2
         </Field>
         <Field Name="WithdrawableBFFormat">
           <DataField>WithdrawableBFFormat</DataField>
-        </Field>
-        <Field Name="ReportForNavId_1000000072">
-          <DataField>ReportForNavId_1000000072</DataField>
         </Field>
         <Field Name="PostingDate_Junior">
           <DataField>PostingDate_Junior</DataField>
@@ -6471,9 +6400,6 @@ kHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpBvD/AZI2
         </Field>
         <Field Name="JuniorAccountNo_Junior">
           <DataField>JuniorAccountNo_Junior</DataField>
-        </Field>
-        <Field Name="ReportForNavId_1102755024">
-          <DataField>ReportForNavId_1102755024</DataField>
         </Field>
         <Field Name="PrincipleBF">
           <DataField>PrincipleBF</DataField>
@@ -6537,9 +6463,6 @@ kHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpBvD/AZI2
         </Field>
         <Field Name="OustandingInterest_LoansFormat">
           <DataField>OustandingInterest_LoansFormat</DataField>
-        </Field>
-        <Field Name="ReportForNavId_1102755031">
-          <DataField>ReportForNavId_1102755031</DataField>
         </Field>
         <Field Name="PostingDate_loan">
           <DataField>PostingDate_loan</DataField>

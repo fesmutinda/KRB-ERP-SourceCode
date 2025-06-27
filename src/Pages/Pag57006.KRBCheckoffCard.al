@@ -806,11 +806,12 @@ page 57006 "KRB Checkoff Card"
                             // if (LoanApp."Issued Date" <= LoanCutoffDate) then begin
 
                             if LoanApp."Outstanding Balance" > 0 then begin
-                                if LoanApp."Outstanding Balance" >= RunningBalance then begin
-                                    AmountToDeduct := RunningBalance;
-                                end else if RunningBalance > LoanApp."Outstanding Balance" then begin
-                                    AmountToDeduct := LoanApp."Outstanding Balance";
-                                end;
+                                // if LoanApp."Outstanding Balance" >= RunningBalance then begin
+                                //     AmountToDeduct := RunningBalance;
+                                // end else if RunningBalance > LoanApp."Outstanding Balance" then begin
+                                //     AmountToDeduct := LoanApp."Outstanding Balance";
+                                // end;
+                                AmountToDeduct := RunningBalance;
                             end else begin
                                 AmountToDeduct := 0;
                             end;

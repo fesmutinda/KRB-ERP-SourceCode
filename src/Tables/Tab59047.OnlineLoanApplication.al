@@ -62,7 +62,7 @@ Table 59047 "Online Loan Application"
         field(7; "Date of Birth"; Date) { Editable = false; }
         field(8; "Membership No"; Code[20]) { TableRelation = Customer."No."; }
         field(9; "Application Date"; Date) { Editable = false; }
-        field(10; Email; Code[20]) { Editable = false; }
+        field(10; Email; Code[50]) { Editable = false; }
         field(11; Telephone; Code[20]) { Editable = false; }
         field(12; "Home Address"; Code[20]) { Editable = false; }
         field(13; Station; Code[20]) { Editable = false; }
@@ -99,6 +99,8 @@ Table 59047 "Online Loan Application"
         {
             OptionMembers = Application,Submitted,Deleted;
         }
+
+        field(30; "Guarantorship Requested"; Boolean) { }
     }
 
     keys

@@ -978,8 +978,12 @@ Page 56043 "KRB Sacco Role Center"
                         ApplicationArea = all;
                         Caption = 'Membership Exit Reports';
                         RunObject = report "Membership Closure Report";
+                        Visible = false;
 
                     }
+
+
+
                     // action("Member Accounts Statement")
                     // {
                     //     ApplicationArea = all;
@@ -1058,6 +1062,7 @@ Page 56043 "KRB Sacco Role Center"
                         ToolTip = 'Open the list of Approved Instant Loans Pending Disbursement.';
                     }
 
+
                 }
                 group("Loan Batching")
                 {
@@ -1123,14 +1128,7 @@ Page 56043 "KRB Sacco Role Center"
                         ToolTip = 'Member Loans Book Report';
                         Visible = true;
                     }
-                    action("Loan Defaulter Aging")
-                    {
-                        ApplicationArea = all;
-                        Caption = 'Loans Defaulter Aging-SASRA';
-                        RunObject = report "SASRA Loans Classification";
-                        ToolTip = 'Loan Classification Report';
-                        Visible = false;
-                    }
+
                     action("Loan Collection Targets Report")
                     {
                         ApplicationArea = all;
@@ -1161,7 +1159,7 @@ Page 56043 "KRB Sacco Role Center"
                         Visible = false;
                     }
 
-                    action("Loans Arreas Report")
+                    action("Loans Arrears Report")
                     {
                         ApplicationArea = all;
                         RunObject = Report "Loan Arrears Report";
@@ -1176,6 +1174,20 @@ Page 56043 "KRB Sacco Role Center"
                         ToolTip = 'Loans Securities Report';
                     }
 
+                    action("Member Excess Loan Repayments Report")
+                    {
+                        ApplicationArea = all;
+                        Caption = 'Member Excess Loan Repayments';
+                        RunObject = report MemberExcessList2;
+                    }
+
+                    action("Loan Defaulter Aging")
+                    {
+                        ApplicationArea = all;
+                        Caption = 'Loans Defaulter Aging';
+                        RunObject = report 51036;
+                        visible = true;
+                    }
                 }
 
             }

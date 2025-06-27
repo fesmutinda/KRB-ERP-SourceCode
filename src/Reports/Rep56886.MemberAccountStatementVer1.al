@@ -10,9 +10,6 @@ Report 56886 "Member Account Statement(Ver1)"
         dataitem("Members Register"; customer)
         {
             RequestFilterFields = "No.", "Loan Product Filter", "Outstanding Balance", "Date Filter";
-            column(ReportForNavId_1102755000; 1102755000)
-            {
-            }
             column(USERID; UserId)
             {
             }
@@ -78,9 +75,7 @@ Report 56886 "Member Account Statement(Ver1)"
             {
                 DataItemLink = "Customer No." = field("No."), "Posting Date" = field("Date Filter");
                 DataItemTableView = sorting("Posting Date") where("Transaction Type" = filter("Share Capital"), Reversed = const(false));
-                column(ReportForNavId_1000000009; 1000000009)
-                {
-                }
+
                 column(PostingDate_ShareCapital; ShareCapital."Posting Date")
                 {
                 }
@@ -138,9 +133,7 @@ Report 56886 "Member Account Statement(Ver1)"
             {
                 DataItemLink = "Customer No." = field("No."), "Posting Date" = field("Date Filter");
                 DataItemTableView = sorting("Posting Date") where("Transaction Type" = filter("Deposit Contribution"), Reversed = const(false));
-                column(ReportForNavId_1000000036; 1000000036)
-                {
-                }
+
                 column(PostingDate_Deposits; Deposits."Posting Date")
                 {
                 }
@@ -194,73 +187,70 @@ Report 56886 "Member Account Statement(Ver1)"
                     OpenBalanceDeposits := SharesBF;
                 end;
             }
-            dataitem(Dividend; "Cust. Ledger Entry")
-            {
-                DataItemLink = "Customer No." = field("No."), "Posting Date" = field("Date Filter");
-                DataItemTableView = sorting("Posting Date") where("Transaction Type" = filter(Dividend), Reversed = const(false));
-                column(ReportForNavId_1000000059; 1000000059)
-                {
-                }
-                column(PostingDate_Dividend; Dividend."Posting Date")
-                {
-                }
-                column(DocumentNo_Dividend; Dividend."Document No.")
-                {
-                }
-                column(Description_Dividend; Dividend.Description)
-                {
-                }
-                column(Amount_Dividend; Dividend."Amount Posted")
-                {
-                }
-                column(UserID_Dividend; Dividend."User ID")
-                {
-                }
-                column(TransactionType_Dividend; Dividend."Transaction Type")
-                {
-                }
-                column(DebitAmount_Dividend; DebitAmount)
-                {
-                }
-                column(CreditAmount_Dividend; CreditAmount)
-                {
-                }
-                column(OpenBalanceDividend; OpenBalanceDividend)
-                {
-                }
-                column(ClosingBalanceDividend; ClosingBalanceDividend)
-                {
-                }
-                column(DividendBF; DividendBF)
-                {
-                }
 
-                trigger OnAfterGetRecord()
-                begin
-                    CreditAmount := 0;
-                    DebitAmount := 0;
-                    if Dividend."Amount Posted" < 0 then begin
-                        CreditAmount := Dividend."Amount Posted" * -1;
-                    end else
-                        if Dividend."Amount Posted" > 0 then begin
-                            DebitAmount := Dividend."Amount Posted";
-                        end;
-                    ClosingBalanceDividend := ClosingBalanceDividend + (Dividend."Amount Posted" * -1);
-                end;
+            // dataitem(ExcessLoanRepayments; "Cust. Ledger Entry")
+            // {
+            //     DataItemLink = "Customer No." = field("No."), "Posting Date" = field("Date Filter");
+            //     DataItemTableView = sorting("Posting Date") where("Transaction Type" = filter("Unallocated Funds"), Reversed = const(false));
 
-                trigger OnPreDataItem()
-                begin
-                    ClosingBalanceDividend := DividendBF;
-                    OpenBalanceDividend := DividendBF;
-                end;
-            }
+            //     column(PostingDate_Excess; ExcessLoanRepayments."Posting Date")
+            //     {
+            //     }
+            //     column(DocumentNo_Excess; ExcessLoanRepayments."Document No.")
+            //     {
+            //     }
+            //     column(Description_Excess; ExcessLoanRepayments.Description)
+            //     {
+            //     }
+            //     column(Amount_Excess; ExcessLoanRepayments."Amount Posted")
+            //     {
+            //     }
+            //     column(UserID_Excess; ExcessLoanRepayments."User ID")
+            //     {
+            //     }
+            //     column(DebitAmount_Excess; DebitAmount)
+            //     {
+            //     }
+            //     column(CreditAmount_Excess; CreditAmount)
+            //     {
+            //     }
+            //     column(TransactionType_Excess; ExcessLoanRepayments."Transaction Type")
+            //     {
+            //     }
+            //     column(OpenBalanceExcess; OpenBalanceExcess)
+            //     {
+            //     }
+            //     column(ClosingBalanceExcess; ClosingBalanceExcess)
+            //     {
+            //     }
+            //     column(ExcessBF; ExcessBF)
+            //     {
+            //     }
+
+            //     trigger OnAfterGetRecord()
+            //     begin
+            //         CreditAmount := 0;
+            //         DebitAmount := 0;
+            //         if ExcessLoanRepayments."Amount Posted" < 0 then begin
+            //             CreditAmount := ExcessLoanRepayments."Amount Posted" * -1;
+            //         end else
+            //             if ExcessLoanRepayments."Amount Posted" > 0 then begin
+            //                 DebitAmount := ExcessLoanRepayments."Amount Posted";
+            //             end;
+            //         ClosingBalanceExcess := ClosingBalanceExcess + (ExcessLoanRepayments."Amount Posted" * -1);
+            //     end;
+
+            //     trigger OnPreDataItem()
+            //     begin
+            //         ClosingBalanceExcess := ExcessBF;
+            //         OpenBalanceExcess := ExcessBF;
+            //     end;
+            // }
             dataitem(WithdrawableSavings; "Cust. Ledger Entry")
             {
                 DataItemLink = "Customer No." = field("No."), "Posting Date" = field("Date Filter");
                 DataItemTableView = sorting("Posting Date") where("Transaction Type" = filter("Withdrawable Savings"), Reversed = const(false));
-                column(ReportForNavId_1000000071; 1000000071)
-                {
-                }
+
                 column(PostingDate_Withdrawable; WithdrawableSavings."Posting Date")
                 {
                 }
@@ -320,9 +310,7 @@ Report 56886 "Member Account Statement(Ver1)"
             {
                 DataItemLink = "Posting Date" = field("Date Filter");
                 DataItemTableView = sorting("Posting Date") where("Transaction Type" = filter("Junior Savings"), Reversed = const(false));
-                column(ReportForNavId_1000000072; 1000000072)
-                {
-                }
+
                 column(PostingDate_Junior; JuniorSavings."Posting Date")
                 {
                 }
@@ -410,9 +398,7 @@ Report 56886 "Member Account Statement(Ver1)"
             {
                 DataItemLink = "Client Code" = field("No."), "Date filter" = field("Date Filter"), "Loan Product Type" = field("Loan Product Filter");
                 DataItemTableView = sorting("Loan  No.") where(Posted = const(true), Reversed = const(false));
-                column(ReportForNavId_1102755024; 1102755024)
-                {
-                }
+
                 column(PrincipleBF; PrincipleBF)
                 {
                 }
@@ -456,9 +442,7 @@ Report 56886 "Member Account Statement(Ver1)"
                 {
                     DataItemLink = "Customer No." = field("Client Code"), "Loan No" = field("Loan  No."), "Posting Date" = field("Date filter");
                     DataItemTableView = sorting("Posting Date") where("Transaction Type" = filter(Loan | "Loan Repayment" | "Interest Due" | "Interest Paid" | "Loan Transfer Charges"), Reversed = const(false));
-                    column(ReportForNavId_1102755031; 1102755031)
-                    {
-                    }
+
                     column(PostingDate_loan; loan."Posting Date")
                     {
                     }
@@ -550,6 +534,7 @@ Report 56886 "Member Account Statement(Ver1)"
                     Loans.SetFilter(Loans."Date filter", "Members Register".GetFilter("Members Register"."Date Filter"));
                 end;
             }
+
             trigger OnAfterGetRecord()
             begin
                 SaccoEmp.Reset;
@@ -567,6 +552,7 @@ Report 56886 "Member Account Statement(Ver1)"
                 JuniorBF := 0;
                 WithdrawableBF := 0;
                 DividendBF := 0;
+                ExcessBF := 0;
 
                 if DateFilterBF <> '' then begin
                     Cust.Reset;
@@ -751,4 +737,11 @@ Report 56886 "Member Account Statement(Ver1)"
         JuniorMemberNo: Code[20];
         JuniorMemberName: Text[100];
         JuniorAccountFilter: Text;
+        ExcessBF: Decimal;
+        ClosingBalanceExcess: Decimal;
+        OpenBalanceExcess: Decimal;
+
+    protected var
+        StartDate: Date;
+        EndDate: Date;
 }

@@ -9,7 +9,7 @@ Report 50210 "Loan Defaulters List"
     {
         dataitem(Loans; "Loans Register")
         {
-            DataItemTableView = sorting("Staff No") order(ascending) where(Posted = const(true), "Loans Category-SASRA" = const(Loss));
+            DataItemTableView = sorting("Loan  No.") order(ascending) where(Posted = const(true), "Outstanding Balance" = filter('>0'), "Amount in Arrears" = filter('>0'));
             RequestFilterFields = Source, "Loan Product Type", "Application Date", "Issued Date";
             column(ReportForNavId_4645; 4645)
             {
@@ -20,7 +20,7 @@ Report 50210 "Loan Defaulters List"
             column(Top_Up_Amount; "Top Up Amount")
             {
             }
-            column(COMPANYNAME; COMPANYNAME)
+            column(COMPANYNAME; Company.Name)
             {
             }
             column(CurrReport_PAGENO; CurrReport.PageNo)
@@ -62,10 +62,19 @@ Report 50210 "Loan Defaulters List"
             column(Repayment; Repayment)
             {
             }
+
+            column(No_of_Months_in_Arrears; "No of Months in Arrears") { }
+
+            column(Days_In_Arrears; "Days In Arrears") { }
             column(Loans_Installments; Installments)
             {
             }
             column(Loans__Loan_Status_; "Loan Status")
+            {
+            }
+
+
+            column(Loans__Arrears_; "Amount in Arrears")
             {
             }
             column(Loans_Loans__Outstanding_Balance_; Loans."Outstanding Balance")
@@ -176,6 +185,28 @@ Report 50210 "Loan Defaulters List"
             column(Date________________________Caption_Control1102755005; Date________________________Caption_Control1102755005Lbl)
             {
             }
+
+            column(Company_Name; Company.Name)
+            {
+            }
+            column(Company_Address; Company.Address)
+            {
+            }
+            column(Company_Address_2; Company."Address 2")
+            {
+            }
+            column(Company_Phone_No; Company."Phone No.")
+            {
+            }
+            column(Company_Fax_No; Company."Fax No.")
+            {
+            }
+            column(Company_Picture; Company.Picture)
+            {
+            }
+            column(Company_Email; Company."E-Mail")
+            {
+            }
             column(Lbal; LBalance)
             {
             }
@@ -202,6 +233,9 @@ Report 50210 "Loan Defaulters List"
                         RFilters := 'Branch: ' + DValue.Name;
 
                 end;
+
+
+                Company.Get();
 
 
 
@@ -266,5 +300,7 @@ Report 50210 "Loan Defaulters List"
         CustLedger: Record "Cust. Ledger Entry";
         DateFilterr: Date;
         LBalance: Decimal;
+
+        Company: Record "Company Information";
 }
 

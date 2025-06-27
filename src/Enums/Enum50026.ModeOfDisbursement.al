@@ -25,4 +25,9 @@ enum 50026 "Mode Of Disbursement"
     {
 
     }
+
+    value(6; "KRB Opening Balance Loans")
+    {
+
+    }
 }
