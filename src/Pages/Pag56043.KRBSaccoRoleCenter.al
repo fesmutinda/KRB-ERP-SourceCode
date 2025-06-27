@@ -96,7 +96,7 @@ Page 56043 "KRB Sacco Role Center"
             part(Control122; "Power BI Report Spinner Part")
             {
                 ApplicationArea = Basic, Suite;
-                Visible = true;
+                Visible = false;
             }
 
             systempart(Control1901377608; MyNotes)
