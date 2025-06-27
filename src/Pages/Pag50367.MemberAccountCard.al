@@ -782,23 +782,23 @@ page 50367 "Member Account Card"
 
                     end;
                 }
-                action("Loan Portfolio Analysis")
-                {
-                    ApplicationArea = Basic;
-                    Caption = 'Loan Portfolio';
-                    Image = "Report";
-                    Promoted = true;
-                    PromotedCategory = "Report";
-
-                    trigger OnAction()
-                    begin
-                        Cust.Reset;
-                        Cust.SetRange(Cust."No.", Rec."No.");
-                        if Cust.Find('-') then begin
-                            Report.Run(50200, true, false, Cust);
-                        END;
-                    end;
-                }
+                //                action("Loan Portfolio Analysis")
+                //                {
+                //                    ApplicationArea = Basic;
+                //                    Caption = 'Loan Portfolio';
+                //                    Image = "Report";
+                //                    Promoted = true;
+                //                    PromotedCategory = "Report";
+                //
+                //                    trigger OnAction()
+                //                    begin
+                //                        Cust.Reset;
+                //                        Cust.SetRange(Cust."No.", Rec."No.");
+                //                        if Cust.Find('-') then begin
+                //                            Report.Run(50200, true, false, Cust);
+                //                        END;
+                //                    end;
+                //                }
                 /*  action("Loan Arrears list")
                  {
                      ApplicationArea = Basic;
