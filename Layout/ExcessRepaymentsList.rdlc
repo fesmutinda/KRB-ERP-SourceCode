@@ -56,7 +56,6 @@
                                   <Value>Member No</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -94,7 +93,6 @@
                                   <Value>Member Name</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -132,7 +130,6 @@
                                   <Value>Posting Date</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -170,7 +167,6 @@
                                   <Value>Document No</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -208,7 +204,6 @@
                                   <Value>Description</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -246,7 +241,6 @@
                                   <Value>Credit Amount</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -284,7 +278,6 @@
                                   <Value>Debit Amount</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -705,7 +698,7 @@
             <Top>2.22787in</Top>
             <Left>0.12028in</Left>
             <Height>0.69444in</Height>
-            <Width>8.26531in</Width>
+            <Width>8.2653in</Width>
             <Style>
               <Border>
                 <Style>None</Style>

@@ -11,259 +11,6 @@
       <rd:DataSourceID>865bada5-9b40-4ac4-82e0-70c4fd8fba2b</rd:DataSourceID>
     </DataSource>
   </DataSources>
-  <DataSets>
-    <DataSet Name="DataSet_Result">
-      <Query>
-        <DataSourceName>DataSource</DataSourceName>
-        <CommandText />
-      </Query>
-      <Fields>
-        <Field Name="ReportForNavId_4645">
-          <DataField>ReportForNavId_4645</DataField>
-        </Field>
-        <Field Name="FORMAT_TODAY_0_4_">
-          <DataField>FORMAT_TODAY_0_4_</DataField>
-        </Field>
-        <Field Name="Top_Up_Amount">
-          <DataField>Top_Up_Amount</DataField>
-        </Field>
-        <Field Name="Top_Up_AmountFormat">
-          <DataField>Top_Up_AmountFormat</DataField>
-        </Field>
-        <Field Name="COMPANYNAME">
-          <DataField>COMPANYNAME</DataField>
-        </Field>
-        <Field Name="CurrReport_PAGENO">
-          <DataField>CurrReport_PAGENO</DataField>
-        </Field>
-        <Field Name="USERID">
-          <DataField>USERID</DataField>
-        </Field>
-        <Field Name="LoanType">
-          <DataField>LoanType</DataField>
-        </Field>
-        <Field Name="RFilters">
-          <DataField>RFilters</DataField>
-        </Field>
-        <Field Name="EmployerCode">
-          <DataField>EmployerCode</DataField>
-        </Field>
-        <Field Name="StaffNo">
-          <DataField>StaffNo</DataField>
-        </Field>
-        <Field Name="Loans__Loan__No__">
-          <DataField>Loans__Loan__No__</DataField>
-        </Field>
-        <Field Name="AccountNo_Loans">
-          <DataField>AccountNo_Loans</DataField>
-        </Field>
-        <Field Name="Loans__Client_Code_">
-          <DataField>Loans__Client_Code_</DataField>
-        </Field>
-        <Field Name="Loans__Client_Name_">
-          <DataField>Loans__Client_Name_</DataField>
-        </Field>
-        <Field Name="Loans__Requested_Amount_">
-          <DataField>Loans__Requested_Amount_</DataField>
-        </Field>
-        <Field Name="Loans__Requested_Amount_Format">
-          <DataField>Loans__Requested_Amount_Format</DataField>
-        </Field>
-        <Field Name="Loans__Approved_Amount_">
-          <DataField>Loans__Approved_Amount_</DataField>
-        </Field>
-        <Field Name="Loans__Approved_Amount_Format">
-          <DataField>Loans__Approved_Amount_Format</DataField>
-        </Field>
-        <Field Name="Repayment">
-          <DataField>Repayment</DataField>
-        </Field>
-        <Field Name="RepaymentFormat">
-          <DataField>RepaymentFormat</DataField>
-        </Field>
-        <Field Name="No_of_Months_in_Arrears">
-          <DataField>No_of_Months_in_Arrears</DataField>
-        </Field>
-        <Field Name="Days_In_Arrears">
-          <DataField>Days_In_Arrears</DataField>
-        </Field>
-        <Field Name="Days_In_ArrearsFormat">
-          <DataField>Days_In_ArrearsFormat</DataField>
-        </Field>
-        <Field Name="Loans_Installments">
-          <DataField>Loans_Installments</DataField>
-        </Field>
-        <Field Name="Loans__Loan_Status_">
-          <DataField>Loans__Loan_Status_</DataField>
-        </Field>
-        <Field Name="Loans__Arrears_">
-          <DataField>Loans__Arrears_</DataField>
-        </Field>
-        <Field Name="Loans__Arrears_Format">
-          <DataField>Loans__Arrears_Format</DataField>
-        </Field>
-        <Field Name="Loans_Loans__Outstanding_Balance_">
-          <DataField>Loans_Loans__Outstanding_Balance_</DataField>
-        </Field>
-        <Field Name="Loans_Loans__Outstanding_Balance_Format">
-          <DataField>Loans_Loans__Outstanding_Balance_Format</DataField>
-        </Field>
-        <Field Name="Loans__Application_Date_">
-          <DataField>Loans__Application_Date_</DataField>
-        </Field>
-        <Field Name="Loans__Issued_Date_">
-          <DataField>Loans__Issued_Date_</DataField>
-        </Field>
-        <Field Name="Loans__Oustanding_Interest_">
-          <DataField>Loans__Oustanding_Interest_</DataField>
-        </Field>
-        <Field Name="Loans__Oustanding_Interest_Format">
-          <DataField>Loans__Oustanding_Interest_Format</DataField>
-        </Field>
-        <Field Name="Loans_Loans__Loan_Product_Type_">
-          <DataField>Loans_Loans__Loan_Product_Type_</DataField>
-        </Field>
-        <Field Name="Loans__Last_Pay_Date_">
-          <DataField>Loans__Last_Pay_Date_</DataField>
-        </Field>
-        <Field Name="Loans__Top_Up_Amount_">
-          <DataField>Loans__Top_Up_Amount_</DataField>
-        </Field>
-        <Field Name="Loans__Top_Up_Amount_Format">
-          <DataField>Loans__Top_Up_Amount_Format</DataField>
-        </Field>
-        <Field Name="Loans__Approved_Amount__Control1102760017">
-          <DataField>Loans__Approved_Amount__Control1102760017</DataField>
-        </Field>
-        <Field Name="Loans__Approved_Amount__Control1102760017Format">
-          <DataField>Loans__Approved_Amount__Control1102760017Format</DataField>
-        </Field>
-        <Field Name="Loans__Requested_Amount__Control1102760038">
-          <DataField>Loans__Requested_Amount__Control1102760038</DataField>
-        </Field>
-        <Field Name="Loans__Requested_Amount__Control1102760038Format">
-          <DataField>Loans__Requested_Amount__Control1102760038Format</DataField>
-        </Field>
-        <Field Name="LCount">
-          <DataField>LCount</DataField>
-        </Field>
-        <Field Name="Loans_Loans__Outstanding_Balance__Control1102760040">
-          <DataField>Loans_Loans__Outstanding_Balance__Control1102760040</DataField>
-        </Field>
-        <Field Name="Loans_Loans__Outstanding_Balance__Control1102760040Format">
-          <DataField>Loans_Loans__Outstanding_Balance__Control1102760040Format</DataField>
-        </Field>
-        <Field Name="Loans__Oustanding_Interest__Control1102760041">
-          <DataField>Loans__Oustanding_Interest__Control1102760041</DataField>
-        </Field>
-        <Field Name="Loans__Oustanding_Interest__Control1102760041Format">
-          <DataField>Loans__Oustanding_Interest__Control1102760041Format</DataField>
-        </Field>
-        <Field Name="Loans__Top_Up_Amount__Control1000000001">
-          <DataField>Loans__Top_Up_Amount__Control1000000001</DataField>
-        </Field>
-        <Field Name="Loans__Top_Up_Amount__Control1000000001Format">
-          <DataField>Loans__Top_Up_Amount__Control1000000001Format</DataField>
-        </Field>
-        <Field Name="Loans_RegisterCaption">
-          <DataField>Loans_RegisterCaption</DataField>
-        </Field>
-        <Field Name="CurrReport_PAGENOCaption">
-          <DataField>CurrReport_PAGENOCaption</DataField>
-        </Field>
-        <Field Name="Loan_TypeCaption">
-          <DataField>Loan_TypeCaption</DataField>
-        </Field>
-        <Field Name="Loans__Loan__No__Caption">
-          <DataField>Loans__Loan__No__Caption</DataField>
-        </Field>
-        <Field Name="Client_No_Caption">
-          <DataField>Client_No_Caption</DataField>
-        </Field>
-        <Field Name="Loans__Client_Name_Caption">
-          <DataField>Loans__Client_Name_Caption</DataField>
-        </Field>
-        <Field Name="Loans__Requested_Amount_Caption">
-          <DataField>Loans__Requested_Amount_Caption</DataField>
-        </Field>
-        <Field Name="Loans__Approved_Amount_Caption">
-          <DataField>Loans__Approved_Amount_Caption</DataField>
-        </Field>
-        <Field Name="Loans__Loan_Status_Caption">
-          <DataField>Loans__Loan_Status_Caption</DataField>
-        </Field>
-        <Field Name="Outstanding_LoanCaption">
-          <DataField>Outstanding_LoanCaption</DataField>
-        </Field>
-        <Field Name="PeriodCaption">
-          <DataField>PeriodCaption</DataField>
-        </Field>
-        <Field Name="Loans__Application_Date_Caption">
-          <DataField>Loans__Application_Date_Caption</DataField>
-        </Field>
-        <Field Name="Approved_DateCaption">
-          <DataField>Approved_DateCaption</DataField>
-        </Field>
-        <Field Name="Loans__Oustanding_Interest_Caption">
-          <DataField>Loans__Oustanding_Interest_Caption</DataField>
-        </Field>
-        <Field Name="Loan_TypeCaption_Control1102760043">
-          <DataField>Loan_TypeCaption_Control1102760043</DataField>
-        </Field>
-        <Field Name="Loans__Last_Pay_Date_Caption">
-          <DataField>Loans__Last_Pay_Date_Caption</DataField>
-        </Field>
-        <Field Name="Loans__Top_Up_Amount_Caption">
-          <DataField>Loans__Top_Up_Amount_Caption</DataField>
-        </Field>
-        <Field Name="Verified_By__________________________________________________Caption">
-          <DataField>Verified_By__________________________________________________Caption</DataField>
-        </Field>
-        <Field Name="Confirmed_By__________________________________________________Caption">
-          <DataField>Confirmed_By__________________________________________________Caption</DataField>
-        </Field>
-        <Field Name="Sign________________________Caption">
-          <DataField>Sign________________________Caption</DataField>
-        </Field>
-        <Field Name="Sign________________________Caption_Control1102755003">
-          <DataField>Sign________________________Caption_Control1102755003</DataField>
-        </Field>
-        <Field Name="Date________________________Caption">
-          <DataField>Date________________________Caption</DataField>
-        </Field>
-        <Field Name="Date________________________Caption_Control1102755005">
-          <DataField>Date________________________Caption_Control1102755005</DataField>
-        </Field>
-        <Field Name="Company_Name">
-          <DataField>Company_Name</DataField>
-        </Field>
-        <Field Name="Company_Address">
-          <DataField>Company_Address</DataField>
-        </Field>
-        <Field Name="Company_Address_2">
-          <DataField>Company_Address_2</DataField>
-        </Field>
-        <Field Name="Company_Phone_No">
-          <DataField>Company_Phone_No</DataField>
-        </Field>
-        <Field Name="Company_Fax_No">
-          <DataField>Company_Fax_No</DataField>
-        </Field>
-        <Field Name="Company_Picture">
-          <DataField>Company_Picture</DataField>
-        </Field>
-        <Field Name="Company_Email">
-          <DataField>Company_Email</DataField>
-        </Field>
-        <Field Name="Lbal">
-          <DataField>Lbal</DataField>
-        </Field>
-        <Field Name="LbalFormat">
-          <DataField>LbalFormat</DataField>
-        </Field>
-      </Fields>
-    </DataSet>
-  </DataSets>
   <ReportSections>
     <ReportSection>
       <Body>
@@ -614,7 +361,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Months in Arrears</Value>
+                                  <Value>Days in Arrears</Value>
                                   <Style>
                                     <FontSize>7pt</FontSize>
                                   </Style>
@@ -842,7 +589,6 @@
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -911,23 +657,25 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="No_of_Months_in_Arrears">
+                        <Textbox Name="Days_In_Arrears">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!No_of_Months_in_Arrears.Value</Value>
+                                  <Value>=Fields!Days_In_Arrears.Value</Value>
                                   <Style>
                                     <FontSize>7pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>No_of_Months_in_Arrears</rd:DefaultName>
+                          <rd:DefaultName>Days_In_Arrears</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -1529,12 +1277,6 @@
       </Page>
     </ReportSection>
   </ReportSections>
-  <ReportParametersLayout>
-    <GridLayoutDefinition>
-      <NumberOfColumns>4</NumberOfColumns>
-      <NumberOfRows>2</NumberOfRows>
-    </GridLayoutDefinition>
-  </ReportParametersLayout>
   <Code>Public Function BlankZero(ByVal Value As Decimal)
     if Value = 0 then
         Return ""
@@ -1603,4 +1345,257 @@ kHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpBvD/AZI2
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
   <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="ReportForNavId_4645">
+          <DataField>ReportForNavId_4645</DataField>
+        </Field>
+        <Field Name="FORMAT_TODAY_0_4_">
+          <DataField>FORMAT_TODAY_0_4_</DataField>
+        </Field>
+        <Field Name="Top_Up_Amount">
+          <DataField>Top_Up_Amount</DataField>
+        </Field>
+        <Field Name="Top_Up_AmountFormat">
+          <DataField>Top_Up_AmountFormat</DataField>
+        </Field>
+        <Field Name="COMPANYNAME">
+          <DataField>COMPANYNAME</DataField>
+        </Field>
+        <Field Name="CurrReport_PAGENO">
+          <DataField>CurrReport_PAGENO</DataField>
+        </Field>
+        <Field Name="USERID">
+          <DataField>USERID</DataField>
+        </Field>
+        <Field Name="LoanType">
+          <DataField>LoanType</DataField>
+        </Field>
+        <Field Name="RFilters">
+          <DataField>RFilters</DataField>
+        </Field>
+        <Field Name="EmployerCode">
+          <DataField>EmployerCode</DataField>
+        </Field>
+        <Field Name="StaffNo">
+          <DataField>StaffNo</DataField>
+        </Field>
+        <Field Name="Loans__Loan__No__">
+          <DataField>Loans__Loan__No__</DataField>
+        </Field>
+        <Field Name="AccountNo_Loans">
+          <DataField>AccountNo_Loans</DataField>
+        </Field>
+        <Field Name="Loans__Client_Code_">
+          <DataField>Loans__Client_Code_</DataField>
+        </Field>
+        <Field Name="Loans__Client_Name_">
+          <DataField>Loans__Client_Name_</DataField>
+        </Field>
+        <Field Name="Loans__Requested_Amount_">
+          <DataField>Loans__Requested_Amount_</DataField>
+        </Field>
+        <Field Name="Loans__Requested_Amount_Format">
+          <DataField>Loans__Requested_Amount_Format</DataField>
+        </Field>
+        <Field Name="Loans__Approved_Amount_">
+          <DataField>Loans__Approved_Amount_</DataField>
+        </Field>
+        <Field Name="Loans__Approved_Amount_Format">
+          <DataField>Loans__Approved_Amount_Format</DataField>
+        </Field>
+        <Field Name="Repayment">
+          <DataField>Repayment</DataField>
+        </Field>
+        <Field Name="RepaymentFormat">
+          <DataField>RepaymentFormat</DataField>
+        </Field>
+        <Field Name="No_of_Months_in_Arrears">
+          <DataField>No_of_Months_in_Arrears</DataField>
+        </Field>
+        <Field Name="Days_In_Arrears">
+          <DataField>Days_In_Arrears</DataField>
+        </Field>
+        <Field Name="Days_In_ArrearsFormat">
+          <DataField>Days_In_ArrearsFormat</DataField>
+        </Field>
+        <Field Name="Loans_Installments">
+          <DataField>Loans_Installments</DataField>
+        </Field>
+        <Field Name="Loans__Loan_Status_">
+          <DataField>Loans__Loan_Status_</DataField>
+        </Field>
+        <Field Name="Loans__Arrears_">
+          <DataField>Loans__Arrears_</DataField>
+        </Field>
+        <Field Name="Loans__Arrears_Format">
+          <DataField>Loans__Arrears_Format</DataField>
+        </Field>
+        <Field Name="Loans_Loans__Outstanding_Balance_">
+          <DataField>Loans_Loans__Outstanding_Balance_</DataField>
+        </Field>
+        <Field Name="Loans_Loans__Outstanding_Balance_Format">
+          <DataField>Loans_Loans__Outstanding_Balance_Format</DataField>
+        </Field>
+        <Field Name="Loans__Application_Date_">
+          <DataField>Loans__Application_Date_</DataField>
+        </Field>
+        <Field Name="Loans__Issued_Date_">
+          <DataField>Loans__Issued_Date_</DataField>
+        </Field>
+        <Field Name="Loans__Oustanding_Interest_">
+          <DataField>Loans__Oustanding_Interest_</DataField>
+        </Field>
+        <Field Name="Loans__Oustanding_Interest_Format">
+          <DataField>Loans__Oustanding_Interest_Format</DataField>
+        </Field>
+        <Field Name="Loans_Loans__Loan_Product_Type_">
+          <DataField>Loans_Loans__Loan_Product_Type_</DataField>
+        </Field>
+        <Field Name="Loans__Last_Pay_Date_">
+          <DataField>Loans__Last_Pay_Date_</DataField>
+        </Field>
+        <Field Name="Loans__Top_Up_Amount_">
+          <DataField>Loans__Top_Up_Amount_</DataField>
+        </Field>
+        <Field Name="Loans__Top_Up_Amount_Format">
+          <DataField>Loans__Top_Up_Amount_Format</DataField>
+        </Field>
+        <Field Name="Loans__Approved_Amount__Control1102760017">
+          <DataField>Loans__Approved_Amount__Control1102760017</DataField>
+        </Field>
+        <Field Name="Loans__Approved_Amount__Control1102760017Format">
+          <DataField>Loans__Approved_Amount__Control1102760017Format</DataField>
+        </Field>
+        <Field Name="Loans__Requested_Amount__Control1102760038">
+          <DataField>Loans__Requested_Amount__Control1102760038</DataField>
+        </Field>
+        <Field Name="Loans__Requested_Amount__Control1102760038Format">
+          <DataField>Loans__Requested_Amount__Control1102760038Format</DataField>
+        </Field>
+        <Field Name="LCount">
+          <DataField>LCount</DataField>
+        </Field>
+        <Field Name="Loans_Loans__Outstanding_Balance__Control1102760040">
+          <DataField>Loans_Loans__Outstanding_Balance__Control1102760040</DataField>
+        </Field>
+        <Field Name="Loans_Loans__Outstanding_Balance__Control1102760040Format">
+          <DataField>Loans_Loans__Outstanding_Balance__Control1102760040Format</DataField>
+        </Field>
+        <Field Name="Loans__Oustanding_Interest__Control1102760041">
+          <DataField>Loans__Oustanding_Interest__Control1102760041</DataField>
+        </Field>
+        <Field Name="Loans__Oustanding_Interest__Control1102760041Format">
+          <DataField>Loans__Oustanding_Interest__Control1102760041Format</DataField>
+        </Field>
+        <Field Name="Loans__Top_Up_Amount__Control1000000001">
+          <DataField>Loans__Top_Up_Amount__Control1000000001</DataField>
+        </Field>
+        <Field Name="Loans__Top_Up_Amount__Control1000000001Format">
+          <DataField>Loans__Top_Up_Amount__Control1000000001Format</DataField>
+        </Field>
+        <Field Name="Loans_RegisterCaption">
+          <DataField>Loans_RegisterCaption</DataField>
+        </Field>
+        <Field Name="CurrReport_PAGENOCaption">
+          <DataField>CurrReport_PAGENOCaption</DataField>
+        </Field>
+        <Field Name="Loan_TypeCaption">
+          <DataField>Loan_TypeCaption</DataField>
+        </Field>
+        <Field Name="Loans__Loan__No__Caption">
+          <DataField>Loans__Loan__No__Caption</DataField>
+        </Field>
+        <Field Name="Client_No_Caption">
+          <DataField>Client_No_Caption</DataField>
+        </Field>
+        <Field Name="Loans__Client_Name_Caption">
+          <DataField>Loans__Client_Name_Caption</DataField>
+        </Field>
+        <Field Name="Loans__Requested_Amount_Caption">
+          <DataField>Loans__Requested_Amount_Caption</DataField>
+        </Field>
+        <Field Name="Loans__Approved_Amount_Caption">
+          <DataField>Loans__Approved_Amount_Caption</DataField>
+        </Field>
+        <Field Name="Loans__Loan_Status_Caption">
+          <DataField>Loans__Loan_Status_Caption</DataField>
+        </Field>
+        <Field Name="Outstanding_LoanCaption">
+          <DataField>Outstanding_LoanCaption</DataField>
+        </Field>
+        <Field Name="PeriodCaption">
+          <DataField>PeriodCaption</DataField>
+        </Field>
+        <Field Name="Loans__Application_Date_Caption">
+          <DataField>Loans__Application_Date_Caption</DataField>
+        </Field>
+        <Field Name="Approved_DateCaption">
+          <DataField>Approved_DateCaption</DataField>
+        </Field>
+        <Field Name="Loans__Oustanding_Interest_Caption">
+          <DataField>Loans__Oustanding_Interest_Caption</DataField>
+        </Field>
+        <Field Name="Loan_TypeCaption_Control1102760043">
+          <DataField>Loan_TypeCaption_Control1102760043</DataField>
+        </Field>
+        <Field Name="Loans__Last_Pay_Date_Caption">
+          <DataField>Loans__Last_Pay_Date_Caption</DataField>
+        </Field>
+        <Field Name="Loans__Top_Up_Amount_Caption">
+          <DataField>Loans__Top_Up_Amount_Caption</DataField>
+        </Field>
+        <Field Name="Verified_By__________________________________________________Caption">
+          <DataField>Verified_By__________________________________________________Caption</DataField>
+        </Field>
+        <Field Name="Confirmed_By__________________________________________________Caption">
+          <DataField>Confirmed_By__________________________________________________Caption</DataField>
+        </Field>
+        <Field Name="Sign________________________Caption">
+          <DataField>Sign________________________Caption</DataField>
+        </Field>
+        <Field Name="Sign________________________Caption_Control1102755003">
+          <DataField>Sign________________________Caption_Control1102755003</DataField>
+        </Field>
+        <Field Name="Date________________________Caption">
+          <DataField>Date________________________Caption</DataField>
+        </Field>
+        <Field Name="Date________________________Caption_Control1102755005">
+          <DataField>Date________________________Caption_Control1102755005</DataField>
+        </Field>
+        <Field Name="Company_Name">
+          <DataField>Company_Name</DataField>
+        </Field>
+        <Field Name="Company_Address">
+          <DataField>Company_Address</DataField>
+        </Field>
+        <Field Name="Company_Address_2">
+          <DataField>Company_Address_2</DataField>
+        </Field>
+        <Field Name="Company_Phone_No">
+          <DataField>Company_Phone_No</DataField>
+        </Field>
+        <Field Name="Company_Fax_No">
+          <DataField>Company_Fax_No</DataField>
+        </Field>
+        <Field Name="Company_Picture">
+          <DataField>Company_Picture</DataField>
+        </Field>
+        <Field Name="Company_Email">
+          <DataField>Company_Email</DataField>
+        </Field>
+        <Field Name="Lbal">
+          <DataField>Lbal</DataField>
+        </Field>
+        <Field Name="LbalFormat">
+          <DataField>LbalFormat</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
 </Report>
