@@ -531,7 +531,7 @@ Report 56886 "Member Account Statement(Ver1)"
 
                 trigger OnPreDataItem()
                 begin
-                    Loans.SetFilter("Application Date", '%1..%2', StartDate, EndDate);
+                    Loans.SetFilter(Loans."Date filter", "Members Register".GetFilter("Members Register"."Date Filter"));
                 end;
             }
 
@@ -578,8 +578,6 @@ Report 56886 "Member Account Statement(Ver1)"
             begin
                 if "Members Register".GetFilter("Members Register"."Date Filter") <> '' then
                     DateFilterBF := '..' + Format(CalcDate('-1D', "Members Register".GetRangeMin("Members Register"."Date Filter")));
-                if (StartDate <> 0D) and (EndDate <> 0D) then
-                    "Members Register".SetFilter("Date Filter", Format(StartDate) + '..' + Format(EndDate));
             end;
         }
     }
@@ -588,25 +586,10 @@ Report 56886 "Member Account Statement(Ver1)"
     {
         layout
         {
-            area(content)
-            {
-                group(DateRange)
-                {
-                    Caption = 'Date Range';
-                    field(StartDate; StartDate)
-                    {
-                        ApplicationArea = All;
-                        Caption = 'Start Date';
-                        ToolTip = 'Select the start date for the report.';
-                    }
-                    field(EndDate; EndDate)
-                    {
-                        ApplicationArea = All;
-                        Caption = 'End Date';
-                        ToolTip = 'Select the end date for the report.';
-                    }
-                }
-            }
+        }
+
+        actions
+        {
         }
     }
 
@@ -754,15 +737,9 @@ Report 56886 "Member Account Statement(Ver1)"
         JuniorMemberNo: Code[20];
         JuniorMemberName: Text[100];
         JuniorAccountFilter: Text;
-
-
         ExcessBF: Decimal;
-
         ClosingBalanceExcess: Decimal;
-
         OpenBalanceExcess: Decimal;
-
-
 
     protected var
         StartDate: Date;
