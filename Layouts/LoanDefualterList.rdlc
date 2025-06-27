@@ -361,7 +361,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Months in Arrears</Value>
+                                  <Value>Days in Arrears</Value>
                                   <Style>
                                     <FontSize>7pt</FontSize>
                                   </Style>
@@ -589,7 +589,6 @@
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -658,23 +657,25 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="No_of_Months_in_Arrears">
+                        <Textbox Name="Days_In_Arrears">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!No_of_Months_in_Arrears.Value</Value>
+                                  <Value>=Fields!Days_In_Arrears.Value</Value>
                                   <Style>
                                     <FontSize>7pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>No_of_Months_in_Arrears</rd:DefaultName>
+                          <rd:DefaultName>Days_In_Arrears</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
