@@ -381,9 +381,20 @@ Codeunit 50009 "Swizzsoft Factory"
 
                     Evaluate(VarRepayCode, Format(VarInstalNo));
 
-                    if (VarInstalNo = VarRepayPeriod) and (VarLBalance > VarLPrincipal) then begin
-                        VarTotalMRepay += (VarLBalance - VarLPrincipal);
-                        VarLPrincipal := VarTotalMRepay - VarLInterest;
+                    // if (VarInstalNo = VarRepayPeriod) and (VarLBalance > VarLPrincipal) then begin
+                    //     VarTotalMRepay += (VarLBalance - VarLPrincipal);
+                    //     VarLPrincipal := VarTotalMRepay - VarLInterest;
+                    // end;
+
+                    // if (VarLPrincipal > VarLBalance) then begin
+                    //     VarLPrincipal := VarLBalance;
+                    //     VarTotalMRepay := VarLPrincipal + VarLInterest;
+                    // end;
+
+                    if (VarInstalNo = VarRepayPeriod) then begin
+
+                        VarLPrincipal := VarLBalance;
+                        VarTotalMRepay := Varlprincipal + VarLInterest;
                     end;
 
                     VarLBalance := VarLBalance - VarLPrincipal;
