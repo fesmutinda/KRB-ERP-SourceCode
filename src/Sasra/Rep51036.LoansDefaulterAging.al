@@ -222,7 +222,7 @@ Report 51036 "Loans Defaulter Aging"
             CalculatedMonthsInArrears := CalculatedDaysInArrears div 30;
 
             case CalculatedDaysInArrears of
-                0 .. 30:
+                1 .. 30:
                     CalculatedLoanCategory := CalculatedLoanCategory::Watch;
                 31 .. 180:
                     CalculatedLoanCategory := CalculatedLoanCategory::Substandard;
@@ -256,23 +256,45 @@ Report 51036 "Loans Defaulter Aging"
     end;
 
 
+
     local procedure GetExpectedPaymentAmount(): Decimal
     var
         LoanRepaymentSchedule: Record "Loan Repayment Schedule";
+        Swizzfactory: Codeunit 50009;
         TotalExpected: Decimal;
 
     begin
 
+        TotalExpected := "Loans Register"."Approved Amount";
 
-        TotalExpected := 0;
         LoanRepaymentSchedule.Reset();
         LoanRepaymentSchedule.SetRange("Loan No.", "Loans Register"."Loan  No.");
-        LoanRepaymentSchedule.SetFilter("Repayment Date", '<=%1', AsAt);
 
+        if LoanRepaymentSchedule.Findset() then begin
 
-        if LoanRepaymentSchedule.FindLast() then begin
+            LoanRepaymentSchedule.Reset();
+            LoanRepaymentSchedule.SetRange("Loan No.", "Loans Register"."Loan  No.");
+            LoanRepaymentSchedule.SetFilter("Repayment Date", '<=%1', AsAt);
 
-            TotalExpected := LoanRepaymentSchedule."Loan Balance";
+            IF LoanRepaymentSchedule.FindLast() THEN begin
+
+                TotalExpected := LoanRepaymentSchedule."Loan Balance";
+
+            end;
+        end ELSE begin
+
+            Swizzfactory.FnGenerateRepaymentSchedule("Loans Register"."Loan  No.");
+
+            LoanRepaymentSchedule.Reset();
+            LoanRepaymentSchedule.Reset();
+            LoanRepaymentSchedule.SetRange("Loan No.", "Loans Register"."Loan  No.");
+            LoanRepaymentSchedule.SetFilter("Repayment Date", '<=%1', AsAt);
+
+            IF LoanRepaymentSchedule.FindLast() THEN begin
+
+                TotalExpected := LoanRepaymentSchedule."Loan Balance";
+
+            end;
 
         end;
 
@@ -291,7 +313,8 @@ Report 51036 "Loans Defaulter Aging"
         LoanLedgerEntry.Reset();
         LoanLedgerEntry.SetRange("Customer No.", "Loans Register"."Client Code");
         LoanLedgerEntry.SetRange("Loan No", "Loans Register"."Loan  No.");
-        LoanLedgerEntry.SetFilter("Transaction Type", '%1|%2|%3|%4|%5', LoanLedgerEntry."Transaction Type"::"Loan Repayment", LoanLedgerEntry."Transaction Type"::"Interest Paid", LoanLedgerEntry."Transaction Type"::Loan, LoanLedgerEntry."Transaction Type"::"Interest Due", LoanLedgerEntry."Transaction Type"::"Loan Transfer Charges");
+        //LoanLedgerEntry.SetFilter("Transaction Type", '%1|%2|%3|%4|%5', LoanLedgerEntry."Transaction Type"::"Loan Repayment", LoanLedgerEntry."Transaction Type"::"Interest Paid", LoanLedgerEntry."Transaction Type"::Loan, LoanLedgerEntry."Transaction Type"::"Interest Due", LoanLedgerEntry."Transaction Type"::"Loan Transfer Charges");
+        LoanLedgerEntry.SetFilter("Transaction Type", '%1|%2|%3|%4', LoanLedgerEntry."Transaction Type"::"Loan Repayment", LoanLedgerEntry."Transaction Type"::"Interest Paid", LoanLedgerEntry."Transaction Type"::Loan, LoanLedgerEntry."Transaction Type"::"Interest Due");
         LoanLedgeREntry.SetRange(Reversed, false);
         LoanLedgerEntry.SetFilter("Posting Date", '<=%1', AsAt);
 
