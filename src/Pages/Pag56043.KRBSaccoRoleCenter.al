@@ -626,6 +626,20 @@ Page 56043 "KRB Sacco Role Center"
                         RunObject = report "Trial Balance2025";
                         ToolTip = 'Generate Trial Balance for a given period.';
                     }
+                    action("Monthly Trial Balance")
+                    {
+                        ApplicationArea = Basic, Suite;
+                        Caption = 'Monthly Trial Balance';
+                        RunObject = report "Monthly Trial Balance";
+                        ToolTip = 'Generate Monthly Trial Balance for a given period';
+                    }
+                    action("Quarterly Trial Balance")
+                    {
+                        ApplicationArea = Basic, Suite;
+                        Caption = 'Quarterly Trial Balance';
+                        RunObject = report "Quarter Trial Balance";
+                        ToolTip = 'Generate Trial Balance on a Quarterly Basis for a Selected Period';
+                    }
                     action("Account Schedules")
                     {
                         ApplicationArea = Basic, Suite;
