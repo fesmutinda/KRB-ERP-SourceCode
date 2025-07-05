@@ -1758,5 +1758,25 @@ Codeunit 50009 "Swizzsoft Factory"
             MESSAGE('No old loans matching the predefined criteria');
         end;
     end;
+
+    procedure BulkSchedule()
+    var
+        TempObjLoans: Record "Loans Register";
+
+    begin
+        TempObjLoans.SetRange("Posted", true);
+        TempObjLoans.SetFilter("Outstanding Balance", '>0');
+
+        //generate schedules
+        if TempObjLoans.FindSet() then begin
+            repeat
+                FnGenerateRepaymentSchedule(TempObjLoans."Loan  No.");
+            until TempObjLoans.Next() = 0;
+
+            MESSAGE('All active loans have been appraised');
+        end else begin
+            MESSAGE('No loans matching the predefined criteria');
+        end;
+    end;
 }
 

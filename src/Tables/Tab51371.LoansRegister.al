@@ -703,7 +703,11 @@ Table 51371 "Loans Register"
                 if "Recommended Amount" > "Requested Amount" then begin
                     "Approved Amount" := "Requested Amount";
                     "Net Payment to FOSA" := "Requested Amount";
+                end else begin
+
+                    Message('Requested Amount is greater than Qualifying Amount');
                 end;
+
 
                 Validate("Approved Amount");
 
@@ -827,6 +831,7 @@ Table 51371 "Loans Register"
             trigger OnValidate()
             begin
                 CalculateFacilitationCost();
+
                 if "Max. Loan Amount" <> 0 then begin
                     if "Requested Amount" > "Max. Loan Amount" then
                         Error('Requested amount cannot be greater than the Maximum Amount. %1', "Loan  No.");
@@ -2112,6 +2117,12 @@ Table 51371 "Loans Register"
             begin
                 "top fee" := ("Requested Amount" - "Instant Top Up Amount") * 0.1;
             end;
+        }
+
+        field(8000; "Loan Extenstion Amount"; Decimal)
+        {
+            Editable = true;
+
         }
         field(68005; "Loan Received"; Boolean)
         {

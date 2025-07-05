@@ -9,7 +9,7 @@ Report 50210 "Loan Defaulters List"
     {
         dataitem(Loans; "Loans Register")
         {
-            DataItemTableView = sorting("Loan  No.") order(ascending) where(Posted = const(true), "Outstanding Balance" = filter('>0'), "Amount in Arrears" = filter('>0'));
+            DataItemTableView = sorting("Loan  No.") order(ascending) where(Posted = const(true), "Outstanding Balance" = filter('>0'), "Days In Arrears" = filter('>90'));
             RequestFilterFields = Source, "Loan Product Type", "Application Date", "Issued Date";
             column(ReportForNavId_4645; 4645)
             {

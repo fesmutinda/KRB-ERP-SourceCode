@@ -5,7 +5,7 @@ Page 56046 "Loan Reschedule Card"
     PageType = Card;
     PromotedActionCategories = 'New,Process,Reports,Approval,Budgetary Control,Cancellation,Category7_caption,Category8_caption,Category9_caption,Category10_caption';
     SourceTable = "Loans Register";
-    SourceTableView = where(Posted = const(false));
+    //SourceTableView = where(Posted = const(false));
 
     layout
     {
@@ -55,10 +55,10 @@ Page 56046 "Loan Reschedule Card"
                     ApplicationArea = Basic;
                     Editable = ApplcDateEditable;
 
-                    trigger OnValidate()
-                    begin
-                        Rec.TestField(Posted, false);
-                    end;
+                    // trigger OnValidate()
+                    // begin
+                    //     Rec.TestField(Posted, false);
+                    // end;
                 }
                 field("Loan Product Type"; Rec."Loan Product Type")
                 {
@@ -70,10 +70,10 @@ Page 56046 "Loan Reschedule Card"
                     ApplicationArea = Basic;
                     Editable = InstallmentEditable;
 
-                    trigger OnValidate()
-                    begin
-                        Rec.TestField(Posted, false);
-                    end;
+                    // trigger OnValidate()
+                    // begin
+                    //     Rec.TestField(Posted, false);
+                    // end;
                 }
                 field(Interest; Rec.Interest)
                 {
@@ -89,9 +89,23 @@ Page 56046 "Loan Reschedule Card"
                     Caption = 'Amount Applied';
                     Editable = false;
 
+                    // trigger OnValidate()
+                    // begin
+                    //     Rec.TestField(Posted, false);
+                    // end;
+                }
+
+                field("Loan Extenstion Amount"; Rec."Loan Extenstion Amount")
+                {
+                    ApplicationArea = Basic;
+                    Caption = 'Top Up Amount';
+                    Editable = True;
+
                     trigger OnValidate()
                     begin
-                        Rec.TestField(Posted, false);
+                        Rec.TestField("Requested Amount");
+                        Rec."Requested Amount" := Rec."Requested AMOUNT" + Rec."Loan Extenstion Amount";
+                        Rec.Validate("Requested Amount")
                     end;
                 }
                 field("Recommended Amount"; Rec."Recommended Amount")
@@ -106,10 +120,10 @@ Page 56046 "Loan Reschedule Card"
                     Caption = 'Approved Amount';
                     Editable = false;
 
-                    trigger OnValidate()
-                    begin
-                        Rec.TestField(Posted, false);
-                    end;
+                    // trigger OnValidate()
+                    // begin
+                    //     Rec.TestField(Posted, false);
+                    // end;
                 }
                 field("Loan Purpose"; Rec."Loan Purpose")
                 {
@@ -156,11 +170,7 @@ Page 56046 "Loan Reschedule Card"
                     ApplicationArea = Basic;
                     Editable = false;
                 }
-                field("Top Up Amount"; Rec."Top Up Amount")
-                {
-                    ApplicationArea = Basic;
-                    Caption = 'Top Up Amount';
-                }
+
                 field("Total TopUp Commission"; Rec."Total TopUp Commission")
                 {
                     ApplicationArea = Basic;
@@ -309,17 +319,17 @@ Page 56046 "Loan Reschedule Card"
                 separator(Action1102755012)
                 {
                 }
-                action("Loans to Offset")
-                {
-                    ApplicationArea = Basic;
-                    Caption = 'Loans to Offset';
-                    Image = AddAction;
-                    Promoted = true;
-                    PromotedCategory = Process;
-                    RunObject = Page "Loan Offset Detail List";
-                    RunPageLink = "Loan No." = field("Loan  No."),
-                                  "Client Code" = field("Client Code");
-                }
+                // action("Loans to Offset")
+                // {
+                //     ApplicationArea = Basic;
+                //     Caption = 'Loans to Offset';
+                //     Image = AddAction;
+                //     Promoted = true;
+                //     PromotedCategory = Process;
+                //     RunObject = Page "Loan Offset Detail List";
+                //     RunPageLink = "Loan No." = field("Loan  No."),
+                //                   "Client Code" = field("Client Code");
+                // }
                 separator(Action1102760039)
                 {
                 }
@@ -330,6 +340,10 @@ Page 56046 "Loan Reschedule Card"
                     Promoted = true;
                     PromotedCategory = Process;
                     Visible = true;
+                    Enabled = true;
+                    Image = PrepaymentPostPrint;
+                    PromotedIsBig = true;
+
 
                     trigger OnAction()
                     begin
@@ -337,41 +351,56 @@ Page 56046 "Loan Reschedule Card"
                             Error('You Can not post a loan that is not fully Approved')
                         end else
                             if Confirm('Are you Sure you want to reschedule this Loan', false) = true then begin
-                                TemplateName := 'PAYMENTS';
+                                TemplateName := 'GENERAL';
                                 BatchName := 'LOANS';
 
 
                                 LoanApps.Reset;
                                 LoanApps.SetRange(LoanApps."Loan  No.", Rec."Loan  No.");
+
                                 if LoanApps.FindSet then begin
                                     FnInsertBOSALines(LoanApps, LoanApps."Loan  No.");
-
-
                                     //Post
                                     GenJournalLine.Reset;
-                                    GenJournalLine.SetRange("Journal Template Name", 'PAYMENTS');
-                                    GenJournalLine.SetRange("Journal Batch Name", 'LOANS');
+                                    GenJournalLine.SetRange("Journal Template Name", TemplateName);
+                                    GenJournalLine.SetRange("Journal Batch Name", BatchName);
+
                                     if GenJournalLine.Find('-') then begin
-                                        Codeunit.Run(Codeunit::"Gen. Jnl.-Post Sacco", GenJournalLine);
+                                        // Codeunit.Run(Codeunit::"Gen. Jnl.-Post Sacco", GenJournalLine);
+                                        Codeunit.Run(Codeunit::"Gen. Jnl.-Post Batch", GenJournalLine);
+                                        //FnSendNotifications(); //Send Notifications
+                                        Rec.Get(Rec."Loan  No.");
+                                        Rec."Loan Status" := Rec."Loan Status"::Issued;
+                                        Rec.Posted := true;
+                                        Rec."Posted By" := UserId;
+                                        Rec."Posting Date" := Today;
+                                        Rec."Issued Date" := Rec."Loan Disbursement Date";
+                                        Rec."Approval Status" := Rec."Approval Status"::Approved;
+                                        //Rec."Loans Category-SASRA" := Rec."Loans Category-SASRA"::Perfoming;
+
+                                        Rec."Loan Rescheduled Date" := Rec."Loan Disbursement Date";
+                                        Rec."Loan Rescheduled By" := UserId;
+                                        Rec."Loan Reschedule" := true;
+                                        //Rec.Modify(true);
+                                        if not Rec.Modify(true) then begin
+                                            GenJournalLine.Reset();
+                                            GenJournalLine.SetRange("Journal Template Name", TemplateName);
+                                            GenJournalLine.SetRange("Journal Batch Name", BatchName);
+                                            GenJournalLine.DeleteAll();
+                                        end;
+                                        //...................Recover Overdraft Loan On Loan
+                                        // SFactory.FnRecoverOnLoanOverdrafts(Rec."Client Code");
+
+
                                     end;
 
-                                    Rec.Posted := true;
-                                    Rec."Loan Status" := Rec."loan status"::Issued;
-                                    Rec."Approval Status" := Rec."approval status"::Approved;
-                                    Rec.Modify;
-
-                                    //Post New
-
-                                    Rec."Loan Rescheduled Date" := Rec."Loan Disbursement Date";
-                                    Rec."Loan Rescheduled By" := UserId;
-                                    Rec."Loan Reschedule" := true;
-                                    Rec.Modify;
                                     Message('Loan Rescheduled successfully.');
 
                                 end else begin
                                     exit;
                                 end;
                             end;
+
 
                     end;
                 }
@@ -515,7 +544,7 @@ Page 56046 "Loan Reschedule Card"
 
     trigger OnOpenPage()
     begin
-        Rec.SetRange(Posted, false);
+        //Rec.SetRange(Posted, false);
         /*IF "Loan Status"="Loan Status"::Approved THEN
         CurrPage.EDITABLE:=FALSE;*/
 

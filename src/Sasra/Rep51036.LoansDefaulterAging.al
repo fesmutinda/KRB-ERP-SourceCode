@@ -371,6 +371,39 @@ Report 51036 "Loans Defaulter Aging"
         exit(0D); // Not in arrears
     end;
 
+    // local procedure LoanArrearsCalculator() 
+    // var
+
+    // LoanScheduleRec: Record "Loan Repayment Schedule";
+    // CustLedgerRec: Record "Cust. Ledger Entry";
+    // Month: Date;
+
+    // begin 
+
+
+    //     LoanScheduleRec.Reset();
+    //     LoanScheduleRec.SetRange("Loan No.","Loans Register"."Loan  No.");
+    //     LoanScheduleRec.SetFilter("Repayment Date", '<=%1', AsAt);
+    //     LoanScheduleRec.SetCurrentKey("Repayment Date");
+
+
+    //     if LoanScheduleRec.FindSet() then begin
+
+    //         repeat
+
+    //            Month := CalcDate('M', LoanScheduleRec."Repayment Date");
+
+    //            CustLedgerRec.Reset();
+    //            CustLedgerRec.SetRange("Customer No.", "Loans Register"."Client Code");
+    //            CustLedgerRec.SetRange("Loan No", "Loans Register"."Loan  No.");
+    //            CustLedgerRec.SetFilter("Transaction Type", '%1|%2', CustLedgerRec."Transaction Type"::Loan, CustLedgerRec."Transaction Type"::"Loan Repayment");
+
+    //            CustLedgerRec.SetRange("Posting Date", );  
+
+    //         until LoanScheduleRec.Next() = 0; 
+    //     end;
+    // end;    
+
     trigger OnPreReport()
     begin
         Company.Get();

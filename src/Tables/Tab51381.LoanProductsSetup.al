@@ -425,6 +425,62 @@ Table 51381 "Loan Products Setup"
 
         }
 
+        field(133; "Total Arrears Balance"; Decimal)
+        {
+            FieldClass = FlowField;
+            CalcFormula = Sum("Loans Register"."Amount in Arrears"
+                      WHERE("Loan Product Type" = FIELD(Code),
+                            "Posted" = CONST(true),
+                            "Posting Date" = field("Date Filter"),
+                            "Amount in Arrears" = FILTER('>0')));
+
+        }
+
+        // field(134; "Total Outstanding Balance"; Decimal)
+        // {
+        //     FieldClass = FlowField;
+        //     CalcFOrmula = sum("Loans Register"."Outstanding Balance"
+        //     where("Loan Product Type" = field(code),
+        //     "Posted" = const(true),
+        //     "Posting Date" = field("Date Filter"),
+        //     "Outstanding Balance" = filter('>0')
+        //     ));
+        // }
+
+        field(135; "Loans in Arrears"; Integer)
+        {
+
+            FieldClass = flowfield;
+            CalcFormula = count("Loans Register"
+            where("Loan Product Type" = field(code),
+            "Posted" = const(true),
+            "Posting Date" = field("Date Filter"),
+             "Amount in Arrears" = filter('>0')
+            ));
+        }
+
+        field(136; TotalRepayments; Decimal)
+        {
+
+            FieldClass = FlowField;
+            CalcFormula = - sum("Cust. Ledger Entry"."Amount Posted"
+            where("Transaction Type" = filter(Loan | "Loan Repayment"), "Loan product Type" = field(code), "Posting Date" = field("Date Filter")));
+        }
+
+
+        field(137; TotalInterestDue; Decimal)
+        {
+
+            FieldClass = FlowField;
+
+            Calcformula = sum("Cust. Ledger Entry"."Amount Posted"
+            where("Transaction Type" = filter("Interest Due"), "Loan product Type" = field(code), "Posting Date" = field("Date Filter"))
+            );
+
+
+        }
+
+
     }
 
     keys

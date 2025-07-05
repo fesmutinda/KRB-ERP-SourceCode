@@ -264,6 +264,7 @@ page 57004 "Instant Loan Disbursement Card"
                                     if GenJournalLine.Find('-') then begin
                                         CODEUNIT.RUN(CODEUNIT::"Gen. Jnl.-Post Batch", GenJournalLine);
                                         FnSendNotifications(); //Send Notifications
+                                        Rec.Get(Rec."Loan  No.");
                                         Rec."Loan Status" := Rec."Loan Status"::Issued;
                                         Rec.Posted := true;
                                         Rec."Posted By" := UserId;
@@ -271,7 +272,13 @@ page 57004 "Instant Loan Disbursement Card"
                                         Rec."Issued Date" := Rec."Loan Disbursement Date";
                                         Rec."Approval Status" := Rec."Approval Status"::Approved;
                                         Rec."Loans Category-SASRA" := Rec."Loans Category-SASRA"::Perfoming;
-                                        Rec.Modify();
+                                        //Rec.Modify(true);
+                                        if not Rec.Modify(true) then begin
+                                            GenJournalLine.Reset();
+                                            GenJournalLine.SetRange("Journal Template Name", TemplateName);
+                                            GenJournalLine.SetRange("Journal Batch Name", BatchName);
+                                            GenJournalLine.DeleteAll();
+                                        end;
                                         //...................Recover Overdraft Loan On Loan
                                         // SFactory.FnRecoverOnLoanOverdrafts(Rec."Client Code");
 

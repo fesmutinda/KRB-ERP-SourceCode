@@ -9,7 +9,7 @@ Page 56045 "Loans Reschedule  List"
     ModifyAllowed = true;
     PageType = List;
     SourceTable = "Loans Register";
-    SourceTableView = where(Posted = filter(false));
+    SourceTableView = where(Posted = filter(true), "Outstanding Balance" = filter('>0'));
     UsageCategory = Lists;
 
     layout

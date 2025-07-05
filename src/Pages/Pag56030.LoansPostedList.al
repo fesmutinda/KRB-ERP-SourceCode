@@ -328,6 +328,20 @@ Page 56030 "Loans Posted List"
                         SwiszzFactory.FnHandleOldKRBLOANS();
                     end;
                 }
+
+
+                action("Bulk Schedule")
+                {
+                    ApplicationArea = all;
+                    ToolTip = 'Bulk Schedule Loans';
+
+                    trigger OnAction()
+                    var
+                        SwiszzFactory: Codeunit 50009;
+                    begin
+                        SwiszzFactory.BulkSchedule();
+                    end;
+                }
                 separator(Action6)
                 {
                 }

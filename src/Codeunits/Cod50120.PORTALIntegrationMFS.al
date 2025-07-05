@@ -777,6 +777,7 @@ Codeunit 50120 "PORTALIntegration MFS"
                     + ',"InterestRate":"' + FORMAT(onlineloans."Interest Rate") + '"'
                     + ',"RequestedAmount":"' + FORMAT(onlineloans."Loan Amount") + '"'
                     + ',"LoanSubmittedStatus":"' + FORMAT(onlineloans."submitted") + '"'
+                     + ',"LoanApplicationStatus":"' + FORMAT(onlineloans."Application Status") + '"'
                     + ',"InterestCalculationMethod":"' + FORMAT(onlineloans."Interest Calculation Method") + '"'
                     + '}';
                 end else begin
@@ -787,6 +788,7 @@ Codeunit 50120 "PORTALIntegration MFS"
                     + ',"Installments":"' + FORMAT(onlineloans.Installments) + '"'
                     + ',"InterestRate":"' + FORMAT(onlineloans."Interest Rate") + '"'
                     + ',"RequestedAmount":"' + FORMAT(onlineloans."Loan Amount") + '"'
+                     + ',"LoanApplicationStatus":"' + FORMAT(onlineloans."Application Status") + '"'
                     + ',"InterestCalculationMethod":"' + FORMAT(onlineloans."Interest Calculation Method") + '"'
                     + '}';
                 end;
@@ -1475,28 +1477,32 @@ Codeunit 50120 "PORTALIntegration MFS"
     //     end;
     // end;
 
-    procedure Fnloanssetup() loanType: Text
+    procedure FnLoansSetup(): Text
     var
         InterestRate: Decimal;
+        LoanType: Text;
     begin
+        LoanType := '';
         Loansetup.Reset;
-        Loansetup.SETRANGE(Source, Loansetup.Source::BOSA);
+        Loansetup.SetRange(Source, Loansetup.Source::BOSA);
         if Loansetup.Find('-') then begin
-            //loanType:='';
             repeat
-
                 if Loansetup.Code = 'LT007' then
                     InterestRate := Loansetup."Interest rate" / 12
                 else
                     InterestRate := Loansetup."Interest rate";
 
-                loanType := Format(Loansetup.Code) + ':' + Loansetup."Product Description" + ':::' + loanType;
-                loanType := loanType + Loansetup."Product Description" + '!!' + FORMAT(Loansetup."Repayment Method") + '!!' + FORMAT(Loansetup."Max. Loan Amount") + '!!' + FORMAT(Loansetup."Instalment Period") + '!!' + FORMAT(InterestRate) + '!!'
-                + FORMAT(Loansetup."Repayment Frequency") + '??';
+                LoanType += Loansetup.Code + ':' + Loansetup."Product Description" + '!!' +
+                            Format(Loansetup."Repayment Method") + '!!' +
+                            Format(Loansetup."Max. Loan Amount") + '!!' +
+                            Format(Loansetup."Instalment Period") + '!!' +
+                            Format(InterestRate) + '!!' +
+                            Format(Loansetup."Repayment Frequency") + '??';
             until Loansetup.Next = 0;
         end;
-    end;
 
+        exit(LoanType);
+    end;
 
     procedure fnLoanDetails2(Loancode: Code[20]) loandetail: Text
     begin
@@ -1900,7 +1906,7 @@ Codeunit 50120 "PORTALIntegration MFS"
         objNextKin.SetRange("Account No", MemberNumber);
         if objNextKin.Find('-') then begin
             repeat
-                return := return + objNextKin."Name" + ':::' + objNextKin.Relationship + ':::' + objNextKin.Email + ':::' + Format(objNextKin."%Allocation") + '::::';
+                return := return + objNextKin."Name" + ':::' + objNextKin.Relationship + ':::' + objNextKin.Email + ':::' + objNextKin.Telephone + '::::';
             until objNextKin.Next = 0;
         end;
     end;
@@ -1913,10 +1919,11 @@ Codeunit 50120 "PORTALIntegration MFS"
         objNominees.SetRange("Account No", MemberNumber);
         if objNominees.Find('-') then begin
             repeat
-                return := return + objNominees."Name" + ':::' + objNominees.Relationship + ':::' + objNominees.Email + ':::' + Format(objNominees."%Allocation") + '::::';
+                return := return + objNominees."Name" + ':::' + objNominees.Relationship + ':::' + objNominees.Email + ':::' + Format(objNominees."%Allocation") + objNominees.Telephone + '::::';
             until objNominees.Next = 0;
         end;
     end;
+
 
     procedure fnUpdateMemberNextOfKin(
      MemberNumber: Code[20];
@@ -2051,7 +2058,7 @@ Codeunit 50120 "PORTALIntegration MFS"
                 objNominees.Name := NomineeName;
 
             if NomineeTelephone <> '' then
-                objNominees.Telephone := NomineeName;
+                objNominees.Telephone := NomineeTelephone;
 
             if NomineeGuardian <> '' then
                 objNominees.Guardian := NomineeGuardian;
@@ -2084,7 +2091,7 @@ Codeunit 50120 "PORTALIntegration MFS"
                 objNominees.Name := NomineeName;
 
             if NomineeTelephone <> '' then
-                objNominees.Telephone := NomineeName;
+                objNominees.Telephone := NomineeTelephone;
 
             if NomineeGuardian <> '' then
                 objNominees.Guardian := NomineeGuardian;
@@ -2107,6 +2114,50 @@ Codeunit 50120 "PORTALIntegration MFS"
 
         end;
 
+
+    end;
+
+
+    procedure fnDeleteMemberNominee(MemberNumber: Code[20]; Email: Text[30]): Text
+
+    var
+        objNominees: Record "Members Nominee";
+
+    begin
+
+        objNominees.SetRange("Account No", MemberNumber);
+        objNominees.SetRange(Email, Email);
+
+        if objNominees.FindFirst() then begin
+
+            objNominees.Delete();
+
+            exit('success')
+        end;
+
+        exit('fail, nominee not found')
+
+    end;
+
+
+    procedure fnDeleteMemberNextOfKin(MemberNumber: Code[20]; Email: Text[30]): Text
+
+    var
+        objNominees: Record "Members Next Kin Details";
+
+    begin
+
+        objNominees.SetRange("Account No", MemberNumber);
+        objNominees.SetRange(Email, Email);
+
+        if objNominees.FindFirst() then begin
+
+            objNominees.Delete();
+
+            exit('success')
+        end;
+
+        exit('failed, nominee not found')
 
     end;
 
@@ -2157,7 +2208,7 @@ Codeunit 50120 "PORTALIntegration MFS"
     end;
 
 
-    procedure OnlineLoanApplication(BosaNo: Code[30]; LoanType: Code[50]; LoanAmount: Decimal; loanpurpose: Text; repaymentPeriod: Integer) GeneratedApplicationNo: Code[20]
+    procedure OnlineLoanApplication(BosaNo: Code[60]; LoanType: Code[60]; LoanAmount: Decimal; loanpurpose: Text; repaymentPeriod: Integer) GeneratedApplicationNo: Code[60]
     var
         ObjLoanApplications: Record "Online Loan Application";
         ObjLoanRegister: Record "Loans Register";
@@ -2187,6 +2238,11 @@ Codeunit 50120 "PORTALIntegration MFS"
 
 
             if LoanProductType.Get(LoanType) then;
+
+
+            if LoanAmount > LoanProductType."Max. Loan Amount" then begin
+                exit('Application failed, amount applied is greater than Maximum Loan Amount');
+            end;
 
 
             ObjLoanApplications.Init();
@@ -2292,7 +2348,7 @@ Codeunit 50120 "PORTALIntegration MFS"
                         ObjLoanApplications.Modify;
 
                         if (objMember."Phone No." <> '') then
-                            FnSMSMessage(objMember."No.", objMember."Phone No.", 'Dear Member, you have submitted Loan,' + 'No,' + Format(ObjLoanApplications."Application No") + 'for loan type' + ObjLoanApplications."Loan Type" + 'your  loan application for appraisal.');
+                            FnSMSMessage(objMember."No.", objMember."Phone No.", 'Dear Member, you have submitted Loan,' + 'No,' + Format(ObjLoanApplications."Application No") + 'for loan type' + ObjLoanApplications."Loan Product Type Name" + 'your  loan application for appraisal.');
                         response := 'Success, your loan has been submitted to Credit for Appraisal';
                     end else begin
                         response := 'Failed, Please contact the office for assistance';
@@ -2303,9 +2359,6 @@ Codeunit 50120 "PORTALIntegration MFS"
                     response := 'Success, loan submitted, awaiting approval by guarantors';
 
                 end;
-
-
-
 
                 exit;
             end else
@@ -2363,6 +2416,7 @@ Codeunit 50120 "PORTALIntegration MFS"
                 NewApplicationNumber := OnlineLoanGuarantors."Entry No" + 1
             else
                 NewApplicationNumber := 1;
+
             //create in online gurantors table
             objMember.Reset;
             objMember.SetRange(objMember."No.", BosaNo);
@@ -2388,26 +2442,83 @@ Codeunit 50120 "PORTALIntegration MFS"
                 Message('test3');
 
                 ObjLoanApplications.Get(LoanNumber);
-                //send sms to guarantor
-                ReturnList := 'Dear Member, ' + ObjLoanApplications."Member Names" + ' has requested loan Guarantorship,' + 'of.' + Format(Amount) + 'Kindly login to the portal to accept or reject the request';
+                //send sms to guarantor with loan amount and period
+                ReturnList := 'Dear Member, ' + ObjLoanApplications."Member Names" +
+                             ' has requested loan Guarantorship for a ' +
+                             ObjLoanApplications."Loan Product Type Name" +
+                             ' Loan of ' + Format(ObjLoanApplications."Loan Amount") +
+                             ' for ' + Format(ObjLoanApplications."Repayment Period") +
+                             ' months. Kindly login to the portal to accept or reject the request';
+
                 // SMSMessage('PORTALTRAN',FAccNo,objMember."Phone No.",ReturnList);
                 FnSMSMessage(objMember."No.", objMember."Mobile Phone No", ReturnList);
-
 
                 if ObjLoanApplications.Get(LoanNumber) then begin
                     ObjLoanApplications."Guarantorship Requested" := true;
                     ObjLoanApplications.Modify(true);
                 end;
-
-
-
             end;
-
-
             //ObjLoanApplications."Guarantorship Requested" := true;
-
         end;
     end;
+
+
+    // procedure FnRequestGuarantorship(BosaNo: Code[30]; LoanNumber: Code[20]) guaranteed: Boolean
+    // begin
+    //     guaranteed := false;
+    //     ObjLoanApplications.Reset;
+    //     ObjLoanApplications.SetRange("Application No", LoanNumber);
+    //     if ObjLoanApplications.Find('-') then begin
+    //         OnlineLoanGuarantors.Reset;
+    //         if OnlineLoanGuarantors.FindLast then
+    //             NewApplicationNumber := OnlineLoanGuarantors."Entry No" + 1
+    //         else
+    //             NewApplicationNumber := 1;
+    //         //create in online gurantors table
+    //         objMember.Reset;
+    //         objMember.SetRange(objMember."No.", BosaNo);
+    //         objMember.SetFilter(Status, '%1', objMember.Status::Active);
+    //         Message('test1');
+    //         if objMember.Find('-') then begin
+    //             OnlineLoanGuarantors.Init;
+    //             OnlineLoanGuarantors."Entry No" := NewApplicationNumber;
+    //             OnlineLoanGuarantors."Loan Application No" := LoanNumber;
+    //             OnlineLoanGuarantors."Member No" := objMember."No.";
+    //             OnlineLoanGuarantors.Names := objMember.Name;
+    //             // OnlineLoanGuarantors.Amount := Amount;
+    //             OnlineLoanGuarantors."Email Address" := objMember."E-Mail";
+    //             OnlineLoanGuarantors."ID No" := objMember."ID No.";
+    //             OnlineLoanGuarantors.Telephone := objMember."Mobile Phone No";
+    //             OnlineLoanGuarantors.ApplicantNo := ObjLoanApplications."BOSA No";
+    //             OnlineLoanGuarantors.ApplicantName := ObjLoanApplications."Member Names";
+    //             OnlineLoanGuarantors."Applicant Mobile" := ObjLoanApplications.Telephone;
+    //             OnlineLoanGuarantors.Approved := OnlineLoanGuarantors.Approved::Pending;
+    //             OnlineLoanGuarantors."Approval Status" := false;
+    //             OnlineLoanGuarantors.Insert;
+    //             guaranteed := true;
+    //             Message('test3');
+
+    //             ObjLoanApplications.Get(LoanNumber);
+    //             //send sms to guarantor
+    //             ReturnList := 'Dear Member, ' + ObjLoanApplications."Member Names" + ' has requested loan Guarantorship' + 'for' + 'a' + ObjLoanApplications."Loan Product Type Name" + 'Loan.' + ' Kindly login to the portal to accept or reject the request';
+    //             // SMSMessage('PORTALTRAN',FAccNo,objMember."Phone No.",ReturnList);
+    //             FnSMSMessage(objMember."No.", objMember."Mobile Phone No", ReturnList);
+
+
+    //             if ObjLoanApplications.Get(LoanNumber) then begin
+    //                 ObjLoanApplications."Guarantorship Requested" := true;
+    //                 ObjLoanApplications.Modify(true);
+    //             end;
+
+
+
+    //         end;
+
+
+    //         //ObjLoanApplications."Guarantorship Requested" := true;
+
+    //     end;
+    // end;
 
 
 
@@ -2717,6 +2828,9 @@ Codeunit 50120 "PORTALIntegration MFS"
                         guarantorsText := '{'
                                       + '"LoanApplicationNo":"' + FORMAT(OnlineLoanGuarantors."Loan Application No") + '"'
                                       + ',"LoanType":"' + FORMAT(OnlineLoanGuarantors."Loan Type") + '"'
+                                      + ',"LoanTypeDescription":"' + FORMAT(ObjLoanApplications."Loan Product Type Name") + '"'
+                                      + ',"LoanRepaymentPeriod":"' + FORMAT(ObjLoanApplications."Repayment Period") + '"'
+                                      + ',"LoanRequestedAmount":"' + FORMAT(ObjLoanApplications."Loan Amount") + '"'
                                       + ',"ApplicantNo":"' + OnlineLoanGuarantors.ApplicantNo + '"'
                                       + ',"ApplicantName":"' + FORMAT(OnlineLoanGuarantors.ApplicantName) + '"'
                                       + ',"Amount":"' + FORMAT(OnlineLoanGuarantors."Amount") + '"'
@@ -2726,6 +2840,9 @@ Codeunit 50120 "PORTALIntegration MFS"
                         guarantorsText := guarantorsText + ',{'
                                                               + '"LoanApplicationNo":"' + FORMAT(OnlineLoanGuarantors."Loan Application No") + '"'
                                                               + ',"LoanType":"' + FORMAT(OnlineLoanGuarantors."Loan Type") + '"'
+                                                                     + ',"LoanTypeDescription":"' + FORMAT(ObjLoanApplications."Loan Product Type Name") + '"'
+                                      + ',"LoanRepaymentPeriod":"' + FORMAT(ObjLoanApplications."Repayment Period") + '"'
+                                           + ',"LoanRequestedAmount":"' + FORMAT(ObjLoanApplications."Loan Amount") + '"'
                                                               + ',"ApplicantNo":"' + OnlineLoanGuarantors.ApplicantNo + '"'
                                                               + ',"ApplicantName":"' + FORMAT(OnlineLoanGuarantors.ApplicantName) + '"'
                                                               + ',"Amount":"' + FORMAT(OnlineLoanGuarantors."Amount") + '"'
@@ -2769,6 +2886,14 @@ Codeunit 50120 "PORTALIntegration MFS"
                 response := 'You cannot edit this loan, Already submitted';
                 exit;
             end;
+
+            if LoanProductType.Get(LoanType) then begin
+
+                if onlineLoanTable."Loan Amount" > LoanProductType."Max. Loan Amount" then begin
+                    exit('Amount applied cannot be greater than Maximum Loan Amount');
+                end;
+            end;
+
 
             onlineLoanTable."Loan Type" := loanType;
             onlineLoanTable.Validate(onlineLoanTable."Loan Type");
@@ -3246,6 +3371,7 @@ Codeunit 50120 "PORTALIntegration MFS"
                             objLoanRegister."Loan Product Type");
                         DeductionSummary += STRSUBSTNO('  Monthly Repayment: %1\n\n',
                             FORMAT(IndividualLoanAmount, 0, '<Precision,2:2><Standard Format,0>'));
+
                     end;
 
                 UNTIL objLoanRegister.NEXT = 0;
