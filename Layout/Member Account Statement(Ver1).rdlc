@@ -28,7 +28,7 @@
                   <Width>0.88749in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.80645in</Width>
+                  <Width>1.7345in</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>0.84744in</Width>
@@ -1005,7 +1005,7 @@
             <Top>8.01958in</Top>
             <Left>0.15427in</Left>
             <Height>1.17186in</Height>
-            <Width>8.0037in</Width>
+            <Width>7.93175in</Width>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1025,7 +1025,7 @@
                   <Width>0.88775in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.80619in</Width>
+                  <Width>1.68231in</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>0.94016in</Width>
@@ -1050,7 +1050,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>SHARE CAPITAL</Value>
+                                  <Value>SHARE CAPITAL                      </Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
@@ -1923,7 +1923,7 @@
             <Top>3.71563in</Top>
             <Left>0.18543in</Left>
             <Height>0.73784in</Height>
-            <Width>8.00396in</Width>
+            <Width>7.88008in</Width>
             <ZIndex>1</ZIndex>
             <Style>
               <Border>
@@ -1944,7 +1944,7 @@
                   <Width>0.88775in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.80619in</Width>
+                  <Width>1.71905in</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>0.89888in</Width>
@@ -2850,7 +2850,7 @@
             <Top>6.61166in</Top>
             <Left>0.16946in</Left>
             <Height>0.79687in</Height>
-            <Width>8.0037in</Width>
+            <Width>7.91656in</Width>
             <ZIndex>2</ZIndex>
             <Style>
               <Border>
@@ -2871,7 +2871,7 @@
                   <Width>0.88775in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.80619in</Width>
+                  <Width>1.68231in</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>0.9399in</Width>
@@ -3573,6 +3573,7 @@
                           </Style>
                         </Textbox>
                         <ColSpan>4</ColSpan>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell />
@@ -3777,7 +3778,7 @@
             <Top>4.5693in</Top>
             <Left>0.18543in</Left>
             <Height>0.80034in</Height>
-            <Width>8.0037in</Width>
+            <Width>7.87982in</Width>
             <ZIndex>3</ZIndex>
             <Style>
               <Border>
@@ -4539,7 +4540,7 @@
                   <Width>0.94401in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.86245in</Width>
+                  <Width>1.52926in</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>0.95514in</Width>
@@ -4548,7 +4549,7 @@
                   <Width>0.94361in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.21494in</Width>
+                  <Width>1.43996in</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -4564,7 +4565,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>JUNIOR DEPOSITS</Value>
+                                  <Value>JUNIOR DEPOSITS         </Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
@@ -4854,9 +4855,7 @@
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style>
-                                <TextAlign>Right</TextAlign>
-                              </Style>
+                              <Style />
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox5</rd:DefaultName>
@@ -5084,9 +5083,7 @@
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style>
-                                <TextAlign>Right</TextAlign>
-                              </Style>
+                              <Style />
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>DebitAmount_Deposits</rd:DefaultName>
@@ -5121,9 +5118,7 @@
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style>
-                                <TextAlign>Right</TextAlign>
-                              </Style>
+                              <Style />
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>CreditAmount_Deposits</rd:DefaultName>
@@ -5246,9 +5241,7 @@
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style>
-                                <TextAlign>Right</TextAlign>
-                              </Style>
+                              <Style />
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox87</rd:DefaultName>
@@ -5289,9 +5282,7 @@
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style>
-                                <TextAlign>Right</TextAlign>
-                              </Style>
+                              <Style />
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox88</rd:DefaultName>
@@ -5445,7 +5436,7 @@
             <Top>5.61543in</Top>
             <Left>0.1697in</Left>
             <Height>0.85869in</Height>
-            <Width>8.00372in</Width>
+            <Width>7.89555in</Width>
             <ZIndex>24</ZIndex>
             <Style>
               <Border>

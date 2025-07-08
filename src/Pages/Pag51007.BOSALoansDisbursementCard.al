@@ -339,7 +339,11 @@ Page 51007 "BOSA Loans Disbursement Card"
                         if Rec."Loan Status" <> Rec."Loan Status"::Approved then begin
                             Error('Prohibited ! The loan is Status MUST be Approved');
                         end;
-                        if Confirm('Are you sure you want to POST Loan Approved amount of Ksh. ' + Format(Rec."Approved Amount") + ' to member -' + Format(Rec."Client Name") + ' ?', false) = false then begin
+
+                        // if Confirm('Are you sure you want to POST Loan Approved amount of Ksh. ' + Format(Rec."Approved Amount") + ' to member -' + Format(Rec."Client Name") + ' ?', false) = false then begin
+                        //     exit;
+                        Rec.CalcFields("Top Up Amount");
+                        if Confirm('Are you sure you want to POST Loan Approved amount of Ksh. ' + Format(Rec."Approved Amount" - (Rec."Loan Processing Fee" + Rec."Loan Dirbusement Fee" + Rec."Loan Insurance" + REC."Top Up Amount")) + ' to member -' + Format(Rec."Client Name") + ' ?', false) = false then begin
                             exit;
                         end
                         else begin
@@ -361,6 +365,7 @@ Page 51007 "BOSA Loans Disbursement Card"
                                     if GenJournalLine.Find('-') then begin
                                         CODEUNIT.RUN(CODEUNIT::"Gen. Jnl.-Post Batch", GenJournalLine);
                                         FnSendNotifications(); //Send Notifications
+                                        Rec.Get(Rec."Loan  No.");
                                         Rec."Loan Status" := Rec."Loan Status"::Issued;
                                         Rec.Posted := true;
                                         Rec."Posted By" := UserId;

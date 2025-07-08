@@ -9,7 +9,7 @@ Report 50210 "Loan Defaulters List"
     {
         dataitem(Loans; "Loans Register")
         {
-            DataItemTableView = sorting("Loan  No.") order(ascending) where(Posted = const(true), "Outstanding Balance" = filter('>0'), "Days In Arrears" = filter('>90'));
+            DataItemTableView = sorting("Loan  No.") order(ascending) where(Posted = const(true), "Outstanding Balance" = filter('>0'), "Amount In Arrears" = filter('>0'));
             RequestFilterFields = Source, "Loan Product Type", "Application Date", "Issued Date";
             column(ReportForNavId_4645; 4645)
             {
@@ -89,7 +89,7 @@ Report 50210 "Loan Defaulters List"
             column(Loans__Oustanding_Interest_; "Oustanding Interest")
             {
             }
-            column(Loans_Loans__Loan_Product_Type_; Loans."Loan Product Type")
+            column(Loans_Loans__Loan_Product_Type_; Loans."Loan Product Type Name")
             {
             }
             column(Loans__Last_Pay_Date_; "Last Pay Date")
@@ -211,6 +211,11 @@ Report 50210 "Loan Defaulters List"
             {
             }
 
+            column(Expected_Loan_Balance; "Expected Loan Balance")
+            {
+
+            }
+
             trigger OnAfterGetRecord()
             begin
 
@@ -302,5 +307,6 @@ Report 50210 "Loan Defaulters List"
         LBalance: Decimal;
 
         Company: Record "Company Information";
+
 }
 

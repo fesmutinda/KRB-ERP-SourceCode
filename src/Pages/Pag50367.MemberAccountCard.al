@@ -694,21 +694,21 @@ page 50367 "Member Account Card"
                     end;
                 }
 
-                action("Excess Statement")
-                {
-                    ApplicationArea = Basic;
-                    Image = "Report";
-                    Promoted = true;
-                    PromotedCategory = "Report";
+                // action("Excess Statement")
+                // {
+                //     ApplicationArea = Basic;
+                //     Image = "Report";
+                //     Promoted = true;
+                //     PromotedCategory = "Report";
 
-                    trigger OnAction()
-                    begin
-                        Cust.Reset;
-                        Cust.SetRange(Cust."No.", Rec."No.");
-                        if Cust.Find('-') then
-                            Report.Run(59059, true, false, Cust);
-                    end;
-                }
+                //     trigger OnAction()
+                //     begin
+                //         Cust.Reset;
+                //         Cust.SetRange(Cust."No.", Rec."No.");
+                //         if Cust.Find('-') then
+                //             Report.Run(59059, true, false, Cust);
+                //     end;
+                // }
                 action("Loans Statement")
                 {
                     ApplicationArea = Basic;
@@ -725,24 +725,24 @@ page 50367 "Member Account Card"
                             Report.Run(56531, true, false, Cust);
                     end;
                 }
-                action("Loans Perfomance Statement")
-                {
-                    ApplicationArea = Basic;
-                    Image = "Report";
-                    Promoted = true;
-                    PromotedCategory = "Report";
-                    Visible = false;
+                // action("Loans Perfomance Statement")
+                // {
+                //     ApplicationArea = Basic;
+                //     Image = "Report";
+                //     Promoted = true;
+                //     PromotedCategory = "Report";
+                //     Visible = false;
 
-                    trigger OnAction()
-                    var
-                        LoansReg: Record "Loans Register";
-                    begin
-                        LoansReg.Reset;
-                        LoansReg.SetRange(LoansReg."Client Code", Rec."No.");
-                        if LoansReg.Find('-') then
-                            Report.Run(50207, true, false, LoansReg);
-                    end;
-                }
+                //     trigger OnAction()
+                //     var
+                //         LoansReg: Record "Loans Register";
+                //     begin
+                //         LoansReg.Reset;
+                //         LoansReg.SetRange(LoansReg."Client Code", Rec."No.");
+                //         if LoansReg.Find('-') then
+                //             Report.Run(50207, true, false, LoansReg);
+                //     end;
+                // }
                 action("Member Shares Status")
                 {
                     ApplicationArea = Basic;
@@ -798,23 +798,23 @@ page 50367 "Member Account Card"
 
                     end;
                 }
-                action("Loan Portfolio Analysis")
-                {
-                    ApplicationArea = Basic;
-                    Caption = 'Loan Portfolio';
-                    Image = "Report";
-                    Promoted = true;
-                    PromotedCategory = "Report";
+                // action("Loan Portfolio Analysis")
+                // {
+                //     ApplicationArea = Basic;
+                //     Caption = 'Loan Portfolio';
+                //     Image = "Report";
+                //     Promoted = true;
+                //     PromotedCategory = "Report";
 
-                    trigger OnAction()
-                    begin
-                        Cust.Reset;
-                        Cust.SetRange(Cust."No.", Rec."No.");
-                        if Cust.Find('-') then begin
-                            Report.Run(50200, true, false, Cust);
-                        END;
-                    end;
-                }
+                //     trigger OnAction()
+                //     begin
+                //         Cust.Reset;
+                //         Cust.SetRange(Cust."No.", Rec."No.");
+                //         if Cust.Find('-') then begin
+                //             Report.Run(50200, true, false, Cust);
+                //         END;
+                //     end;
+                // }
                 /*  action("Loan Arrears list")
                  {
                      ApplicationArea = Basic;

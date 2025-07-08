@@ -1737,6 +1737,7 @@ Codeunit 50009 "Swizzsoft Factory"
                     TempObjLoans."Grace Period - Principle (M)" := ObjLoanProductSetup."Grace Period - Principle (M)";
                     TempObjLoans."Grace Period - Interest (M)" := ObjLoanProductSetup."Grace Period - Interest (M)";
                     TempObjLoans."Repayment Frequency" := ObjLoanProductSetup."Repayment Frequency";
+                    TempObjLoans.Installments := ObjLoanProductSetup."Default Installements";
                 end else begin
                     Error('Loan product setup not found for %1', ObjLoans."Loan Product Type");
                 end;

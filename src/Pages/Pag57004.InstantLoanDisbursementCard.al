@@ -238,7 +238,7 @@ page 57004 "Instant Loan Disbursement Card"
                         if Rec."Loan Status" <> Rec."Loan Status"::Approved then begin
                             Error('Prohibited ! The loan is Status MUST be Approved');
                         end;
-                        if Confirm('Are you sure you want to POST Loan Approved amount of Ksh. ' + Format(Rec."Approved Amount") + ' to member -' + Format(Rec."Client Name") + ' ?', false) = false then begin
+                        if Confirm('Are you sure you want to POST Loan Net amount of Ksh. ' + Format(Rec."Approved Amount") + ' to member -' + Format(Rec."Client Name") + ' ?', false) = false then begin
                             exit;
                         end
                         else begin
@@ -272,13 +272,7 @@ page 57004 "Instant Loan Disbursement Card"
                                         Rec."Issued Date" := Rec."Loan Disbursement Date";
                                         Rec."Approval Status" := Rec."Approval Status"::Approved;
                                         Rec."Loans Category-SASRA" := Rec."Loans Category-SASRA"::Perfoming;
-                                        //Rec.Modify(true);
-                                        if not Rec.Modify(true) then begin
-                                            GenJournalLine.Reset();
-                                            GenJournalLine.SetRange("Journal Template Name", TemplateName);
-                                            GenJournalLine.SetRange("Journal Batch Name", BatchName);
-                                            GenJournalLine.DeleteAll();
-                                        end;
+                                        Rec.Modify(true);
                                         //...................Recover Overdraft Loan On Loan
                                         // SFactory.FnRecoverOnLoanOverdrafts(Rec."Client Code");
 

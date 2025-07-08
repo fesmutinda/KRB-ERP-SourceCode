@@ -4546,6 +4546,12 @@ Table 51371 "Loans Register"
         {
         }
 
+        //as per loan aging
+        field(69270; "Expected Loan Balance"; Decimal)
+        {
+
+        }
+
     }
 
     keys

@@ -241,15 +241,30 @@ Report 51036 "Loans Defaulter Aging"
 
         case CalculatedLoanCategory of
             CalculatedLoanCategory::Performing:
-                "Loans Register"."Loans Category" := "Loans Register"."Loans Category"::Perfoming;
+                begin
+                    "Loans Register"."Loans Category" := "Loans Register"."Loans Category"::Perfoming;
+                    "Loans Register"."Loans Category-SASRA" := "Loans Register"."Loans Category-SASRA"::Perfoming;
+                end;
             CalculatedLoanCategory::Watch:
-                "Loans Register"."Loans Category" := "Loans Register"."Loans Category"::Watch;
+                begin
+                    "Loans Register"."Loans Category" := "Loans Register"."Loans Category"::Watch;
+                    "Loans Register"."Loans Category-SASRA" := "Loans Register"."Loans Category-SASRA"::Watch;
+                end;
             CalculatedLoanCategory::Substandard:
-                "Loans Register"."Loans Category" := "Loans Register"."Loans Category"::Substandard;
+                begin
+                    "Loans Register"."Loans Category" := "Loans Register"."Loans Category"::Substandard;
+                    "Loans Register"."Loans Category-SASRA" := "Loans Register"."Loans Category-SASRA"::Substandard;
+                end;
             CalculatedLoanCategory::Doubtful:
-                "Loans Register"."Loans Category" := "Loans Register"."Loans Category"::Doubtful;
+                begin
+                    "Loans Register"."Loans Category" := "Loans Register"."Loans Category"::Doubtful;
+                    "Loans Register"."Loans Category-SASRA" := "Loans Register"."Loans Category-SASRA"::Doubtful;
+                end;
             CalculatedLoanCategory::Loss:
-                "Loans Register"."Loans Category" := "Loans Register"."Loans Category"::Loss;
+                begin
+                    "Loans Register"."Loans Category" := "Loans Register"."Loans Category"::Loss;
+                    "Loans Register"."Loans Category-SASRA" := "Loans Register"."Loans Category-SASRA"::Loss;
+                end;
         end;
 
         "Loans Register".Modify();
@@ -299,6 +314,7 @@ Report 51036 "Loans Defaulter Aging"
         end;
 
         //lets use outstanding balance
+        "Loans Register"."Expected Loan Balance" := TotalExpected;
         exit(TotalExpected);
 
     end;

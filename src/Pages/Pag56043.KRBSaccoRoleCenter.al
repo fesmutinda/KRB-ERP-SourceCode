@@ -1178,6 +1178,7 @@ Page 56043 "KRB Sacco Role Center"
                         ApplicationArea = all;
                         RunObject = Report "Loan Arrears Report";
                         ToolTip = 'Loan Arreas Report';
+                        Visible = false;
                         // visible = false;
                     }
 
