@@ -135,31 +135,46 @@ Report 59063 "Monthly Trial Balance"
                     MonthBalance[i] := 0;
                 end;
 
-                // Ensure we have a valid year
-                if SelectedYear = 0 then
-                    SelectedYear := Date2DMY(Today, 3);
+                // Set default dates if not provided
+                if (StartDate = 0D) then
+                    StartDate := DMY2Date(1, 1, Date2DMY(Today, 3));
+                if (EndDate = 0D) then
+                    EndDate := DMY2Date(31, 12, Date2DMY(Today, 3));
 
-                // Calculate monthly Net Change and Balance at Date for each month for the selected year
+                // Calculate monthly Net Change and Balance at Date for each month within the selected date range
                 for i := 1 to 12 do begin
-                    StartOfMonth := DMY2Date(1, i, SelectedYear);
+                    StartOfMonth := DMY2Date(1, i, Date2DMY(StartDate, 3));
                     EndOfMonth := CalcDate('<CM>', StartOfMonth);
-                    
-                    // Net Change for the month
-                    GLAccEntry.Reset();
-                    GLAccEntry.SetRange("G/L Account No.", "No.");
-                    GLAccEntry.SetRange("Posting Date", StartOfMonth, EndOfMonth);
-                    GLAccEntry.CalcSums(Amount);
-                    MonthNetChange[i] := GLAccEntry.Amount;
-                    
-                    // Sum monthly total (absolute value of debits and credits)
-                    MonthTotal[i] := Abs(MonthNetChange[i]);
-                    
-                    // Balance at end of month (cumulative from beginning of time to end of month)
-                    GLAccEntry.Reset();
-                    GLAccEntry.SetRange("G/L Account No.", "No.");
-                    GLAccEntry.SetRange("Posting Date", 0D, EndOfMonth);
-                    GLAccEntry.CalcSums(Amount);
-                    MonthBalance[i] := GLAccEntry.Amount;
+                    // Only process months within the selected range
+                    if (StartOfMonth > EndDate) or (EndOfMonth < StartDate) then begin
+                        MonthNetChange[i] := 0;
+                        MonthTotal[i] := 0;
+                        MonthBalance[i] := 0;
+                        // skip this month
+                    end else begin
+                        // Clamp month to selected range
+                        if StartOfMonth < StartDate then
+                            StartOfMonth := StartDate;
+                        if EndOfMonth > EndDate then
+                            EndOfMonth := EndDate;
+
+                        // Net Change for the month
+                        GLAccEntry.Reset();
+                        GLAccEntry.SetRange("G/L Account No.", "No.");
+                        GLAccEntry.SetRange("Posting Date", StartOfMonth, EndOfMonth);
+                        GLAccEntry.CalcSums(Amount);
+                        MonthNetChange[i] := GLAccEntry.Amount;
+
+                        // Sum monthly total (absolute value of debits and credits)
+                        MonthTotal[i] := Abs(MonthNetChange[i]);
+
+                        // Balance at end of month (cumulative from beginning of time to end of month)
+                        GLAccEntry.Reset();
+                        GLAccEntry.SetRange("G/L Account No.", "No.");
+                        GLAccEntry.SetRange("Posting Date", 0D, EndOfMonth);
+                        GLAccEntry.CalcSums(Amount);
+                        MonthBalance[i] := GLAccEntry.Amount;
+                    end;
                 end;
 
                 // Accumulate monthly net changes for grand totals
@@ -169,7 +184,7 @@ Report 59063 "Monthly Trial Balance"
                 // Set the date filter for the G/L Account record to match the selected year
                 SetRange("Date Filter", StartDate, EndDate);
                 CalcFields("Net Change", "Balance at Date");
-                
+
                 if not ShowZeroBalances then begin
                     if ("Net Change" = 0) and ("Balance at Date" = 0) then begin
                         // Also check if all monthly values are zero
@@ -177,19 +192,19 @@ Report 59063 "Monthly Trial Balance"
                             CurrReport.Skip();
                     end;
                 end;
-                
+
                 if PrintToExcel then
                     MakeExcelDataBody;
-                    
+
                 if ChangeGroupNo then begin
                     PageGroupNo += 1;
                     ChangeGroupNo := false;
                 end;
                 ChangeGroupNo := "New Page";
-                
+
                 TotalDebit := 0;
                 Totalcredit := 0;
-                
+
                 if "G/L Account"."Account Type" = "G/L Account"."Account Type"::Posting then begin
                     if "Net Change" > 0 then
                         TotalDebit := TotalDebit + "Net Change";
@@ -220,11 +235,17 @@ Report 59063 "Monthly Trial Balance"
                 group(Options)
                 {
                     Caption = 'Options';
-                    field(SelectedYear; SelectedYear)
+                    field(StartDate; StartDate)
                     {
                         ApplicationArea = Basic;
-                        Caption = 'Year';
-                        ToolTip = 'Select the year for the monthly trial balance.';
+                        Caption = 'Start Date';
+                        ToolTip = 'Select the start date for the monthly trial balance.';
+                    }
+                    field(EndDate; EndDate)
+                    {
+                        ApplicationArea = Basic;
+                        Caption = 'End Date';
+                        ToolTip = 'Select the end date for the monthly trial balance.';
                     }
                     field(PrintToExcel; PrintToExcel)
                     {
@@ -257,20 +278,19 @@ Report 59063 "Monthly Trial Balance"
 
     trigger OnPreReport()
     begin
-        if SelectedYear = 0 then
-            SelectedYear := Date2DMY(Today, 3);
+        // Set default dates if not provided
+        if (StartDate = 0D) then
+            StartDate := DMY2Date(1, 1, Date2DMY(Today, 3));
+        if (EndDate = 0D) then
+            EndDate := DMY2Date(31, 12, Date2DMY(Today, 3));
 
         if compyinfo.Get then begin
             compyinfo.CalcFields(compyinfo.Picture);
             compyname := compyinfo.Name;
         end;
-        
-        StartDate := DMY2Date(1, 1, SelectedYear);
-        EndDate := DMY2Date(31, 12, SelectedYear);
         "G/L Account".SetRange("Date Filter", StartDate, EndDate);
         PeriodText := Format(StartDate) + ' .. ' + Format(EndDate);
         GLFilter := "G/L Account".GetFilters;
-        
         if PrintToExcel then
             MakeExcelInfo;
     end;
@@ -294,7 +314,7 @@ Report 59063 "Monthly Trial Balance"
         Text010: label 'G/L Filter';
         Text011: label 'Period Filter';
         PeriodType: Enum "Analysis Period Type";
-        StartDate, EndDate: Date;
+        // StartDate, EndDate: Date; (removed duplicate declaration)
         Trial_BalanceCaptionLbl: label 'Trial Balance';
         CurrReport_PAGENOCaptionLbl: label 'Page';
         Net_ChangeCaptionLbl: label 'Net Change';
@@ -315,7 +335,8 @@ Report 59063 "Monthly Trial Balance"
         MonthNetChange: array[12] of Decimal;
         MonthBalance: array[12] of Decimal;
         MonthTotal: array[12] of Decimal;
-        SelectedYear: Integer;
+        StartDate: Date;
+        EndDate: Date;
 
     local procedure CheckAllMonthlyValuesZero(): Boolean
     var

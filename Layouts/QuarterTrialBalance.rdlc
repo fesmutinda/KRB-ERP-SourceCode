@@ -1731,11 +1731,14 @@ kHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpBvD/AZI2
         <Field Name="COMPANYPICTURE">
           <DataField>COMPANYPICTURE</DataField>
         </Field>
-        <Field Name="YearFilter">
-          <DataField>YearFilter</DataField>
+        <Field Name="DateFilter">
+          <DataField>DateFilter</DataField>
         </Field>
-        <Field Name="SelectedYear">
-          <DataField>SelectedYear</DataField>
+        <Field Name="StartDate">
+          <DataField>StartDate</DataField>
+        </Field>
+        <Field Name="EndDate">
+          <DataField>EndDate</DataField>
         </Field>
         <Field Name="Q1_NetChange">
           <DataField>Q1_NetChange</DataField>
