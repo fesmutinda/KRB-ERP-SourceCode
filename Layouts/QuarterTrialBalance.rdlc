@@ -1112,17 +1112,18 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox38">
+                        <Textbox Name="Q1_Total_NetChange">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Sum(Fields!Q1_Total_NetChange.Value)</Value>
                                   <Style>
                                     <FontSize>7pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1131,7 +1132,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox38</rd:DefaultName>
+                          <rd:DefaultName>Q1_Total_NetChange</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -1147,17 +1148,18 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox41">
+                        <Textbox Name="Q2_Total_NetChange">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Sum(Fields!Q2_Total_NetChange.Value)</Value>
                                   <Style>
                                     <FontSize>7pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1166,7 +1168,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox41</rd:DefaultName>
+                          <rd:DefaultName>Q2_Total_NetChange</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -1182,17 +1184,18 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox44">
+                        <Textbox Name="Q3_Total_NetChange">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Sum(Fields!Q3_Total_NetChange.Value)</Value>
                                   <Style>
                                     <FontSize>7pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1201,7 +1204,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox44</rd:DefaultName>
+                          <rd:DefaultName>Q3_Total_NetChange</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -1217,17 +1220,18 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox47">
+                        <Textbox Name="Q4_Total_NetChange">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Sum(Fields!Q4_Total_NetChange.Value)</Value>
                                   <Style>
                                     <FontSize>7pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1236,7 +1240,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox47</rd:DefaultName>
+                          <rd:DefaultName>Q4_Total_NetChange</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -1329,10 +1333,10 @@
                 </FilterValues>
               </Filter>
             </Filters>
-            <Top>5.81766cm</Top>
+            <Top>5.81765cm</Top>
             <Left>0.16854in</Left>
             <Height>1.7106cm</Height>
-            <Width>28.11118cm</Width>
+            <Width>28.11115cm</Width>
             <ZIndex>6</ZIndex>
             <Style>
               <Border>
@@ -1727,6 +1731,12 @@ kHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpBvD/AZI2
         <Field Name="COMPANYPICTURE">
           <DataField>COMPANYPICTURE</DataField>
         </Field>
+        <Field Name="YearFilter">
+          <DataField>YearFilter</DataField>
+        </Field>
+        <Field Name="SelectedYear">
+          <DataField>SelectedYear</DataField>
+        </Field>
         <Field Name="Q1_NetChange">
           <DataField>Q1_NetChange</DataField>
         </Field>
@@ -1774,6 +1784,30 @@ kHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpBvD/AZI2
         </Field>
         <Field Name="Q4_BalanceFormat">
           <DataField>Q4_BalanceFormat</DataField>
+        </Field>
+        <Field Name="Q1_Total_NetChange">
+          <DataField>Q1_Total_NetChange</DataField>
+        </Field>
+        <Field Name="Q1_Total_NetChangeFormat">
+          <DataField>Q1_Total_NetChangeFormat</DataField>
+        </Field>
+        <Field Name="Q2_Total_NetChange">
+          <DataField>Q2_Total_NetChange</DataField>
+        </Field>
+        <Field Name="Q2_Total_NetChangeFormat">
+          <DataField>Q2_Total_NetChangeFormat</DataField>
+        </Field>
+        <Field Name="Q3_Total_NetChange">
+          <DataField>Q3_Total_NetChange</DataField>
+        </Field>
+        <Field Name="Q3_Total_NetChangeFormat">
+          <DataField>Q3_Total_NetChangeFormat</DataField>
+        </Field>
+        <Field Name="Q4_Total_NetChange">
+          <DataField>Q4_Total_NetChange</DataField>
+        </Field>
+        <Field Name="Q4_Total_NetChangeFormat">
+          <DataField>Q4_Total_NetChangeFormat</DataField>
         </Field>
         <Field Name="ReportForNavId_5444">
           <DataField>ReportForNavId_5444</DataField>

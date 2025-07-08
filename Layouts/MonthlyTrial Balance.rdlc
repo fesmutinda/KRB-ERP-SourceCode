@@ -1494,14 +1494,14 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox70">
+                        <Textbox Name="Totaldebit">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=sum(Fields!Totaldebit.Value)</Value>
+                                  <Value>=Sum(Fields!Totaldebit.Value)</Value>
                                   <Style>
                                     <FontSize>7pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
@@ -1514,7 +1514,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox70</rd:DefaultName>
+                          <rd:DefaultName>Totaldebit</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -1537,7 +1537,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=sum(Fields!Totalcredit.Value)</Value>
+                                  <Value>=Sum(Fields!Totalcredit.Value)</Value>
                                   <Style>
                                     <FontSize>7pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
@@ -1566,17 +1566,18 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox27">
+                        <Textbox Name="Total_Jan_NetChange">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Sum(Fields!Total_Jan_NetChange.Value)</Value>
                                   <Style>
                                     <FontSize>7pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1585,7 +1586,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox27</rd:DefaultName>
+                          <rd:DefaultName>Total_Jan_NetChange</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -1601,17 +1602,18 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox30">
+                        <Textbox Name="Total_Feb_NetChange1">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Sum(Fields!Total_Feb_NetChange.Value)</Value>
                                   <Style>
                                     <FontSize>7pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1620,7 +1622,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox30</rd:DefaultName>
+                          <rd:DefaultName>Total_Feb_NetChange1</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -1636,17 +1638,18 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox24">
+                        <Textbox Name="Total_Mar_NetChange">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Sum(Fields!Total_Mar_NetChange.Value)</Value>
                                   <Style>
                                     <FontSize>7pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1655,7 +1658,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox24</rd:DefaultName>
+                          <rd:DefaultName>Total_Mar_NetChange</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -1671,17 +1674,18 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox5">
+                        <Textbox Name="Total_Apr_NetChange">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Sum(Fields!Total_Apr_NetChange.Value)</Value>
                                   <Style>
                                     <FontSize>7pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1690,7 +1694,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox5</rd:DefaultName>
+                          <rd:DefaultName>Total_Apr_NetChange</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -1706,17 +1710,18 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox17">
+                        <Textbox Name="Total_May_NetChange">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Sum(Fields!Total_May_NetChange.Value)</Value>
                                   <Style>
                                     <FontSize>7pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1725,7 +1730,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox17</rd:DefaultName>
+                          <rd:DefaultName>Total_May_NetChange</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -1741,17 +1746,18 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox11">
+                        <Textbox Name="Total_Jun_NetChange">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Fields!Total_Jun_NetChange.Value</Value>
                                   <Style>
                                     <FontSize>7pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1760,7 +1766,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox11</rd:DefaultName>
+                          <rd:DefaultName>Total_Jun_NetChange</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -1776,17 +1782,18 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox21">
+                        <Textbox Name="Total_Jul_NetChange">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Sum(Fields!Total_Jul_NetChange.Value)</Value>
                                   <Style>
                                     <FontSize>7pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1795,7 +1802,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox21</rd:DefaultName>
+                          <rd:DefaultName>Total_Jul_NetChange</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -1811,17 +1818,18 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox8">
+                        <Textbox Name="Total_Aug_NetChange">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Sum(Fields!Total_Aug_NetChange.Value)</Value>
                                   <Style>
                                     <FontSize>7pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1830,7 +1838,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox8</rd:DefaultName>
+                          <rd:DefaultName>Total_Aug_NetChange</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -1846,17 +1854,18 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox14">
+                        <Textbox Name="Total_Sep_NetChange">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Sum(Fields!Total_Sep_NetChange.Value)</Value>
                                   <Style>
                                     <FontSize>7pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1865,7 +1874,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox14</rd:DefaultName>
+                          <rd:DefaultName>Total_Sep_NetChange</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -1881,17 +1890,18 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox39">
+                        <Textbox Name="Total_Oct_NetChange">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Sum(Fields!Total_Oct_NetChange.Value)</Value>
                                   <Style>
                                     <FontSize>7pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1900,7 +1910,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox39</rd:DefaultName>
+                          <rd:DefaultName>Total_Oct_NetChange</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -1916,17 +1926,18 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox36">
+                        <Textbox Name="Total_Nov_NetChange">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Sum(Fields!Total_Nov_NetChange.Value)</Value>
                                   <Style>
                                     <FontSize>7pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1935,7 +1946,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox36</rd:DefaultName>
+                          <rd:DefaultName>Total_Nov_NetChange</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -1951,17 +1962,18 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox33">
+                        <Textbox Name="Total_Dec_NetChange">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Sum(Fields!Total_Dec_NetChange.Value)</Value>
                                   <Style>
                                     <FontSize>7pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1970,7 +1982,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox33</rd:DefaultName>
+                          <rd:DefaultName>Total_Dec_NetChange</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -2074,7 +2086,7 @@
             <Top>6.16999cm</Top>
             <Left>0.13354in</Left>
             <Height>1.7106cm</Height>
-            <Width>39.19258cm</Width>
+            <Width>39.19259cm</Width>
             <Style>
               <Border>
                 <Color>White</Color>
@@ -2832,6 +2844,78 @@ kHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpBvD/AZI2
         </Field>
         <Field Name="Dec_BalanceFormat">
           <DataField>Dec_BalanceFormat</DataField>
+        </Field>
+        <Field Name="Total_Jan_NetChange">
+          <DataField>Total_Jan_NetChange</DataField>
+        </Field>
+        <Field Name="Total_Jan_NetChangeFormat">
+          <DataField>Total_Jan_NetChangeFormat</DataField>
+        </Field>
+        <Field Name="Total_Feb_NetChange">
+          <DataField>Total_Feb_NetChange</DataField>
+        </Field>
+        <Field Name="Total_Feb_NetChangeFormat">
+          <DataField>Total_Feb_NetChangeFormat</DataField>
+        </Field>
+        <Field Name="Total_Mar_NetChange">
+          <DataField>Total_Mar_NetChange</DataField>
+        </Field>
+        <Field Name="Total_Mar_NetChangeFormat">
+          <DataField>Total_Mar_NetChangeFormat</DataField>
+        </Field>
+        <Field Name="Total_Apr_NetChange">
+          <DataField>Total_Apr_NetChange</DataField>
+        </Field>
+        <Field Name="Total_Apr_NetChangeFormat">
+          <DataField>Total_Apr_NetChangeFormat</DataField>
+        </Field>
+        <Field Name="Total_May_NetChange">
+          <DataField>Total_May_NetChange</DataField>
+        </Field>
+        <Field Name="Total_May_NetChangeFormat">
+          <DataField>Total_May_NetChangeFormat</DataField>
+        </Field>
+        <Field Name="Total_Jun_NetChange">
+          <DataField>Total_Jun_NetChange</DataField>
+        </Field>
+        <Field Name="Total_Jun_NetChangeFormat">
+          <DataField>Total_Jun_NetChangeFormat</DataField>
+        </Field>
+        <Field Name="Total_Jul_NetChange">
+          <DataField>Total_Jul_NetChange</DataField>
+        </Field>
+        <Field Name="Total_Jul_NetChangeFormat">
+          <DataField>Total_Jul_NetChangeFormat</DataField>
+        </Field>
+        <Field Name="Total_Aug_NetChange">
+          <DataField>Total_Aug_NetChange</DataField>
+        </Field>
+        <Field Name="Total_Aug_NetChangeFormat">
+          <DataField>Total_Aug_NetChangeFormat</DataField>
+        </Field>
+        <Field Name="Total_Sep_NetChange">
+          <DataField>Total_Sep_NetChange</DataField>
+        </Field>
+        <Field Name="Total_Sep_NetChangeFormat">
+          <DataField>Total_Sep_NetChangeFormat</DataField>
+        </Field>
+        <Field Name="Total_Oct_NetChange">
+          <DataField>Total_Oct_NetChange</DataField>
+        </Field>
+        <Field Name="Total_Oct_NetChangeFormat">
+          <DataField>Total_Oct_NetChangeFormat</DataField>
+        </Field>
+        <Field Name="Total_Nov_NetChange">
+          <DataField>Total_Nov_NetChange</DataField>
+        </Field>
+        <Field Name="Total_Nov_NetChangeFormat">
+          <DataField>Total_Nov_NetChangeFormat</DataField>
+        </Field>
+        <Field Name="Total_Dec_NetChange">
+          <DataField>Total_Dec_NetChange</DataField>
+        </Field>
+        <Field Name="Total_Dec_NetChangeFormat">
+          <DataField>Total_Dec_NetChangeFormat</DataField>
         </Field>
         <Field Name="ReportForNavId_5444">
           <DataField>ReportForNavId_5444</DataField>
