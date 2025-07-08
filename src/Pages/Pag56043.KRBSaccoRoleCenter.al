@@ -42,7 +42,7 @@ Page 56043 "KRB Sacco Role Center"
             // part("SasraLoanClassificationCue"; "Sasra Loan Classification Cue")
             // {
             //     ApplicationArea = Suite;
-            //     Visible = true;
+            //     Visible = true;F
             // }
 
 
@@ -626,20 +626,7 @@ Page 56043 "KRB Sacco Role Center"
                         RunObject = report "Trial Balance2025";
                         ToolTip = 'Generate Trial Balance for a given period.';
                     }
-                    action("Monthly Trial Balance")
-                    {
-                        ApplicationArea = Basic, Suite;
-                        Caption = 'Monthly Trial Balance';
-                        RunObject = report "Monthly Trial Balance";
-                        ToolTip = 'Generate Monthly Trial Balance for a given period';
-                    }
-                    action("Quarterly Trial Balance")
-                    {
-                        ApplicationArea = Basic, Suite;
-                        Caption = 'Quarterly Trial Balance';
-                        RunObject = report "Quarter Trial Balance";
-                        ToolTip = 'Generate Trial Balance on a Quarterly Basis for a Selected Period';
-                    }
+
                     action("Account Schedules")
                     {
                         ApplicationArea = Basic, Suite;
@@ -696,9 +683,24 @@ Page 56043 "KRB Sacco Role Center"
                         Caption = 'Member Savings Report';
                         RunObject = report "Member Savings Report2";
                     }
-
-
-
+                }
+                group("Trial Balance Variance")
+                {
+                    Caption = 'Trial Balance Variance';
+                    action("Monthly Variance Report")
+                    {
+                        ApplicationArea = Basic, Suite;
+                        Caption = 'Monthly Variance Report';
+                        RunObject = report "Monthly Trial Balance";
+                        ToolTip = 'Generate Monthly Variance Report for a given period';
+                    }
+                    action("Quarterly Variance Report")
+                    {
+                        ApplicationArea = Basic, Suite;
+                        Caption = 'Quarterly Variance Report';
+                        RunObject = report "Quarter Trial Balance";
+                        ToolTip = 'Generate Variance Report on a Quarterly Basis for a Selected Period';
+                    }
                 }
 
 
