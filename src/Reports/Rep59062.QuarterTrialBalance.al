@@ -98,6 +98,9 @@ Report 59062 "Quarter Trial Balance"
             column(G_L_Account___Balance_at_Date__Control24Caption; G_L_Account___Balance_at_Date__Control24CaptionLbl) { }
             column(PageGroupNo; PageGroupNo) { }
             column(COMPANYPICTURE; compyinfo.Picture) { }
+            column(DateFilter; DateFilter) { }
+            column(StartDate; StartDate) { }
+            column(EndDate; EndDate) { }
 
             // Quarterly columns for Net Change and Balance at Date
             column(Q1_NetChange; QuarterNetChange[1]) { Caption = 'Q1 Net Change'; }
@@ -109,6 +112,13 @@ Report 59062 "Quarter Trial Balance"
             column(Q2_Balance; QuarterBalance[2]) { Caption = 'Q2 Balance'; }
             column(Q3_Balance; QuarterBalance[3]) { Caption = 'Q3 Balance'; }
             column(Q4_Balance; QuarterBalance[4]) { Caption = 'Q4 Balance'; }
+
+            // Quarterly totals
+            column(Q1_Total_NetChange; Q1TotalNetChange) { Caption = 'Q1 Total Net Change'; }
+            column(Q2_Total_NetChange; Q2TotalNetChange) { Caption = 'Q2 Total Net Change'; }
+            column(Q3_Total_NetChange; Q3TotalNetChange) { Caption = 'Q3 Total Net Change'; }
+            column(Q4_Total_NetChange; Q4TotalNetChange) { Caption = 'Q4 Total Net Change'; }
+
             dataitem("Integer"; "Integer")
             {
                 DataItemTableView = sorting(Number) where(Number = const(1));
@@ -172,6 +182,9 @@ Report 59062 "Quarter Trial Balance"
                 EndOfQuarter: Date;
                 GLAccEntry: Record "G/L Entry";
                 QuarterStartMonth: array[4] of Integer;
+                WorkingStartDate: Date;
+                WorkingEndDate: Date;
+                BaseYear: Integer;
             begin
                 // Set quarter start months
                 QuarterStartMonth[1] := 1;
@@ -179,47 +192,99 @@ Report 59062 "Quarter Trial Balance"
                 QuarterStartMonth[3] := 7;
                 QuarterStartMonth[4] := 10;
 
-                // Calculate quarterly Net Change and Balance at Date for each quarter
-                for i := 1 to 4 do begin
-                    StartOfQuarter := DMY2Date(1, QuarterStartMonth[i], Date2DMY(Today, 3));
-                    EndOfQuarter := CALCDATE('<CM>', DMY2Date(1, QuarterStartMonth[i] + 2, Date2DMY(Today, 3))) - 1;
-                    // Net Change for the quarter
-                    GLAccEntry.Reset();
-                    GLAccEntry.SetRange("G/L Account No.", "No.");
-                    GLAccEntry.SetRange("Posting Date", StartOfQuarter, EndOfQuarter);
-                    QuarterNetChange[i] := 0;
-                    if GLAccEntry.FindSet() then
-                        repeat
-                            QuarterNetChange[i] += GLAccEntry.Amount;
-                        until GLAccEntry.Next() = 0;
-                    // Balance at end of quarter
-                    GLAccEntry.Reset();
-                    GLAccEntry.SetRange("G/L Account No.", "No.");
-                    GLAccEntry.SetRange("Posting Date", 0D, EndOfQuarter);
-                    QuarterBalance[i] := 0;
-                    if GLAccEntry.FindSet() then
-                        repeat
-                            QuarterBalance[i] += GLAccEntry.Amount;
-                        until GLAccEntry.Next() = 0;
+                // Determine date range to use
+                if (StartDate <> 0D) and (EndDate <> 0D) then begin
+                    WorkingStartDate := StartDate;
+                    WorkingEndDate := EndDate;
+                    BaseYear := Date2DMY(StartDate, 3);
+                end else begin
+                    BaseYear := Date2DMY(Today, 3);
+                    WorkingStartDate := DMY2Date(1, 1, BaseYear);
+                    WorkingEndDate := DMY2Date(31, 12, BaseYear);
                 end;
 
-                // ...existing code...
+
+                // Clear previous values
+                Clear(QuarterNetChange);
+                Clear(QuarterBalance);
+
+                // Calculate quarterly Net Change and Balance at Date for each quarter, only if quarter overlaps with selected range
+                for i := 1 to 4 do begin
+                    StartOfQuarter := DMY2Date(1, QuarterStartMonth[i], BaseYear);
+                    EndOfQuarter := CALCDATE('<CM+2M>', StartOfQuarter);
+
+                    // If the quarter is completely outside the selected range, skip rest of this iteration
+                    if (EndOfQuarter < WorkingStartDate) or (StartOfQuarter > WorkingEndDate) then begin
+                        // Skip this quarter
+                    end else begin
+                        // Clamp quarter to selected range
+                        if StartOfQuarter < WorkingStartDate then
+                            StartOfQuarter := WorkingStartDate;
+                        if EndOfQuarter > WorkingEndDate then
+                            EndOfQuarter := WorkingEndDate;
+
+                        // Net Change for the quarter
+                        GLAccEntry.Reset();
+                        GLAccEntry.SetRange("G/L Account No.", "No.");
+                        GLAccEntry.SetRange("Posting Date", StartOfQuarter, EndOfQuarter);
+                        QuarterNetChange[i] := 0;
+                        if GLAccEntry.FindSet() then
+                            repeat
+                                QuarterNetChange[i] += GLAccEntry.Amount;
+                            until GLAccEntry.Next() = 0;
+
+                        // Balance at end of quarter (cumulative from beginning of the period)
+                        GLAccEntry.Reset();
+                        GLAccEntry.SetRange("G/L Account No.", "No.");
+                        GLAccEntry.SetRange("Posting Date", WorkingStartDate, EndOfQuarter);
+                        QuarterBalance[i] := 0;
+                        if GLAccEntry.FindSet() then
+                            repeat
+                                QuarterBalance[i] += GLAccEntry.Amount;
+                            until GLAccEntry.Next() = 0;
+
+                        // Add to quarterly totals (only for posting accounts)
+                        if "Account Type" = "Account Type"::Posting then begin
+                            case i of
+                                1:
+                                    Q1TotalNetChange += QuarterNetChange[i];
+                                2:
+                                    Q2TotalNetChange += QuarterNetChange[i];
+                                3:
+                                    Q3TotalNetChange += QuarterNetChange[i];
+                                4:
+                                    Q4TotalNetChange += QuarterNetChange[i];
+                            end;
+                        end;
+                    end;
+                end;
+
+                // Apply date filter to existing calculations
+                if (StartDate <> 0D) and (EndDate <> 0D) then begin
+                    SetRange("Date Filter", StartDate, EndDate);
+                end;
+
                 CalcFields("Net Change", "Balance at Date");
                 if not ShowZeroBalances then begin
-                    if ("Net Change" = 0) and ("Balance at Date" = 0) then
+                    if ("Net Change" = 0) and ("Balance at Date" = 0) and
+                       (QuarterNetChange[1] = 0) and (QuarterNetChange[2] = 0) and
+                       (QuarterNetChange[3] = 0) and (QuarterNetChange[4] = 0) then
                         CurrReport.Skip();
                 end;
+
                 if PrintToExcel then
                     MakeExcelDataBody;
+
                 if ChangeGroupNo then begin
                     PageGroupNo += 1;
                     ChangeGroupNo := false;
                 end;
                 ChangeGroupNo := "New Page";
+
                 TotalDebit := 0;
                 Totalcredit := 0;
-                CalcFields("Net Change", "Balance at Date");
-                if "G/L Account"."Account Type" = "G/L Account"."account type"::Posting then begin
+
+                if "Account Type" = "Account Type"::Posting then begin
                     if "Net Change" > 0 then
                         TotalDebit := TotalDebit + "Net Change";
                     if "Net Change" < 0 then
@@ -231,13 +296,18 @@ Report 59062 "Quarter Trial Balance"
             begin
                 PageGroupNo := 0;
                 ChangeGroupNo := false;
+
+                // Clear quarterly totals
+                Q1TotalNetChange := 0;
+                Q2TotalNetChange := 0;
+                Q3TotalNetChange := 0;
+                Q4TotalNetChange := 0;
             end;
         }
     }
 
     requestpage
     {
-
         layout
         {
             area(content)
@@ -253,8 +323,40 @@ Report 59062 "Quarter Trial Balance"
 
                     field(ShowZeroBalances; ShowZeroBalances)
                     {
-                        ApplicationArea = Basoc;
+                        ApplicationArea = Basic;
                         Caption = 'Show Accounts With No Balances';
+                    }
+
+                    field(StartDate; StartDate)
+                    {
+                        ApplicationArea = Basic;
+                        Caption = 'Start Date';
+                        ToolTip = 'Specify the start date for quarterly calculations. Leave blank for current year.';
+
+                        trigger OnValidate()
+                        begin
+                            if (StartDate <> 0D) and (EndDate <> 0D) then begin
+                                if StartDate > EndDate then
+                                    Error('Start Date cannot be later than End Date.');
+                            end;
+                            // UpdateDateFilter();
+                        end;
+                    }
+
+                    field(EndDate; EndDate)
+                    {
+                        ApplicationArea = Basic;
+                        Caption = 'End Date';
+                        ToolTip = 'Specify the end date for quarterly calculations. Leave blank for current year.';
+
+                        trigger OnValidate()
+                        begin
+                            if (StartDate <> 0D) and (EndDate <> 0D) then begin
+                                if StartDate > EndDate then
+                                    Error('Start Date cannot be later than End Date.');
+                            end;
+                            // UpdateDateFilter();
+                        end;
                     }
                 }
             }
@@ -283,6 +385,13 @@ Report 59062 "Quarter Trial Balance"
         end;
         GLFilter := "G/L Account".GetFilters;
         PeriodText := "G/L Account".GetFilter("Date Filter");
+
+        // Set date filter display
+        if (StartDate <> 0D) and (EndDate <> 0D) then
+            DateFilter := Format(StartDate) + '..' + Format(EndDate)
+        else
+            DateFilter := 'Current Year (' + Format(Date2DMY(Today, 3)) + ')';
+
         if PrintToExcel then
             MakeExcelInfo;
     end;
@@ -323,42 +432,45 @@ Report 59062 "Quarter Trial Balance"
         compyname: Text;
 
         ShowZeroBalances: Boolean;
+        StartDate: Date;
+        EndDate: Date;
+        DateFilter: Text;
 
         QuarterNetChange: array[4] of Decimal;
         QuarterBalance: array[4] of Decimal;
 
+        // Quarterly totals
+        Q1TotalNetChange: Decimal;
+        Q2TotalNetChange: Decimal;
+        Q3TotalNetChange: Decimal;
+        Q4TotalNetChange: Decimal;
 
     procedure MakeExcelInfo()
     begin
         ExcelBuf.SetUseInfoSheet;
-        // ExcelBuf.AddInfoColumn(Format(Text005),false,'',true,false,false,'',ExcelBuf."cell type"::Text);
-        // ExcelBuf.AddInfoColumn(COMPANYNAME,false,'',false,false,false,'',ExcelBuf."cell type"::Text);
+        // Add date filter information to Excel export
+        // ExcelBuf.AddInfoColumn('Date Filter',false,'',true,false,false,'',ExcelBuf."cell type"::Text);
+        // ExcelBuf.AddInfoColumn(DateFilter,false,'',false,false,false,'',ExcelBuf."cell type"::Text);
         // ExcelBuf.NewRow;
-        // ExcelBuf.AddInfoColumn(Format(Text007),false,'',true,false,false,'',ExcelBuf."cell type"::Text);
-        // ExcelBuf.AddInfoColumn(Format(Text001),false,'',false,false,false,'',ExcelBuf."cell type"::Text);
-        // ExcelBuf.NewRow;
-        // ExcelBuf.AddInfoColumn(Format(Text006),false,'',true,false,false,'',ExcelBuf."cell type"::Text);
-        // ExcelBuf.AddInfoColumn(Report::Report6,false,'',false,false,false,'',ExcelBuf."cell type"::Number);
-        // ExcelBuf.NewRow;
-        // ExcelBuf.AddInfoColumn(Format(Text008),false,'',true,false,false,'',ExcelBuf."cell type"::Text);
-        // ExcelBuf.AddInfoColumn(UserId,false,'',false,false,false,'',ExcelBuf."cell type"::Text);
-        // ExcelBuf.NewRow;
-        // ExcelBuf.AddInfoColumn(Format(Text009),false,'',true,false,false,'',ExcelBuf."cell type"::Text);
-        // ExcelBuf.AddInfoColumn(Today,false,'',false,false,false,'',ExcelBuf."cell type"::Date);
-        // ExcelBuf.NewRow;
-        // ExcelBuf.AddInfoColumn(Format(Text010),false,'',true,false,false,'',ExcelBuf."cell type"::Text);
-        // ExcelBuf.AddInfoColumn("G/L Account".GetFilter("No."),false,'',false,false,false,'',ExcelBuf."cell type"::Text);
-        // ExcelBuf.NewRow;
-        // ExcelBuf.AddInfoColumn(Format(Text011),false,'',true,false,false,'',ExcelBuf."cell type"::Text);
-        // ExcelBuf.AddInfoColumn("G/L Account".GetFilter("Date Filter"),false,'',false,false,false,'',ExcelBuf."cell type"::Text);
-        // ExcelBuf.ClearNewRow;
-        // MakeExcelDataHeader;
+        // ... rest of existing Excel info code
     end;
 
     local procedure MakeExcelDataHeader()
     begin
         ExcelBuf.AddColumn("G/L Account".FieldCaption("No."), false, '', true, false, true, '', ExcelBuf."cell type"::Text);
         ExcelBuf.AddColumn("G/L Account".FieldCaption(Name), false, '', true, false, true, '', ExcelBuf."cell type"::Text);
+
+        // Add quarterly columns to Excel header
+        ExcelBuf.AddColumn('Q1 Net Change', false, '', true, false, true, '', ExcelBuf."cell type"::Text);
+        ExcelBuf.AddColumn('Q2 Net Change', false, '', true, false, true, '', ExcelBuf."cell type"::Text);
+        ExcelBuf.AddColumn('Q3 Net Change', false, '', true, false, true, '', ExcelBuf."cell type"::Text);
+        ExcelBuf.AddColumn('Q4 Net Change', false, '', true, false, true, '', ExcelBuf."cell type"::Text);
+
+        ExcelBuf.AddColumn('Q1 Balance', false, '', true, false, true, '', ExcelBuf."cell type"::Text);
+        ExcelBuf.AddColumn('Q2 Balance', false, '', true, false, true, '', ExcelBuf."cell type"::Text);
+        ExcelBuf.AddColumn('Q3 Balance', false, '', true, false, true, '', ExcelBuf."cell type"::Text);
+        ExcelBuf.AddColumn('Q4 Balance', false, '', true, false, true, '', ExcelBuf."cell type"::Text);
+
         ExcelBuf.AddColumn(
           Format("G/L Account".FieldCaption("Net Change") + ' - ' + Text003), false, '', true, false, true, '', ExcelBuf."cell type"::Text);
         ExcelBuf.AddColumn(
@@ -371,7 +483,6 @@ Report 59062 "Quarter Trial Balance"
           ExcelBuf."cell type"::Text);
     end;
 
-
     procedure MakeExcelDataBody()
     var
         BlankFiller: Text[250];
@@ -381,6 +492,7 @@ Report 59062 "Quarter Trial Balance"
         ExcelBuf.AddColumn(
           "G/L Account"."No.", false, '', "G/L Account"."Account Type" <> "G/L Account"."account type"::Posting, false, false, '',
           ExcelBuf."cell type"::Text);
+
         if "G/L Account".Indentation = 0 then
             ExcelBuf.AddColumn(
               "G/L Account".Name, false, '', "G/L Account"."Account Type" <> "G/L Account"."account type"::Posting, false, false, '',
@@ -390,6 +502,18 @@ Report 59062 "Quarter Trial Balance"
               CopyStr(BlankFiller, 1, 2 * "G/L Account".Indentation) + "G/L Account".Name,
               false, '', "G/L Account"."Account Type" <> "G/L Account"."account type"::Posting, false, false, '', ExcelBuf."cell type"::Text);
 
+        // Add quarterly data to Excel
+        ExcelBuf.AddColumn(QuarterNetChange[1], false, '', "G/L Account"."Account Type" <> "G/L Account"."account type"::Posting, false, false, '#,##0.00', ExcelBuf."cell type"::Number);
+        ExcelBuf.AddColumn(QuarterNetChange[2], false, '', "G/L Account"."Account Type" <> "G/L Account"."account type"::Posting, false, false, '#,##0.00', ExcelBuf."cell type"::Number);
+        ExcelBuf.AddColumn(QuarterNetChange[3], false, '', "G/L Account"."Account Type" <> "G/L Account"."account type"::Posting, false, false, '#,##0.00', ExcelBuf."cell type"::Number);
+        ExcelBuf.AddColumn(QuarterNetChange[4], false, '', "G/L Account"."Account Type" <> "G/L Account"."account type"::Posting, false, false, '#,##0.00', ExcelBuf."cell type"::Number);
+
+        ExcelBuf.AddColumn(QuarterBalance[1], false, '', "G/L Account"."Account Type" <> "G/L Account"."account type"::Posting, false, false, '#,##0.00', ExcelBuf."cell type"::Number);
+        ExcelBuf.AddColumn(QuarterBalance[2], false, '', "G/L Account"."Account Type" <> "G/L Account"."account type"::Posting, false, false, '#,##0.00', ExcelBuf."cell type"::Number);
+        ExcelBuf.AddColumn(QuarterBalance[3], false, '', "G/L Account"."Account Type" <> "G/L Account"."account type"::Posting, false, false, '#,##0.00', ExcelBuf."cell type"::Number);
+        ExcelBuf.AddColumn(QuarterBalance[4], false, '', "G/L Account"."Account Type" <> "G/L Account"."account type"::Posting, false, false, '#,##0.00', ExcelBuf."cell type"::Number);
+
+        // Existing Net Change logic
         case true of
             "G/L Account"."Net Change" = 0:
                 begin
@@ -420,6 +544,7 @@ Report 59062 "Quarter Trial Balance"
                 end;
         end;
 
+        // Existing Balance at Date logic
         case true of
             "G/L Account"."Balance at Date" = 0:
                 begin
@@ -451,10 +576,11 @@ Report 59062 "Quarter Trial Balance"
         end;
     end;
 
-
     procedure CreateExcelbook()
     begin
         //ExcelBuf.CreateBookAndOpenExcel(Text002,Text001,COMPANYNAME,USERID);
         //ERROR('');
     end;
+    // Removed extra closing brace
+
 }
