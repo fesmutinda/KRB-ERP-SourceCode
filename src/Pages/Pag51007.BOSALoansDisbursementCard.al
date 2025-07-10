@@ -1,6 +1,6 @@
 Page 51007 "BOSA Loans Disbursement Card"
 {
-    DeleteAllowed = false;
+    DeleteAllowed = true;
     // Editable = false;
     // ModifyAllowed = false;
     PageType = Card;

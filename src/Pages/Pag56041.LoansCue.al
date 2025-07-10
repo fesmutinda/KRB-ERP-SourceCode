@@ -96,6 +96,7 @@ Page 56041 "Loans Cue"
                 {
                     ApplicationArea = Basic;
                     Image = none;
+                    Visible = false;
                     Style = Favorable;
                     StyleExpr = true;
                     DrillDownPageId = "Loans Posted List";

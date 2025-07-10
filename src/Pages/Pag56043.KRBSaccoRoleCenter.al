@@ -2121,6 +2121,7 @@ Page 56043 "KRB Sacco Role Center"
                 }
                 group(Setup)
                 {
+                    Visible = false;
                     Caption = 'Payroll Setup';
                     action("Payroll PAYE Setup")
                     {
@@ -2219,6 +2220,15 @@ Page 56043 "KRB Sacco Role Center"
                 group("Sacco Workflow Mgmt")
                 {
                     Visible = true;
+
+                    action("Loan Approvals")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Loan Approvals';
+                        Image = Approvals;
+                        RunObject = Page "Custom Approval Entries";
+                        ToolTip = 'View and process loan applications waiting for approval';
+                    }
                     action("Workflow Categories")
                     {
                         ApplicationArea = Basic, Suite;

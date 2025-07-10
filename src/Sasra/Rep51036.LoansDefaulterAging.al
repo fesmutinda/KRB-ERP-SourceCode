@@ -307,7 +307,7 @@ Report 51036 "Loans Defaulter Aging"
 
             IF LoanRepaymentSchedule.FindLast() THEN begin
 
-                TotalExpected := LoanRepaymentSchedule."Loan Balance";
+                TotalExpected := Round(LoanRepaymentSchedule."Loan Balance", 0.4, '>');
 
             end;
 
@@ -329,8 +329,8 @@ Report 51036 "Loans Defaulter Aging"
         LoanLedgerEntry.Reset();
         LoanLedgerEntry.SetRange("Customer No.", "Loans Register"."Client Code");
         LoanLedgerEntry.SetRange("Loan No", "Loans Register"."Loan  No.");
-        //LoanLedgerEntry.SetFilter("Transaction Type", '%1|%2|%3|%4|%5', LoanLedgerEntry."Transaction Type"::"Loan Repayment", LoanLedgerEntry."Transaction Type"::"Interest Paid", LoanLedgerEntry."Transaction Type"::Loan, LoanLedgerEntry."Transaction Type"::"Interest Due", LoanLedgerEntry."Transaction Type"::"Loan Transfer Charges");
-        LoanLedgerEntry.SetFilter("Transaction Type", '%1|%2|%3|%4', LoanLedgerEntry."Transaction Type"::"Loan Repayment", LoanLedgerEntry."Transaction Type"::"Interest Paid", LoanLedgerEntry."Transaction Type"::Loan, LoanLedgerEntry."Transaction Type"::"Interest Due");
+        LoanLedgerEntry.SetFilter("Transaction Type", '%1|%2|%3|%4|%5', LoanLedgerEntry."Transaction Type"::"Loan Repayment", LoanLedgerEntry."Transaction Type"::"Interest Paid", LoanLedgerEntry."Transaction Type"::Loan, LoanLedgerEntry."Transaction Type"::"Interest Due", LoanLedgerEntry."Transaction Type"::"Loan Transfer Charges");
+        //LoanLedgerEntry.SetFilter("Transaction Type", '%1|%2|%3|%4', LoanLedgerEntry."Transaction Type"::"Loan Repayment", LoanLedgerEntry."Transaction Type"::"Interest Paid", LoanLedgerEntry."Transaction Type"::Loan, LoanLedgerEntry."Transaction Type"::"Interest Due");
         LoanLedgeREntry.SetRange(Reversed, false);
         LoanLedgerEntry.SetFilter("Posting Date", '<=%1', AsAt);
 

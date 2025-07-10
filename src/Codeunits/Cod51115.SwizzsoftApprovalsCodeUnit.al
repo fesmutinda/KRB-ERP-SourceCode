@@ -124,6 +124,8 @@ codeunit 51115 SwizzsoftApprovalsCodeUnit
 
     procedure FnOnSendLoanApplicationForApproval(var LoansRegister: Record "Loans Register")
     begin
+
+
     end;
 
     [IntegrationEvent(false, false)]

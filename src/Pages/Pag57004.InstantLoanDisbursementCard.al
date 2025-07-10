@@ -1,6 +1,6 @@
 page 57004 "Instant Loan Disbursement Card"
 {
-    DeleteAllowed = false;
+    DeleteAllowed = true;
     // Editable = false;
     // ModifyAllowed = false;
     PageType = Card;

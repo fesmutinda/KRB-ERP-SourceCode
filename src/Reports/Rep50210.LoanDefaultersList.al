@@ -9,7 +9,7 @@ Report 50210 "Loan Defaulters List"
     {
         dataitem(Loans; "Loans Register")
         {
-            DataItemTableView = sorting("Loan  No.") order(ascending) where(Posted = const(true), "Outstanding Balance" = filter('>0'), "Amount In Arrears" = filter('>0'));
+            DataItemTableView = sorting("Loan  No.") order(ascending) where(Posted = const(true), "Outstanding Balance" = filter('>0'));
             RequestFilterFields = Source, "Loan Product Type", "Application Date", "Issued Date";
             column(ReportForNavId_4645; 4645)
             {
@@ -56,7 +56,7 @@ Report 50210 "Loan Defaulters List"
             column(Loans__Requested_Amount_; "Requested Amount")
             {
             }
-            column(Loans__Approved_Amount_; "Approved Amount")
+            column(Loans__Approved_Amount_; Round("Approved Amount", 1, '>'))
             {
             }
             column(Repayment; Repayment)
@@ -74,10 +74,10 @@ Report 50210 "Loan Defaulters List"
             }
 
 
-            column(Loans__Arrears_; "Amount in Arrears")
+            column(Loans__Arrears_; Round("Amount in Arrears", 1, '>'))
             {
             }
-            column(Loans_Loans__Outstanding_Balance_; Loans."Outstanding Balance")
+            column(Loans_Loans__Outstanding_Balance_; Round(Loans."Outstanding Balance", 1, '>'))
             {
             }
             column(Loans__Application_Date_; "Application Date")
@@ -207,11 +207,11 @@ Report 50210 "Loan Defaulters List"
             column(Company_Email; Company."E-Mail")
             {
             }
-            column(Lbal; LBalance)
+            column(Lbal; Round(LBalance, 1, '>'))
             {
             }
 
-            column(Expected_Loan_Balance; "Expected Loan Balance")
+            column(Expected_Loan_Balance; Round("Expected Loan Balance", 1, '>'))
             {
 
             }
@@ -225,6 +225,13 @@ Report 50210 "Loan Defaulters List"
 
             trigger OnPreDataItem()
             begin
+
+                case ArrearsFilterOption of
+                    ArrearsFilterOption::"All Arrears":
+                        Loans.SetFilter("Days In Arrears", '>0');
+                    ArrearsFilterOption::"Over 90 Days Only":
+                        Loans.SetFilter("Days In Arrears", '>90');
+                end;
 
                 if LoanProdType.Get(Loans.GetFilter(Loans."Loan Product Type")) then
                     LoanType := LoanProdType."Product Description";
@@ -257,12 +264,18 @@ Report 50210 "Loan Defaulters List"
         {
             area(content)
             {
+                group(Options)
+                {
+
+                    field(ArrearsFilter; ArrearsFilterOption)
+                    {
+                        Caption = 'Filter Arrears';
+                        ApplicationArea = All;
+                    }
+                }
             }
         }
 
-        actions
-        {
-        }
     }
 
     labels
@@ -270,6 +283,8 @@ Report 50210 "Loan Defaulters List"
     }
 
     var
+
+        ArrearsFilterOption: Option "All Arrears","Over 90 Days Only";
         RPeriod: Decimal;
         BatchL: Code[100];
         Batches: Record "Loan Disburesment-Batching";
