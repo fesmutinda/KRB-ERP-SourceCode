@@ -471,7 +471,7 @@ Page 56029 "Loan Application Card"
                         //................Ensure than you cant have two loans same product
                         // SystemGenSet.FnCheckNoOfLoansLimit("Loan  No.", "Loan Product Type", "Client Code");
                         //----------------
-
+                        Rec.Get(Rec."Loan  No.");
                         FnCheckForTestFields();
                         if Confirm('Send Approval Request For Loan Application of Ksh. ' + Format(Rec."Approved Amount") + ' applied by ' + Format(Rec."Client Name") + ' ?', false) = false then begin
                             exit;

@@ -676,11 +676,11 @@ Table 51371 "Loans Register"
                 totalInsurance := 0;
                 phcfInsurance := 0;
                 varInsurance := 0;
-                if "Is Top Up" = false then begin
-                    if "Affidavit - Estimated Value 2" > 0 then begin
-                        Error('Member Has Pending Arrear,kindly sort out with CEO');
-                    end;
-                end;
+                // if "Is Top Up" = false then begin
+                //     if "Affidavit - Estimated Value 2" > 0 then begin
+                //         Error('Member Has Pending Arrear,kindly sort out with CEO');
+                //     end;
+                // end;
 
                 if LoanType.Get("Loan Product Type") then begin
                     if LoanType."Maximum No. Of Runing Loans" > 1 then begin

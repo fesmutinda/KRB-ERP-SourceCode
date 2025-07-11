@@ -634,25 +634,6 @@ codeunit 50041 "Custom Workflow Responses"
     end;
 
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approvals Mgmt.", 'OnApproveApprovalRequestsForRecordOnBeforeApprovalEntryToUpdateModify', '', false, false)]
-    local procedure OnApproveApprovalRequestsBeforeModfy(var ApprovalEntryToUpdate: Record "Approval Entry")
-    var
-        ApprovalEntry2: Record "Approval Entry";
-        RecRef: RecordRef;
-    begin
-
-        ApprovalEntry2.SetRange("Record ID to Approve", ApprovalEntryToUpdate."Record ID to Approve");
-        ApprovalEntry2.SetRange("Workflow Step Instance ID", ApprovalEntryToUpdate."Workflow Step Instance ID");
-        ApprovalEntry2.SetRange("Sequence No.", ApprovalEntryToUpdate."Sequence No.");
-
-        if ApprovalEntry2.FindSet() then begin
-            repeat
-                ApprovalEntry2.Status := ApprovalEntryToUpdate.Status::Approved
-            until ApprovalEntry2.Next() = 0
-        end
-
-    end;
-
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approvals Mgmt.", 'OnApproveApprovalRequest', '', false, false)]
     local procedure OnAfterLoanApproval(var ApprovalEntry: Record "Approval Entry")
     var
