@@ -121,6 +121,9 @@ Report 59063 "Monthly Trial Balance"
                 end;
             }
 
+            // In the OnAfterGetRecord trigger for G/L Account, replace the monthly calculation section with this:
+
+            // Fixed OnAfterGetRecord trigger for G/L Account
             trigger OnAfterGetRecord()
             var
                 i: Integer;
@@ -145,12 +148,12 @@ Report 59063 "Monthly Trial Balance"
                 for i := 1 to 12 do begin
                     StartOfMonth := DMY2Date(1, i, Date2DMY(StartDate, 3));
                     EndOfMonth := CalcDate('<CM>', StartOfMonth);
+
                     // Only process months within the selected range
                     if (StartOfMonth > EndDate) or (EndOfMonth < StartDate) then begin
                         MonthNetChange[i] := 0;
                         MonthTotal[i] := 0;
                         MonthBalance[i] := 0;
-                        // skip this month
                     end else begin
                         // Clamp month to selected range
                         if StartOfMonth < StartDate then
@@ -162,18 +165,57 @@ Report 59063 "Monthly Trial Balance"
                         GLAccEntry.Reset();
                         GLAccEntry.SetRange("G/L Account No.", "No.");
                         GLAccEntry.SetRange("Posting Date", StartOfMonth, EndOfMonth);
-                        GLAccEntry.CalcSums(Amount);
-                        MonthNetChange[i] := GLAccEntry.Amount;
+                        GLAccEntry.CalcSums(Amount, "Debit Amount", "Credit Amount");
 
-                        // Sum monthly total (absolute value of debits and credits)
-                        MonthTotal[i] := Abs(MonthNetChange[i]);
+                        // FIXED: Determine account type and show proper sign
+                        // For account 2227 (Insurance), it's an expense account that should show debits as positive
+                        if ("No." = '2227') or (CopyStr("No.", 1, 1) = '5') then begin
+                            // Expense accounts: Debit increases are positive, Credit decreases are negative
+                            MonthNetChange[i] := GLAccEntry."Debit Amount" - GLAccEntry."Credit Amount";
+                        end else begin
+                            // Use standard account type logic
+                            case CopyStr("No.", 1, 1) of
+                                '1': // Assets - Debit normal balance
+                                    MonthNetChange[i] := GLAccEntry."Debit Amount" - GLAccEntry."Credit Amount";
+                                '2': // Liabilities - Credit normal balance (except 2227 which is handled above)
+                                    MonthNetChange[i] := GLAccEntry."Credit Amount" - GLAccEntry."Debit Amount";
+                                '3': // Equity - Credit normal balance
+                                    MonthNetChange[i] := GLAccEntry."Credit Amount" - GLAccEntry."Debit Amount";
+                                '4': // Income - Credit normal balance
+                                    MonthNetChange[i] := GLAccEntry."Credit Amount" - GLAccEntry."Debit Amount";
+                                else
+                                    MonthNetChange[i] := GLAccEntry.Amount;
+                            end;
+                        end;
+
+                        // Sum monthly total (absolute value of activity)
+                        MonthTotal[i] := GLAccEntry."Debit Amount" + GLAccEntry."Credit Amount";
 
                         // Balance at end of month (cumulative from beginning of time to end of month)
                         GLAccEntry.Reset();
                         GLAccEntry.SetRange("G/L Account No.", "No.");
                         GLAccEntry.SetRange("Posting Date", 0D, EndOfMonth);
-                        GLAccEntry.CalcSums(Amount);
-                        MonthBalance[i] := GLAccEntry.Amount;
+                        GLAccEntry.CalcSums(Amount, "Debit Amount", "Credit Amount");
+
+                        // FIXED: Apply same logic for cumulative balance
+                        if ("No." = '2227') or (CopyStr("No.", 1, 1) = '5') then begin
+                            // Expense accounts: Show cumulative debit balance as positive
+                            MonthBalance[i] := GLAccEntry."Debit Amount" - GLAccEntry."Credit Amount";
+                        end else begin
+                            // Use standard account type logic
+                            case CopyStr("No.", 1, 1) of
+                                '1': // Assets - Debit normal balance
+                                    MonthBalance[i] := GLAccEntry."Debit Amount" - GLAccEntry."Credit Amount";
+                                '2': // Liabilities - Credit normal balance (except 2227 which is handled above)
+                                    MonthBalance[i] := GLAccEntry."Credit Amount" - GLAccEntry."Debit Amount";
+                                '3': // Equity - Credit normal balance
+                                    MonthBalance[i] := GLAccEntry."Credit Amount" - GLAccEntry."Debit Amount";
+                                '4': // Income - Credit normal balance
+                                    MonthBalance[i] := GLAccEntry."Credit Amount" - GLAccEntry."Debit Amount";
+                                else
+                                    MonthBalance[i] := GLAccEntry.Amount;
+                            end;
+                        end;
                     end;
                 end;
 
@@ -181,13 +223,12 @@ Report 59063 "Monthly Trial Balance"
                 for i := 1 to 12 do
                     GrandMonthNetChange[i] += MonthNetChange[i];
 
-                // Set the date filter for the G/L Account record to match the selected year
+                // Rest of the existing code continues...
                 SetRange("Date Filter", StartDate, EndDate);
                 CalcFields("Net Change", "Balance at Date");
 
                 if not ShowZeroBalances then begin
                     if ("Net Change" = 0) and ("Balance at Date" = 0) then begin
-                        // Also check if all monthly values are zero
                         if CheckAllMonthlyValuesZero() then
                             CurrReport.Skip();
                     end;
@@ -205,11 +246,47 @@ Report 59063 "Monthly Trial Balance"
                 TotalDebit := 0;
                 Totalcredit := 0;
 
+                // FIXED: Proper debit/credit classification for trial balance totals
                 if "G/L Account"."Account Type" = "G/L Account"."Account Type"::Posting then begin
-                    if "Net Change" > 0 then
-                        TotalDebit := TotalDebit + "Net Change";
-                    if "Net Change" < 0 then
-                        Totalcredit := Totalcredit + "Net Change";
+                    if ("No." = '2227') or (CopyStr("No.", 1, 1) = '5') then begin
+                        // Expense accounts: Positive balance goes to debit, negative to credit
+                        if "Net Change" >= 0 then
+                            TotalDebit := TotalDebit + "Net Change"
+                        else
+                            Totalcredit := Totalcredit + Abs("Net Change");
+                    end else begin
+                        // Use standard account type logic
+                        case CopyStr("No.", 1, 1) of
+                            '1': // Assets - Normal debit balance
+                                begin
+                                    if "Net Change" >= 0 then
+                                        TotalDebit := TotalDebit + "Net Change"
+                                    else
+                                        Totalcredit := Totalcredit + Abs("Net Change");
+                                end;
+                            '2': // Liabilities - Normal credit balance
+                                begin
+                                    if "Net Change" <= 0 then
+                                        Totalcredit := Totalcredit + Abs("Net Change")
+                                    else
+                                        TotalDebit := TotalDebit + "Net Change";
+                                end;
+                            '3': // Equity - Normal credit balance
+                                begin
+                                    if "Net Change" <= 0 then
+                                        Totalcredit := Totalcredit + Abs("Net Change")
+                                    else
+                                        TotalDebit := TotalDebit + "Net Change";
+                                end;
+                            '4': // Income - Normal credit balance
+                                begin
+                                    if "Net Change" <= 0 then
+                                        Totalcredit := Totalcredit + Abs("Net Change")
+                                    else
+                                        TotalDebit := TotalDebit + "Net Change";
+                                end;
+                        end;
+                    end;
                 end;
             end;
 
@@ -388,64 +465,64 @@ Report 59063 "Monthly Trial Balance"
               CopyStr(BlankFiller, 1, 2 * "G/L Account".Indentation) + "G/L Account".Name,
               false, '', "G/L Account"."Account Type" <> "G/L Account"."Account Type"::Posting, false, false, '', ExcelBuf."cell type"::Text);
 
+        // FIXED: Proper debit/credit display based on account type
         case true of
             "G/L Account"."Net Change" = 0:
                 begin
-                    ExcelBuf.AddColumn(
-                      '', false, '', "G/L Account"."Account Type" <> "G/L Account"."Account Type"::Posting, false, false, '',
-                      ExcelBuf."cell type"::Text);
-                    ExcelBuf.AddColumn(
-                      '', false, '', "G/L Account"."Account Type" <> "G/L Account"."Account Type"::Posting, false, false, '',
-                      ExcelBuf."cell type"::Text);
+                    ExcelBuf.AddColumn('', false, '', "G/L Account"."Account Type" <> "G/L Account"."Account Type"::Posting, false, false, '', ExcelBuf."cell type"::Text);
+                    ExcelBuf.AddColumn('', false, '', "G/L Account"."Account Type" <> "G/L Account"."Account Type"::Posting, false, false, '', ExcelBuf."cell type"::Text);
                 end;
-            "G/L Account"."Net Change" > 0:
+            // Assets and Expenses - show positive as debit, negative as credit
+            (CopyStr("G/L Account"."No.", 1, 1) in ['1', '5']):
                 begin
-                    ExcelBuf.AddColumn(
-                      "G/L Account"."Net Change", false, '', "G/L Account"."Account Type" <> "G/L Account"."Account Type"::Posting,
-                      false, false, '#,##0.00', ExcelBuf."cell type"::Number);
-                    ExcelBuf.AddColumn(
-                      '', false, '', "G/L Account"."Account Type" <> "G/L Account"."Account Type"::Posting, false, false, '',
-                      ExcelBuf."cell type"::Text);
+                    if "G/L Account"."Net Change" > 0 then begin
+                        ExcelBuf.AddColumn("G/L Account"."Net Change", false, '', "G/L Account"."Account Type" <> "G/L Account"."Account Type"::Posting, false, false, '#,##0.00', ExcelBuf."cell type"::Number);
+                        ExcelBuf.AddColumn('', false, '', "G/L Account"."Account Type" <> "G/L Account"."Account Type"::Posting, false, false, '', ExcelBuf."cell type"::Text);
+                    end else begin
+                        ExcelBuf.AddColumn('', false, '', "G/L Account"."Account Type" <> "G/L Account"."Account Type"::Posting, false, false, '', ExcelBuf."cell type"::Text);
+                        ExcelBuf.AddColumn(Abs("G/L Account"."Net Change"), false, '', "G/L Account"."Account Type" <> "G/L Account"."Account Type"::Posting, false, false, '#,##0.00', ExcelBuf."cell type"::Number);
+                    end;
                 end;
-            "G/L Account"."Net Change" < 0:
-                begin
-                    ExcelBuf.AddColumn(
-                      '', false, '', "G/L Account"."Account Type" <> "G/L Account"."Account Type"::Posting, false, false, '',
-                      ExcelBuf."cell type"::Text);
-                    ExcelBuf.AddColumn(
-                      -"G/L Account"."Net Change", false, '', "G/L Account"."Account Type" <> "G/L Account"."Account Type"::Posting,
-                      false, false, '#,##0.00', ExcelBuf."cell type"::Number);
+            // Liabilities, Equity, Income - show negative as credit, positive as debit
+            else begin
+                if "G/L Account"."Net Change" < 0 then begin
+                    ExcelBuf.AddColumn('', false, '', "G/L Account"."Account Type" <> "G/L Account"."Account Type"::Posting, false, false, '', ExcelBuf."cell type"::Text);
+                    ExcelBuf.AddColumn(Abs("G/L Account"."Net Change"), false, '', "G/L Account"."Account Type" <> "G/L Account"."Account Type"::Posting, false, false, '#,##0.00', ExcelBuf."cell type"::Number);
+                end else begin
+                    ExcelBuf.AddColumn("G/L Account"."Net Change", false, '', "G/L Account"."Account Type" <> "G/L Account"."Account Type"::Posting, false, false, '#,##0.00', ExcelBuf."cell type"::Number);
+                    ExcelBuf.AddColumn('', false, '', "G/L Account"."Account Type" <> "G/L Account"."Account Type"::Posting, false, false, '', ExcelBuf."cell type"::Text);
                 end;
+            end;
         end;
 
+        // FIXED: Same logic for Balance at Dateee
         case true of
             "G/L Account"."Balance at Date" = 0:
                 begin
-                    ExcelBuf.AddColumn(
-                      '', false, '', "G/L Account"."Account Type" <> "G/L Account"."Account Type"::Posting, false, false, '',
-                      ExcelBuf."cell type"::Text);
-                    ExcelBuf.AddColumn(
-                      '', false, '', "G/L Account"."Account Type" <> "G/L Account"."Account Type"::Posting, false, false, '',
-                      ExcelBuf."cell type"::Text);
+                    ExcelBuf.AddColumn('', false, '', "G/L Account"."Account Type" <> "G/L Account"."Account Type"::Posting, false, false, '', ExcelBuf."cell type"::Text);
+                    ExcelBuf.AddColumn('', false, '', "G/L Account"."Account Type" <> "G/L Account"."Account Type"::Posting, false, false, '', ExcelBuf."cell type"::Text);
                 end;
-            "G/L Account"."Balance at Date" > 0:
+            // Assets and Expenses - show positive as debit, negative as credit
+            (CopyStr("G/L Account"."No.", 1, 1) in ['1', '5']):
                 begin
-                    ExcelBuf.AddColumn(
-                      "G/L Account"."Balance at Date", false, '', "G/L Account"."Account Type" <> "G/L Account"."Account Type"::Posting,
-                      false, false, '#,##0.00', ExcelBuf."cell type"::Number);
-                    ExcelBuf.AddColumn(
-                      '', false, '', "G/L Account"."Account Type" <> "G/L Account"."Account Type"::Posting, false, false, '',
-                      ExcelBuf."cell type"::Text);
+                    if "G/L Account"."Balance at Date" > 0 then begin
+                        ExcelBuf.AddColumn("G/L Account"."Balance at Date", false, '', "G/L Account"."Account Type" <> "G/L Account"."Account Type"::Posting, false, false, '#,##0.00', ExcelBuf."cell type"::Number);
+                        ExcelBuf.AddColumn('', false, '', "G/L Account"."Account Type" <> "G/L Account"."Account Type"::Posting, false, false, '', ExcelBuf."cell type"::Text);
+                    end else begin
+                        ExcelBuf.AddColumn('', false, '', "G/L Account"."Account Type" <> "G/L Account"."Account Type"::Posting, false, false, '', ExcelBuf."cell type"::Text);
+                        ExcelBuf.AddColumn(Abs("G/L Account"."Balance at Date"), false, '', "G/L Account"."Account Type" <> "G/L Account"."Account Type"::Posting, false, false, '#,##0.00', ExcelBuf."cell type"::Number);
+                    end;
                 end;
-            "G/L Account"."Balance at Date" < 0:
-                begin
-                    ExcelBuf.AddColumn(
-                      '', false, '', "G/L Account"."Account Type" <> "G/L Account"."Account Type"::Posting, false, false, '',
-                      ExcelBuf."cell type"::Text);
-                    ExcelBuf.AddColumn(
-                      -"G/L Account"."Balance at Date", false, '', "G/L Account"."Account Type" <> "G/L Account"."Account Type"::Posting,
-                      false, false, '#,##0.00', ExcelBuf."cell type"::Number);
+            // Liabilities, Equity, Income - show negative as credit, positive as debit
+            else begin
+                if "G/L Account"."Balance at Date" < 0 then begin
+                    ExcelBuf.AddColumn('', false, '', "G/L Account"."Account Type" <> "G/L Account"."Account Type"::Posting, false, false, '', ExcelBuf."cell type"::Text);
+                    ExcelBuf.AddColumn(Abs("G/L Account"."Balance at Date"), false, '', "G/L Account"."Account Type" <> "G/L Account"."Account Type"::Posting, false, false, '#,##0.00', ExcelBuf."cell type"::Number);
+                end else begin
+                    ExcelBuf.AddColumn("G/L Account"."Balance at Date", false, '', "G/L Account"."Account Type" <> "G/L Account"."Account Type"::Posting, false, false, '#,##0.00', ExcelBuf."cell type"::Number);
+                    ExcelBuf.AddColumn('', false, '', "G/L Account"."Account Type" <> "G/L Account"."Account Type"::Posting, false, false, '', ExcelBuf."cell type"::Text);
                 end;
+            end;
         end;
     end;
 
