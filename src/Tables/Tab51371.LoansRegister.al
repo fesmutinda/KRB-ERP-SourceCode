@@ -691,7 +691,7 @@ Table 51371 "Loans Register"
                         LoansRec.SetRange(LoansRec.Posted, true);
 
                     end else
-                        if "Requested Amount" > LoanType."Max. Loan Amount" then begin
+                        if ("Requested Amount" > LoanType."Max. Loan Amount") AND ("Loan Product Type" <> 'LT007') then begin
                             Error('You cannot request more than the Loan Allowable limit of %1', LoanType."Max. Loan Amount");
                         end;
 

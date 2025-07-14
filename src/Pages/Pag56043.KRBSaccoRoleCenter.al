@@ -1046,6 +1046,15 @@ Page 56043 "KRB Sacco Role Center"
                         RunObject = Page "Loan Application BOSA-Approved";
                         ToolTip = 'Open the list of Approved Loans Pending Disbursement.';
                     }
+
+                    action("Loans Reschedule List")
+                    {
+                        ApplicationArea = Baic, Suite;
+                        Caption = 'Loans Reschedule List';
+                        RunObject = Page "Loans Reschedule  List";
+                        ToolTip = 'Open the list of loans for rescheduling';
+
+                    }
                 }
                 group("Instant Loan")
                 {
@@ -1076,6 +1085,15 @@ Page 56043 "KRB Sacco Role Center"
                         Caption = 'Instant Loans Pending Disbursement.';
                         RunObject = Page "Instant Loans Applied-Approved";
                         ToolTip = 'Open the list of Approved Instant Loans Pending Disbursement.';
+                    }
+
+                    action("Loans Reschedule List - Instant")
+                    {
+                        ApplicationArea = Baic, Suite;
+                        Caption = 'Loans Reschedule List';
+                        RunObject = Page "Loans Reschedule  List";
+                        ToolTip = 'Open the list of loans for rescheduling';
+
                     }
 
 

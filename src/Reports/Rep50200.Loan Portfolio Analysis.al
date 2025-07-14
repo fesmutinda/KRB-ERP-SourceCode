@@ -3,7 +3,7 @@ report 50200 "Loan Portfolio Analysis"
     UsageCategory = ReportsAndAnalysis;
     ApplicationArea = All;
     DefaultLayout = RDLC;
-    RDLCLayout = './LoanPortfolioAnalysis.rdlc';
+    RDLCLayout = './Layout/LoanPortfolioAnalysis.rdlc';
 
     dataset
     {
@@ -49,7 +49,8 @@ report 50200 "Loan Portfolio Analysis"
             column(RepaymentRate; RepaymentRate) { DecimalPlaces = 2 : 2; }
             column(Arrears; "Instalment Period") { }
             column(TotalRepaymentsDue; TotalRepaymentsDue) { }
-            column(TotalRepaidOnTime; TotalRepaidOnTime) { }            column(Issued_Amount; "Issued Amount") { DecimalPlaces = 2 : 2; }
+            column(TotalRepaidOnTime; TotalRepaidOnTime) { }
+            column(Issued_Amount; "Issued Amount") { DecimalPlaces = 2 : 2; }
 
             trigger OnAfterGetRecord()
             var

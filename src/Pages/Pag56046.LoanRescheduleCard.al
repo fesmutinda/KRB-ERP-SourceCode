@@ -82,6 +82,7 @@ Page 56046 "Loan Reschedule Card"
                 field("Reason For Loan Reschedule"; Rec."Reason For Loan Reschedule")
                 {
                     ApplicationArea = Basic;
+                    Caption = 'Reason for Reschedule';
                 }
                 field("Requested Amount"; Rec."Requested Amount")
                 {
@@ -95,18 +96,23 @@ Page 56046 "Loan Reschedule Card"
                     // end;
                 }
 
-                field("Loan Extenstion Amount"; Rec."Loan Extenstion Amount")
+                field(LoanExtensionAmount; LoanExtensionAmount)
                 {
                     ApplicationArea = Basic;
-                    Caption = 'Top Up Amount';
+                    Caption = 'Top Up Existing Loan';
                     Editable = True;
 
                     trigger OnValidate()
                     begin
                         Rec.TestField("Requested Amount");
-                        Rec."Requested Amount" := Rec."Requested AMOUNT" + Rec."Loan Extenstion Amount";
+                        Rec."Requested Amount" := Rec."Requested AMOUNT" + LoanExtensionAmount;
                         Rec.Validate("Requested Amount")
                     end;
+                }
+
+                field(BankTransferCharges; BankTransferCharges)
+                {
+
                 }
                 field("Recommended Amount"; Rec."Recommended Amount")
                 {
@@ -703,6 +709,10 @@ Page 56046 "Loan Reschedule Card"
         DirbursementDate: date;
         VarAmounttoDisburse: Decimal;
 
+        LoanExtensionAmount: Decimal;
+
+        BankTransferCharges: Decimal;
+
 
     procedure UpdateControl()
     begin
@@ -795,7 +805,16 @@ Page 56046 "Loan Reschedule Card"
         //--------------------Generate Schedule
         Sfactorycode.FnGenerateRepaymentSchedule(Rec."Loan  No.");
         DirbursementDate := Rec."Loan Disbursement Date";
-        VarAmounttoDisburse := Rec."Approved Amount";
+
+        if LoanExtensionAmount > 0 then begin
+
+            VarAmounttoDisburse := LoanExtensionAmount;
+        end else begin
+
+            VarAmounttoDisburse := Rec."Approved Amount";
+        end;
+
+
         //....................PRORATED DAYS
         EndMonth := CALCDATE('-1D', CALCDATE('1M', DMY2DATE(1, DATE2DMY(Today, 2), DATE2DMY(Today, 3))));
         RemainingDays := (EndMonth - Today) + 1;
@@ -886,7 +905,16 @@ Page 56046 "Loan Reschedule Card"
 
             UNTIL PCharges.NEXT = 0;
         END;
-        //end of code
+
+        //....Bank Transfer Charges....
+        if BankTransferCharges > 0 then begin
+            //.....credit Bank
+            LineNo := LineNo + 10000;
+            SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, LoanApps."Loan  No.", LineNo, GenJournalLine."Transaction Type"::" ", GenJournalLine."Account Type"::"Bank Account", LoanApps."Paying Bank Account No", DirbursementDate, bankTransferCharges * -1, 'BOSA', Rec."Batch No.", 'Bank transfer charges ' + Format(LoanApps."Loan  No."), '');
+            //....debit member & Bank trans duty....
+            LineNo := LineNo + 10000;
+            SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, Rec."Loan  No.", LineNo, GenJournalLine."Transaction Type"::"Loan Transfer Charges", GenJournalLine."Account Type"::Customer, LoanApps."Client Code", DirbursementDate, bankTransferCharges, 'BOSA', LoanApps."Loan  No.", 'Bank transfer charges ' + Format(LoanApps."Loan  No."), LoanApps."Loan  No.");
+        end;
         //.....Valuation
         // VarAmounttoDisburse := VarAmounttoDisburse - (Rec."Loan Processing Fee" + Rec."Loan Dirbusement Fee" + Rec."Loan Insurance");
         // LineNo := LineNo + 10000;

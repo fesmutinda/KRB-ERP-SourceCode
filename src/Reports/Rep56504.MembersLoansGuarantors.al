@@ -83,6 +83,7 @@ Report 56504 "Members Loans Guarantors"
                 column(LoanNo_LoanGuarantors; "Loans Guarantee Details"."Loan No")
                 {
                 }
+
                 column(EntryNo; EntryNo)
                 {
                 }
@@ -94,6 +95,13 @@ Report 56504 "Members Loans Guarantors"
                 }
                 column(EmployerCode; EmployerCode)
                 {
+                }
+
+                dataitem("Loans Register"; "Loans Register")
+                {
+                    DataItemLink = "Loan  No." = field("Loan No");
+
+                    column(Loan_Product_Type_Name; "Loan Product Type Name") { }
                 }
 
                 trigger OnAfterGetRecord()
