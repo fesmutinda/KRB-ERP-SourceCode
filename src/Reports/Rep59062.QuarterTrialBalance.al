@@ -180,11 +180,12 @@ Report 59062 "Quarter Trial Balance"
                 i: Integer;
                 StartOfQuarter: Date;
                 EndOfQuarter: Date;
-                GLAccEntry: Record "G/L Entry";
                 QuarterStartMonth: array[4] of Integer;
                 WorkingStartDate: Date;
                 WorkingEndDate: Date;
                 BaseYear: Integer;
+                TempNetChange: Decimal;
+                TempBalanceAtDate: Decimal;
             begin
                 // Set quarter start months
                 QuarterStartMonth[1] := 1;
@@ -203,19 +204,19 @@ Report 59062 "Quarter Trial Balance"
                     WorkingEndDate := DMY2Date(31, 12, BaseYear);
                 end;
 
-
                 // Clear previous values
                 Clear(QuarterNetChange);
                 Clear(QuarterBalance);
 
-                // Calculate quarterly Net Change and Balance at Date for each quarter, only if quarter overlaps with selected range
+                // Calculate quarterly Net Change and Balance at Date for each quarter
                 for i := 1 to 4 do begin
                     StartOfQuarter := DMY2Date(1, QuarterStartMonth[i], BaseYear);
                     EndOfQuarter := CALCDATE('<CM+2M>', StartOfQuarter);
 
-                    // If the quarter is completely outside the selected range, skip rest of this iteration
+                    // If the quarter is completely outside the selected range, skip
                     if (EndOfQuarter < WorkingStartDate) or (StartOfQuarter > WorkingEndDate) then begin
-                        // Skip this quarter
+                        QuarterNetChange[i] := 0;
+                        QuarterBalance[i] := 0;
                     end else begin
                         // Clamp quarter to selected range
                         if StartOfQuarter < WorkingStartDate then
@@ -223,25 +224,36 @@ Report 59062 "Quarter Trial Balance"
                         if EndOfQuarter > WorkingEndDate then
                             EndOfQuarter := WorkingEndDate;
 
-                        // Net Change for the quarter
-                        GLAccEntry.Reset();
-                        GLAccEntry.SetRange("G/L Account No.", "No.");
-                        GLAccEntry.SetRange("Posting Date", StartOfQuarter, EndOfQuarter);
-                        QuarterNetChange[i] := 0;
-                        if GLAccEntry.FindSet() then
-                            repeat
-                                QuarterNetChange[i] += GLAccEntry.Amount;
-                            until GLAccEntry.Next() = 0;
+                        // Calculate Net Change for the quarter using the same logic as main calculation
+                        SetRange("Date Filter", StartOfQuarter, EndOfQuarter);
+                        CalcFields("Net Change");
+                        TempNetChange := "Net Change";
+                        // Account type-based sign logic
+                        case CopyStr("No.", 1, 1) of
+                            '1': // Assets
+                                QuarterNetChange[i] := TempNetChange;
+                            '2', '3', '4': // Liabilities, Equity, Income
+                                QuarterNetChange[i] := -TempNetChange;
+                            '5': // Expenses
+                                QuarterNetChange[i] := TempNetChange;
+                            else
+                                QuarterNetChange[i] := TempNetChange;
+                        end;
 
-                        // Balance at end of quarter (cumulative from beginning of the period)
-                        GLAccEntry.Reset();
-                        GLAccEntry.SetRange("G/L Account No.", "No.");
-                        GLAccEntry.SetRange("Posting Date", WorkingStartDate, EndOfQuarter);
-                        QuarterBalance[i] := 0;
-                        if GLAccEntry.FindSet() then
-                            repeat
-                                QuarterBalance[i] += GLAccEntry.Amount;
-                            until GLAccEntry.Next() = 0;
+                        // Calculate Balance at end of quarter (cumulative from beginning of working period)
+                        SetRange("Date Filter", WorkingStartDate, EndOfQuarter);
+                        CalcFields("Balance at Date");
+                        TempBalanceAtDate := "Balance at Date";
+                        case CopyStr("No.", 1, 1) of
+                            '1': // Assets
+                                QuarterBalance[i] := TempBalanceAtDate;
+                            '2', '3', '4': // Liabilities, Equity, Income
+                                QuarterBalance[i] := -TempBalanceAtDate;
+                            '5': // Expenses
+                                QuarterBalance[i] := TempBalanceAtDate;
+                            else
+                                QuarterBalance[i] := TempBalanceAtDate;
+                        end;
 
                         // Add to quarterly totals (only for posting accounts)
                         if "Account Type" = "Account Type"::Posting then begin
@@ -259,16 +271,22 @@ Report 59062 "Quarter Trial Balance"
                     end;
                 end;
 
-                // Apply date filter to existing calculations
+                // Reset to full period filter for main calculations
                 if (StartDate <> 0D) and (EndDate <> 0D) then begin
                     SetRange("Date Filter", StartDate, EndDate);
+                end else begin
+                    SetRange("Date Filter", WorkingStartDate, WorkingEndDate);
                 end;
 
                 CalcFields("Net Change", "Balance at Date");
+
+                // Check if we should skip zero balance accounts
                 if not ShowZeroBalances then begin
                     if ("Net Change" = 0) and ("Balance at Date" = 0) and
                        (QuarterNetChange[1] = 0) and (QuarterNetChange[2] = 0) and
-                       (QuarterNetChange[3] = 0) and (QuarterNetChange[4] = 0) then
+                       (QuarterNetChange[3] = 0) and (QuarterNetChange[4] = 0) and
+                       (QuarterBalance[1] = 0) and (QuarterBalance[2] = 0) and
+                       (QuarterBalance[3] = 0) and (QuarterBalance[4] = 0) then
                         CurrReport.Skip();
                 end;
 
@@ -281,6 +299,7 @@ Report 59062 "Quarter Trial Balance"
                 end;
                 ChangeGroupNo := "New Page";
 
+                // Calculate totals for debit/credit display
                 TotalDebit := 0;
                 Totalcredit := 0;
 

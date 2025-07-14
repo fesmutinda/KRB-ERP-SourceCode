@@ -11,6 +11,241 @@
       <rd:DataSourceID>e22926bf-e57a-41aa-b66f-dc99dba20f97</rd:DataSourceID>
     </DataSource>
   </DataSources>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+      <Fields>
+        <Field Name="ReportForNavId_6710">
+          <DataField>ReportForNavId_6710</DataField>
+        </Field>
+        <Field Name="AccountName">
+          <DataField>AccountName</DataField>
+        </Field>
+        <Field Name="AccountNo">
+          <DataField>AccountNo</DataField>
+        </Field>
+        <Field Name="STRSUBSTNO_Text000_PeriodText_">
+          <DataField>STRSUBSTNO_Text000_PeriodText_</DataField>
+        </Field>
+        <Field Name="CurrReport_PAGENO">
+          <DataField>CurrReport_PAGENO</DataField>
+        </Field>
+        <Field Name="COMPANYNAME">
+          <DataField>COMPANYNAME</DataField>
+        </Field>
+        <Field Name="Company_Name">
+          <DataField>Company_Name</DataField>
+        </Field>
+        <Field Name="Company_Address">
+          <DataField>Company_Address</DataField>
+        </Field>
+        <Field Name="Company_Address_2">
+          <DataField>Company_Address_2</DataField>
+        </Field>
+        <Field Name="Company_Phone_No">
+          <DataField>Company_Phone_No</DataField>
+        </Field>
+        <Field Name="Company_Fax_No">
+          <DataField>Company_Fax_No</DataField>
+        </Field>
+        <Field Name="Company_Picture">
+          <DataField>Company_Picture</DataField>
+        </Field>
+        <Field Name="Company_Email">
+          <DataField>Company_Email</DataField>
+        </Field>
+        <Field Name="PeriodText">
+          <DataField>PeriodText</DataField>
+        </Field>
+        <Field Name="G_L_Account__TABLECAPTION__________GLFilter">
+          <DataField>G_L_Account__TABLECAPTION__________GLFilter</DataField>
+        </Field>
+        <Field Name="GLFilter">
+          <DataField>GLFilter</DataField>
+        </Field>
+        <Field Name="G_L_Account_No_">
+          <DataField>G_L_Account_No_</DataField>
+        </Field>
+        <Field Name="Trial_BalanceCaption">
+          <DataField>Trial_BalanceCaption</DataField>
+        </Field>
+        <Field Name="CurrReport_PAGENOCaption">
+          <DataField>CurrReport_PAGENOCaption</DataField>
+        </Field>
+        <Field Name="Net_ChangeCaption">
+          <DataField>Net_ChangeCaption</DataField>
+        </Field>
+        <Field Name="Totaldebit">
+          <DataField>Totaldebit</DataField>
+        </Field>
+        <Field Name="TotaldebitFormat">
+          <DataField>TotaldebitFormat</DataField>
+        </Field>
+        <Field Name="Totalcredit">
+          <DataField>Totalcredit</DataField>
+        </Field>
+        <Field Name="TotalcreditFormat">
+          <DataField>TotalcreditFormat</DataField>
+        </Field>
+        <Field Name="BalanceCaption">
+          <DataField>BalanceCaption</DataField>
+        </Field>
+        <Field Name="G_L_Account___No__Caption">
+          <DataField>G_L_Account___No__Caption</DataField>
+        </Field>
+        <Field Name="PADSTR_____G_L_Account__Indentation___2___G_L_Account__NameCaption">
+          <DataField>PADSTR_____G_L_Account__Indentation___2___G_L_Account__NameCaption</DataField>
+        </Field>
+        <Field Name="G_L_Account___Net_Change_Caption">
+          <DataField>G_L_Account___Net_Change_Caption</DataField>
+        </Field>
+        <Field Name="G_L_Account___Net_Change__Control22Caption">
+          <DataField>G_L_Account___Net_Change__Control22Caption</DataField>
+        </Field>
+        <Field Name="G_L_Account___Balance_at_Date_Caption">
+          <DataField>G_L_Account___Balance_at_Date_Caption</DataField>
+        </Field>
+        <Field Name="G_L_Account___Balance_at_Date__Control24Caption">
+          <DataField>G_L_Account___Balance_at_Date__Control24Caption</DataField>
+        </Field>
+        <Field Name="PageGroupNo">
+          <DataField>PageGroupNo</DataField>
+        </Field>
+        <Field Name="COMPANYPICTURE">
+          <DataField>COMPANYPICTURE</DataField>
+        </Field>
+        <Field Name="DateFilter">
+          <DataField>DateFilter</DataField>
+        </Field>
+        <Field Name="StartDate">
+          <DataField>StartDate</DataField>
+        </Field>
+        <Field Name="EndDate">
+          <DataField>EndDate</DataField>
+        </Field>
+        <Field Name="Q1_NetChange">
+          <DataField>Q1_NetChange</DataField>
+        </Field>
+        <Field Name="Q1_NetChangeFormat">
+          <DataField>Q1_NetChangeFormat</DataField>
+        </Field>
+        <Field Name="Q2_NetChange">
+          <DataField>Q2_NetChange</DataField>
+        </Field>
+        <Field Name="Q2_NetChangeFormat">
+          <DataField>Q2_NetChangeFormat</DataField>
+        </Field>
+        <Field Name="Q3_NetChange">
+          <DataField>Q3_NetChange</DataField>
+        </Field>
+        <Field Name="Q3_NetChangeFormat">
+          <DataField>Q3_NetChangeFormat</DataField>
+        </Field>
+        <Field Name="Q4_NetChange">
+          <DataField>Q4_NetChange</DataField>
+        </Field>
+        <Field Name="Q4_NetChangeFormat">
+          <DataField>Q4_NetChangeFormat</DataField>
+        </Field>
+        <Field Name="Q1_Balance">
+          <DataField>Q1_Balance</DataField>
+        </Field>
+        <Field Name="Q1_BalanceFormat">
+          <DataField>Q1_BalanceFormat</DataField>
+        </Field>
+        <Field Name="Q2_Balance">
+          <DataField>Q2_Balance</DataField>
+        </Field>
+        <Field Name="Q2_BalanceFormat">
+          <DataField>Q2_BalanceFormat</DataField>
+        </Field>
+        <Field Name="Q3_Balance">
+          <DataField>Q3_Balance</DataField>
+        </Field>
+        <Field Name="Q3_BalanceFormat">
+          <DataField>Q3_BalanceFormat</DataField>
+        </Field>
+        <Field Name="Q4_Balance">
+          <DataField>Q4_Balance</DataField>
+        </Field>
+        <Field Name="Q4_BalanceFormat">
+          <DataField>Q4_BalanceFormat</DataField>
+        </Field>
+        <Field Name="Q1_Total_NetChange">
+          <DataField>Q1_Total_NetChange</DataField>
+        </Field>
+        <Field Name="Q1_Total_NetChangeFormat">
+          <DataField>Q1_Total_NetChangeFormat</DataField>
+        </Field>
+        <Field Name="Q2_Total_NetChange">
+          <DataField>Q2_Total_NetChange</DataField>
+        </Field>
+        <Field Name="Q2_Total_NetChangeFormat">
+          <DataField>Q2_Total_NetChangeFormat</DataField>
+        </Field>
+        <Field Name="Q3_Total_NetChange">
+          <DataField>Q3_Total_NetChange</DataField>
+        </Field>
+        <Field Name="Q3_Total_NetChangeFormat">
+          <DataField>Q3_Total_NetChangeFormat</DataField>
+        </Field>
+        <Field Name="Q4_Total_NetChange">
+          <DataField>Q4_Total_NetChange</DataField>
+        </Field>
+        <Field Name="Q4_Total_NetChangeFormat">
+          <DataField>Q4_Total_NetChangeFormat</DataField>
+        </Field>
+        <Field Name="ReportForNavId_5444">
+          <DataField>ReportForNavId_5444</DataField>
+        </Field>
+        <Field Name="G_L_Account___No__">
+          <DataField>G_L_Account___No__</DataField>
+        </Field>
+        <Field Name="PADSTR_____G_L_Account__Indentation___2___G_L_Account__Name">
+          <DataField>PADSTR_____G_L_Account__Indentation___2___G_L_Account__Name</DataField>
+        </Field>
+        <Field Name="G_L_Account___Net_Change_">
+          <DataField>G_L_Account___Net_Change_</DataField>
+        </Field>
+        <Field Name="G_L_Account___Net_Change_Format">
+          <DataField>G_L_Account___Net_Change_Format</DataField>
+        </Field>
+        <Field Name="G_L_Account___Net_Change__Control22">
+          <DataField>G_L_Account___Net_Change__Control22</DataField>
+        </Field>
+        <Field Name="G_L_Account___Net_Change__Control22Format">
+          <DataField>G_L_Account___Net_Change__Control22Format</DataField>
+        </Field>
+        <Field Name="G_L_Account___Balance_at_Date_">
+          <DataField>G_L_Account___Balance_at_Date_</DataField>
+        </Field>
+        <Field Name="G_L_Account___Balance_at_Date_Format">
+          <DataField>G_L_Account___Balance_at_Date_Format</DataField>
+        </Field>
+        <Field Name="G_L_Account___Balance_at_Date__Control24">
+          <DataField>G_L_Account___Balance_at_Date__Control24</DataField>
+        </Field>
+        <Field Name="G_L_Account___Balance_at_Date__Control24Format">
+          <DataField>G_L_Account___Balance_at_Date__Control24Format</DataField>
+        </Field>
+        <Field Name="G_L_Account___Account_Type_">
+          <DataField>G_L_Account___Account_Type_</DataField>
+        </Field>
+        <Field Name="No__of_Blank_Lines">
+          <DataField>No__of_Blank_Lines</DataField>
+        </Field>
+        <Field Name="ReportForNavId_7">
+          <DataField>ReportForNavId_7</DataField>
+        </Field>
+        <Field Name="BlankLineNo">
+          <DataField>BlankLineNo</DataField>
+        </Field>
+      </Fields>
+    </DataSet>
+  </DataSets>
   <ReportSections>
     <ReportSection>
       <Body>
@@ -807,7 +1042,7 @@
                                   <Style>
                                     <FontSize>7pt</FontSize>
                                     <FontWeight>=IIF(Fields!G_L_Account___Account_Type_.Value&lt;&gt;"0","Bold","Normal")</FontWeight>
-                                    <Format>#,0.00;(#,0.00)</Format>
+                                    <Format>,##0.00; -#,##0.00</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -849,7 +1084,7 @@
                                   <Style>
                                     <FontSize>7pt</FontSize>
                                     <FontWeight>=IIF(Fields!G_L_Account___Account_Type_.Value&lt;&gt;"0","Bold","Normal")</FontWeight>
-                                    <Format>#,0.00;(#,0.00)</Format>
+                                    <Format>,##0.00; -#,##0.00</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -891,7 +1126,7 @@
                                   <Style>
                                     <FontSize>7pt</FontSize>
                                     <FontWeight>=IIF(Fields!G_L_Account___Account_Type_.Value&lt;&gt;"0","Bold","Normal")</FontWeight>
-                                    <Format>#,0.00;(#,0.00)</Format>
+                                    <Format>,##0.00; -#,##0.00</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1159,7 +1394,7 @@
                                   <Style>
                                     <FontSize>7pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>#,0.00;(#,0.00)</Format>
+                                    <Format>,##0.00; -#,##0.00</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1195,7 +1430,7 @@
                                   <Style>
                                     <FontSize>7pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>#,0.00;(#,0.00)</Format>
+                                    <Format>,##0.00; -#,##0.00</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1231,7 +1466,7 @@
                                   <Style>
                                     <FontSize>7pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>#,0.00;(#,0.00)</Format>
+                                    <Format>,##0.00; -#,##0.00</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1333,7 +1568,7 @@
                 </FilterValues>
               </Filter>
             </Filters>
-            <Top>5.81765cm</Top>
+            <Top>5.81764cm</Top>
             <Left>0.16854in</Left>
             <Height>1.7106cm</Height>
             <Width>28.11115cm</Width>
@@ -1561,6 +1796,12 @@
       </Page>
     </ReportSection>
   </ReportSections>
+  <ReportParametersLayout>
+    <GridLayoutDefinition>
+      <NumberOfColumns>4</NumberOfColumns>
+      <NumberOfRows>2</NumberOfRows>
+    </GridLayoutDefinition>
+  </ReportParametersLayout>
   <Code>Public Function BlankZero(ByVal Value As Decimal)
     if Value = 0 then
         Return ""
@@ -1629,239 +1870,4 @@ kHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpBvD/AZI2
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
   <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
-  <DataSets>
-    <DataSet Name="DataSet_Result">
-      <Fields>
-        <Field Name="ReportForNavId_6710">
-          <DataField>ReportForNavId_6710</DataField>
-        </Field>
-        <Field Name="AccountName">
-          <DataField>AccountName</DataField>
-        </Field>
-        <Field Name="AccountNo">
-          <DataField>AccountNo</DataField>
-        </Field>
-        <Field Name="STRSUBSTNO_Text000_PeriodText_">
-          <DataField>STRSUBSTNO_Text000_PeriodText_</DataField>
-        </Field>
-        <Field Name="CurrReport_PAGENO">
-          <DataField>CurrReport_PAGENO</DataField>
-        </Field>
-        <Field Name="COMPANYNAME">
-          <DataField>COMPANYNAME</DataField>
-        </Field>
-        <Field Name="Company_Name">
-          <DataField>Company_Name</DataField>
-        </Field>
-        <Field Name="Company_Address">
-          <DataField>Company_Address</DataField>
-        </Field>
-        <Field Name="Company_Address_2">
-          <DataField>Company_Address_2</DataField>
-        </Field>
-        <Field Name="Company_Phone_No">
-          <DataField>Company_Phone_No</DataField>
-        </Field>
-        <Field Name="Company_Fax_No">
-          <DataField>Company_Fax_No</DataField>
-        </Field>
-        <Field Name="Company_Picture">
-          <DataField>Company_Picture</DataField>
-        </Field>
-        <Field Name="Company_Email">
-          <DataField>Company_Email</DataField>
-        </Field>
-        <Field Name="PeriodText">
-          <DataField>PeriodText</DataField>
-        </Field>
-        <Field Name="G_L_Account__TABLECAPTION__________GLFilter">
-          <DataField>G_L_Account__TABLECAPTION__________GLFilter</DataField>
-        </Field>
-        <Field Name="GLFilter">
-          <DataField>GLFilter</DataField>
-        </Field>
-        <Field Name="G_L_Account_No_">
-          <DataField>G_L_Account_No_</DataField>
-        </Field>
-        <Field Name="Trial_BalanceCaption">
-          <DataField>Trial_BalanceCaption</DataField>
-        </Field>
-        <Field Name="CurrReport_PAGENOCaption">
-          <DataField>CurrReport_PAGENOCaption</DataField>
-        </Field>
-        <Field Name="Net_ChangeCaption">
-          <DataField>Net_ChangeCaption</DataField>
-        </Field>
-        <Field Name="Totaldebit">
-          <DataField>Totaldebit</DataField>
-        </Field>
-        <Field Name="TotaldebitFormat">
-          <DataField>TotaldebitFormat</DataField>
-        </Field>
-        <Field Name="Totalcredit">
-          <DataField>Totalcredit</DataField>
-        </Field>
-        <Field Name="TotalcreditFormat">
-          <DataField>TotalcreditFormat</DataField>
-        </Field>
-        <Field Name="BalanceCaption">
-          <DataField>BalanceCaption</DataField>
-        </Field>
-        <Field Name="G_L_Account___No__Caption">
-          <DataField>G_L_Account___No__Caption</DataField>
-        </Field>
-        <Field Name="PADSTR_____G_L_Account__Indentation___2___G_L_Account__NameCaption">
-          <DataField>PADSTR_____G_L_Account__Indentation___2___G_L_Account__NameCaption</DataField>
-        </Field>
-        <Field Name="G_L_Account___Net_Change_Caption">
-          <DataField>G_L_Account___Net_Change_Caption</DataField>
-        </Field>
-        <Field Name="G_L_Account___Net_Change__Control22Caption">
-          <DataField>G_L_Account___Net_Change__Control22Caption</DataField>
-        </Field>
-        <Field Name="G_L_Account___Balance_at_Date_Caption">
-          <DataField>G_L_Account___Balance_at_Date_Caption</DataField>
-        </Field>
-        <Field Name="G_L_Account___Balance_at_Date__Control24Caption">
-          <DataField>G_L_Account___Balance_at_Date__Control24Caption</DataField>
-        </Field>
-        <Field Name="PageGroupNo">
-          <DataField>PageGroupNo</DataField>
-        </Field>
-        <Field Name="COMPANYPICTURE">
-          <DataField>COMPANYPICTURE</DataField>
-        </Field>
-        <Field Name="DateFilter">
-          <DataField>DateFilter</DataField>
-        </Field>
-        <Field Name="StartDate">
-          <DataField>StartDate</DataField>
-        </Field>
-        <Field Name="EndDate">
-          <DataField>EndDate</DataField>
-        </Field>
-        <Field Name="Q1_NetChange">
-          <DataField>Q1_NetChange</DataField>
-        </Field>
-        <Field Name="Q1_NetChangeFormat">
-          <DataField>Q1_NetChangeFormat</DataField>
-        </Field>
-        <Field Name="Q2_NetChange">
-          <DataField>Q2_NetChange</DataField>
-        </Field>
-        <Field Name="Q2_NetChangeFormat">
-          <DataField>Q2_NetChangeFormat</DataField>
-        </Field>
-        <Field Name="Q3_NetChange">
-          <DataField>Q3_NetChange</DataField>
-        </Field>
-        <Field Name="Q3_NetChangeFormat">
-          <DataField>Q3_NetChangeFormat</DataField>
-        </Field>
-        <Field Name="Q4_NetChange">
-          <DataField>Q4_NetChange</DataField>
-        </Field>
-        <Field Name="Q4_NetChangeFormat">
-          <DataField>Q4_NetChangeFormat</DataField>
-        </Field>
-        <Field Name="Q1_Balance">
-          <DataField>Q1_Balance</DataField>
-        </Field>
-        <Field Name="Q1_BalanceFormat">
-          <DataField>Q1_BalanceFormat</DataField>
-        </Field>
-        <Field Name="Q2_Balance">
-          <DataField>Q2_Balance</DataField>
-        </Field>
-        <Field Name="Q2_BalanceFormat">
-          <DataField>Q2_BalanceFormat</DataField>
-        </Field>
-        <Field Name="Q3_Balance">
-          <DataField>Q3_Balance</DataField>
-        </Field>
-        <Field Name="Q3_BalanceFormat">
-          <DataField>Q3_BalanceFormat</DataField>
-        </Field>
-        <Field Name="Q4_Balance">
-          <DataField>Q4_Balance</DataField>
-        </Field>
-        <Field Name="Q4_BalanceFormat">
-          <DataField>Q4_BalanceFormat</DataField>
-        </Field>
-        <Field Name="Q1_Total_NetChange">
-          <DataField>Q1_Total_NetChange</DataField>
-        </Field>
-        <Field Name="Q1_Total_NetChangeFormat">
-          <DataField>Q1_Total_NetChangeFormat</DataField>
-        </Field>
-        <Field Name="Q2_Total_NetChange">
-          <DataField>Q2_Total_NetChange</DataField>
-        </Field>
-        <Field Name="Q2_Total_NetChangeFormat">
-          <DataField>Q2_Total_NetChangeFormat</DataField>
-        </Field>
-        <Field Name="Q3_Total_NetChange">
-          <DataField>Q3_Total_NetChange</DataField>
-        </Field>
-        <Field Name="Q3_Total_NetChangeFormat">
-          <DataField>Q3_Total_NetChangeFormat</DataField>
-        </Field>
-        <Field Name="Q4_Total_NetChange">
-          <DataField>Q4_Total_NetChange</DataField>
-        </Field>
-        <Field Name="Q4_Total_NetChangeFormat">
-          <DataField>Q4_Total_NetChangeFormat</DataField>
-        </Field>
-        <Field Name="ReportForNavId_5444">
-          <DataField>ReportForNavId_5444</DataField>
-        </Field>
-        <Field Name="G_L_Account___No__">
-          <DataField>G_L_Account___No__</DataField>
-        </Field>
-        <Field Name="PADSTR_____G_L_Account__Indentation___2___G_L_Account__Name">
-          <DataField>PADSTR_____G_L_Account__Indentation___2___G_L_Account__Name</DataField>
-        </Field>
-        <Field Name="G_L_Account___Net_Change_">
-          <DataField>G_L_Account___Net_Change_</DataField>
-        </Field>
-        <Field Name="G_L_Account___Net_Change_Format">
-          <DataField>G_L_Account___Net_Change_Format</DataField>
-        </Field>
-        <Field Name="G_L_Account___Net_Change__Control22">
-          <DataField>G_L_Account___Net_Change__Control22</DataField>
-        </Field>
-        <Field Name="G_L_Account___Net_Change__Control22Format">
-          <DataField>G_L_Account___Net_Change__Control22Format</DataField>
-        </Field>
-        <Field Name="G_L_Account___Balance_at_Date_">
-          <DataField>G_L_Account___Balance_at_Date_</DataField>
-        </Field>
-        <Field Name="G_L_Account___Balance_at_Date_Format">
-          <DataField>G_L_Account___Balance_at_Date_Format</DataField>
-        </Field>
-        <Field Name="G_L_Account___Balance_at_Date__Control24">
-          <DataField>G_L_Account___Balance_at_Date__Control24</DataField>
-        </Field>
-        <Field Name="G_L_Account___Balance_at_Date__Control24Format">
-          <DataField>G_L_Account___Balance_at_Date__Control24Format</DataField>
-        </Field>
-        <Field Name="G_L_Account___Account_Type_">
-          <DataField>G_L_Account___Account_Type_</DataField>
-        </Field>
-        <Field Name="No__of_Blank_Lines">
-          <DataField>No__of_Blank_Lines</DataField>
-        </Field>
-        <Field Name="ReportForNavId_7">
-          <DataField>ReportForNavId_7</DataField>
-        </Field>
-        <Field Name="BlankLineNo">
-          <DataField>BlankLineNo</DataField>
-        </Field>
-      </Fields>
-      <Query>
-        <DataSourceName>DataSource</DataSourceName>
-        <CommandText />
-      </Query>
-    </DataSet>
-  </DataSets>
 </Report>
