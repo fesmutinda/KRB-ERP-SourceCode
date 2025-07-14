@@ -66,6 +66,7 @@ page 59059 "Custom Requests to Approve"
                     Caption = 'Details';
                     ToolTip = 'Specifies details about the approval request, such as what and who the request is about.';
                     Width = 50;
+                    Visible = false;
                 }
                 field(Comment; Rec.Comment)
                 {
@@ -101,16 +102,19 @@ page 59059 "Custom Requests to Approve"
                 {
                     ApplicationArea = Suite;
                     ToolTip = 'Specifies the total amount (excl. VAT) on the document awaiting approval.';
+                    Visible = false;
                 }
                 field("Amount (LCY)"; Rec."Amount (LCY)")
                 {
                     ApplicationArea = Suite;
                     ToolTip = 'Specifies the total amount in LCY (excl. VAT) on the document awaiting approval.';
+                    Visible = false;
                 }
                 field("Currency Code"; Rec."Currency Code")
                 {
                     ApplicationArea = Suite;
                     ToolTip = 'Specifies the code of the currency of the amounts on the sales or purchase lines.';
+                    Visible = false;
                 }
             }
         }

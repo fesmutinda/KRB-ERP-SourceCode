@@ -2178,6 +2178,8 @@ tableextension 50047 "CustomerExt" extends Customer
 
         field(69516; "Identification Document Back"; Media) { }
 
+        field(69517; "Expected Monthly Deposit Contribution"; Decimal) { }
+
 
 
 
