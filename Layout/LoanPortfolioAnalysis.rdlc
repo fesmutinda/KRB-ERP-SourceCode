@@ -1010,50 +1010,50 @@ kHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpBvD/AZI2
   <DataSets>
     <DataSet Name="DataSet_Result">
       <Fields>
-        <Field Name="Code">
-          <DataField>Code</DataField>
+        <Field Name="CustomerName">
+          <DataField>CustomerName</DataField>
         </Field>
-        <Field Name="Product_Description">
-          <DataField>Product_Description</DataField>
+        <Field Name="CustomerNo">
+          <DataField>CustomerNo</DataField>
         </Field>
-        <Field Name="Interest_rate">
-          <DataField>Interest_rate</DataField>
+        <Field Name="USERID">
+          <DataField>USERID</DataField>
         </Field>
-        <Field Name="Interest_rateFormat">
-          <DataField>Interest_rateFormat</DataField>
+        <Field Name="PayrollStaffNo_Members">
+          <DataField>PayrollStaffNo_Members</DataField>
         </Field>
-        <Field Name="Total_Outstanding_Balance">
-          <DataField>Total_Outstanding_Balance</DataField>
+        <Field Name="No_Members">
+          <DataField>No_Members</DataField>
         </Field>
-        <Field Name="Total_Outstanding_BalanceFormat">
-          <DataField>Total_Outstanding_BalanceFormat</DataField>
+        <Field Name="Name_Members">
+          <DataField>Name_Members</DataField>
         </Field>
-        <Field Name="Loans_in_Arrears">
-          <DataField>Loans_in_Arrears</DataField>
+        <Field Name="Phone_No_">
+          <DataField>Phone_No_</DataField>
         </Field>
-        <Field Name="Total_Arrears_Balance">
-          <DataField>Total_Arrears_Balance</DataField>
+        <Field Name="Registration_Date">
+          <DataField>Registration_Date</DataField>
         </Field>
-        <Field Name="Total_Arrears_BalanceFormat">
-          <DataField>Total_Arrears_BalanceFormat</DataField>
+        <Field Name="EmployerCode_Members">
+          <DataField>EmployerCode_Members</DataField>
         </Field>
-        <Field Name="TotalRepayments">
-          <DataField>TotalRepayments</DataField>
+        <Field Name="EmployerName">
+          <DataField>EmployerName</DataField>
         </Field>
-        <Field Name="TotalRepaymentsFormat">
-          <DataField>TotalRepaymentsFormat</DataField>
+        <Field Name="PageNo_Members">
+          <DataField>PageNo_Members</DataField>
         </Field>
-        <Field Name="TotalInterestDue">
-          <DataField>TotalInterestDue</DataField>
+        <Field Name="Shares_Retained">
+          <DataField>Shares_Retained</DataField>
         </Field>
-        <Field Name="TotalInterestDueFormat">
-          <DataField>TotalInterestDueFormat</DataField>
+        <Field Name="Shares_RetainedFormat">
+          <DataField>Shares_RetainedFormat</DataField>
         </Field>
-        <Field Name="TotalInterestEarned">
-          <DataField>TotalInterestEarned</DataField>
+        <Field Name="IDNo_Members">
+          <DataField>IDNo_Members</DataField>
         </Field>
-        <Field Name="TotalInterestEarnedFormat">
-          <DataField>TotalInterestEarnedFormat</DataField>
+        <Field Name="GlobalDimension2Code_Members">
+          <DataField>GlobalDimension2Code_Members</DataField>
         </Field>
         <Field Name="Company_Name">
           <DataField>Company_Name</DataField>
@@ -1075,6 +1075,66 @@ kHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpBvD/AZI2
         </Field>
         <Field Name="Company_Email">
           <DataField>Company_Email</DataField>
+        </Field>
+        <Field Name="ProductCode">
+          <DataField>ProductCode</DataField>
+        </Field>
+        <Field Name="ProductDescription">
+          <DataField>ProductDescription</DataField>
+        </Field>
+        <Field Name="productinterest">
+          <DataField>productinterest</DataField>
+        </Field>
+        <Field Name="productinterestFormat">
+          <DataField>productinterestFormat</DataField>
+        </Field>
+        <Field Name="TotalDisbursed">
+          <DataField>TotalDisbursed</DataField>
+        </Field>
+        <Field Name="TotalDisbursedFormat">
+          <DataField>TotalDisbursedFormat</DataField>
+        </Field>
+        <Field Name="InterestEarned">
+          <DataField>InterestEarned</DataField>
+        </Field>
+        <Field Name="InterestEarnedFormat">
+          <DataField>InterestEarnedFormat</DataField>
+        </Field>
+        <Field Name="ArrearsAmount">
+          <DataField>ArrearsAmount</DataField>
+        </Field>
+        <Field Name="ArrearsAmountFormat">
+          <DataField>ArrearsAmountFormat</DataField>
+        </Field>
+        <Field Name="ActiveLoans">
+          <DataField>ActiveLoans</DataField>
+        </Field>
+        <Field Name="DefaultRate">
+          <DataField>DefaultRate</DataField>
+        </Field>
+        <Field Name="DefaultRateFormat">
+          <DataField>DefaultRateFormat</DataField>
+        </Field>
+        <Field Name="RepaymentRate">
+          <DataField>RepaymentRate</DataField>
+        </Field>
+        <Field Name="RepaymentRateFormat">
+          <DataField>RepaymentRateFormat</DataField>
+        </Field>
+        <Field Name="Arrears">
+          <DataField>Arrears</DataField>
+        </Field>
+        <Field Name="TotalRepaymentsDue">
+          <DataField>TotalRepaymentsDue</DataField>
+        </Field>
+        <Field Name="TotalRepaidOnTime">
+          <DataField>TotalRepaidOnTime</DataField>
+        </Field>
+        <Field Name="Issued_Amount">
+          <DataField>Issued_Amount</DataField>
+        </Field>
+        <Field Name="Issued_AmountFormat">
+          <DataField>Issued_AmountFormat</DataField>
         </Field>
       </Fields>
       <Query>

@@ -140,7 +140,7 @@ report 59053 KRBFinancialPosition
                 CalcFields("Net Change", "GL Account Balance", "Balance at Date");
 
                 if not ShowZeroBalances then begin
-                    if ("Net Change" = 0) and ("Balance at Date" = 0) then
+                    if ("Account Type" <> "Account Type"::"Heading") and ("Account Type" <> "Account Type"::"Begin-Total") and ("Net Change" = 0) and ("Balance at Date" = 0) then
                         CurrReport.Skip();
                 end;
             end;
