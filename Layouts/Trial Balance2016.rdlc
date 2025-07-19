@@ -59,16 +59,14 @@
                           <ZIndex>55</ZIndex>
                           <Style>
                             <Border>
-                              <Color>White</Color>
                               <Style>None</Style>
                             </Border>
                             <TopBorder>
-                              <Style>None</Style>
+                              <Style>Solid</Style>
                             </TopBorder>
                             <BottomBorder>
-                              <Style>None</Style>
+                              <Style>Solid</Style>
                             </BottomBorder>
-                            <BackgroundColor>Gainsboro</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>0.075cm</PaddingRight>
@@ -100,16 +98,14 @@
                           <ZIndex>54</ZIndex>
                           <Style>
                             <Border>
-                              <Color>White</Color>
                               <Style>None</Style>
                             </Border>
                             <TopBorder>
-                              <Style>None</Style>
+                              <Style>Solid</Style>
                             </TopBorder>
                             <BottomBorder>
-                              <Style>None</Style>
+                              <Style>Solid</Style>
                             </BottomBorder>
-                            <BackgroundColor>Gainsboro</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>0.075cm</PaddingLeft>
                             <PaddingRight>0.075cm</PaddingRight>
@@ -143,16 +139,14 @@
                           <ZIndex>52</ZIndex>
                           <Style>
                             <Border>
-                              <Color>White</Color>
                               <Style>None</Style>
                             </Border>
                             <TopBorder>
-                              <Style>None</Style>
+                              <Style>Solid</Style>
                             </TopBorder>
                             <BottomBorder>
-                              <Style>None</Style>
+                              <Style>Solid</Style>
                             </BottomBorder>
-                            <BackgroundColor>Gainsboro</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>0.075cm</PaddingLeft>
                             <PaddingRight>0.075cm</PaddingRight>
@@ -186,16 +180,14 @@
                           <ZIndex>53</ZIndex>
                           <Style>
                             <Border>
-                              <Color>White</Color>
                               <Style>None</Style>
                             </Border>
                             <TopBorder>
-                              <Style>None</Style>
+                              <Style>Solid</Style>
                             </TopBorder>
                             <BottomBorder>
-                              <Style>None</Style>
+                              <Style>Solid</Style>
                             </BottomBorder>
-                            <BackgroundColor>Gainsboro</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>0.075cm</PaddingLeft>
                             <PaddingRight>0.075cm</PaddingRight>
@@ -640,8 +632,8 @@
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>1.97917in</Top>
-            <Left>3.61185in</Left>
+            <Top>2.00695in</Top>
+            <Left>3.96927in</Left>
             <Height>0.59906cm</Height>
             <Width>7.5cm</Width>
             <ZIndex>2</ZIndex>
@@ -669,8 +661,8 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Company_Address</rd:DefaultName>
-            <Top>0.98264in</Top>
-            <Left>2.34128in</Left>
+            <Top>1.01042in</Top>
+            <Left>2.60148in</Left>
             <Height>0.17708in</Height>
             <Width>5.31307in</Width>
             <ZIndex>3</ZIndex>
@@ -717,8 +709,8 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Company_Address_2</rd:DefaultName>
-            <Top>1.15972in</Top>
-            <Left>2.34128in</Left>
+            <Top>1.1875in</Top>
+            <Left>2.60148in</Left>
             <Height>0.25in</Height>
             <Width>5.31307in</Width>
             <ZIndex>4</ZIndex>
@@ -772,8 +764,8 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Company_Fax_No</rd:DefaultName>
-            <Top>1.4375in</Top>
-            <Left>3.00853in</Left>
+            <Top>1.46528in</Top>
+            <Left>3.26873in</Left>
             <Height>0.25in</Height>
             <Width>2.06307in</Width>
             <ZIndex>5</ZIndex>
@@ -820,8 +812,8 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Company_Email</rd:DefaultName>
-            <Top>1.4375in</Top>
-            <Left>5.08548in</Left>
+            <Top>1.46528in</Top>
+            <Left>5.34568in</Left>
             <Height>0.25in</Height>
             <Width>2.06307in</Width>
             <ZIndex>6</ZIndex>
@@ -852,8 +844,8 @@
             <Source>Embedded</Source>
             <Value>krbsaccoLogo2</Value>
             <Sizing>FitProportional</Sizing>
-            <Top>0.01389in</Top>
-            <Left>4.49985in</Left>
+            <Top>0.04167in</Top>
+            <Left>4.76005in</Left>
             <Height>0.92708in</Height>
             <Width>0.99369in</Width>
             <ZIndex>7</ZIndex>
@@ -882,7 +874,7 @@
       <Width>10.611in</Width>
       <Page>
         <PageHeader>
-          <Height>1.22701cm</Height>
+          <Height>0.75076cm</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
@@ -904,8 +896,8 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>0.05302in</Top>
-              <Left>2.30276cm</Left>
+              <Top>0.03888in</Top>
+              <Left>1.65333cm</Left>
               <Height>0.423cm</Height>
               <Width>2.46627cm</Width>
               <Style>
@@ -929,8 +921,8 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>0.69819cm</Top>
-              <Left>2.25637cm</Left>
+              <Top>0.13469cm</Top>
+              <Left>24.76126cm</Left>
               <Height>0.423cm</Height>
               <Width>2.13224cm</Width>
               <ZIndex>1</ZIndex>
@@ -955,8 +947,8 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox1</rd:DefaultName>
-              <Top>0.13469cm</Top>
-              <Left>0.64943cm</Left>
+              <Top>0.09878cm</Top>
+              <Left>0cm</Left>
               <Height>0.45889cm</Height>
               <Width>1.61806cm</Width>
               <ZIndex>2</ZIndex>
@@ -987,8 +979,8 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox1</rd:DefaultName>
-              <Top>0.69819cm</Top>
-              <Left>0.64943cm</Left>
+              <Top>0.13469cm</Top>
+              <Left>23.15432cm</Left>
               <Height>0.45889cm</Height>
               <Width>1.50111cm</Width>
               <ZIndex>3</ZIndex>
@@ -1025,8 +1017,8 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox18</rd:DefaultName>
-              <Top>0.02778in</Top>
-              <Left>3.39425in</Left>
+              <Top>0.17361in</Top>
+              <Left>3.72064in</Left>
               <Height>0.25in</Height>
               <Width>1in</Width>
               <Style>

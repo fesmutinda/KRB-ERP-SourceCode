@@ -22,6 +22,27 @@ Report 50856 "Actual Vs Budget"
             column(COMPANYNAME; COMPANYNAME)
             {
             }
+
+            column(Company_Name; company.Name)
+            {
+            }
+            column(Company_Address; company.Address)
+            {
+            }
+            column(Company_Address_2; company."Address 2")
+            {
+            }
+            column(Company_Phone_No; company."Phone No.")
+            {
+            }
+            column(Company_Fax_No; company."Fax No.")
+            {
+            }
+
+            column(Company_Email; company."E-Mail")
+            {
+            }
+
             column(PeriodText; PeriodText)
             {
             }
@@ -82,6 +103,8 @@ Report 50856 "Actual Vs Budget"
             column(Budgeted_Debit_Amount; "Budgeted Debit Amount") { }
             column(Variance; Variance) { }
             column(CurrAmount; CurrAmount) { }
+
+            column(PercentageDifference; DifferenceInPercent) { }
             column(PrevAmount; PrevAmount) { }
             column(PageGroupNo; PageGroupNo)
             {
@@ -149,6 +172,23 @@ Report 50856 "Actual Vs Budget"
                 begin
                     BlankLineNo := "G/L Account"."No. of Blank Lines" + 1;
                     Variance := "G/L Account"."Budgeted Amount" - "G/L Account"."Net Change";
+
+                    //DifferenceInPercent := (Variance / "G/L Account"."Budgeted Amount") * 100
+
+
+                    case "G/L Account"."Account Type" of
+                        "G/L Account"."Account Type"::Posting:
+                            begin
+                                if IsDebitAccount("G/L Account"."No.") then begin
+                                    Variance := "G/L Account"."Budgeted Amount" - "G/L Account"."Net Change";
+                                    DifferenceInPercent := ("G/L Account"."Net Change" / "G/L Account"."Budgeted Amount") * 100
+                                end else begin
+                                    Variance := "G/L Account"."Budgeted Amount" - Abs("G/L Account"."Net Change");
+                                    DifferenceInPercent := (Abs("G/L Account"."Net Change") / "G/L Account"."Budgeted Amount") * 100
+                                end;
+                            end;
+                    end;
+
 
                     // ///Budget comparison
                     // DateFormula2 := '-CY';
@@ -316,6 +356,8 @@ Report 50856 "Actual Vs Budget"
         CurrAmount: Decimal;
         PrevAmount: Decimal;
 
+        DifferenceInPercent: Decimal;
+
 
 
 
@@ -413,5 +455,25 @@ Report 50856 "Actual Vs Budget"
                       false, false, '#,##0.00', ExcelBuf."cell type"::Number);
                 end;
         end;
+    end;
+
+
+    local procedure IsDebitAccount(AccountNo: Code[20]): Boolean
+    var
+        GLAccount: Record "G/L Account";
+    begin
+        if GLAccount.Get(AccountNo) then begin
+            // Customize this logic based on your chart of accounts structure
+            // Example: Assets and Expenses are typically debit accounts
+            case true of
+                (GLAccount."No." >= '1000') and (GLAccount."No." < '2000'): // Assets
+                    exit(true);
+                (GLAccount."No." >= '5000') and (GLAccount."No." < '6000'): // Expenses  
+                    exit(true);
+                else
+                    exit(false); // Liabilities, Equity, Revenue are credit accounts
+            end;
+        end;
+        exit(false);
     end;
 }
