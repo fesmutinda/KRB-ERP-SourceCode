@@ -85,7 +85,7 @@ Page 56043 "KRB Sacco Role Center"
             part(Control100; "Cash Flow Forecast Chart")
             {
                 ApplicationArea = Basic, Suite;
-                Visible = false;
+                Visible = TRUE;
             }
             part(Control108; "Report Inbox Part")
             {
@@ -260,7 +260,7 @@ Page 56043 "KRB Sacco Role Center"
                 {
                     Caption = 'Cash Management';
                     ToolTip = 'Process incoming and outgoing payments. Set up bank accounts and service connections for electronic banking.  ';
-                    Visible = true;
+                    Visible = FALSE;
 
                     action("Bank Accounts Management")
                     {
@@ -1227,9 +1227,100 @@ Page 56043 "KRB Sacco Role Center"
 
             }
 
+
+            //...................................................START OF PERIODIC PROCESSES...........................
+
+            group("Periodic Processes")
+            {
+                action("Generate Loan Schedule")
+                {
+                    // RunObject = codeunit "Regenerate loan repayment sch";
+                    image = CostAccountingDimensions;
+                    ToolTip = 'Generate Loan Performance Classification and New Schedule';
+                    Enabled = true;
+                }
+
+                group(CheckOffBlocked)
+                {
+                    Caption = 'Checkoff Processing';
+                    action("Checkoff Processing List Blocked")
+                    {
+                        Caption = 'KRB Employer Remittance';
+                        Image = Setup;
+                        RunObject = page "KRB Receipts List-Checkoff";
+                        Visible = true;
+                    }
+                    action("Posted Employer Checkoff Remittance")
+                    {
+                        Caption = 'Posted Employer Checkoff Remittance';
+                        Image = Setup;
+                        RunObject = page "Posted Bosa Rcpt List-Checkof";
+                    }
+                    action("Import Sacco Jnl")
+                    {
+                        Caption = 'Import Sacco Jnl';
+                        Image = Setup;
+                        RunObject = xmlport "Import Sacco Jnl";
+                        visible = false;
+                    }
+                }
+                group(CheckOffAdvice)
+                {
+                    Visible = false;
+                    Caption = 'Check-Off Advice';
+                    action("Check off Adivice-Breakdown")
+                    {
+                        Visible = false;
+                        Image = Setup;
+                        RunObject = report "Check Off Advice";
+                    }
+                    action("Check off Adivice-Lumpsum")
+                    {
+                        Image = Setup;
+                        RunObject = report "Check Off Advice-Lumpsum";
+                    }
+
+                }
+                group(MonthlyInterestProcessing)
+                {
+                    Caption = 'Monthly Interest Processing';
+                    action("Post Monthly Interest")
+                    {
+                        Caption = 'Post Monthly Interest';
+                        Image = Setup;
+                        RunObject = report "Post Monthly Interest.";
+                        ToolTip = 'Used to process Loans Monthly Interest';
+                    }
+                }
+
+                group("Bank Account Reconcilliations")
+                {
+                    Caption = 'Bank Account Reconcilliations';
+
+                    action("Bank Account Statements")
+                    {
+                        Caption = 'Bank Account Statements';
+                        Image = Setup;
+                        RunObject = page "Bank Account Statement List";
+                        Visible = true;
+                    }
+
+                    action("Bank Account Reconcilliations List")
+                    {
+                        Caption = 'Bank Account Reconcilliation List';
+                        Image = Setup;
+                        RunObject = page "Bank Acc. Reconciliation List";
+                        Visible = true;
+                    }
+                }
+
+
+            }
+
             group(BosaManagement)
             {
                 Caption = 'Other Bosa Management Functions';
+                Visible = False;
                 //................................................START OF CHANGE REQUEST MENU.........................
                 group(ChangeRequest)
                 {
@@ -1549,79 +1640,79 @@ Page 56043 "KRB Sacco Role Center"
                         }
 
                     }
-                    group(CheckOffBlocked)
-                    {
-                        Caption = 'Checkoff Processing';
-                        action("Checkoff Processing List Blocked")
-                        {
-                            Caption = 'KRB Employer Remittance';
-                            Image = Setup;
-                            RunObject = page "KRB Receipts List-Checkoff";
-                            Visible = true;
-                        }
-                        action("Posted Employer Checkoff Remittance")
-                        {
-                            Caption = 'Posted Employer Checkoff Remittance';
-                            Image = Setup;
-                            RunObject = page "Posted Bosa Rcpt List-Checkof";
-                        }
-                        action("Import Sacco Jnl")
-                        {
-                            Caption = 'Import Sacco Jnl';
-                            Image = Setup;
-                            RunObject = xmlport "Import Sacco Jnl";
-                            visible = false;
-                        }
-                    }
-                    group(CheckOffAdvice)
-                    {
-                        Visible = false;
-                        Caption = 'Check-Off Advice';
-                        action("Check off Adivice-Breakdown")
-                        {
-                            Visible = false;
-                            Image = Setup;
-                            RunObject = report "Check Off Advice";
-                        }
-                        action("Check off Adivice-Lumpsum")
-                        {
-                            Image = Setup;
-                            RunObject = report "Check Off Advice-Lumpsum";
-                        }
+                    // group(CheckOffBlocked)
+                    // {
+                    //     Caption = 'Checkoff Processing';
+                    //     action("Checkoff Processing List Blocked")
+                    //     {
+                    //         Caption = 'KRB Employer Remittance';
+                    //         Image = Setup;
+                    //         RunObject = page "KRB Receipts List-Checkoff";
+                    //         Visible = true;
+                    //     }
+                    //     action("Posted Employer Checkoff Remittance")
+                    //     {
+                    //         Caption = 'Posted Employer Checkoff Remittance';
+                    //         Image = Setup;
+                    //         RunObject = page "Posted Bosa Rcpt List-Checkof";
+                    //     }
+                    //     action("Import Sacco Jnl")
+                    //     {
+                    //         Caption = 'Import Sacco Jnl';
+                    //         Image = Setup;
+                    //         RunObject = xmlport "Import Sacco Jnl";
+                    //         visible = false;
+                    //     }
+                    // }
+                    // group(CheckOffAdvice)
+                    // {
+                    //     Visible = false;
+                    //     Caption = 'Check-Off Advice';
+                    //     action("Check off Adivice-Breakdown")
+                    //     {
+                    //         Visible = false;
+                    //         Image = Setup;
+                    //         RunObject = report "Check Off Advice";
+                    //     }
+                    //     action("Check off Adivice-Lumpsum")
+                    //     {
+                    //         Image = Setup;
+                    //         RunObject = report "Check Off Advice-Lumpsum";
+                    //     }
 
-                    }
-                    group(MonthlyInterestProcessing)
-                    {
-                        Caption = 'Monthly Interest Processing';
-                        action("Post Monthly Interest")
-                        {
-                            Caption = 'Post Monthly Interest';
-                            Image = Setup;
-                            RunObject = report "Post Monthly Interest.";
-                            ToolTip = 'Used to process Loans Monthly Interest';
-                        }
-                    }
+                    // }
+                    // group(MonthlyInterestProcessing)
+                    // {
+                    //     Caption = 'Monthly Interest Processing';
+                    //     action("Post Monthly Interest")
+                    //     {
+                    //         Caption = 'Post Monthly Interest';
+                    //         Image = Setup;
+                    //         RunObject = report "Post Monthly Interest.";
+                    //         ToolTip = 'Used to process Loans Monthly Interest';
+                    //     }
+                    // }
 
-                    group("Bank Account Reconcilliations")
-                    {
-                        Caption = 'Bank Account Reconcilliations';
+                    // group("Bank Account Reconcilliations")
+                    // {
+                    //     Caption = 'Bank Account Reconcilliations';
 
-                        action("Bank Account Statements")
-                        {
-                            Caption = 'Bank Account Statements';
-                            Image = Setup;
-                            RunObject = page "Bank Account Statement List";
-                            Visible = true;
-                        }
+                    //     action("Bank Account Statements")
+                    //     {
+                    //         Caption = 'Bank Account Statements';
+                    //         Image = Setup;
+                    //         RunObject = page "Bank Account Statement List";
+                    //         Visible = true;
+                    //     }
 
-                        action("Bank Account Reconcilliations List")
-                        {
-                            Caption = 'Bank Account Reconcilliation List';
-                            Image = Setup;
-                            RunObject = page "Bank Acc. Reconciliation List";
-                            Visible = true;
-                        }
-                    }
+                    //     action("Bank Account Reconcilliations List")
+                    //     {
+                    //         Caption = 'Bank Account Reconcilliation List';
+                    //         Image = Setup;
+                    //         RunObject = page "Bank Acc. Reconciliation List";
+                    //         Visible = true;
+                    //     }
+                    // }
                     group(Dividends)
                     {
                         Caption = 'Dividends';
@@ -1695,6 +1786,7 @@ Page 56043 "KRB Sacco Role Center"
             group(SwizzKash)
             {
                 Caption = 'Alternative Channels';
+                Visible = false;
                 group(SwizzKashActivities)
                 {
                     Caption = 'Mobile Banking';
@@ -1764,7 +1856,6 @@ Page 56043 "KRB Sacco Role Center"
                         Image = PostedReceipt;
                         RunObject = page "SwizzKash Paybill Trans";
                         ToolTip = 'View Paybill Deposits.';
-
                     }
                     action("Import Paybills")
                     {
@@ -2696,18 +2787,6 @@ Page 56043 "KRB Sacco Role Center"
             }
 
 
-            group("Periodic Processes")
-            {
-                action("Generate Loan Schedule")
-                {
-                    // RunObject = codeunit "Regenerate loan repayment sch";
-                    image = CostAccountingDimensions;
-                    ToolTip = 'Generate Loan Performance Classification and New Schedule';
-                    Enabled = true;
-                }
-
-
-            }
             group("Ledger Accounting")
             {
                 Caption = 'Ledger Accounting';

@@ -10,7 +10,7 @@ Report 50210 "Loan Defaulters List"
         dataitem(Loans; "Loans Register")
         {
             DataItemTableView = sorting("Loan  No.") order(ascending) where(Posted = const(true), "Outstanding Balance" = filter('>0'));
-            RequestFilterFields = Source, "Loan Product Type", "Application Date", "Issued Date";
+            RequestFilterFields = "Application Date", "Issued Date";
             column(ReportForNavId_4645; 4645)
             {
             }
@@ -216,6 +216,7 @@ Report 50210 "Loan Defaulters List"
 
             }
 
+
             trigger OnAfterGetRecord()
             begin
 
@@ -225,6 +226,10 @@ Report 50210 "Loan Defaulters List"
 
             trigger OnPreDataItem()
             begin
+
+                if LoanProductTypeCode <> '' then
+                    Loans.SetRange("Loan Product Type", LoanProductTypeCode);
+
 
                 case ArrearsFilterOption of
                     ArrearsFilterOption::"All Arrears":
@@ -272,6 +277,18 @@ Report 50210 "Loan Defaulters List"
                         Caption = 'Filter Arrears';
                         ApplicationArea = All;
                     }
+
+
+                    field(LoanProductTypeFilter; LoanProductTypeCode)
+                    {
+                        Caption = 'Loan Product Type';
+                        ApplicationArea = All;
+                        TableRelation = "Loan Products Setup".Code;
+                    }
+
+
+
+
                 }
             }
         }
@@ -322,6 +339,11 @@ Report 50210 "Loan Defaulters List"
         LBalance: Decimal;
 
         Company: Record "Company Information";
+
+
+        LoanProductTypeCode: Code[20];
+
+
 
 }
 

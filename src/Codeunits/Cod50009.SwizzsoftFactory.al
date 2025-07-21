@@ -1727,7 +1727,7 @@ Codeunit 50009 "Swizzsoft Factory"
         if TempObjLoans.FindSet() then begin
             repeat
                 TempObjLoans."Loan Disbursement Date" := DMY2Date(1, 1, 2025);
-                TempObjLoans."Repayment Start Date" := CalcDate('1M', TempObjLoans."Loan Disbursement Date");
+                TempObjLoans."Repayment Start Date" := DMY2Date(31, 1, 2025);
                 TempObjLoans."Expected Date of Completion" := CalcDate('12M', TempObjLoans."Repayment Start Date");
                 TempObjLoans."Mode of Disbursement" := "Mode of Disbursement"::"KRB Opening Balance Loans";
 
