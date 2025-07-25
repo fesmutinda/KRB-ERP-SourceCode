@@ -19,25 +19,25 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>0.61805in</Width>
+                  <Width>0.59997in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.81944in</Width>
+                  <Width>0.80136in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.40279in</Width>
+                  <Width>1.38471in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.8501in</Width>
+                  <Width>1.83202in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.55556in</Width>
+                  <Width>1.15206in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.54167in</Width>
+                  <Width>0.99234in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.77778in</Width>
+                  <Width>0.95762in</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -66,8 +66,9 @@
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
-                              <Style>Solid</Style>
+                              <Style>None</Style>
                             </Border>
+                            <BackgroundColor>Gainsboro</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -98,8 +99,9 @@
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
-                              <Style>Solid</Style>
+                              <Style>None</Style>
                             </Border>
+                            <BackgroundColor>Gainsboro</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -130,8 +132,9 @@
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
-                              <Style>Solid</Style>
+                              <Style>None</Style>
                             </Border>
+                            <BackgroundColor>Gainsboro</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -162,8 +165,9 @@
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
-                              <Style>Solid</Style>
+                              <Style>None</Style>
                             </Border>
+                            <BackgroundColor>Gainsboro</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -194,8 +198,9 @@
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
-                              <Style>Solid</Style>
+                              <Style>None</Style>
                             </Border>
+                            <BackgroundColor>Gainsboro</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -226,8 +231,9 @@
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
-                              <Style>Solid</Style>
+                              <Style>None</Style>
                             </Border>
+                            <BackgroundColor>Gainsboro</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -258,8 +264,9 @@
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
-                              <Style>Solid</Style>
+                              <Style>None</Style>
                             </Border>
+                            <BackgroundColor>Gainsboro</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -295,8 +302,9 @@
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
-                              <Style>Solid</Style>
+                              <Style>None</Style>
                             </Border>
+                            <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 = 0, "Gainsboro", "White")</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -327,8 +335,9 @@
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
-                              <Style>Solid</Style>
+                              <Style>None</Style>
                             </Border>
+                            <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 = 0, "Gainsboro", "White")</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -359,8 +368,9 @@
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
-                              <Style>Solid</Style>
+                              <Style>None</Style>
                             </Border>
+                            <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 = 0, "Gainsboro", "White")</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -391,8 +401,9 @@
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
-                              <Style>Solid</Style>
+                              <Style>None</Style>
                             </Border>
+                            <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 = 0, "Gainsboro", "White")</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -424,8 +435,9 @@
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
-                              <Style>Solid</Style>
+                              <Style>None</Style>
                             </Border>
+                            <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 = 0, "Gainsboro", "White")</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -457,8 +469,9 @@
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
-                              <Style>Solid</Style>
+                              <Style>None</Style>
                             </Border>
+                            <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 = 0, "Gainsboro", "White")</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -490,8 +503,9 @@
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
-                              <Style>Solid</Style>
+                              <Style>None</Style>
                             </Border>
+                            <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 = 0, "Gainsboro", "White")</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -519,7 +533,7 @@
               <TablixMembers>
                 <TablixMember>
                   <TablixHeader>
-                    <Size>1.18121in</Size>
+                    <Size>1.16313in</Size>
                     <CellContents>
                       <Textbox Name="Textbox35">
                         <CanGrow>true</CanGrow>
@@ -541,8 +555,9 @@
                         <Style>
                           <Border>
                             <Color>LightGrey</Color>
-                            <Style>Solid</Style>
+                            <Style>None</Style>
                           </Border>
+                          <BackgroundColor>Gainsboro</BackgroundColor>
                           <PaddingLeft>2pt</PaddingLeft>
                           <PaddingRight>2pt</PaddingRight>
                           <PaddingTop>2pt</PaddingTop>
@@ -567,7 +582,7 @@
                     </SortExpression>
                   </SortExpressions>
                   <TablixHeader>
-                    <Size>1.18121in</Size>
+                    <Size>1.16313in</Size>
                     <CellContents>
                       <Textbox Name="Name_GLAccount">
                         <CanGrow>true</CanGrow>
@@ -589,8 +604,9 @@
                         <Style>
                           <Border>
                             <Color>LightGrey</Color>
-                            <Style>Solid</Style>
+                            <Style>None</Style>
                           </Border>
+                          <BackgroundColor>White</BackgroundColor>
                           <PaddingLeft>2pt</PaddingLeft>
                           <PaddingRight>2pt</PaddingRight>
                           <PaddingTop>2pt</PaddingTop>
@@ -608,10 +624,10 @@
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>DataSet_Result</DataSetName>
-            <Top>2.39855in</Top>
-            <Left>0.11384in</Left>
+            <Top>2.09957in</Top>
+            <Left>0.23958in</Left>
             <Height>0.5in</Height>
-            <Width>7.7466in</Width>
+            <Width>8.88322in</Width>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -632,14 +648,16 @@
                     </Style>
                   </TextRun>
                 </TextRuns>
-                <Style />
+                <Style>
+                  <TextAlign>Center</TextAlign>
+                </Style>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox3</rd:DefaultName>
-            <Top>2.0682in</Top>
-            <Left>3.19022in</Left>
+            <Top>1.85305in</Top>
+            <Left>1.95787in</Left>
             <Height>0.19097in</Height>
-            <Width>1.89744in</Width>
+            <Width>5.57312in</Width>
             <ZIndex>1</ZIndex>
             <Style>
               <Border>
@@ -658,7 +676,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=First(Fields!Company_Address.Value, "DataSet_Result")</Value>
+                    <Value>=Fields!Company_Name.Value</Value>
                     <Style>
                       <FontSize>9pt</FontSize>
                       <FontWeight>Bold</FontWeight>
@@ -671,8 +689,8 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Company_Address</rd:DefaultName>
-            <Top>1.07996in</Top>
-            <Left>1.29505in</Left>
+            <Top>0.98846in</Top>
+            <Left>1.95787in</Left>
             <Height>0.17708in</Height>
             <Width>5.31307in</Width>
             <ZIndex>2</ZIndex>
@@ -706,7 +724,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=First(Fields!Company_Address_2.Value, "DataSet_Result")</Value>
+                    <Value>=Fields!Company_Address.Value</Value>
                     <Style>
                       <FontSize>9pt</FontSize>
                       <FontWeight>Bold</FontWeight>
@@ -719,9 +737,9 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Company_Address_2</rd:DefaultName>
-            <Top>1.25704in</Top>
-            <Left>1.29505in</Left>
-            <Height>0.25in</Height>
+            <Top>1.19333in</Top>
+            <Left>1.95787in</Left>
+            <Height>0.20833in</Height>
             <Width>5.31307in</Width>
             <ZIndex>3</ZIndex>
             <Style>
@@ -754,14 +772,14 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>TEL: </Value>
+                    <Value>TEL:</Value>
                     <Style>
                       <FontSize>9pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
                   <TextRun>
-                    <Value>=First(Fields!Company_Phone_No.Value, "DataSet_Result")</Value>
+                    <Value>=Fields!Company_Phone_No.Value</Value>
                     <Style>
                       <FontSize>9pt</FontSize>
                       <FontWeight>Bold</FontWeight>
@@ -774,10 +792,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Company_Fax_No</rd:DefaultName>
-            <Top>1.53482in</Top>
-            <Left>1.9623in</Left>
+            <Top>1.40166in</Top>
+            <Left>1.95787in</Left>
             <Height>0.25in</Height>
-            <Width>2.06307in</Width>
+            <Width>5.31307in</Width>
             <ZIndex>4</ZIndex>
             <Style>
               <Border>
@@ -809,7 +827,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=First(Fields!Company_Email.Value, "DataSet_Result")</Value>
+                    <Value>=Fields!Company_Email.Value</Value>
                     <Style>
                       <FontSize>9pt</FontSize>
                       <FontWeight>Bold</FontWeight>
@@ -822,10 +840,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Company_Email</rd:DefaultName>
-            <Top>1.53482in</Top>
-            <Left>4.03925in</Left>
-            <Height>0.25in</Height>
-            <Width>2.06307in</Width>
+            <Top>1.62388in</Top>
+            <Left>1.95787in</Left>
+            <Height>0.21528in</Height>
+            <Width>5.31307in</Width>
             <ZIndex>5</ZIndex>
             <Style>
               <Border>
@@ -854,8 +872,8 @@
             <Source>Embedded</Source>
             <Value>krbsaccoLogo2</Value>
             <Sizing>FitProportional</Sizing>
-            <Top>0.11121in</Top>
-            <Left>3.45362in</Left>
+            <Top>0.01972in</Top>
+            <Left>4.11644in</Left>
             <Height>0.92708in</Height>
             <Width>0.99369in</Width>
             <ZIndex>6</ZIndex>
@@ -865,14 +883,26 @@
               </Border>
             </Style>
           </Image>
+          <Line Name="Line1">
+            <Top>1.83916in</Top>
+            <Left>0.23958in</Left>
+            <Height>0in</Height>
+            <Width>8.88322in</Width>
+            <ZIndex>7</ZIndex>
+            <Style>
+              <Border>
+                <Style>Solid</Style>
+              </Border>
+            </Style>
+          </Line>
         </ReportItems>
         <Height>11.21548in</Height>
         <Style />
       </Body>
-      <Width>7.97733in</Width>
+      <Width>9.1228in</Width>
       <Page>
         <PageHeader>
-          <Height>1.38432cm</Height>
+          <Height>1.27849cm</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
@@ -894,8 +924,8 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>0.08718in</Top>
-              <Left>1.65333cm</Left>
+              <Top>0.07305in</Top>
+              <Left>2.0127cm</Left>
               <Height>0.423cm</Height>
               <Width>2.46627cm</Width>
               <Style>
@@ -919,8 +949,8 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>0.78494cm</Top>
-              <Left>1.60694cm</Left>
+              <Top>0.74904cm</Top>
+              <Left>1.96631cm</Left>
               <Height>0.423cm</Height>
               <Width>2.13224cm</Width>
               <ZIndex>1</ZIndex>
@@ -945,8 +975,8 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox1</rd:DefaultName>
-              <Top>0.22144cm</Top>
-              <Left>0cm</Left>
+              <Top>0.18554cm</Top>
+              <Left>0.35937cm</Left>
               <Height>0.45889cm</Height>
               <Width>1.61806cm</Width>
               <ZIndex>2</ZIndex>
@@ -977,8 +1007,8 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox1</rd:DefaultName>
-              <Top>0.78494cm</Top>
-              <Left>0cm</Left>
+              <Top>0.74904cm</Top>
+              <Left>0.35937cm</Left>
               <Height>0.45889cm</Height>
               <Width>1.50111cm</Width>
               <ZIndex>3</ZIndex>
@@ -1020,7 +1050,7 @@
               </Paragraphs>
               <rd:DefaultName>Textbox18</rd:DefaultName>
               <Top>0.25222in</Top>
-              <Left>3.45362in</Left>
+              <Left>3.59168in</Left>
               <Height>0.25in</Height>
               <Width>1in</Width>
               <Style>
@@ -1041,7 +1071,7 @@
           </Style>
         </PageFooter>
         <PageHeight>11.69in</PageHeight>
-        <PageWidth>8.27in</PageWidth>
+        <PageWidth>9.27in</PageWidth>
         <Style />
       </Page>
     </ReportSection>

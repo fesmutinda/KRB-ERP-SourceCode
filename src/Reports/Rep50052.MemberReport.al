@@ -17,9 +17,11 @@ Report 50052 MemberReport
             column(CompanyAddress; CompanyInfo.Address)
             {
             }
+
             column(CompanyPhone; CompanyInfo."Phone No.")
             {
             }
+            column(Company_Address_2; CompanyInfo."Address 2") { }
             column(CompanyPic; CompanyInfo.Picture)
             {
             }
@@ -40,6 +42,7 @@ Report 50052 MemberReport
             column(Deposits; "Current Shares") { }
             column(ShareCapital; "Shares Retained") { }
             column(LoanBalance; LoanBalance) { }
+            column(OutstandingBalance; "Outstanding Balance") { }
             column(Status; Status) { }
             column(Address; Address) { }
             column(Mobile_Phone_No; "Mobile Phone No") { }
