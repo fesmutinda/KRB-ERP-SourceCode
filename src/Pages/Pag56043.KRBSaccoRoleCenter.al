@@ -85,7 +85,20 @@ Page 56043 "KRB Sacco Role Center"
             part(Control100; "Cash Flow Forecast Chart")
             {
                 ApplicationArea = Basic, Suite;
-                Visible = TRUE;
+                Visible = false;
+            }
+
+            part(control124; "Loan Performance Chart")
+            {
+                ApplicationArea = Basic, Suite;
+                Visible = true;
+            }
+
+            part(control125; "Loan Arrears Chart")
+            {
+                ApplicationArea = Basic, Suite;
+                Caption = 'Loan Arrears';
+                Visible = true;
             }
             part(Control108; "Report Inbox Part")
             {
@@ -183,6 +196,23 @@ Page 56043 "KRB Sacco Role Center"
                 ToolTip = 'Collect and make payments, prepare statements, and reconcile bank accounts.';
                 group("Budgeted Management")
                 {
+
+                    action("KRBSC Budget")
+                    {
+                        ApplicationArea = Basic, Suite;
+                        Caption = 'KRB Sacco Budget';
+                        Image = Journal;
+                        RunObject = Page "KrbscBudget List";
+                        ToolTip = 'KRBSC custom budget';
+                    }
+
+                    action("Budget Report")
+                    {
+                        ApplicationArea = Basic, Suite;
+                        Caption = 'KRB Sacco Budget Report';
+                        Image = Journal;
+                        RunObject = Report KrbscBudget;
+                    }
                     action("Budgets")
                     {
                         ApplicationArea = Basic, Suite;
@@ -197,6 +227,7 @@ Page 56043 "KRB Sacco Role Center"
                         Caption = 'Budget vs Actuals';
                         Image = Journal;
                         RunObject = report "Actual Vs Budget";
+                        Visible = false;
                     }
                 }
 

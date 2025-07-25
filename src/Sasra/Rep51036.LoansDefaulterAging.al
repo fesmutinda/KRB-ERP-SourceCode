@@ -94,7 +94,7 @@ Report 51036 "Loans Defaulter Aging"
 
                 DFilter := '..' + Format(AsAt);
                 "Loans Register".SetFilter("Loans Register"."Date filter", DFilter);
-                "Loans Register".SetFilter("Loans Register"."Issued Date", '<=%1', AsAt);
+                "Loans Register".SetFilter("Loans Register"."Loan Disbursement Date", '<=%1', AsAt);
             end;
 
             trigger OnAfterGetRecord();
@@ -307,7 +307,7 @@ Report 51036 "Loans Defaulter Aging"
 
             IF LoanRepaymentSchedule.FindLast() THEN begin
 
-                TotalExpected := Round(LoanRepaymentSchedule."Loan Balance", 0.4, '>');
+                TotalExpected := Round(LoanRepaymentSchedule."Loan Balance");
 
             end;
 
