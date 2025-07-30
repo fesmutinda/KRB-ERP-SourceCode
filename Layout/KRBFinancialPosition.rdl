@@ -266,8 +266,8 @@
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>DataSet_Result</DataSetName>
-            <Top>2.76609in</Top>
-            <Left>0.18551in</Left>
+            <Top>3.25914in</Top>
+            <Left>0.16665in</Left>
             <Height>0.20833in</Height>
             <Width>7.88683in</Width>
             <Style>
@@ -297,8 +297,8 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
-            <Top>2.30429in</Top>
-            <Left>6.29633in</Left>
+            <Top>2.79734in</Top>
+            <Left>6.27747in</Left>
             <Height>0.23264in</Height>
             <Width>0.67961in</Width>
             <ZIndex>1</ZIndex>
@@ -313,8 +313,8 @@
             </Style>
           </Textbox>
           <Line Name="Line1">
-            <Top>2.55082in</Top>
-            <Left>0.18551in</Left>
+            <Top>3.04387in</Top>
+            <Left>0.16665in</Left>
             <Height>0in</Height>
             <Width>7.78127in</Width>
             <ZIndex>2</ZIndex>
@@ -344,8 +344,8 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
-            <Top>2.32165in</Top>
-            <Left>7.43206in</Left>
+            <Top>2.8147in</Top>
+            <Left>7.4132in</Left>
             <Height>0.23264in</Height>
             <Width>0.53472in</Width>
             <ZIndex>3</ZIndex>
@@ -377,8 +377,8 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox3</rd:DefaultName>
-            <Top>2.32165in</Top>
-            <Left>2.26666in</Left>
+            <Top>2.8147in</Top>
+            <Left>2.2478in</Left>
             <Height>0.19097in</Height>
             <Width>2.42362in</Width>
             <ZIndex>4</ZIndex>
@@ -410,8 +410,8 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox4</rd:DefaultName>
-            <Top>2.32165in</Top>
-            <Left>4.69028in</Left>
+            <Top>2.8147in</Top>
+            <Left>4.67142in</Left>
             <Height>0.1875in</Height>
             <Width>1in</Width>
             <ZIndex>5</ZIndex>
@@ -426,8 +426,8 @@
             </Style>
           </Textbox>
           <Line Name="Line2">
-            <Top>4.24762in</Top>
-            <Left>5.26667in</Left>
+            <Top>4.74067in</Top>
+            <Left>5.24781in</Left>
             <Height>0in</Height>
             <Width>2.5in</Width>
             <ZIndex>6</ZIndex>
@@ -454,8 +454,8 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
-            <Top>3.96984in</Top>
-            <Left>5.26667in</Left>
+            <Top>4.46289in</Top>
+            <Left>5.24781in</Left>
             <Height>0.25in</Height>
             <Width>1.44444in</Width>
             <ZIndex>7</ZIndex>
@@ -487,8 +487,8 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
-            <Top>3.96984in</Top>
-            <Left>6.78055in</Left>
+            <Top>4.46289in</Top>
+            <Left>6.76169in</Left>
             <Height>0.25in</Height>
             <Width>0.98612in</Width>
             <ZIndex>8</ZIndex>
@@ -625,8 +625,8 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Company_Fax_No</rd:DefaultName>
-            <Top>1.68647in</Top>
-            <Left>2.06529in</Left>
+            <Top>1.96425in</Top>
+            <Left>2.96068in</Left>
             <Height>0.25in</Height>
             <Width>2.06307in</Width>
             <ZIndex>11</ZIndex>
@@ -660,6 +660,13 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
+                    <Value>EMAIL:</Value>
+                    <Style>
+                      <FontSize>8pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
                     <Value>=First(Fields!Company_Email.Value, "DataSet_Result")</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
@@ -674,7 +681,7 @@
             </Paragraphs>
             <rd:DefaultName>Company_Email</rd:DefaultName>
             <Top>1.68647in</Top>
-            <Left>4.14224in</Left>
+            <Left>2.96068in</Left>
             <Height>0.25in</Height>
             <Width>2.06307in</Width>
             <ZIndex>12</ZIndex>
@@ -705,8 +712,8 @@
             <Source>Embedded</Source>
             <Value>krbsaccoLogo2</Value>
             <Sizing>FitProportional</Sizing>
-            <Top>0.24652in</Top>
-            <Left>3.37993in</Left>
+            <Top>0.23509in</Top>
+            <Left>3.49104in</Left>
             <Height>0.92708in</Height>
             <Width>0.99369in</Width>
             <ZIndex>13</ZIndex>
@@ -724,10 +731,10 @@
           </Border>
         </Style>
       </Body>
-      <Width>8.18503in</Width>
+      <Width>8.25267in</Width>
       <Page>
         <PageHeader>
-          <Height>0.51389in</Height>
+          <Height>0.22222in</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
@@ -773,8 +780,8 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>0.56351cm</Top>
-              <Left>1.60694cm</Left>
+              <Top>0.0359cm</Top>
+              <Left>18.82954cm</Left>
               <Height>0.423cm</Height>
               <Width>2.13224cm</Width>
               <ZIndex>1</ZIndex>
@@ -831,8 +838,8 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox1</rd:DefaultName>
-              <Top>0.56351cm</Top>
-              <Left>0cm</Left>
+              <Top>0.0359cm</Top>
+              <Left>17.2226cm</Left>
               <Height>0.45889cm</Height>
               <Width>1.50111cm</Width>
               <ZIndex>3</ZIndex>

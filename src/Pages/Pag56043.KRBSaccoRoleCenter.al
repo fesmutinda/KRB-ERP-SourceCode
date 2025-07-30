@@ -1306,7 +1306,7 @@ Page 56043 "KRB Sacco Role Center"
                 {
                     Visible = true;
                     Caption = 'Check-Off Advice';
-                    action("Check off Adivice-Breakdown")
+                    action("Check off Advice")
                     {
                         Visible = true;
                         Image = Setup;
@@ -1316,6 +1316,7 @@ Page 56043 "KRB Sacco Role Center"
                     {
                         Image = Setup;
                         RunObject = report "Check Off Advice-Lumpsum";
+                        visible = false;
                     }
 
                 }

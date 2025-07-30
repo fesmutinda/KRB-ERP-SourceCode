@@ -34,18 +34,11 @@ Report 50179 "Check Off Advice"
             column(mothlcommitment; "Members Register"."Monthly Contribution")
             {
             }
-            column(Insurancecontributions; Insurance)
-            {
-            }
-            column(LIKIZO_CONTRIBUTION; Likizo)
-            {
-            }
+
             column(Share_Capital; scapital)
             {
             }
-            column(HOUSING_CONTRIBUTION; HOUSING)
-            {
-            }
+
             column(Deposit_Contribution; DEPOSIT)
             {
             }
@@ -64,52 +57,69 @@ Report 50179 "Check Off Advice"
             column(DOCNAME; DOCNAME)
             {
             }
-            column(CName; CompanyInfo.Name)
-            {
-            }
-            column(Caddress; CompanyInfo.Address)
-            {
-            }
-            column(CmobileNo; CompanyInfo."Phone No.")
-            {
-            }
-            column(clogo; CompanyInfo.Picture)
-            {
-            }
-            column(Cwebsite; CompanyInfo."Home Page")
-            {
-            }
             column(Employer_Name; employername)
             {
             }
-            column(normloan; normloan)
-            {
-            }
-            column(College; College)
-            {
-            }
-            column(AssetL; AssetL)
-            {
-            }
-            column(scfee; scfee)
-            {
-            }
-            column(emmerg; emmerg)
-            {
-            }
-            column(Quick; Quick)
-            {
-            }
-            column(karibu; karibu)
-            {
-            }
-            column(Premium; Premium)
-            {
-            }
-            column(Makeover; Makeover) { }
-            column(Junior_Monthly_Contribution; "Junior Monthly Contribution") { }
-            column(AlphaSavings; AlphaSavings) { }
 
+            column(Development1; Development1)
+            {
+
+            }
+
+            column(Development2; Development2)
+            {
+
+            }
+
+            column(Development214; Development214)
+            {
+
+            }
+
+            column(Investment; Investment)
+            {
+
+            }
+
+            column(Schoolfees; Schoolfees)
+            {
+
+            }
+
+            column(Emergency; Emergency)
+            {
+
+            }
+
+            column(Instant; Instant)
+            {
+
+            }
+
+            column(Company_Name; CompanyInfo.Name)
+            {
+            }
+            column(Company_Address; CompanyInfo.Address)
+            {
+            }
+            column(Company_Address_2; CompanyInfo."Address 2")
+            {
+            }
+            column(Company_Phone_No; CompanyInfo."Phone No.")
+            {
+            }
+            column(Company_Fax_No; CompanyInfo."Fax No.")
+            {
+            }
+            column(Company_Picture; CompanyInfo.Picture)
+            {
+            }
+            column(Company_Email; CompanyInfo."E-Mail")
+            {
+            }
+
+
+            column(Junior_Monthly_Contribution; "Junior Monthly Contribution") { }
             trigger OnAfterGetRecord()
             begin
                 DOCNAME := 'EMPLOYER CHECKOFF ADVICE';
@@ -132,6 +142,16 @@ Report 50179 "Check Off Advice"
                 Premium := 0;
                 HOUSING := 0;
                 DEPOSIT := 0;
+                Development1 := 0;
+                Development2 := 0;
+                Development214 := 0;
+                Emergency := 0;
+                Flexi := 0;
+                Schoolfees := 0;
+                Investment := 0;
+                Instant := 0;
+                Children := 0;
+
 
                 Cust.Reset;
                 Cust.SetRange(Cust."No.", "Members Register"."No.");
@@ -147,13 +167,13 @@ Report 50179 "Check Off Advice"
                     HOUSING := Cust."Investment Monthly Cont";
                     DEPOSIT := Cust."Monthly Contribution" + cust."Monthly ShareCap Cont.";
 
-                    //normloan
+                    //development loan 1
                     TRepayment := 0;
 
                     loans.Reset;
                     loans.SetRange(loans."Client Code", "Members Register"."No.");
-                    loans.SetRange(loans."Recovery Mode", loans."Recovery Mode");
-                    loans.SetRange(loans."Loan Product Type", 'NORMAL');
+                    //loans.SetRange(loans."Recovery Mode", loans."Recovery Mode");
+                    loans.SetRange(loans."Loan Product Type", 'LT002');
                     loans.SetFilter(loans."Outstanding Balance", '>0');
                     loans.SetAutocalcFields(loans."Outstanding Balance", loans."Oustanding Interest");
                     loans.SetRange(loans.Posted, true);
@@ -161,20 +181,20 @@ Report 50179 "Check Off Advice"
                         repeat
                             TRepayment := Loans."Oustanding Interest" + Loans."Outstanding Balance";
                             if TRepayment < Loans.Repayment then begin
-                                normloan := TRepayment
+                                Development1 := TRepayment
                             end else begin
-                                normloan := loans.Repayment;
+                                Development1 := loans.Repayment;
                             end;
-                            normloan := normloan;//
+                            Development1 := Development1;//
                         until loans.Next = 0;
                     end;
                     //END
                     //LCount:=LCount+1;
-                    //college
+                    //Development2
                     TRepayment := 0;
                     loans.Reset;
                     loans.SetRange(loans."Client Code", "Members Register"."No.");
-                    loans.SetRange(loans."Loan Product Type", 'COLLEGE');
+                    loans.SetRange(loans."Loan Product Type", 'LT001');
                     loans.SetFilter(loans."Outstanding Balance", '>0');
                     loans.SetAutocalcFields(loans."Outstanding Balance", loans."Oustanding Interest");
                     loans.SetRange(loans.Posted, true);
@@ -182,59 +202,20 @@ Report 50179 "Check Off Advice"
                         repeat
                             TRepayment := Loans."Oustanding Interest" + Loans."Outstanding Balance";
                             if TRepayment < Loans.Repayment then begin
-                                College := TRepayment
+                                Development2 := TRepayment
                             end else Begin
-                                College += loans.Repayment;
+                                Development2 += loans.Repayment;
                             End;
 
-                            College := College;//
-                        until loans.Next = 0;
-                    end;
-                    //Make over
-                    TRepayment := 0;
-                    loans.Reset;
-                    loans.SetRange(loans."Client Code", "Members Register"."No.");
-                    loans.SetRange(loans."Loan Product Type", 'MAKEOVER');
-                    loans.SetFilter(loans."Outstanding Balance", '>0');
-                    loans.SetAutocalcFields(loans."Outstanding Balance", loans."Oustanding Interest");
-                    loans.SetRange(loans.Posted, true);
-                    if loans.Find('-') then begin
-                        repeat
-                            TRepayment := Loans."Oustanding Interest" + Loans."Outstanding Balance";
-                            if TRepayment < Loans.Repayment then begin
-                                Makeover := TRepayment;
-                            end else begin
-                                Makeover := loans.Repayment;
-                            end;
-
-                            Makeover := Makeover;//
-                        until loans.Next = 0;
-                    end;
-                    //Premium
-                    TRepayment := 0;
-                    loans.Reset;
-                    loans.SetRange(loans."Client Code", "Members Register"."No.");
-                    loans.SetRange(loans."Loan Product Type", 'PREMIUM');
-                    loans.SetFilter(loans."Outstanding Balance", '>0');
-                    loans.SetAutocalcFields(loans."Outstanding Balance", loans."Oustanding Interest");
-                    loans.SetRange(loans.Posted, true);
-                    if loans.Find('-') then begin
-                        repeat
-                            TRepayment := Loans."Oustanding Interest" + Loans."Outstanding Balance";
-                            if TRepayment < Loans.Repayment then begin
-                                Premium := TRepayment;
-                            end else begin
-                                Premium := loans.Repayment;
-                            end;
-                            Premium := Premium;//
+                            Development2 := Development2;//
                         until loans.Next = 0;
                     end;
 
-                    //school fee
+                    //Investment
                     TRepayment := 0;
                     loans.Reset;
                     loans.SetRange(loans."Client Code", "Members Register"."No.");
-                    loans.SetRange(loans."Loan Product Type", 'SCH_FEES');
+                    loans.SetRange(loans."Loan Product Type", 'LT003');
                     loans.SetFilter(loans."Outstanding Balance", '>0');
                     loans.SetAutocalcFields(loans."Outstanding Balance", loans."Oustanding Interest");
                     loans.SetRange(loans.Posted, true);
@@ -242,38 +223,20 @@ Report 50179 "Check Off Advice"
                         repeat
                             TRepayment := Loans."Oustanding Interest" + Loans."Outstanding Balance";
                             if TRepayment < Loans.Repayment then begin
-                                scfee := TRepayment;
+                                Investment := TRepayment;
                             end else begin
-                                scfee := loans.Repayment;
+                                Investment := loans.Repayment;
                             end;
-                            scfee := scfee;//
-                        until loans.Next = 0;
-                    end;
-                    //emmergency fee
-                    TRepayment := 0;
-                    loans.Reset;
-                    loans.SetRange(loans."Client Code", "Members Register"."No.");
-                    loans.SetRange(loans."Loan Product Type", 'EMERGENCY');
-                    loans.SetFilter(loans."Outstanding Balance", '>0');
-                    loans.SetAutocalcFields(loans."Outstanding Balance", loans."Oustanding Interest");
-                    loans.SetRange(loans.Posted, true);
-                    if loans.Find('-') then begin
-                        repeat
-                            TRepayment := Loans."Oustanding Interest" + Loans."Outstanding Balance";
-                            if TRepayment < Loans.Repayment then begin
-                                emmerg := TRepayment;
-                            end else begin
-                                emmerg := loans.Repayment;
-                            end;
-                            emmerg := emmerg;//
+
+                            Investment := Investment;//
                         until loans.Next = 0;
                     end;
 
-                    //Qickcash
+                    //Schoolfees
                     TRepayment := 0;
                     loans.Reset;
                     loans.SetRange(loans."Client Code", "Members Register"."No.");
-                    loans.SetRange(loans."Loan Product Type", 'QUICK CASH');
+                    loans.SetRange(loans."Loan Product Type", 'LT004');
                     loans.SetFilter(loans."Outstanding Balance", '>0');
                     loans.SetAutocalcFields(loans."Outstanding Balance", loans."Oustanding Interest");
                     loans.SetRange(loans.Posted, true);
@@ -281,11 +244,71 @@ Report 50179 "Check Off Advice"
                         repeat
                             TRepayment := Loans."Oustanding Interest" + Loans."Outstanding Balance";
                             if TRepayment < Loans.Repayment then begin
-                                Quick := TRepayment;
+                                Schoolfees := TRepayment;
                             end else begin
-                                Quick := loans.Repayment;
+                                Schoolfees := loans.Repayment;
                             end;
-                            Quick := Quick;//
+                            Schoolfees := Schoolfees;//
+                        until loans.Next = 0;
+                    end;
+
+                    //Emergency
+                    TRepayment := 0;
+                    loans.Reset;
+                    loans.SetRange(loans."Client Code", "Members Register"."No.");
+                    loans.SetRange(loans."Loan Product Type", 'LT005');
+                    loans.SetFilter(loans."Outstanding Balance", '>0');
+                    loans.SetAutocalcFields(loans."Outstanding Balance", loans."Oustanding Interest");
+                    loans.SetRange(loans.Posted, true);
+                    if loans.Find('-') then begin
+                        repeat
+                            TRepayment := Loans."Oustanding Interest" + Loans."Outstanding Balance";
+                            if TRepayment < Loans.Repayment then begin
+                                Emergency := TRepayment;
+                            end else begin
+                                Emergency := loans.Repayment;
+                            end;
+                            Emergency := Emergency;//
+                        until loans.Next = 0;
+                    end;
+
+                    //Instant
+                    TRepayment := 0;
+                    loans.Reset;
+                    loans.SetRange(loans."Client Code", "Members Register"."No.");
+                    loans.SetRange(loans."Loan Product Type", 'LT007');
+                    loans.SetFilter(loans."Outstanding Balance", '>0');
+                    loans.SetAutocalcFields(loans."Outstanding Balance", loans."Oustanding Interest");
+                    loans.SetRange(loans.Posted, true);
+                    if loans.Find('-') then begin
+                        repeat
+                            TRepayment := Loans."Oustanding Interest" + Loans."Outstanding Balance";
+                            if TRepayment < Loans.Repayment then begin
+                                Instant := TRepayment;
+                            end else begin
+                                Instant := loans.Repayment;
+                            end;
+                            Instant := Instant;//
+                        until loans.Next = 0;
+                    end;
+
+                    //Development214
+                    TRepayment := 0;
+                    loans.Reset;
+                    loans.SetRange(loans."Client Code", "Members Register"."No.");
+                    loans.SetRange(loans."Loan Product Type", 'LT009');
+                    loans.SetFilter(loans."Outstanding Balance", '>0');
+                    loans.SetAutocalcFields(loans."Outstanding Balance", loans."Oustanding Interest");
+                    loans.SetRange(loans.Posted, true);
+                    if loans.Find('-') then begin
+                        repeat
+                            TRepayment := Loans."Oustanding Interest" + Loans."Outstanding Balance";
+                            if TRepayment < Loans.Repayment then begin
+                                Development214 := TRepayment;
+                            end else begin
+                                Development214 := loans.Repayment;
+                            end;
+                            Development214 := Development214;//
                         until loans.Next = 0;
                     end;
                     //quic fee
@@ -339,7 +362,7 @@ Report 50179 "Check Off Advice"
                     // end;
 
 
-                    MonthlyAdvice := HOUSING + AlphaSavings + Juniorcontribution + DEPOSIT + Likizo + normloan + College + scfee + emmerg + Quick + karibu + AssetL + Makeover + Premium;
+                    MonthlyAdvice := Juniorcontribution + DEPOSIT + Development1 + Investment + Emergency + Schoolfees + Instant;
 
 
                 end;
@@ -405,6 +428,24 @@ Report 50179 "Check Off Advice"
         AssetL: Decimal;
         Makeover: Decimal;
         Premium: Decimal;
+
+        Development1: Decimal;
+
+        Development2: Decimal;
+
+        Development214: Decimal;
+
+        Instant: Decimal;
+
+        Emergency: Decimal;
+
+        Schoolfees: Decimal;
+
+        Investment: Decimal;
+
+        Children: Decimal;
+
+        Flexi: Decimal;
 
 }
 
