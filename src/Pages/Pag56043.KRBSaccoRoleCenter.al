@@ -209,7 +209,7 @@ Page 56043 "KRB Sacco Role Center"
                     action("Budget Report")
                     {
                         ApplicationArea = Basic, Suite;
-                        Caption = 'KRB Sacco Budget Report';
+                        Caption = 'KRB Sacco Budget/Actuals';
                         Image = Journal;
                         RunObject = Report KrbscBudget;
                     }
@@ -692,6 +692,13 @@ Page 56043 "KRB Sacco Role Center"
 
                     }
 
+                    action("KRB Statement OF Cash Flows")
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Statement of Cashflows';
+                        RunObject = report cashFlows;
+                    }
+
 
                     action("KRB Bank Rec Summary")
                     {
@@ -1118,14 +1125,14 @@ Page 56043 "KRB Sacco Role Center"
                         ToolTip = 'Open the list of Approved Instant Loans Pending Disbursement.';
                     }
 
-                    action("Loans Reschedule List - Instant")
-                    {
-                        ApplicationArea = Baic, Suite;
-                        Caption = 'Loans Reschedule List';
-                        RunObject = Page "Loans Reschedule  List";
-                        ToolTip = 'Open the list of loans for rescheduling';
+                    // action("Loans Reschedule List - Instant")
+                    // {
+                    //     ApplicationArea = Baic, Suite;
+                    //     Caption = 'Loans Reschedule List';
+                    //     RunObject = Page "Loans Reschedule  List";
+                    //     ToolTip = 'Open the list of loans for rescheduling';
 
-                    }
+                    // }
 
 
                 }
@@ -1297,11 +1304,11 @@ Page 56043 "KRB Sacco Role Center"
                 }
                 group(CheckOffAdvice)
                 {
-                    Visible = false;
+                    Visible = true;
                     Caption = 'Check-Off Advice';
                     action("Check off Adivice-Breakdown")
                     {
-                        Visible = false;
+                        Visible = true;
                         Image = Setup;
                         RunObject = report "Check Off Advice";
                     }
@@ -1817,7 +1824,7 @@ Page 56043 "KRB Sacco Role Center"
             group(SwizzKash)
             {
                 Caption = 'Alternative Channels';
-                Visible = false;
+                Visible = true;
                 group(SwizzKashActivities)
                 {
                     Caption = 'Mobile Banking';
@@ -1947,7 +1954,7 @@ Page 56043 "KRB Sacco Role Center"
                         Image = PostedMemo;
                         RunObject = page "Online Loan Applications";
                     }
-
+                    action(debug) { RunObject = codeunit "PORTALIntegration MFS"; }
                 }
                 group("Alternative Channels Setups")
                 {

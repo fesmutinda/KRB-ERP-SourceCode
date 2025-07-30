@@ -18,6 +18,11 @@ report 50039 cashFlows
             column(LCashatbank; LCashatbank) { }
             column(endCashatbank; endCashatbank) { }
             column(EndLCashatbank; EndLCashatbank) { }
+
+            column(IncreaseDecreaseInCashatbank; endCashatbank - EndLCashatbank)
+            {
+
+            }
             column(PreviousYear; PreviousYear)
             {
 
@@ -36,22 +41,99 @@ report 50039 cashFlows
             column(LLoanandAdvances; LLoanandAdvances)
             {
             }
+
+            column(IncreaseDecreaseInLoanandAdvances; LoanandAdvances - LLoanandAdvances)
+            {
+
+            }
             column(FinancialAssets; FinancialAssets)
             {
             }
             column(LFinancialAssets; LFinancialAssets)
             {
             }
+
+            column(RepaymentOfBorrowings; RepaymentOfBorrowings)
+            {
+
+            }
+
+            column(LRepaymentOfBorrowings; LRepaymentOfBorrowings)
+            {
+            }
+
+
+            column(PurchaseOfAssets; PurchaseOfAssets)
+            {
+
+            }
+
+            column(LPurchaseOfAssets; LPurchaseOfAssets)
+            {
+
+            }
+
+
+            column(PurchaseOfInvestments; PurchaseOfInvestments)
+            {
+
+            }
+
+            column(LPurchaseOfInvestments; LPurchaseOfInvestments)
+            {
+
+            }
             column(TradeandOtherPayables; TradeandOtherPayables)
             {
+            }
+
+            column(TradeAndOtherReceivables; TradeAndOtherReceivables)
+            {
+
+            }
+
+            column(LTradeAndOtherReceivables; LTradeAndOtherReceivables)
+            {
+
+            }
+
+            column(IncreaseDecreaseTradeReceivables; TradeAndOtherReceivables - LTradeAndOtherReceivables)
+            {
+                Caption = '(Increase)/Decrease in Trade & Other Receivables';
+            }
+
+            column(TaxPayable; TaxPayable)
+            {
+
+            }
+
+            column(LTaxPayable; LTaxPayable)
+            { }
+
+            column(IncreaseDecreaseTaxPayable; TaxPayable - LTaxPayable)
+            {
+
+            }
+
+            column(PayablesAndAccruals; PayablesAndAccruals)
+            {
+            }
+
+            column(LPayablesAndAccruals; LPayablesAndAccruals)
+            {
+            }
+
+            column(IncreaseDecreasePayablesAndAccruals; PayablesAndAccruals - LPayablesAndAccruals)
+            {
+
             }
             column(LTradeandOtherPayables; LTradeandOtherPayables)
             {
             }
-            column(Hononaria; Hononaria)
+            column(Honoraria; Honoraria)
             {
             }
-            column(LHononaria; LHononaria)
+            column(LHonoraria; LHonoraria)
             {
             }
             column(Nonwithdrawabledeposits; Nonwithdrawabledeposits)
@@ -59,6 +141,11 @@ report 50039 cashFlows
             }
             column(LNonwithdrawabledeposits; LNonwithdrawabledeposits)
             {
+            }
+
+            column(IncreaseDecreaseinNonWithdrawabledeposits; Nonwithdrawabledeposits - LNonwithdrawabledeposits)
+            {
+
             }
             column(InterestonMemberdeposits; InterestonMemberdeposits)
             {
@@ -93,6 +180,10 @@ report 50039 cashFlows
             column(LInterestonLoans; LInterestonLoans) { }
             column(LInterestExpenses; LInterestExpenses) { }
             column(InterestExpenses; InterestExpenses) { }
+
+            column(PersonnelExpenses; PersonnelExpenses) { }
+
+            column(LPersonnelExpenses; LPersonnelExpenses) { }
             column(ReceivableandPrepayments; ReceivableandPrepayments) { }
             column(LReceivableandPrepayments; LReceivableandPrepayments) { }
             column(ThisYear; ThisYear)
@@ -127,7 +218,7 @@ report 50039 cashFlows
                 //Interest on Loans
                 InterestonLoans := 0;
                 GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.Incomes, '%1', GLAccount.Incomes::InterestOnLoans);
+                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::InterestIncomeReceipts);
                 if GLAccount.FindSet then begin
                     repeat
                         GLEntry.Reset;
@@ -143,7 +234,7 @@ report 50039 cashFlows
 
                 LInterestonLoans := 0;
                 GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.Incomes, '%1', GLAccount.Incomes::InterestOnLoans);
+                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::InterestIncomeReceipts);
                 if GLAccount.FindSet then begin
                     repeat
                         GLEntry.Reset;
@@ -157,10 +248,12 @@ report 50039 cashFlows
                     until GLAccount.Next = 0;
                 end;
 
-                //Interest Exepenses
-                InterestExpenses := 0;
+
+
+                //Other Income from loans
+                OtherInterestonLoans := 0;
                 GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.Incomes, '%1', GLAccount.Incomes::InterestExpenses);
+                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::OtherIncomeReceipts);
                 if GLAccount.FindSet then begin
                     repeat
                         GLEntry.Reset;
@@ -168,15 +261,15 @@ report 50039 cashFlows
                         GLEntry.SetFilter(GLEntry."Posting Date", '..%1', ThisYear);
                         if GLEntry.FindSet then begin
                             GLEntry.CalcSums(Amount);
-                            InterestExpenses += -1 * GLEntry.Amount;
+                            OtherInterestonLoans += -1 * GLEntry.Amount;
                         end;
 
                     until GLAccount.Next = 0;
                 end;
 
-                LInterestExpenses := 0;
+                LOtherInterestonLoans := 0;
                 GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.Incomes, '%1', GLAccount.Incomes::InterestExpenses);
+                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::OtherIncomeReceipts);
                 if GLAccount.FindSet then begin
                     repeat
                         GLEntry.Reset;
@@ -184,15 +277,50 @@ report 50039 cashFlows
                         GLEntry.SetFilter(GLEntry."Posting Date", '..%1', EndofLastyear);
                         if GLEntry.FindSet then begin
                             GLEntry.CalcSums(Amount);
-                            LInterestExpenses += -1 * GLEntry.Amount;
+                            LOtherInterestonLoans += -1 * GLEntry.Amount;
                         end;
 
                     until GLAccount.Next = 0;
                 end;
+                //Personnel Expenses (Payments to Employees and Suppliers)
+                PersonnelExpenses := 0;
+                GLAccount.Reset;
+                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::PaymentsToEmployeesAndSuppliers);
+                if GLAccount.FindSet() then begin
+                    repeat
+                        GLEntry.Reset;
+                        GLEntry.SetRange(GLEntry."G/L Account No.", GLAccount."No.");
+                        GLEntry.SetFilter(GLEntry."Posting Date", '..%1', ThisYear);
+                        if GLEntry.FindSet then begin
+                            GLEntry.CalcSums(Amount);
+                            PersonnelExpenses += -1 * GLEntry.Amount;
+                        end;
+                    until GLAccount.Next() = 0
+                end;
+
+
+                LPersonnelExpenses := 0;
+                GLAccount.Reset;
+                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::PaymentsToEmployeesAndSuppliers);
+                if GLAccount.FindSet then begin
+                    repeat
+                        GLEntry.Reset;
+                        GLEntry.SetRange(GLEntry."G/L Account No.", GLAccount."No.");
+                        GLEntry.SetFilter(GLEntry."Posting Date", '..%1', EndofLastyear);
+                        if GLEntry.FindSet then begin
+                            GLEntry.CalcSums(Amount);
+                            LPersonnelExpenses += -1 * GLEntry.Amount;
+                        end;
+
+                    until GLAccount.Next = 0;
+                end;
+
+
+
                 //Otheroperatingincome
                 OtherOperatingincome := 0;
                 GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.Incomes, '%1', GLAccount.Incomes::OtherOperatingincome);
+                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::OtherIncomeReceipts);
                 if GLAccount.FindSet then begin
                     repeat
                         GLEntry.Reset;
@@ -206,9 +334,9 @@ report 50039 cashFlows
                     until GLAccount.Next = 0;
                 end;
 
-                OtherOperatingincome := 0;
+                LOtherOperatingincome := 0;
                 GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.Incomes, '%1', GLAccount.Incomes::OtherOperatingincome);
+                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::OtherIncomeReceipts);
                 if GLAccount.FindSet then begin
                     repeat
                         GLEntry.Reset;
@@ -221,40 +349,41 @@ report 50039 cashFlows
 
                     until GLAccount.Next = 0;
                 end;
+
                 //Receivables And Prepayments
-                ReceivableandPrepayments := 0;
-                LReceivableandPrepayments := 0;
-                GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.Assets, '%1', GLAccount.Assets::ReceivablesAndPrepayements);
-                if GLAccount.FindSet then begin
-                    repeat
+                // ReceivableandPrepayments := 0;
+                // LReceivableandPrepayments := 0;
+                // GLAccount.Reset;
+                // GLAccount.SetFilter(GLAccount.Assets, '%1', GLAccount.Assets::ReceivablesAndPrepayements);
+                // if GLAccount.FindSet then begin
+                //     repeat
 
-                        GLEntry.Reset;
-                        GLEntry.SetRange(GLEntry."G/L Account No.", GLAccount."No.");
-                        GLEntry.SetFilter(GLEntry."Posting Date", '%1..%2', StartofcurrentYear, ThisYear);
-                        if GLEntry.FindSet then begin
-                            GLEntry.CalcSums(Amount);
-                            ReceivableandPrepayments += GLEntry.Amount;
-                        end;
+                //         GLEntry.Reset;
+                //         GLEntry.SetRange(GLEntry."G/L Account No.", GLAccount."No.");
+                //         GLEntry.SetFilter(GLEntry."Posting Date", '%1..%2', StartofcurrentYear, ThisYear);
+                //         if GLEntry.FindSet then begin
+                //             GLEntry.CalcSums(Amount);
+                //             ReceivableandPrepayments += GLEntry.Amount;
+                //         end;
 
-                    until GLAccount.Next = 0;
-                end;
+                //     until GLAccount.Next = 0;
+                // end;
 
-                GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.Assets, '%1', GLAccount.Assets::ReceivablesAndPrepayements);
-                if GLAccount.FindSet then begin
-                    repeat
+                // GLAccount.Reset;
+                // GLAccount.SetFilter(GLAccount.Assets, '%1', GLAccount.Assets::ReceivablesAndPrepayements);
+                // if GLAccount.FindSet then begin
+                //     repeat
 
-                        GLEntry.Reset;
-                        GLEntry.SetRange(GLEntry."G/L Account No.", GLAccount."No.");
-                        GLEntry.SetFilter(GLEntry."Posting Date", '%1..%2', StartofPreviousYear, EndofLastyear);
-                        if GLEntry.FindSet then begin
-                            GLEntry.CalcSums(Amount);
-                            LReceivableandPrepayments += GLEntry.Amount;
-                        end;
+                //         GLEntry.Reset;
+                //         GLEntry.SetRange(GLEntry."G/L Account No.", GLAccount."No.");
+                //         GLEntry.SetFilter(GLEntry."Posting Date", '%1..%2', StartofPreviousYear, EndofLastyear);
+                //         if GLEntry.FindSet then begin
+                //             GLEntry.CalcSums(Amount);
+                //             LReceivableandPrepayments += GLEntry.Amount;
+                //         end;
 
-                    until GLAccount.Next = 0;
-                end;
+                //     until GLAccount.Next = 0;
+                // end;
                 //End of Receivables and Prepayments
 
 
@@ -262,7 +391,7 @@ report 50039 cashFlows
                 LoanandAdvances := 0;
                 LLoanandAdvances := 0;
                 GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.Assets, '%1', GLAccount.Assets::LoansAndAdvances);
+                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::MembersLoans);
                 if GLAccount.FindSet then begin
                     repeat
 
@@ -278,7 +407,7 @@ report 50039 cashFlows
                 end;
 
                 GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.Assets, '%1', GLAccount.Assets::LoansAndAdvances);
+                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::MembersLoans);
                 if GLAccount.FindSet then begin
                     repeat
 
@@ -294,77 +423,144 @@ report 50039 cashFlows
                 end;
                 //EndofLoanandAdavances
 
+                //Purchase of Assets
+                PurchaseOfAssets := 0;
+                LPurchaseOfAssets := 0;
+                GLAccount.Reset;
+                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::PurchaseOfAssets);
+                if GLAccount.FindSet then begin
+                    repeat
+
+                        GLEntry.Reset;
+                        GLEntry.SetRange(GLEntry."G/L Account No.", GLAccount."No.");
+                        GLEntry.SetFilter(GLEntry."Posting Date", '%1..%2', StartofcurrentYear, ThisYear);
+                        if GLEntry.FindSet then begin
+                            GLEntry.CalcSums(Amount);
+                            PurchaseOfAssets += GLEntry.Amount;
+                        end;
+                    until GLAccount.Next = 0;
+                end;
+
+                GLAccount.Reset;
+                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::PurchaseOfAssets);
+                if GLAccount.FindSet then begin
+                    repeat
+
+                        GLEntry.Reset;
+                        GLEntry.SetRange(GLEntry."G/L Account No.", GLAccount."No.");
+                        GLEntry.SetFilter(GLEntry."Posting Date", '%1..%2', StartofPreviousYear, EndofLastyear);
+                        if GLEntry.FindSet then begin
+                            GLEntry.CalcSums(Amount);
+                            LPurchaseOfAssets += GLEntry.Amount;
+                        end;
+
+                    until GLAccount.Next = 0;
+                end;
+
+
+                //PurchaseOfInvestments
+                PurchaseOfInvestments := 0;
+                LPurchaseOfInvestments := 0;
+                GLAccount.Reset;
+                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::PurchaseOfInvestments);
+                if GLAccount.FindSet then begin
+                    repeat
+                        GLEntry.Reset;
+                        GLEntry.SetRange(GLEntry."G/L Account No.", GLAccount."No.");
+                        GLEntry.SetFilter(GLEntry."Posting Date", '%1..%2', StartofcurrentYear, ThisYear);
+                        if GLEntry.FindSet then begin
+                            GLEntry.CalcSums(Amount);
+                            PurchaseOfInvestments += GLEntry.Amount;
+                        end;
+                    until GLAccount.Next = 0;
+                end;
+
+                GLAccount.Reset;
+                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::PurchaseOfInvestments);
+                if GLAccount.FindSet then begin
+                    repeat
+                        GLEntry.Reset;
+                        GLEntry.SetRange(GLEntry."G/L Account No.", GLAccount."No.");
+                        GLEntry.SetFilter(GLEntry."Posting Date", '%1..%2', StartofPreviousYear, EndofLastyear);
+                        if GLEntry.FindSet then begin
+                            GLEntry.CalcSums(Amount);
+                            LPurchaseOfInvestments += GLEntry.Amount;
+                        end;
+                    until GLAccount.Next = 0;
+                end;
+
 
                 //Financial Assets
-                FinancialAssets := 0;
-                LFinancialAssets := 0;
-                GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.Assets, '%1', GLAccount.Assets::FinancialAssets);
-                if GLAccount.FindSet then begin
-                    repeat
+                // FinancialAssets := 0;
+                // LFinancialAssets := 0;
+                // GLAccount.Reset;
+                // GLAccount.SetFilter(GLAccount.Assets, '%1', GLAccount.Assets::FinancialAssets);
+                // if GLAccount.FindSet then begin
+                //     repeat
 
-                        GLEntry.Reset;
-                        GLEntry.SetRange(GLEntry."G/L Account No.", GLAccount."No.");
-                        GLEntry.SetFilter(GLEntry."Posting Date", '%1..%2', StartofcurrentYear, ThisYear);
-                        if GLEntry.FindSet then begin
-                            GLEntry.CalcSums(Amount);
-                            FinancialAssets += GLEntry.Amount;
-                        end;
-                    until GLAccount.Next = 0;
-                end;
+                //         GLEntry.Reset;
+                //         GLEntry.SetRange(GLEntry."G/L Account No.", GLAccount."No.");
+                //         GLEntry.SetFilter(GLEntry."Posting Date", '%1..%2', StartofcurrentYear, ThisYear);
+                //         if GLEntry.FindSet then begin
+                //             GLEntry.CalcSums(Amount);
+                //             FinancialAssets += GLEntry.Amount;
+                //         end;
+                //     until GLAccount.Next = 0;
+                // end;
 
-                GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.Assets, '%1', GLAccount.Assets::FinancialAssets);
-                if GLAccount.FindSet then begin
-                    repeat
+                // GLAccount.Reset;
+                // GLAccount.SetFilter(GLAccount.Assets, '%1', GLAccount.Assets::FinancialAssets);
+                // if GLAccount.FindSet then begin
+                //     repeat
 
-                        GLEntry.Reset;
-                        GLEntry.SetRange(GLEntry."G/L Account No.", GLAccount."No.");
-                        GLEntry.SetFilter(GLEntry."Posting Date", '%1..%2', StartofPreviousYear, EndofLastyear);
-                        if GLEntry.FindSet then begin
-                            GLEntry.CalcSums(Amount);
-                            LFinancialAssets += GLEntry.Amount;
-                        end;
+                //         GLEntry.Reset;
+                //         GLEntry.SetRange(GLEntry."G/L Account No.", GLAccount."No.");
+                //         GLEntry.SetFilter(GLEntry."Posting Date", '%1..%2', StartofPreviousYear, EndofLastyear);
+                //         if GLEntry.FindSet then begin
+                //             GLEntry.CalcSums(Amount);
+                //             LFinancialAssets += GLEntry.Amount;
+                //         end;
 
-                    until GLAccount.Next = 0;
-                end;
+                //     until GLAccount.Next = 0;
+                // end;
+
                 //End Of Financial Assets
                 //TradeandOtherPayables
-                TradeandOtherPayables := 0;
-                GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.MkopoLiabilities, '%1', GLAccount.MkopoLiabilities::TradeandotherPayables);
-                if GLAccount.FindSet then begin
-                    repeat
-                        GLEntry.Reset;
-                        GLEntry.SetRange(GLEntry."G/L Account No.", GLAccount."No.");
-                        GLEntry.SetFilter(GLEntry."Posting Date", '%1..%2', StartofcurrentYear, ThisYear);
-                        if GLEntry.FindSet then begin
-                            GLEntry.CalcSums(Amount);
-                            TradeandOtherPayables += -1 * GLEntry.Amount;
-                        end;
-                    until GLAccount.Next = 0;
-                end;
-                LTradeandOtherPayables := 0;
-                GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.MkopoLiabilities, '%1', GLAccount.MkopoLiabilities::TradeandotherPayables);
-                if GLAccount.FindSet then begin
-                    repeat
-                        GLEntry.Reset;
-                        GLEntry.SetRange(GLEntry."G/L Account No.", GLAccount."No.");
-                        GLEntry.SetFilter(GLEntry."Posting Date", '%1..%2', StartofPreviousYear, EndofLastyear);
-                        if GLEntry.FindSet then begin
-                            GLEntry.CalcSums(Amount);
-                            LTradeandOtherPayables += -1 * GLEntry.Amount;
-                        end;
-                    until GLAccount.Next = 0;
-                end;
-                //EndofTradeAndotherPayables
+                // TradeandOtherPayables := 0;
+                // GLAccount.Reset;
+                // GLAccount.SetFilter(GLAccount.MkopoLiabilities, '%1', GLAccount.MkopoLiabilities::TradeandotherPayables);
+                // if GLAccount.FindSet then begin
+                //     repeat
+                //         GLEntry.Reset;
+                //         GLEntry.SetRange(GLEntry."G/L Account No.", GLAccount."No.");
+                //         GLEntry.SetFilter(GLEntry."Posting Date", '%1..%2', StartofcurrentYear, ThisYear);
+                //         if GLEntry.FindSet then begin
+                //             GLEntry.CalcSums(Amount);
+                //             TradeandOtherPayables += -1 * GLEntry.Amount;
+                //         end;
+                //     until GLAccount.Next = 0;
+                // end;
+                // LTradeandOtherPayables := 0;
+                // GLAccount.Reset;
+                // GLAccount.SetFilter(GLAccount.MkopoLiabilities, '%1', GLAccount.MkopoLiabilities::TradeandotherPayables);
+                // if GLAccount.FindSet then begin
+                //     repeat
+                //         GLEntry.Reset;
+                //         GLEntry.SetRange(GLEntry."G/L Account No.", GLAccount."No.");
+                //         GLEntry.SetFilter(GLEntry."Posting Date", '%1..%2', StartofPreviousYear, EndofLastyear);
+                //         if GLEntry.FindSet then begin
+                //             GLEntry.CalcSums(Amount);
+                //             LTradeandOtherPayables += -1 * GLEntry.Amount;
+                //         end;
+                //     until GLAccount.Next = 0;
+                // end;
+                // //EndofTradeAndotherPayables
 
 
                 //Honoraria
-                Hononaria := 0;
+                Honoraria := 0;
                 GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.MkopoLiabilities, '%1', GLAccount.MkopoLiabilities::Honoria);
+                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::HonorariaPaid);
                 if GLAccount.FindSet then begin
                     repeat
                         GLEntry.Reset;
@@ -372,13 +568,13 @@ report 50039 cashFlows
                         GLEntry.SetFilter(GLEntry."Posting Date", '%1..%2', StartofcurrentYear, ThisYear);
                         if GLEntry.FindSet then begin
                             GLEntry.CalcSums(Amount);
-                            Hononaria += -1 * GLEntry.Amount;
+                            Honoraria += -1 * GLEntry.Amount;
                         end;
                     until GLAccount.Next = 0;
                 end;
-                LHononaria := 0;
+                LHonoraria := 0;
                 GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.MkopoLiabilities, '%1', GLAccount.MkopoLiabilities::Honoria);
+                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::HonorariaPaid);
                 if GLAccount.FindSet then begin
                     repeat
                         GLEntry.Reset;
@@ -386,7 +582,7 @@ report 50039 cashFlows
                         GLEntry.SetFilter(GLEntry."Posting Date", '%1..%2', StartofPreviousYear, EndofLastyear);
                         if GLEntry.FindSet then begin
                             GLEntry.CalcSums(Amount);
-                            LHononaria += -1 * GLEntry.Amount;
+                            LHonoraria += -1 * GLEntry.Amount;
                         end;
                     until GLAccount.Next = 0;
                 end;
@@ -394,7 +590,7 @@ report 50039 cashFlows
 
                 //Member Deposits
                 GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.MkopoLiabilities, '%1', GLAccount.MkopoLiabilities::MemberDeposits);
+                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::MembersDeposit);
                 if GLAccount.FindSet then begin
                     repeat
                         GLEntry.Reset;
@@ -408,7 +604,7 @@ report 50039 cashFlows
 
                 end;
                 GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.MkopoLiabilities, '%1', GLAccount.MkopoLiabilities::MemberDeposits);
+                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::MembersDeposit);
                 if GLAccount.FindSet then begin
                     repeat
                         GLEntry.Reset;
@@ -421,12 +617,107 @@ report 50039 cashFlows
                     until GLAccount.Next = 0;
 
                 end;
-
                 // EmdMember deposits
+
+                //Increase in TradeAndOtherReceivables
+                TradeAndOtherReceivables := 0;
+                GLAccount.Reset;
+                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::TradeAndOtherReceivables);
+                if GLAccount.FindSet then begin
+                    repeat
+                        GLEntry.Reset;
+                        GLEntry.SetRange(GLEntry."G/L Account No.", GLAccount."No.");
+                        GLEntry.SetFilter(GLEntry."Posting Date", '%1..%2', StartofcurrentYear, ThisYear);
+                        if GLEntry.FindSet then begin
+                            GLEntry.CalcSums(Amount);
+                            TradeAndOtherReceivables += -1 * GLEntry.Amount;
+                        end;
+                    until GLAccount.Next = 0;
+                end;
+                LTradeAndOtherReceivables := 0;
+                GLAccount.Reset;
+                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::TradeAndOtherReceivables);
+                if GLAccount.FindSet then begin
+                    repeat
+                        GLEntry.Reset;
+                        GLEntry.SetRange(GLEntry."G/L Account No.", GLAccount."No.");
+                        GLEntry.SetFilter(GLEntry."Posting Date", '%1..%2', StartofPreviousYear, EndofLastyear);
+                        if GLEntry.FindSet then begin
+                            GLEntry.CalcSums(Amount);
+                            LTradeAndOtherReceivables += -1 * GLEntry.Amount;
+                        end;
+                    until GLAccount.Next = 0;
+                end;
+
+                //PayablesAndAccruals
+                PayablesAndAccruals := 0;
+                GLAccount.Reset;
+                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::PayablesAndAccruals);
+                if GLAccount.FindSet then begin
+                    repeat
+                        GLEntry.Reset;
+                        GLEntry.SetRange(GLEntry."G/L Account No.", GLAccount."No.");
+                        GLEntry.SetFilter(GLEntry."Posting Date", '%1..%2', StartofcurrentYear, ThisYear);
+                        if GLEntry.FindSet then begin
+                            GLEntry.CalcSums(Amount);
+                            PayablesAndAccruals += -1 * GLEntry.Amount;
+                        end;
+                    until GLAccount.Next = 0;
+                end;
+
+                LPayablesAndAccruals := 0;
+                GLAccount.Reset;
+                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::PayablesAndAccruals);
+                if GLAccount.FindSet then begin
+                    repeat
+                        GLEntry.Reset;
+                        GLEntry.SetRange(GLEntry."G/L Account No.", GLAccount."No.");
+                        GLEntry.SetFilter(GLEntry."Posting Date", '%1..%2', StartofPreviousYear, EndofLastyear);
+                        if GLEntry.FindSet then begin
+                            GLEntry.CalcSums(Amount);
+                            LPayablesAndAccruals += 1 * GLEntry.Amount;
+                        end;
+                    until GLAccount.Next = 0;
+                end;
+
+
+                //TaxPayable
+
+                TaxPayable := 0;
+                GLAccount.Reset;
+                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::TaxPaidAdjustment);
+                if GLAccount.FindSet then begin
+                    repeat
+                        GLEntry.Reset;
+                        GLEntry.SetRange(GLEntry."G/L Account No.", GLAccount."No.");
+                        GLEntry.SetFilter(GLEntry."Posting Date", '%1..%2', StartofcurrentYear, ThisYear);
+                        if GLEntry.FindSet then begin
+                            GLEntry.CalcSums(Amount);
+                            TaxPayable += -1 * GLEntry.Amount;
+                        end;
+                    until GLAccount.Next = 0;
+                end;
+                LTaxPayable := 0;
+                GLAccount.Reset;
+                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::TaxPaidAdjustment);
+                if GLAccount.FindSet then begin
+                    repeat
+                        GLEntry.Reset;
+                        GLEntry.SetRange(GLEntry."G/L Account No.", GLAccount."No.");
+                        GLEntry.SetFilter(GLEntry."Posting Date", '%1..%2', StartofPreviousYear, EndofLastyear);
+                        if GLEntry.FindSet then begin
+                            GLEntry.CalcSums(Amount);
+                            LTaxPayable += 1 * GLEntry.Amount;
+                        end;
+                    until GLAccount.Next = 0;
+                end;
+
+
+
                 //Dividends
                 InterestonMemberdeposits := 0;
                 GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.MkopoLiabilities, '%1', GLAccount.MkopoLiabilities::dividendsandInterestPayable);
+                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::MembersInterestPaid);
                 if GLAccount.FindSet then begin
                     repeat
                         GLEntry.Reset;
@@ -440,7 +731,7 @@ report 50039 cashFlows
                 end;
                 LInterestonMemberdeposits := 0;
                 GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.MkopoLiabilities, '%1', GLAccount.MkopoLiabilities::dividendsandInterestPayable);
+                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::MembersInterestPaid);
                 if GLAccount.FindSet then begin
                     repeat
                         GLEntry.Reset;
@@ -448,7 +739,7 @@ report 50039 cashFlows
                         GLEntry.SetFilter(GLEntry."Posting Date", '%1..%2', StartofPreviousYear, EndofLastyear);
                         if GLEntry.FindSet then begin
                             GLEntry.CalcSums(Amount);
-                            LInterestonMemberdeposits += 1 * GLEntry.Amount;
+                            LInterestonMemberdeposits += -1 * GLEntry.Amount;
                         end;
                     until GLAccount.Next = 0;
                 end;
@@ -456,43 +747,75 @@ report 50039 cashFlows
                 //End of Dividends
 
 
+                //repaymentonborrowings
+
+                RepaymentOfBorrowings := 0;
+                GLAccount.Reset;
+                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::RepaymentOfBorrowings);
+                if GLAccount.FindSet then begin
+                    repeat
+                        GLEntry.Reset;
+                        GLEntry.SetRange(GLEntry."G/L Account No.", GLAccount."No.");
+                        GLEntry.SetFilter(GLEntry."Posting Date", '%1..%2', StartofcurrentYear, ThisYear);
+                        if GLEntry.FindSet then begin
+                            GLEntry.CalcSums(Amount);
+                            RepaymentOfBorrowings += -1 * GLEntry.Amount;
+                        end;
+                    until GLAccount.Next = 0;
+                end;
+                LRepaymentOfBorrowings := 0;
+                GLAccount.Reset;
+                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::RepaymentOfBorrowings);
+                if GLAccount.FindSet then begin
+                    repeat
+                        GLEntry.Reset;
+                        GLEntry.SetRange(GLEntry."G/L Account No.", GLAccount."No.");
+                        GLEntry.SetFilter(GLEntry."Posting Date", '%1..%2', StartofPreviousYear, EndofLastyear);
+                        if GLEntry.FindSet then begin
+                            GLEntry.CalcSums(Amount);
+                            LRepaymentOfBorrowings += -1 * GLEntry.Amount;
+                        end;
+                    until GLAccount.Next = 0;
+                end;
+
+
                 //OtherInterestIncome
-                InvestmentIncome := 0;
-                GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.Incomes, '%1', GLAccount.Incomes::InvestmentIncome);
-                if GLAccount.FindSet then begin
-                    repeat
-                        GLEntry.Reset;
-                        GLEntry.SetRange(GLEntry."G/L Account No.", GLAccount."No.");
-                        GLEntry.SetFilter(GLEntry."Posting Date", '..%1', ThisYear);
-                        if GLEntry.FindSet then begin
-                            GLEntry.CalcSums(Amount);
-                            InvestmentIncome += -1 * GLEntry.Amount;
-                        end;
+                // InvestmentIncome := 0;
+                // GLAccount.Reset;
+                // GLAccount.SetFilter(GLAccount.Incomes, '%1', GLAccount.Incomes::InvestmentIncome);
+                // if GLAccount.FindSet then begin
+                //     repeat
+                //         GLEntry.Reset;
+                //         GLEntry.SetRange(GLEntry."G/L Account No.", GLAccount."No.");
+                //         GLEntry.SetFilter(GLEntry."Posting Date", '..%1', ThisYear);
+                //         if GLEntry.FindSet then begin
+                //             GLEntry.CalcSums(Amount);
+                //             InvestmentIncome += -1 * GLEntry.Amount;
+                //         end;
 
-                    until GLAccount.Next = 0;
-                end;
+                //     until GLAccount.Next = 0;
+                // end;
 
-                LInvestmentIncome := 0;
-                GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.Incomes, '%1', GLAccount.Incomes::InvestmentIncome);
-                if GLAccount.FindSet then begin
-                    repeat
-                        GLEntry.Reset;
-                        GLEntry.SetRange(GLEntry."G/L Account No.", GLAccount."No.");
-                        GLEntry.SetFilter(GLEntry."Posting Date", '..%1', EndofLastyear);
-                        if GLEntry.FindSet then begin
-                            GLEntry.CalcSums(Amount);
-                            LInvestmentIncome += -1 * GLEntry.Amount;
-                        end;
+                // LInvestmentIncome := 0;
+                // GLAccount.Reset;
+                // GLAccount.SetFilter(GLAccount.Incomes, '%1', GLAccount.Incomes::InvestmentIncome);
+                // if GLAccount.FindSet then begin
+                //     repeat
+                //         GLEntry.Reset;
+                //         GLEntry.SetRange(GLEntry."G/L Account No.", GLAccount."No.");
+                //         GLEntry.SetFilter(GLEntry."Posting Date", '..%1', EndofLastyear);
+                //         if GLEntry.FindSet then begin
+                //             GLEntry.CalcSums(Amount);
+                //             LInvestmentIncome += -1 * GLEntry.Amount;
+                //         end;
 
-                    until GLAccount.Next = 0;
-                end;
+                //     until GLAccount.Next = 0;
+                // end;
 
 
                 ShareCapital := 0;
                 GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.FinancedBy, '%1', GLAccount.FinancedBy::Sharecapital);
+                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::ShareCapitalContribution);
                 if GLAccount.FindSet then begin
                     repeat
                         GLEntry.Reset;
@@ -506,7 +829,7 @@ report 50039 cashFlows
                 end;
                 LShareCapital := 0;
                 GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.FinancedBy, '%1', GLAccount.FinancedBy::Sharecapital);
+                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::ShareCapitalContribution);
                 if GLAccount.FindSet then begin
                     repeat
                         GLEntry.Reset;
@@ -520,11 +843,11 @@ report 50039 cashFlows
                 end;
                 //Endofsharecapital
 
-
+                //start of year cash equivalents
 
                 Cashatbank := 0;
                 GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.Assets, '%1', GLAccount.Assets::CashAndEquivalents);
+                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::CashAndEquivalents);
                 if GLAccount.FindSet then begin
                     repeat
                         GLEntry.Reset;
@@ -539,7 +862,7 @@ report 50039 cashFlows
                 end;
                 LCashatbank := 0;
                 GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.Assets, '%1', GLAccount.Assets::CashAndEquivalents);
+                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::CashAndEquivalents);
                 if GLAccount.FindSet then begin
                     repeat
                         GLEntry.Reset;
@@ -551,48 +874,13 @@ report 50039 cashFlows
 
                         end;
                     until GLAccount.Next = 0;
-
-                end;
-
-
-
-                Cashatbank := 0;
-                GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.Assets, '%1', GLAccount.Assets::CashAndEquivalents);
-                if GLAccount.FindSet then begin
-                    repeat
-                        GLEntry.Reset;
-                        GLEntry.SetRange(GLEntry."G/L Account No.", GLAccount."No.");
-                        GLEntry.SetFilter(GLEntry."Posting Date", '..%1', StartofcurrentYear);
-                        if GLEntry.FindSet then begin
-                            GLEntry.CalcSums(Amount);
-                            Cashatbank += GLEntry.Amount;
-                        end;
-                    until GLAccount.Next = 0;
-
-                end;
-                LCashatbank := 0;
-                GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.Assets, '%1', GLAccount.Assets::CashAndEquivalents);
-                if GLAccount.FindSet then begin
-                    repeat
-                        GLEntry.Reset;
-                        GLEntry.SetRange(GLEntry."G/L Account No.", GLAccount."No.");
-                        GLEntry.SetFilter(GLEntry."Posting Date", '..%1', StartofPreviousYear);
-                        if GLEntry.FindSet then begin
-                            GLEntry.CalcSums(Amount);
-                            LCashatbank += GLEntry.Amount;
-
-                        end;
-                    until GLAccount.Next = 0;
-
                 end;
 
                 //End of year cash and Equivalents
 
-                Cashatbank := 0;
+                EndCashatbank := 0;
                 GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.Assets, '%1', GLAccount.Assets::CashAndEquivalents);
+                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::CashAndEquivalents);
                 if GLAccount.FindSet then begin
                     repeat
                         GLEntry.Reset;
@@ -605,9 +893,9 @@ report 50039 cashFlows
                     until GLAccount.Next = 0;
 
                 end;
-                LCashatbank := 0;
+                EndLCashatbank := 0;
                 GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.Assets, '%1', GLAccount.Assets::CashAndEquivalents);
+                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::CashAndEquivalents);
                 if GLAccount.FindSet then begin
                     repeat
                         GLEntry.Reset;
@@ -680,8 +968,8 @@ report 50039 cashFlows
         LLoanandAdvances: Decimal;
         FinancialAssets: Decimal;
         LFinancialAssets: Decimal;
-        Hononaria: Decimal;
-        LHononaria: Decimal;
+        Honoraria: Decimal;
+        LHonoraria: Decimal;
         InvestmentIncome: Decimal;
         LInvestmentIncome: Decimal;
         TradeandOtherPayables: Decimal;
@@ -695,4 +983,35 @@ report 50039 cashFlows
         ShareCapital: Decimal;
         LShareCapital: Decimal;
 
+        PersonnelExpenses: Decimal;
+
+        LPersonnelExpenses: Decimal;
+
+        OtherInterestonLoans: Decimal;
+
+        LOtherInterestonLoans: Decimal;
+
+        TradeAndOtherReceivables: Decimal;
+
+        LTradeAndOtherReceivables: Decimal;
+
+        PayablesAndAccruals: Decimal;
+
+        LPayablesAndAccruals: Decimal;
+
+        TaxPayable: Decimal;
+
+        LTaxPayable: Decimal;
+
+        PurchaseOfAssets: Decimal;
+
+        LPurchaseOfAssets: Decimal;
+
+        PurchaseOfInvestments: Decimal;
+
+        LPurchaseOfInvestments: Decimal;
+
+        RepaymentOfBorrowings: Decimal;
+
+        LRepaymentOfBorrowings: Decimal;
 }

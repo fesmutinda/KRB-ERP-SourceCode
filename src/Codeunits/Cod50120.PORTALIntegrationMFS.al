@@ -3,7 +3,7 @@ Codeunit 50120 "PORTALIntegration MFS"
 {
     trigger OnRun()
     begin
-
+        MemberAccountStatistics('91');
     end;
 
     var
@@ -1210,6 +1210,7 @@ Codeunit 50120 "PORTALIntegration MFS"
         dependentMember: Record Customer; // Assuming table name is "Customer"
         totalJuniorSavings: Decimal;
         isJunior: Boolean;
+        FirstRecord: Boolean;
         guardianNo: Code[20];
         objGuardian: Record Customer;
     begin
@@ -1226,39 +1227,15 @@ Codeunit 50120 "PORTALIntegration MFS"
             objMember.CalcFields("Withdrawable Savings");
             objMember.CalcFields("Outstanding Interest");
             objMember.CalcFields("Outstanding Balance");
-            objMember.CalcFields("Total Arrears");
+            //objMember.CalcFields("Total Arrears");
 
-            // Calculate Junior Savings based on member type
-            totalJuniorSavings := 0;
-
-            if isJunior then
-                // For junior accounts, just use their own Junior Savings
-                //objMember.CalcFields("Junior Savings")
-                objMember.CalculateJuniorSavings()
-            else begin
-                // For regular accounts (potential guardians):
-                // 1. Get the member's own Junior Savings (if any from when they were junior)
-                //objMember.CalcFields("Junior Savings");
-                objMember.CalculateJuniorSavings();
-                totalJuniorSavings := objMember."Junior Savings";
-
-                // 2. Add Junior Savings from accounts where this member is guardian
-                dependentMember.Reset();
-                dependentMember.SetRange("Guardian No.", MemberNo);
-                if dependentMember.FindSet then begin
-                    repeat
-                        //dependentMember.CalcFields("Junior Savings");
-                        objMember.CalculateJuniorSavings();
-                        totalJuniorSavings := totalJuniorSavings + dependentMember."Junior Savings";
-                    until dependentMember.Next = 0;
-                end;
-            end;
+            objMember.CalculateJuniorSavings();
 
             // Compose JSON response with appropriate Junior Savings value
             info := '{ "MemberNumber":"' + objMember."No." +
                     '","MemberDeposits":"' + FORMAT(objMember."Current Shares") +
                     '","ShareCapital":"' + FORMAT(objMember."Shares Retained") +
-                    '","JuniorSavings":"' + FORMAT(totalJuniorSavings) +
+                    '","JuniorSavings":"' + FORMAT(objMember."Junior Savings") +
                     '","WithdrawableSavings":"' + FORMAT(objMember."Withdrawable Savings") +
                     '","OutstandingLoanBalance":"' + FORMAT(objMember."Outstanding Balance") +
                     '","OutstandingInterest":"' + FORMAT(objMember."Outstanding Interest") +
@@ -1280,12 +1257,15 @@ Codeunit 50120 "PORTALIntegration MFS"
                 dependentMember.SetRange("Guardian No.", MemberNo);
                 if dependentMember.FindSet then begin
                     info := info + ',"Dependents":[';
+                    FirstRecord := true;
                     repeat
-                        info := info + '{"DependentNo":"' + dependentMember."No." +
-                                '","DependentName":"' + dependentMember.Name + '"}';
-
-                        if dependentMember.Next <> 0 then
+                        MESSAGE(dependentMember.NAME);
+                        if not FirstRecord then
                             info := info + ',';
+                        FirstRecord := false;
+
+                        info := info + '{"DependentNo":"' + dependentMember."No." +
+                                        '","DependentName":"' + dependentMember.Name + '"}';
                     until dependentMember.Next = 0;
                     info := info + ']';
                 end;

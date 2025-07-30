@@ -286,6 +286,32 @@ page 57004 "Instant Loan Disbursement Card"
                         end;
                     end;
                 }
+
+                action("Discard Loan")
+                {
+                    Caption = 'Discard';
+                    Enabled = true;
+                    Image = PrepaymentPostPrint;
+                    PromotedIsBig = true;
+                    Promoted = true;
+                    PromotedCategory = Process;
+                    Visible = true;
+
+                    trigger OnAction()
+                    begin
+
+
+                        if Confirm('Are you sure you want to Discard Loan ' + Format(Rec."Loan  No.") + ' of member -' + Format(Rec."Client Name") + ' ?', false) = false then begin
+                            exit;
+                        end else begin
+                            Rec."Loan Status" := Rec."Loan Status"::Discarded;
+                            Rec.Modify(true);
+                            CurrPage.Close();
+                        end;
+
+
+                    end;
+                }
                 action("Cancel Approvals")
                 {
                     Caption = 'Cancel For Approval';

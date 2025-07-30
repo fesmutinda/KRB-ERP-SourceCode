@@ -9,7 +9,7 @@ Report 51036 "Loans Defaulter Aging"
         dataitem("Loans Register"; "Loans Register")
         {
             CalcFields = "Outstanding Balance", "Last Pay Date";
-            DataItemTableView = where("Outstanding Balance" = filter(> 0), Posted = const(true), Reversed = const(false));
+            DataItemTableView = where("Outstanding Balance" = filter('>0'), Posted = const(true), Reversed = const(false));
             RequestFilterFields = "Loan  No.", "Client Code", "Outstanding Balance", "Date filter", "Account No";
 
             column(Company_Letter_Head; Company.Picture)
@@ -95,6 +95,14 @@ Report 51036 "Loans Defaulter Aging"
                 DFilter := '..' + Format(AsAt);
                 "Loans Register".SetFilter("Loans Register"."Date filter", DFilter);
                 "Loans Register".SetFilter("Loans Register"."Loan Disbursement Date", '<=%1', AsAt);
+
+                if LoanProductTypeCode <> '' then
+                    "Loans Register".SetRange("Loan Product Type", LoanProductTypeCode);
+
+
+
+                if LoanProdType.Get("Loans Register".GetFilter("Loans Register"."Loan Product Type")) then
+                    LoanType := LoanProdType."Product Description";
             end;
 
             trigger OnAfterGetRecord();
@@ -130,6 +138,7 @@ Report 51036 "Loans Defaulter Aging"
                 // Add to grand total
                 GrandTotal := GrandTotal + "Loans Register"."Outstanding Balance";
             end;
+
         }
     }
 
@@ -143,6 +152,13 @@ Report 51036 "Loans Defaulter Aging"
                 field("As At"; AsAt)
                 {
                     ApplicationArea = Basic;
+                }
+
+                field(LoanProductTypeFilter; LoanProductTypeCode)
+                {
+                    Caption = 'Loan Product Type';
+                    ApplicationArea = All;
+                    TableRelation = "Loan Products Setup".Code;
                 }
             }
         }
@@ -187,6 +203,12 @@ Report 51036 "Loans Defaulter Aging"
         Grand_TotalCaptionLbl: label 'Grand Total';
 
         FirstArrearsDate: Date;
+
+        LoanProductTypeCode: Code[20];
+
+        LoanType: Text[50];
+        LoanProdType: Record "Loan Products Setup";
+
 
     local procedure CalculateLoanClassification()
     var

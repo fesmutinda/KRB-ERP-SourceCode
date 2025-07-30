@@ -1001,8 +1001,8 @@ Table 51371 "Loans Register"
         }
         field(27; "Loan Status"; Option)
         {
-            OptionCaption = 'Application,Appraisal,Rejected,Approved,Issued,Being Repaid,Repaid,Committee,Approval1,Recommended,Loans Manager,Finance Manger|CEO';
-            OptionMembers = Application,Appraisal,Rejected,Approved,Issued,"Being Repaid",Repaid,Committee,Approval1,Recommended,"Loans Manager","Finance Manger|CEO";
+            OptionCaption = 'Application,Appraisal,Rejected,Approved,Issued,Discarded';
+            OptionMembers = Application,Appraisal,Rejected,Approved,Issued,Discarded;
 
             trigger OnValidate()
             begin

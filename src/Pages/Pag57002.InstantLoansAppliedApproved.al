@@ -13,6 +13,7 @@ page 57002 "Instant Loans Applied-Approved"
     SourceTableView = where(Posted = const(false),
                             Source = filter(BOSA),
                             "Approval Status" = const(Approved),
+                            "Loan Status" = filter('<>Discarded'),
                             "Loan Product Type" = const('LT007')
                             );
 

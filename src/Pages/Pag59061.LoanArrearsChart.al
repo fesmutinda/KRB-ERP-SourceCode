@@ -135,46 +135,26 @@ page 59062 "Loan Arrears Chart"
         TotalArrears := 0;
         ArrearsCount := 0;
 
-
-
         LoansRegisterRec.Reset();
-        LoansRegisterRec.CalcFields("Outstanding Balance", "Last Pay Date");
+        LoansRegisterRec.CalcFields("Outstanding Balance");
         LoansRegisterRec.SetRange("Loan Product Type", ProductID);
         LoansRegisterRec.SetFilter("Outstanding Balance", '>0');
-        LoansRegisterRec.SetRange(Posted, true);  // Assuming Posted is Boolean
-        LoansRegisterRec.SetRange(Reversed, false);  // Assuming Reversed is Boolean
+        LoansRegisterRec.SetRange(Posted, true);
+        LoansRegisterRec.SetRange(Reversed, false);
         LoansRegisterRec.SetFilter("Loan Disbursement Date", '<=%1', AsAtDate);
 
         if LoansRegisterRec.FindSet() then begin
             repeat
-                // Set AsAt for the procedures
-                AsAt := AsAtDate;
+                ExpectedBalance := GetExpectedPaymentAmount(LoansRegisterRec, AsAtDate);
+                ActualBalance := GetActualPaymentAmount(LoansRegisterRec, AsAtDate);
 
-                // Calculate expected and actual balances
-                ExpectedBalance := GetExpectedPaymentAmount(LoansRegisterRec);
-                ActualBalance := GetActualPaymentAmount(LoansRegisterRec);
-
-                // Calculate arrears (positive value means loan is in arrears)
-                LoanArrears := ActualBalance - ExpectedBalance;
-
-                // Only count positive arrears
-                if LoanArrears > 0 then begin
+                if ActualBalance > ExpectedBalance then begin
+                    LoanArrears := ActualBalance - ExpectedBalance;
                     TotalArrears += LoanArrears;
                     ArrearsCount += 1;
-                end;
-
+                end
             until LoansRegisterRec.Next() = 0;
         end;
-    end;
-
-    local procedure CalculateProductArrears(ProductID: Code[20]; AsAtDate: Date): Decimal
-    var
-        TotalArrears: Decimal;
-        ArrearsCount: Integer;
-    begin
-        // Call the new procedure and return only the amount for backward compatibility
-        CalculateProductArrearsWithCount(ProductID, AsAtDate, TotalArrears, ArrearsCount);
-        exit(TotalArrears);
     end;
 
     local procedure CalculateNumberOfPeriods(StartDate: Date; EndDate: Date): Integer
@@ -283,7 +263,7 @@ page 59062 "Loan Arrears Chart"
         exit(PeriodText);
     end;
 
-    local procedure GetExpectedPaymentAmount(var LoansRegisterRec: Record "Loans Register"): Decimal
+    local procedure GetExpectedPaymentAmount(var LoansRegisterRec: Record "Loans Register"; AsAtDate: Date): Decimal
     var
         LoanRepaymentSchedule: Record "Loan Repayment Schedule";
         Swizzfactory: Codeunit 50009;
@@ -297,7 +277,7 @@ page 59062 "Loan Arrears Chart"
         if LoanRepaymentSchedule.FindSet() then begin
             LoanRepaymentSchedule.Reset();
             LoanRepaymentSchedule.SetRange("Loan No.", LoansRegisterRec."Loan  No.");
-            LoanRepaymentSchedule.SetFilter("Repayment Date", '<=%1', AsAt);
+            LoanRepaymentSchedule.SetFilter("Repayment Date", '<=%1', AsAtDate);
 
             if LoanRepaymentSchedule.FindLast() then begin
                 TotalExpected := LoanRepaymentSchedule."Loan Balance";
@@ -307,7 +287,7 @@ page 59062 "Loan Arrears Chart"
 
             LoanRepaymentSchedule.Reset();
             LoanRepaymentSchedule.SetRange("Loan No.", LoansRegisterRec."Loan  No.");
-            LoanRepaymentSchedule.SetFilter("Repayment Date", '<=%1', AsAt);
+            LoanRepaymentSchedule.SetFilter("Repayment Date", '<=%1', AsAtDate);
 
             if LoanRepaymentSchedule.FindLast() then begin
                 TotalExpected := Round(LoanRepaymentSchedule."Loan Balance");
@@ -315,11 +295,11 @@ page 59062 "Loan Arrears Chart"
         end;
 
         // Update the expected loan balance
-        LoansRegisterRec."Expected Loan Balance" := TotalExpected;
+        //LoansRegisterRec."Expected Loan Balance" := TotalExpected;
         exit(TotalExpected);
     end;
 
-    local procedure GetActualPaymentAmount(var LoansRegisterRec: Record "Loans Register"): Decimal
+    local procedure GetActualPaymentAmount(var LoansRegisterRec: Record "Loans Register"; AsAtDate: Date): Decimal
     var
         LoanLedgerEntry: Record "Cust. Ledger Entry";
         TotalActual: Decimal;
@@ -336,7 +316,7 @@ page 59062 "Loan Arrears Chart"
             LoanLedgerEntry."Transaction Type"::"Interest Due",
             LoanLedgerEntry."Transaction Type"::"Loan Transfer Charges");
         LoanLedgerEntry.SetRange(Reversed, false);
-        LoanLedgerEntry.SetFilter("Posting Date", '<=%1', AsAt);
+        LoanLedgerEntry.SetFilter("Posting Date", '<=%1', AsAtDate);
 
         if LoanLedgerEntry.FindSet() then begin
             repeat

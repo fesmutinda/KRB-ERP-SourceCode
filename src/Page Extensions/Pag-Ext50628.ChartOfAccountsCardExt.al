@@ -28,9 +28,21 @@ pageextension 50628 "ChartOfAccountsCardExt" extends "G/L Account Card"
                 }
 
             }
+
+            group("Cash Flow Categories")
+            {
+                Caption = 'Cash Flow Categories';
+                visible = true;
+
+                field("Cash Flow Category"; Rec.CashFlowCategory)
+                {
+                    ApplicationArea = Basic;
+                }
+            }
             group("SASRA REPORTS SETUP")
             {
                 Caption = 'SASRA REPORTS SETUP';
+                visible = false;
                 field(StatementOfFP; Rec.StatementOfFP)
                 {
                     ApplicationArea = Basic;
@@ -80,6 +92,7 @@ pageextension 50628 "ChartOfAccountsCardExt" extends "G/L Account Card"
             }
             group("Mkopo Setup")
             {
+                Visible = false;
                 field(Assets; Rec.Assets)
                 {
                     ApplicationArea = all;

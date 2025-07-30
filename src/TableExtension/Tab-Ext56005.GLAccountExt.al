@@ -138,9 +138,15 @@ tableextension 56005 GLAccountExt extends "G/L Account"
         }
 
         //Income
+        // field(54268; Incomes; Option)
+        // {
+        //     OptionMembers = " ",InterestOnLoans,InterestExpenses,OtherOperatingIncome,InvestmentIncome,GorvernanceExpenses,AdministrationExpenses,PersonelExpenses,OperatingExpenses,FinancialExpense,MarketingExpenses,DepreciationAmmortisation,IncomeTaxExpense;
+        //     DataClassification = ToBeClassified;
+        // }
         field(54268; Incomes; Option)
         {
             OptionMembers = " ",InterestOnLoans,InterestExpenses,OtherOperatingIncome,InvestmentIncome,GorvernanceExpenses,AdministrationExpenses,PersonelExpenses,OperatingExpenses,FinancialExpense,MarketingExpenses,DepreciationAmmortisation,IncomeTaxExpense;
+            OptionCaption = ' ,Interest on Loans,Interest Expenses,Other Operating Income,Investment Income,Governance Expenses,Administration Expenses,Personnel Expenses,Operating Expenses,Financial Expenses,Marketing Expenses,Depreciation & Amortisation,Income Tax Expense';
             DataClassification = ToBeClassified;
         }
 
@@ -148,6 +154,13 @@ tableextension 56005 GLAccountExt extends "G/L Account"
         field(54269; Others; option)
         {
             OptionMembers = " ",PriorYearAdjustments,ShortTermLiabilities;
+        }
+
+        field(54270; CashFlowCategory; option)
+        {
+            Caption = 'Cash Flow Category';
+            OptionMembers = " ",InterestIncomeReceipts,OtherIncomeReceipts,PaymentsToEmployeesAndSuppliers,HonorariaPaid,TaxPaidAdjustment,TradeAndOtherReceivables,PayablesAndAccruals,MembersLoans,PurchaseOfAssets,PurchaseOfInvestments,MembersInterestPaid,RepaymentOfBorrowings,ShareCapitalContribution,MembersDeposit,CashAndEquivalents;
+            OptionCaption = ' ,Interest Income Receipts,Other Income Receipts,Payments to Employees and Suppliers,Honoraria Paid,Tax Paid Adjustment,Trade and Other Receivables,Payables and Accruals,Members Loans,Purchase of Assets,Purchase of Investments,Members Interest Paid,Repayment of Borrowings,Share Capital Contribution,Members Deposit,CashAndEquivalents';
         }
 
     }
