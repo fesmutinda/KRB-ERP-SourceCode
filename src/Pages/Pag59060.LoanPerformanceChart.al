@@ -10,7 +10,7 @@ page 59060 "Loan Performance Chart"
 {
     ApplicationArea = All;
     Caption = 'Interest Earned Trend';
-    PageType = CardPart;
+    PageType = Card;
 
     layout
     {

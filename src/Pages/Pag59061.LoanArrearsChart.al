@@ -7,12 +7,28 @@ page 59062 "Loan Arrears Chart"
 {
     ApplicationArea = All;
     Caption = 'Loan Arrears Chart';
-    PageType = CardPart;
+    PageType = Card;
 
     layout
     {
         area(Content)
         {
+
+            group(TitleGroup)
+            {
+                Caption = '';
+                ShowCaption = false;
+
+                field(PageTitle; 'Loan Arrears (Count)')
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                    ShowCaption = false;
+                    Style = Strong;
+                    StyleExpr = true;
+                    Visible = false;
+                }
+            }
             usercontrol(Chart; BusinessChart)
             {
                 ApplicationArea = All;
@@ -92,7 +108,7 @@ page 59062 "Loan Arrears Chart"
             end;
         end;
 
-        // Add measures for each loan product (both amount and count)
+        // Add measures for each loan product (showing only count, but still calculating amount)
         MeasureIndex := 0;
         LoanProductsRec.Reset();
         if LoanProductsRec.FindSet() then begin
@@ -101,23 +117,24 @@ page 59062 "Loan Arrears Chart"
                 MeasureName := LoanProductsRec."Product Description" + ' (Amount)';
                 CountMeasureName := LoanProductsRec."Product Description" + ' (Count)';
 
-                // Add both measures - amount as line chart and count as secondary measure
-                BusinessChartBuffer.AddMeasure(MeasureName, 1, BusinessChartBuffer."Data Type"::Decimal, BusinessChartBuffer."Chart Type"::Line);
-                BusinessChartBuffer.AddMeasure(CountMeasureName, 2, BusinessChartBuffer."Data Type"::Decimal, BusinessChartBuffer."Chart Type"::Column);
+                // Add only count measure for display - amount calculation continues but not displayed
+                // BusinessChartBuffer.AddMeasure(MeasureName, 1, BusinessChartBuffer."Data Type"::Decimal, BusinessChartBuffer."Chart Type"::Line);
+                BusinessChartBuffer.AddMeasure(CountMeasureName, 1, BusinessChartBuffer."Data Type"::Decimal, BusinessChartBuffer."Chart Type"::Line);
 
                 // Calculate arrears for each period for this product
                 for i := 0 to NumberOfPeriods - 1 do begin
                     TempDate := GetPeriodDateByIndex(PeriodStartDate, i);
                     PeriodEnd := GetPeriodEndDate(TempDate);
 
+                    // Still calculate both amount and count (for potential future use or logging)
                     CalculateProductArrearsWithCount(LoanProductsRec.Code, PeriodEnd, ArrearsAmount, ArrearsCount);
 
-                    // Set both amount and count values for this period
-                    BusinessChartBuffer.SetValue(MeasureName, i, ArrearsAmount);
+                    // Set only count value for display on chart
+                    // BusinessChartBuffer.SetValue(MeasureName, i, ArrearsAmount);  // Amount calculation done but not displayed
                     BusinessChartBuffer.SetValue(CountMeasureName, i, ArrearsCount);
                 end;
 
-                MeasureIndex += 2; // Increment by 2 since we added 2 measures per product
+                MeasureIndex += 1; // Increment by 1 since we're only adding 1 measure per product for display
             until LoanProductsRec.Next() = 0;
         end;
 

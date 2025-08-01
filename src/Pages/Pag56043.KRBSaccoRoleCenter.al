@@ -88,18 +88,18 @@ Page 56043 "KRB Sacco Role Center"
                 Visible = false;
             }
 
-            part(control124; "Loan Performance Chart")
-            {
-                ApplicationArea = Basic, Suite;
-                Visible = true;
-            }
+            // part(control124; "Loan Performance Chart")
+            // {
+            //     ApplicationArea = Basic, Suite;
+            //     Visible = true;
+            // }
 
-            part(control125; "Loan Arrears Chart")
-            {
-                ApplicationArea = Basic, Suite;
-                Caption = 'Loan Arrears';
-                Visible = true;
-            }
+            // part(control125; "Loan Arrears Chart")
+            // {
+            //     ApplicationArea = Basic, Suite;
+            //     Caption = 'Loan Arrears';
+            //     Visible = true;
+            // }
             part(Control108; "Report Inbox Part")
             {
                 AccessByPermission = TableData "Report Inbox" = IMD;
@@ -1054,6 +1054,7 @@ Page 56043 "KRB Sacco Role Center"
             {
                 Caption = 'Credit Management';
                 ToolTip = 'Manage BOSA Loans Module';
+
                 group("BOSA Loans Management")
                 {
                     Caption = 'New BOSA Loans Applications';
@@ -1073,9 +1074,7 @@ Page 56043 "KRB Sacco Role Center"
                         Caption = 'BOSA Loans Pending Approval';
                         Image = CreditCard;
                         RunObject = Page "LoanList-Pending Approval BOSA";
-
                         ToolTip = 'Open the list of BOSA Loans Pending Approval';
-
                     }
                     action("Approved Loans")
                     {
@@ -1084,16 +1083,8 @@ Page 56043 "KRB Sacco Role Center"
                         RunObject = Page "Loan Application BOSA-Approved";
                         ToolTip = 'Open the list of Approved Loans Pending Disbursement.';
                     }
-
-                    action("Loans Reschedule List")
-                    {
-                        ApplicationArea = Baic, Suite;
-                        Caption = 'Loans Reschedule List';
-                        RunObject = Page "Loans Reschedule  List";
-                        ToolTip = 'Open the list of loans for rescheduling';
-
-                    }
                 }
+
                 group("Instant Loan")
                 {
                     Caption = 'Instant Loan Management';
@@ -1113,9 +1104,7 @@ Page 56043 "KRB Sacco Role Center"
                         Caption = 'Instant Loans Pending Approval';
                         Image = CreditCard;
                         RunObject = Page "Loans-Pending Approval Instant";
-
                         ToolTip = 'Open the list of Instant Loans Pending Approval';
-
                     }
                     action("Approved Instant Loans")
                     {
@@ -1124,34 +1113,22 @@ Page 56043 "KRB Sacco Role Center"
                         RunObject = Page "Instant Loans Applied-Approved";
                         ToolTip = 'Open the list of Approved Instant Loans Pending Disbursement.';
                     }
-
-                    // action("Loans Reschedule List - Instant")
-                    // {
-                    //     ApplicationArea = Baic, Suite;
-                    //     Caption = 'Loans Reschedule List';
-                    //     RunObject = Page "Loans Reschedule  List";
-                    //     ToolTip = 'Open the list of loans for rescheduling';
-
-                    // }
-
-
                 }
+
                 group("Loan Batching")
                 {
-
                     action("Loan Batch List")
                     {
                         ApplicationArea = Basic, Suite;
                         RunObject = page "Loans Disbursment Batch List";
-
                     }
                     action("Posted Loan Batch List")
                     {
                         ApplicationArea = Basic, Suite;
                         RunObject = page "Posted Loan Batch - List";
-
                     }
                 }
+
                 group("Loans Appeals")
                 {
                     Visible = false;
@@ -1170,7 +1147,34 @@ Page 56043 "KRB Sacco Role Center"
                     }
                 }
 
+                // Updated Insights group with chart parts
+                group("Insights")
+                {
+                    Visible = true;
+                    Caption = 'Loan Analytics';
 
+                    // Note: These should be 'part' controls, not 'action' controls
+                    // You'll need to move these to the layout section's rolecenter area
+                    // But you can add navigation actions here:
+
+                    action("View Loan Performance Chart")
+                    {
+                        ApplicationArea = Basic, Suite;
+                        Caption = 'Interest Earned (Amount)';
+                        Image = Chart;
+                        RunObject = Page "Loan Performance Chart";
+                        ToolTip = 'View loan performance analytics';
+                    }
+
+                    action("View Loan Arrears Chart")
+                    {
+                        ApplicationArea = Basic, Suite;
+                        Caption = 'Loan Arrears (Count)';
+                        Image = Chart;
+                        RunObject = Page "Loan Arrears Chart";
+                        ToolTip = 'View loan arrears analytics';
+                    }
+                }
 
                 action("PostedLoans")
                 {
@@ -1179,6 +1183,7 @@ Page 56043 "KRB Sacco Role Center"
                     RunObject = Page "Loans Posted List";
                     ToolTip = 'Open the list of the Loans Posted.';
                 }
+
                 action("LoansRescheduleList")
                 {
                     ApplicationArea = Basic, Suite;
@@ -1186,10 +1191,12 @@ Page 56043 "KRB Sacco Role Center"
                     Caption = 'Loans Reschedule List';
                     Visible = false;
                 }
+
                 action("Loan Calculator")
                 {
                     RunObject = page "Loans Calculator List";
                 }
+
                 group("Loans' Reports")
                 {
                     action("Loans Balances Report")
@@ -1217,11 +1224,13 @@ Page 56043 "KRB Sacco Role Center"
                         ToolTip = 'Loans Guard Report';
                         Visible = false;
                     }
+
                     action("Loan defaulter List")
                     {
                         ApplicationArea = all;
                         RunObject = report "Loan Defaulters List";
                     }
+
                     action("Loans Register")
                     {
                         ApplicationArea = all;
@@ -1237,7 +1246,6 @@ Page 56043 "KRB Sacco Role Center"
                         RunObject = Report "Loan Arrears Report";
                         ToolTip = 'Loan Arreas Report';
                         Visible = false;
-                        // visible = false;
                     }
 
                     action("Loans Guarantor Details Report")
@@ -1262,7 +1270,6 @@ Page 56043 "KRB Sacco Role Center"
                         visible = true;
                     }
                 }
-
             }
 
 
@@ -1360,6 +1367,7 @@ Page 56043 "KRB Sacco Role Center"
             {
                 Caption = 'Other Bosa Management Functions';
                 Visible = False;
+
                 //................................................START OF CHANGE REQUEST MENU.........................
                 group(ChangeRequest)
                 {
@@ -1955,7 +1963,12 @@ Page 56043 "KRB Sacco Role Center"
                         Image = PostedMemo;
                         RunObject = page "Online Loan Applications";
                     }
-                    action(debug) { RunObject = codeunit "PORTALIntegration MFS"; }
+                    action(debug)
+                    {
+
+                        Visible = false;
+                        RunObject = codeunit "PORTALIntegration MFS";
+                    }
                 }
                 group("Alternative Channels Setups")
                 {
