@@ -4,7 +4,7 @@ report 50039 cashFlows
     ApplicationArea = All;
     DefaultLayout = RDLC;
     Caption = 'satement of changes in equity Previous Period';
-    RDLCLayout = './Layout/cashflowsreport.rdlc';
+    RDLCLayout = './Layout/cashflowsreport2.rdlc';
 
     dataset
     {
@@ -189,6 +189,29 @@ report 50039 cashFlows
             column(ThisYear; ThisYear)
             {
 
+            }
+
+
+            column(Company_Name; Company.Name)
+            {
+            }
+            column(Company_Address; Company.Address)
+            {
+            }
+            column(Company_Address_2; Company."Address 2")
+            {
+            }
+            column(Company_Phone_No; Company."Phone No.")
+            {
+            }
+            column(Company_Fax_No; Company."Fax No.")
+            {
+            }
+            column(Company_Picture; Company.Picture)
+            {
+            }
+            column(Company_Email; Company."E-Mail")
+            {
             }
             trigger OnAfterGetRecord()
             var
@@ -1014,4 +1037,13 @@ report 50039 cashFlows
         RepaymentOfBorrowings: Decimal;
 
         LRepaymentOfBorrowings: Decimal;
+
+        Company: Record "Company Information";
+
+
+    trigger OnPreReport()
+    begin
+
+        Company.get();
+    end;
 }
