@@ -443,11 +443,13 @@
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>=IIF(Fields!Line_Type.Value = "Total Line", "Bold", "Normal")</FontWeight>
-                                    <Format>N2</Format>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Actuals_Previous_Year</rd:DefaultName>
@@ -483,16 +485,19 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=IIF(Fields!Line_Type.Value = "Header Line", "", Fields!Approved_Budget_Current.Value)</Value>
+                                  <Value>=IIF(Fields!Line_Type.Value = "Header Line", "", 
+     Format(Fields!Approved_Budget_Current.Value, "#,0.00;(#,0.00)"))</Value>
                                   <MarkupType>HTML</MarkupType>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>=IIF(Fields!Line_Type.Value = "Total Line", "Bold", "Normal")</FontWeight>
-                                    <Format>N2</Format>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Revised_Budget_Current</rd:DefaultName>
@@ -528,16 +533,18 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=IIF(Fields!Line_Type.Value = "Header Line", "", Fields!Revised_Budget_Current.Value)</Value>
-                                  <MarkupType>HTML</MarkupType>
+                                  <Value>=IIF(Fields!Line_Type.Value = "Header Line", "", 
+     Format(Fields!Revised_Budget_Current.Value, "#,0.00;(#,0.00)"))</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>=IIF(Fields!Line_Type.Value = "Total Line", "Bold", "Normal")</FontWeight>
-                                    <Format>N2</Format>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Approved_Budget_Current</rd:DefaultName>
@@ -581,7 +588,9 @@
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Proposed_Budget_Next</rd:DefaultName>
@@ -621,7 +630,7 @@
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>=IIF(Fields!Line_Type.Value = "Total Line", "Bold", "Normal")</FontWeight>
-                                    <Format>N2</Format>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -667,7 +676,7 @@
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>=IIF(Fields!Line_Type.Value = "Total Line", "Bold", "Normal")</FontWeight>
-                                    <Format>n2</Format>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -713,6 +722,7 @@
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>=IIF(Fields!Line_Type.Value = "Total Line", "Bold", "Normal")</FontWeight>
+                                    <Format>n2</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -785,6 +795,41 @@
               </Border>
             </Style>
           </Tablix>
+          <Textbox Name="BudgetName">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>=First(Fields!BudgetName.Value, "DataSet_Result")</Value>
+                    <Style>
+                      <FontSize>8pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Center</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>BudgetName</rd:DefaultName>
+            <Top>2.44667in</Top>
+            <Left>2.14072in</Left>
+            <Height>0.25in</Height>
+            <Width>3.98498in</Width>
+            <ZIndex>1</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
           <Textbox Name="Company_Address">
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
@@ -805,11 +850,11 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Company_Address</rd:DefaultName>
-            <Top>1.06819in</Top>
-            <Left>1.49715in</Left>
+            <Top>1.10763in</Top>
+            <Left>1.49815in</Left>
             <Height>0.17708in</Height>
             <Width>5.31307in</Width>
-            <ZIndex>1</ZIndex>
+            <ZIndex>2</ZIndex>
             <Style>
               <Border>
                 <Color>Indigo</Color>
@@ -853,11 +898,11 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Company_Address_2</rd:DefaultName>
-            <Top>1.24527in</Top>
-            <Left>1.49715in</Left>
-            <Height>0.22223in</Height>
+            <Top>1.28471in</Top>
+            <Left>1.49815in</Left>
+            <Height>0.25in</Height>
             <Width>5.31307in</Width>
-            <ZIndex>2</ZIndex>
+            <ZIndex>3</ZIndex>
             <Style>
               <Border>
                 <Color>Indigo</Color>
@@ -908,11 +953,11 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Company_Fax_No</rd:DefaultName>
-            <Top>1.50917in</Top>
+            <Top>1.84027in</Top>
             <Left>3.06079in</Left>
             <Height>0.25in</Height>
             <Width>2.06307in</Width>
-            <ZIndex>3</ZIndex>
+            <ZIndex>4</ZIndex>
             <Style>
               <Border>
                 <Color>Indigo</Color>
@@ -943,6 +988,13 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
+                    <Value>EMAIL:</Value>
+                    <Style>
+                      <FontSize>8pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
                     <Value>=First(Fields!Company_Email.Value, "DataSet_Result")</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
@@ -956,11 +1008,11 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Company_Email</rd:DefaultName>
-            <Top>1.78694in</Top>
+            <Top>1.56249in</Top>
             <Left>3.06079in</Left>
             <Height>0.25in</Height>
             <Width>2.06307in</Width>
-            <ZIndex>4</ZIndex>
+            <ZIndex>5</ZIndex>
             <Style>
               <Border>
                 <Color>Indigo</Color>
@@ -988,52 +1040,17 @@
             <Source>Embedded</Source>
             <Value>krbsaccoLogo2</Value>
             <Sizing>FitProportional</Sizing>
-            <Top>0.09944in</Top>
-            <Left>3.58321in</Left>
+            <Top>0.11111in</Top>
+            <Left>3.59115in</Left>
             <Height>0.92708in</Height>
             <Width>0.99369in</Width>
-            <ZIndex>5</ZIndex>
+            <ZIndex>6</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
               </Border>
             </Style>
           </Image>
-          <Textbox Name="BudgetName">
-            <CanGrow>true</CanGrow>
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>=First(Fields!BudgetName.Value, "DataSet_Result")</Value>
-                    <Style>
-                      <FontSize>8pt</FontSize>
-                      <FontWeight>Bold</FontWeight>
-                    </Style>
-                  </TextRun>
-                </TextRuns>
-                <Style>
-                  <TextAlign>Center</TextAlign>
-                </Style>
-              </Paragraph>
-            </Paragraphs>
-            <rd:DefaultName>BudgetName</rd:DefaultName>
-            <Top>2.44667in</Top>
-            <Left>2.14072in</Left>
-            <Height>0.25in</Height>
-            <Width>3.98498in</Width>
-            <ZIndex>6</ZIndex>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-              <PaddingLeft>2pt</PaddingLeft>
-              <PaddingRight>2pt</PaddingRight>
-              <PaddingTop>2pt</PaddingTop>
-              <PaddingBottom>2pt</PaddingBottom>
-            </Style>
-          </Textbox>
         </ReportItems>
         <Height>3.66667in</Height>
         <Style />
