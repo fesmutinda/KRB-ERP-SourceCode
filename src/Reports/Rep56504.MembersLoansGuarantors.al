@@ -63,13 +63,18 @@ Report 56504 "Members Loans Guarantors"
             dataitem("Loans Guarantee Details"; "Loans Guarantee Details")
             {
                 DataItemLink = "Loanees  No" = field("No.");
-                DataItemTableView = where("Outstanding Balance" = filter(<> 0), Substituted = filter(false));
+                DataItemTableView = where(Substituted = filter(false));
                 RequestFilterFields = "Member No", "Loan No";
                 column(ReportForNavId_1000000001; 1000000001)
                 {
                 }
-                column(AmontGuaranteed_LoanGuarantors; "Loans Guarantee Details"."Amont Guaranteed")
+                column(AmountGuaranteedPerGuarantor; AmountGuaranteedPerGuarantor)
                 {
+                    Caption = 'Amount Guaranteed Per Guarantor';
+                }
+                column(NoOfGuarantors; NoOfGuarantors)
+                {
+                    Caption = 'Number of Guarantors';
                 }
                 column(NoOfLoansGuaranteed_LoanGuarantors; "Loans Guarantee Details"."No Of Loans Guaranteed")
                 {
@@ -100,11 +105,18 @@ Report 56504 "Members Loans Guarantors"
                 dataitem("Loans Register"; "Loans Register")
                 {
                     DataItemLink = "Loan  No." = field("Loan No");
+                    DataItemTableView = where("Approved Amount" = filter(<> 0));
+
 
                     column(Loan_Product_Type_Name; "Loan Product Type Name") { }
+                    column(Approved_Amount; "Approved Amount") { }
                 }
 
                 trigger OnAfterGetRecord()
+                var
+                    GuaranteeDetailsCount: Record "Loans Guarantee Details";
+                    LoansRegister: Record "Loans Register";
+                    LoanApprovedAmount: Decimal;
                 begin
                     //Loan.GET();
 
@@ -112,14 +124,24 @@ Report 56504 "Members Loans Guarantors"
                     Loansr.SetRange(Loansr."Loan  No.", "Loan No");
 
                     if Loansr.Find('-') then begin
-
                         Loansr.CalcFields("Outstanding Balance", "Oustanding Interest");
                         MemberNo := Loansr."Client Code";
                         MemberName := Loansr."Client Name";
-                        EmployerCode := Loansr."Employer Code"
-
-
+                        EmployerCode := Loansr."Employer Code";
+                        LoanApprovedAmount := Loansr."Approved Amount"; // Get approved amount from the lookup
                     end;
+
+                    // Count the number of guarantors for this specific loan (including those with zero outstanding balance)
+                    GuaranteeDetailsCount.Reset;
+                    GuaranteeDetailsCount.SetRange("Loan No", "Loan No");
+                    GuaranteeDetailsCount.SetRange(Substituted, false);
+                    NoOfGuarantors := GuaranteeDetailsCount.Count;
+
+                    // Calculate amount guaranteed per guarantor using approved amount - ensure all guarantors get the same amount
+                    if (NoOfGuarantors > 0) and (LoanApprovedAmount <> 0) then
+                        AmountGuaranteedPerGuarantor := LoanApprovedAmount / NoOfGuarantors
+                    else
+                        AmountGuaranteedPerGuarantor := 0;
                 end;
             }
 
@@ -186,5 +208,6 @@ Report 56504 "Members Loans Guarantors"
         Company: Record "Company Information";
         StartDate: Date;
         EndDate: Date;
+        NoOfGuarantors: Integer;
+        AmountGuaranteedPerGuarantor: Decimal;
 }
-

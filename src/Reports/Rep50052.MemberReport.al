@@ -9,7 +9,7 @@ Report 50052 MemberReport
         dataitem(Customer; Customer)
         {
             DataItemTableView = sorting("No.") order(descending);
-            RequestFilterFields = "No.", "Date Filter", Status;
+            RequestFilterFields = "No.", "Date Filter", Status, "Account Category", "Employment Info";
             // TbMembRegister.CalcFields("Current Shares", "Shares Retained", "Outstanding Balance");
             column(CompanyName; CompanyInfo.Name)
             {
@@ -28,6 +28,15 @@ Report 50052 MemberReport
             column(CompanyEmail; CompanyInfo."E-Mail")
             {
             }
+
+
+            column(Company_Name; CompanyInfo.Name) { }
+            column(Company_Address; CompanyInfo.Address) { }
+            // column(Company_Address_2; CompanyInfo."Address 2") { }
+            column(Company_Phone_No; CompanyInfo."Phone No.") { }
+            column(Company_Fax_No; CompanyInfo."Fax No.") { }
+            column(Company_Picture; CompanyInfo.Picture) { }
+            column(Company_Email; CompanyInfo."E-Mail") { }
             column(No; "No.")
             {
             }
@@ -46,6 +55,9 @@ Report 50052 MemberReport
             column(Status; Status) { }
             column(Address; Address) { }
             column(Mobile_Phone_No; "Mobile Phone No") { }
+            column(Account_Category; "Account Category") { }
+            column(Employment_Info; "Employment Info") { }
+
 
             trigger OnPreDataItem()
             var
