@@ -647,6 +647,22 @@ codeunit 50041 "Custom Workflow Responses"
             ApprovalEntry2.SetRange("Record ID to Approve", ApprovalEntry."Record ID to Approve");
             ApprovalEntry2.SetFilter(Status, '<>%1', ApprovalEntry2.Status::Approved);
 
+
+            // if ApprovalEntry2.Find() and (ApprovalEntry2."Sequence No." = 1) and (ApprovalEntry2."Pending Approvals" > 0) then begin
+            //     ApprovalEntry2.Reset();
+            //     ApprovalEntry2.SetRange("Document Type", ApprovalEntry2."Document Type");
+            //     ApprovalEntry2.SetRange("Document No.", ApprovalEntry2."Document No.");
+            //     ApprovalEntry2.SetRange("Sequence No.", 1);
+            //     ApprovalEntry2.SetRange(Status, ApprovalEntry2.Status::Open);
+
+            //     if ApprovalEntry2.FindSet() then
+            //         repeat
+            //             ApprovalEntry2.Status := ApprovalEntry2.Status::Approved;
+            //             ApprovalEntry2.Modify();
+            //         until ApprovalEntry2.Next() = 0;
+            // end;
+
+
             // If no pending approvals remain, update loan status
             if ApprovalEntry2.IsEmpty then begin
                 RecRef.Get(ApprovalEntry."Record ID to Approve");
@@ -655,7 +671,7 @@ codeunit 50041 "Custom Workflow Responses"
                 LoansRegister."Loan Status" := LoansRegister."Loan Status"::Approved;
                 LoansRegister."Approval Status" := LoansRegister."Approval Status"::Approved;
                 LoansRegister.Modify(true);
-            end;
+            end
         end;
     end;
 
