@@ -684,6 +684,13 @@ Page 56043 "KRB Sacco Role Center"
 
                     }
 
+                    action("KRB Balance Sheet 2")
+                    {
+                        ApplicationArea = Basic, Suite;
+                        Caption = 'KRB Financial Position';
+                        RunObject = report KRBFinancialPosition2;
+                    }
+
                     action("KRB Profit & Loss")
                     {
                         ApplicationArea = Basic, Suite;
@@ -1366,7 +1373,7 @@ Page 56043 "KRB Sacco Role Center"
             group(BosaManagement)
             {
                 Caption = 'Other Bosa Management Functions';
-                Visible = False;
+                Visible = True;
 
                 //................................................START OF CHANGE REQUEST MENU.........................
                 group(ChangeRequest)
@@ -1833,7 +1840,7 @@ Page 56043 "KRB Sacco Role Center"
             group(SwizzKash)
             {
                 Caption = 'Alternative Channels';
-                Visible = true;
+                Visible = false;
                 group(SwizzKashActivities)
                 {
                     Caption = 'Mobile Banking';

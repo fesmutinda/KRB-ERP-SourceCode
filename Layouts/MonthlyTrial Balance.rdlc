@@ -1994,6 +1994,7 @@
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>
@@ -2346,7 +2347,6 @@
             <Source>Embedded</Source>
             <Value>krbsaccoLogo2</Value>
             <Sizing>FitProportional</Sizing>
-            <Top>0in</Top>
             <Left>6.76385in</Left>
             <Height>0.92708in</Height>
             <Width>0.99369in</Width>
