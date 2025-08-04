@@ -156,6 +156,7 @@ Table 51376 "Loan Offset Details"
                             // Commision:=ROUND(GenSetUp."Loan Top Up Commision2(%)"*"Principle Top Up"/100,1,'>');
                         end;
                         "Loan Type" := Loans."Loan Product Type";
+                        "Loan Product Type Name" := Loans."Loan Product Type Name";
                         ObjLoans.Modify;
                     end;
 
@@ -316,6 +317,11 @@ Table 51376 "Loan Offset Details"
         field(28; "Additional Top Up Commission"; Boolean)
         {
             DataClassification = ToBeClassified;
+        }
+
+        field(29; "Loan Product Type Name"; Text[100])
+        {
+
         }
     }
 

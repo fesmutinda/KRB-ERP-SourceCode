@@ -343,7 +343,7 @@ Page 51007 "BOSA Loans Disbursement Card"
                         // if Confirm('Are you sure you want to POST Loan Approved amount of Ksh. ' + Format(Rec."Approved Amount") + ' to member -' + Format(Rec."Client Name") + ' ?', false) = false then begin
                         //     exit;
                         Rec.CalcFields("Top Up Amount");
-                        if Confirm('Are you sure you want to POST Loan Approved amount of Ksh. ' + Format(Rec."Approved Amount" - (Rec."Loan Processing Fee" + Rec."Loan Dirbusement Fee" + Rec."Loan Insurance" + REC."Top Up Amount")) + ' to member -' + Format(Rec."Client Name") + ' ?', false) = false then begin
+                        if Confirm('Are you sure you want to POST Loan Net amount of Ksh. ' + Format(Rec."Approved Amount" - (Rec."Loan Processing Fee" + Rec."Loan Dirbusement Fee" + Rec."Loan Insurance" + REC."Top Up Amount" + Rec."Valuation Cost")) + ' to member -' + Format(Rec."Client Name") + ' ?', false) = false then begin
                             exit;
                         end
                         else begin

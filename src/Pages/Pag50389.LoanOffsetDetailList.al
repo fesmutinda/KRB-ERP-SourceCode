@@ -31,6 +31,10 @@ page 50389 "Loan Offset Detail List"
                     ApplicationArea = Basic;
                     Editable = false;
                 }
+
+                field("Loan Product Type Name"; Rec."Loan Product Type Name")
+                {
+                }
                 field("Principle Top Up"; Rec."Principle Top Up")
                 {
                     ApplicationArea = Basic;

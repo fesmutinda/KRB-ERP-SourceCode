@@ -103,6 +103,7 @@ Table 59051 "Instant Offset Details"
                             Loans.CalcFields("Outstanding Balance");
                         end;
                         "Loan Type" := Loans."Loan Product Type";
+                        "Loan Product Type Name" := Loans."Loan Product Type Name";
                         ObjLoans.Modify;
                     end;
                 end;
@@ -228,6 +229,11 @@ Table 59051 "Instant Offset Details"
         field(28; "Additional Top Up Commission"; Boolean)
         {
             DataClassification = ToBeClassified;
+        }
+
+        field(29; "Loan Product Type Name"; Text[100])
+        {
+
         }
     }
 

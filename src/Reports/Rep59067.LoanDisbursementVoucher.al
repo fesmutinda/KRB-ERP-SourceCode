@@ -1,5 +1,7 @@
 namespace KRBERPSourceCode.KRBERPSourceCode;
 using Microsoft.Foundation.Company;
+using Microsoft.Bank.Check;
+using Microsoft.Sales.Customer;
 
 report 59067 "Loan Disbursement Voucher"
 {
@@ -14,6 +16,13 @@ report 59067 "Loan Disbursement Voucher"
         {
             DataItemTableView = sorting("Loan  No.");
             RequestFilterFields = "Loan  No.";
+
+
+            column(ClientAddress; GetLoanCustomerAddress("Client Code"))
+            {
+
+            }
+
 
             column(LoanApplied; "Approved Amount") { }
             column(InsuranceDeduction; "Loan Insurance") { }
@@ -40,8 +49,14 @@ report 59067 "Loan Disbursement Voucher"
             column(Company_Fax_No; CompanyInfo."Fax No.") { }
             column(Company_Picture; CompanyInfo.Picture) { }
             column(Company_Email; CompanyInfo."E-Mail") { }
+            column(NetdisbursedInWords; ConvertAmountToWords(Netdisbursed)) { }
 
-            column(NetdisbursedInWords; FormatAmount(Netdisbursed)) { }
+            // Summary columns for offset totals - calculated once per loan
+            column(TotalOffsetPrinciple; TotalOffsetPrinciple) { }
+            column(TotalOffsetInterest; TotalOffsetInterest) { }
+            column(TotalOffsetCommission; TotalOffsetCommission) { }
+            column(TotalTopUpDeductions; TotalTopUpDeductions) { }
+            column(HasOffsetDetails; HasOffsetDetails) { }
 
             dataitem("Loan Offset Details"; "Loan Offset Details")
             {
@@ -52,6 +67,7 @@ report 59067 "Loan Disbursement Voucher"
                 column(Loans_Top_Up_OutstandingBal; "Outstanding Balance") { }
                 column(Loans_Top_up__Principle_Top_Up_; "Principle Top Up") { }
                 column(Loans_Top_up__Loan_Type_; "Loan Type") { }
+                column(Loans_Top_up__Loan_Type_Name; "Loan Product Type Name") { }
                 column(Loans_Top_up__Client_Code_; "Client Code") { }
                 column(Loans_Top_up__Loan_No__; "Loan No.") { }
                 column(Loans_Top_up__Total_Top_Up_; "Total Top Up") { }
@@ -65,30 +81,30 @@ report 59067 "Loan Disbursement Voucher"
                 column(Loans_Top_up_CommisionCaption; FieldCaption(Commision)) { }
                 column(Loans_Top_up_Loan_Top_Up; "Loan Top Up") { }
                 column(LoanoffsetInterest; "Loan Offset Details".Commision) { }
-
-                trigger OnPreDataItem()
-                begin
-                    TotalTopUpDeductions := 0;
-                end;
-
-                trigger OnAfterGetRecord()
-                begin
-                    // Accumulate totals (don't reset here!)
-                    TotalTopUpDeductions += "Principle Top Up" + "Interest Top Up" + Commision;
-                end;
             }
-
-            trigger OnPreDataItem()
-            begin
-                NetDisbursed := 0;
-                Upfronts := 0;
-            end;
-
             trigger OnAfterGetRecord()
+            var
+                LoanTopUp: Record "Loan Offset Details";
             begin
+
+                TotalTopUpDeductions := 0;
+                Upfronts := 0;
+                total_deductions := 0;
+
+                // Bridged_Amount := 0;
+                LoanTopUp.Reset;
+                LoanTopUp.SetRange(LoanTopUp."Loan No.", LoansRegister."Loan  No.");
+                if LoanTopUp.Find('-') then begin
+                    repeat
+                        // Bridged_Amount+=
+                        TotalTopUpDeductions += LoanTopUp."Principle Top Up" + loantopup."Interest Top Up" + LoanTopUp.Commision;
+                    until LoanTopUp.Next = 0;
+                end;
+
+
                 if "Approved Amount" > 0 then begin
-                    Upfronts := "Facilitation Cost" + "Valuation Cost";
-                    total_deductions := Upfronts + TotalTopUpDeductions + "Loan Insurance";
+                    Upfronts := "Facilitation Cost" + "Valuation Cost" + "Loan Insurance";
+                    total_deductions := Upfronts + TotalTopUpDeductions;
                     Netdisbursed := "Approved Amount" - total_deductions;
                 end;
             end;
@@ -117,15 +133,39 @@ report 59067 "Loan Disbursement Voucher"
     var
         CompanyInfo: Record "Company Information";
         TotalTopUpDeductions: Decimal;
+        TotalOffsetPrinciple: Decimal;
+        TotalOffsetInterest: Decimal;
+        TotalOffsetCommission: Decimal;
         NetDisbursed: Decimal;
         total_deductions: Decimal;
         Upfronts: Decimal;
+        HasOffsetDetails: Boolean;
+        CurrentLoanNo: Code[20];
 
+        ClientAddress: Text[100];
 
-    local procedure FormatAmount(Amount: Decimal): Text
+    local procedure ConvertAmountToWords(Amount: Decimal): Text
+    var
+        CheckReport: Report Check;
+        NumberText: array[2] of Text[80];
     begin
-        exit(Format(Amount, 0, '<Sign><Integer Thousand><Decimals,3>') + ' Only');
+        CheckReport.InitTextVariable();
+        CheckReport.FormatNoText(NumberText, Amount, '');
+        exit(NumberText[1] + ' ' + NumberText[2]);
     end;
+
+
+    local procedure GetLoanCustomerAddress(ClientCode: Code[20]): Text
+    var
+        CustomerRec: Record Customer;
+    begin
+        if CustomerRec.Get(ClientCode) then
+            exit(CustomerRec.Address);
+        exit('');
+    end;
+
+
+
 
     trigger OnPreReport()
     begin

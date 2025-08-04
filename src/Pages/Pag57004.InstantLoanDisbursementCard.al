@@ -238,7 +238,9 @@ page 57004 "Instant Loan Disbursement Card"
                         if Rec."Loan Status" <> Rec."Loan Status"::Approved then begin
                             Error('Prohibited ! The loan is Status MUST be Approved');
                         end;
-                        if Confirm('Are you sure you want to POST Loan Net amount of Ksh. ' + Format(Rec."Approved Amount") + ' to member -' + Format(Rec."Client Name") + ' ?', false) = false then begin
+                        // if Confirm('Are you sure you want to POST Loan Net amount of Ksh. ' + Format(Rec."Approved Amount") + ' to member -' + Format(Rec."Client Name") + ' ?', false) = false then begin
+                        //     exit;
+                        if Confirm('Are you sure you want to POST Loan Net amount of Ksh. ' + Format(Rec."Approved Amount" - (Rec."Loan Processing Fee" + Rec."Loan Dirbusement Fee" + Rec."Loan Insurance" + REC."Top Up Amount")) + ' to member -' + Format(Rec."Client Name") + ' ?', false) = false then begin
                             exit;
                         end
                         else begin
