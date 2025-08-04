@@ -67,7 +67,7 @@ Table 51371 "Loans Register"
                 LoanApp.SetRange(Posted, true);
                 LoanApp.SetRange("Loan Product Type", "Loan Product Type");
                 LoanApp.SetFilter("Outstanding Balance", '>0');
-                if LoanApp.Find('-') then begin
+                if LoanApp.FindSet() then begin
                     repeat
                         if ProdFac.Get("Loan Product Type") then begin
                             if ProdFac."Allow Multiple Running Loans" = false then
@@ -75,6 +75,12 @@ Table 51371 "Loans Register"
                             else
                                 Message('Member already has an existing Loan %1 of same product', LoanApp."Loan  No.");
                         end;
+
+                        if LoanApp.IsBlacklisted() then begin
+                            if not Confirm('Member has blacklisted LT007 loan for %1 more days. Do you want to continue?', false, LoanApp.GetDaysRemainingInBlacklist()) then
+                                exit;
+                        end;
+
                     until LoanApp.Next = 0;
                 end;
 
@@ -4552,6 +4558,28 @@ Table 51371 "Loans Register"
 
         }
 
+        field(69271; "Blacklist Status"; Option)
+        {
+            Caption = 'Loan Blacklist Status';
+            OptionMembers = " ",Blacklisted;
+            OptionCaption = ' ,Blacklisted';
+        }
+
+        field(69272; "Blacklist Start Date"; Date)
+        {
+            Caption = 'Blacklist Start Date';
+        }
+
+        field(69273; "Blacklist End Date"; Date)
+        {
+            Caption = 'Blacklist End Date';
+        }
+
+        field(69274; "Days Remaining in Blacklist"; Integer)
+        {
+            Caption = 'Days Remaining in Blacklist';
+        }
+
     }
 
     keys
@@ -5566,6 +5594,32 @@ Table 51371 "Loans Register"
     procedure GetInterestPaid(): Decimal
     begin
         exit("Loan Interest Repayment");
+    end;
+
+    procedure IsBlacklisted(): Boolean
+    begin
+        if ("Loan Product Type" = 'LT007') and
+           ("Blacklist Status" = "Blacklist Status"::Blacklisted) and
+           ("Blacklist End Date" <> 0D) then begin
+            if "Blacklist End Date" > Today then
+                exit(true)
+            else begin
+                "Blacklist Status" := "Blacklist Status"::" ";
+                "Blacklist Start Date" := 0D;
+                "Blacklist End Date" := 0D;
+                Modify();
+                exit(false);
+            end;
+        end;
+        exit(false);
+    end;
+
+    procedure GetDaysRemainingInBlacklist(): Integer
+    begin
+        if IsBlacklisted() then
+            exit("Blacklist End Date" - Today)
+        else
+            exit(0);
     end;
 
 }

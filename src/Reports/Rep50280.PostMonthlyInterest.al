@@ -99,6 +99,8 @@ Report 50280 "Post Monthly Interest."
                             Cust.SetFilter(Cust."Don't Charge Interest", '%1', false);
                             if Cust.FindSet then begin
                                 repeat
+
+
                                     LineNo := LineNo + 10000;
                                     GenJournalLine.Init;
                                     GenJournalLine."Journal Template Name" := 'General';
@@ -268,5 +270,7 @@ Report 50280 "Post Monthly Interest."
         CurrReport_PAGENOCaptionLbl: label 'Page';
         loanapp: Record "Loans Register";
         SDATE: Text[30];
+
+        LoanClassificationCodeunit: Codeunit LoansClassificationCodeUnit;
 }
 

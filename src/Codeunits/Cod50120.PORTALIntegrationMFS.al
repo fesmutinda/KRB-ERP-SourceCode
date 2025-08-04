@@ -2187,6 +2187,36 @@ Codeunit 50120 "PORTALIntegration MFS"
         ObjLog.Insert;
     end;
 
+    procedure GetMemberBlacklistStatus(BosaNo: Code[60]): Text
+    var
+        ObjLoanRegister: Record "Loans Register";
+        BlacklistInfo: Text;
+    begin
+        BlacklistInfo := '';
+
+        ObjLoanRegister.Reset;
+        ObjLoanRegister.SetRange("Client Code", BosaNo);
+        ObjLoanRegister.SetRange("Loan Product Type", 'LT007');
+        ObjLoanRegister.SetRange(Posted, true);
+        ObjLoanRegister.SetRange(Reversed, false);
+
+        if ObjLoanRegister.FindSet() then
+            repeat
+                if ObjLoanRegister.IsBlacklisted() then begin
+                    if BlacklistInfo <> '' then
+                        BlacklistInfo += '|';
+
+                    BlacklistInfo += StrSubstNo('LOAN:%1;START_DATE:%2;END_DATE:%3;DAYS_ELAPSED:%4;DAYS_REMAINING:%5',
+                        ObjLoanRegister."Loan  No.",
+                        Format(ObjLoanRegister."Blacklist Start Date", 0, '<Year4>-<Month,2>-<Day,2>'),
+                        Format(ObjLoanRegister."Blacklist End Date", 0, '<Year4>-<Month,2>-<Day,2>'),
+                        Today - ObjLoanRegister."Blacklist Start Date",
+                        ObjLoanRegister.GetDaysRemainingInBlacklist());
+                end;
+            until ObjLoanRegister.Next() = 0;
+
+        exit(BlacklistInfo);
+    end;
 
     procedure OnlineLoanApplication(BosaNo: Code[60]; LoanType: Code[60]; LoanAmount: Decimal; loanpurpose: Text; repaymentPeriod: Integer) GeneratedApplicationNo: Code[60]
     var
@@ -2214,11 +2244,24 @@ Codeunit 50120 "PORTALIntegration MFS"
                     GeneratedApplicationNo := '';
                     exit('Application failed, member has existing loans with arrears');
                 end;
+
+                ObjLoanRegister.Reset;
+                ObjLoanRegister.SetRange("Client Code", BosaNo);
+                ObjLoanRegister.SetRange("Loan Product Type", 'LT007');
+                ObjLoanRegister.SetRange(Posted, true);
+                ObjLoanRegister.SetRange(Reversed, false);
+
+                if ObjLoanRegister.FindSet() then
+                    repeat
+                        if ObjLoanRegister.IsBlacklisted() then begin
+                            GeneratedApplicationNo := '';
+                            exit(StrSubstNo('Application failed, member has blacklisted LT007 loan for %1 more days',
+                                ObjLoanRegister.GetDaysRemainingInBlacklist()));
+                        end;
+                    until ObjLoanRegister.Next() = 0;
             end;
 
-
             if LoanProductType.Get(LoanType) then;
-
 
             if LoanAmount > LoanProductType."Max. Loan Amount" then begin
                 exit('Application failed, amount applied is greater than Maximum Loan Amount');
@@ -3390,6 +3433,7 @@ Codeunit 50120 "PORTALIntegration MFS"
             exit(-CustLedgerEntry."Amount Posted");
         exit(0);
     end;
+
 
 
 

@@ -219,5 +219,111 @@ codeunit 56130 "LoansClassificationCodeUnit"
         end;
     end;
 
+
+    local procedure GetExpectedPaymentAmount(var LoansRegisterRec: Record "Loans Register"; AsAtDate: Date): Decimal
+    var
+        LoanRepaymentSchedule: Record "Loan Repayment Schedule";
+        Swizzfactory: Codeunit 50009;
+        TotalExpected: Decimal;
+    begin
+        TotalExpected := LoansRegisterRec."Approved Amount";
+
+        LoanRepaymentSchedule.Reset();
+        LoanRepaymentSchedule.SetRange("Loan No.", LoansRegisterRec."Loan  No.");
+
+        if LoanRepaymentSchedule.FindSet() then begin
+            LoanRepaymentSchedule.Reset();
+            LoanRepaymentSchedule.SetRange("Loan No.", LoansRegisterRec."Loan  No.");
+            LoanRepaymentSchedule.SetFilter("Repayment Date", '<=%1', AsAtDate);
+
+            if LoanRepaymentSchedule.FindLast() then begin
+                TotalExpected := LoanRepaymentSchedule."Loan Balance";
+            end;
+        end else begin
+            Swizzfactory.FnGenerateRepaymentSchedule(LoansRegisterRec."Loan  No.");
+
+            LoanRepaymentSchedule.Reset();
+            LoanRepaymentSchedule.SetRange("Loan No.", LoansRegisterRec."Loan  No.");
+            LoanRepaymentSchedule.SetFilter("Repayment Date", '<=%1', AsAtDate);
+
+            if LoanRepaymentSchedule.FindLast() then begin
+                TotalExpected := Round(LoanRepaymentSchedule."Loan Balance");
+            end;
+        end;
+
+        // Update the expected loan balance
+        //LoansRegisterRec."Expected Loan Balance" := TotalExpected;
+        exit(TotalExpected);
+    end;
+
+    local procedure GetActualPaymentAmount(var LoansRegisterRec: Record "Loans Register"; AsAtDate: Date): Decimal
+    var
+        LoanLedgerEntry: Record "Cust. Ledger Entry";
+        TotalActual: Decimal;
+    begin
+        TotalActual := 0;
+
+        LoanLedgerEntry.Reset();
+        LoanLedgerEntry.SetRange("Customer No.", LoansRegisterRec."Client Code");
+        LoanLedgerEntry.SetRange("Loan No", LoansRegisterRec."Loan  No.");
+        LoanLedgerEntry.SetFilter("Transaction Type", '%1|%2|%3|%4|%5',
+            LoanLedgerEntry."Transaction Type"::"Loan Repayment",
+            LoanLedgerEntry."Transaction Type"::"Interest Paid",
+            LoanLedgerEntry."Transaction Type"::Loan,
+            LoanLedgerEntry."Transaction Type"::"Interest Due",
+            LoanLedgerEntry."Transaction Type"::"Loan Transfer Charges");
+        LoanLedgerEntry.SetRange(Reversed, false);
+        LoanLedgerEntry.SetFilter("Posting Date", '<=%1', AsAtDate);
+
+        if LoanLedgerEntry.FindSet() then begin
+            repeat
+                TotalActual += LoanLedgerEntry."Amount Posted";
+            until LoanLedgerEntry.Next() = 0;
+        end;
+
+        exit(TotalActual);
+    end;
+
+    local procedure GetLastDueDateBeforeAsAt(var LoansRegisterRec: Record "Loans Register"; Asat: Date): Date
+    var
+        LoanRepaymentSchedule: Record "Loan Repayment Schedule";
+        LastDate: Date;
+    begin
+        LastDate := 0D;
+        LoanRepaymentSchedule.Reset();
+        LoanRepaymentSchedule.SetRange("Loan No.", LoansRegisterRec."Loan  No.");
+        LoanRepaymentSchedule.SetFilter("Repayment Date", '<=%1', AsAt);
+        LoanRepaymentSchedule.SetCurrentKey("Repayment Date");
+
+        if LoanRepaymentSchedule.FindLast() then
+            LastDate := LoanRepaymentSchedule."Repayment Date";
+
+        exit(LastDate);
+    end;
+
+    local procedure GetFirstDateWhereInArrears(var LoansRegisterRec: Record "Loans Register"; ActualBalance: Decimal; AsAt: Date): Date
+    var
+        LoanRepaymentSchedule: Record "Loan Repayment Schedule";
+        RunningExpectedBalance: Decimal;
+    begin
+        LoanRepaymentSchedule.Reset();
+        LoanRepaymentSchedule.SetRange("Loan No.", LoansRegisterRec."Loan  No.");
+        LoanRepaymentSchedule.SetFilter("Repayment Date", '<=%1', AsAt);
+        LoanRepaymentSchedule.SetCurrentKey("Repayment Date");
+
+        if LoanRepaymentSchedule.FindSet() then
+            repeat
+                // Calculate what balance should be after this repayment
+                RunningExpectedBalance := LoanRepaymentSchedule."Loan Balance";
+
+                // First date where actual balance exceeds expected balance
+                if ActualBalance > RunningExpectedBalance then
+                    exit(LoanRepaymentSchedule."Repayment Date");
+
+            until LoanRepaymentSchedule.Next() = 0;
+
+        exit(0D); // Not in arrears
+    end;
+
 }
 

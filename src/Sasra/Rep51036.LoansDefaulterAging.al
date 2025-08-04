@@ -228,18 +228,16 @@ Report 51036 "Loans Defaulter Aging"
         ExpectedAmount := GetExpectedPaymentAmount();
         ActualAmount := GetActualPaymentAmount();
 
-
         //lets use outstanding balance
         if ActualAmount > ExpectedAmount then
             CalculatedAmountInArrears := ActualAmount - ExpectedAmount;
 
-
         //LastDueDate := GetLastDueDateBeforeAsAt();
         FirstArrearsDate := GetFirstDateWhereInArrears(ActualAmount);
 
-
         // Calculate days in arrears
         if (FirstArrearsDate <> 0D) and (CalculatedAmountInArrears > 0) then begin
+
             CalculatedDaysInArrears := AsAt - FirstArrearsDate;
             CalculatedMonthsInArrears := CalculatedDaysInArrears div 30;
 
@@ -253,8 +251,45 @@ Report 51036 "Loans Defaulter Aging"
                 else
                     CalculatedLoanCategory := CalculatedLoanCategory::Loss;
             end;
-        end else
+
+            // Handle LT007 blacklisting when in arrears
+            if "Loans Register"."Loan Product Type" = 'LT007' then begin
+                if "Loans Register"."Blacklist Status" <> "Loans Register"."Blacklist Status"::Blacklisted then begin
+                    "Loans Register"."Blacklist Status" := "Loans Register"."Blacklist Status"::Blacklisted;
+                    "Loans Register"."Blacklist Start Date" := AsAt;
+                    "Loans Register"."Blacklist End Date" := CalcDate('+45D', AsAt);
+                end;
+
+                if "Loans Register"."Blacklist End Date" > AsAt then
+                    "Loans Register"."Days Remaining in Blacklist" := "Loans Register"."Blacklist End Date" - AsAt
+                else begin
+                    "Loans Register"."Blacklist Status" := "Loans Register"."Blacklist Status"::" ";
+                    "Loans Register"."Blacklist Start Date" := 0D;
+                    "Loans Register"."Blacklist End Date" := 0D;
+                    "Loans Register"."Days Remaining in Blacklist" := 0;
+                end;
+            end;
+
+        end else begin
             CalculatedLoanCategory := CalculatedLoanCategory::Performing;
+
+            // if "Loans Register"."Loan Product Type" = 'LT007' then begin
+            //     "Loans Register"."Blacklist Status" := "Loans Register"."Blacklist Status"::" ";
+            //     "Loans Register"."Blacklist Start Date" := 0D;
+            //     "Loans Register"."Blacklist End Date" := 0D;
+            //     "Loans Register"."Days Remaining in Blacklist" := 0;
+            // end;
+            if "Loans Register"."Loan Product Type" = 'LT007' then begin
+                if ("Loans Register"."Blacklist End Date" <> 0D) and ("Loans Register"."Blacklist End Date" <= AsAt) then begin
+                    "Loans Register"."Blacklist Status" := "Loans Register"."Blacklist Status"::" ";
+                    "Loans Register"."Blacklist Start Date" := 0D;
+                    "Loans Register"."Blacklist End Date" := 0D;
+                    "Loans Register"."Days Remaining in Blacklist" := 0;
+                end else if "Loans Register"."Blacklist End Date" > AsAt then begin
+                    "Loans Register"."Days Remaining in Blacklist" := "Loans Register"."Blacklist End Date" - AsAt;
+                end;
+            end;
+        end;
 
         "Loans Register"."Amount in Arrears" := CalculatedAmountInArrears;
         "Loans Register"."No of Days in Arrears" := CalculatedDaysInArrears;
