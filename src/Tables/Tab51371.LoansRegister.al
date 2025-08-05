@@ -76,10 +76,10 @@ Table 51371 "Loans Register"
                                 Message('Member already has an existing Loan %1 of same product', LoanApp."Loan  No.");
                         end;
 
-                        if LoanApp.IsBlacklisted() then begin
-                            if not Confirm('Member has blacklisted LT007 loan for %1 more days. Do you want to continue?', false, LoanApp.GetDaysRemainingInBlacklist()) then
-                                exit;
-                        end;
+                    // if LoanApp.IsBlacklisted() then begin
+                    //     if not Confirm('Member has blacklisted LT007 loan for %1 more days. Do you want to continue?', false, LoanApp.GetDaysRemainingInBlacklist()) then
+                    //         exit;
+                    // end;
 
                     until LoanApp.Next = 0;
                 end;
@@ -353,6 +353,11 @@ Table 51371 "Loans Register"
                                 SaccoDedInt := LoanApp."Outstanding Balance" * (LoanType."Interest rate" / 1200);
                                 Saccodeduct := Saccodeduct + LoanApp."Loan Principle Repayment" + SaccoDedInt;
                             end;
+                        end;
+
+                        if LoanApp.IsBlacklisted() then begin
+                            if not Confirm('Member has blacklisted Instant Loan No. %1 for %2 more days. Do you want to continue?', false, LoanApp."Loan  No.", LoanApp.GetDaysRemainingInBlacklist()) then
+                                Error('Cannot proceed with blacklisted member.');
                         end;
                     until LoanApp.Next = 0;
                 end;
@@ -1147,6 +1152,18 @@ Table 51371 "Loans Register"
                 //"Expected Date of Completion":=CALCDATE('CM',CALCDATE('CM+1M',"Loan Disbursement Date")); TODO
                 //"Expected Date of Completion":=CALCDATE(FORMAT(Installments)+'M',"Repayment Start Date");
                 Validate("Repayment Start Date");
+
+                if "Mode of Disbursement" = "mode of disbursement"::"Mobile Money" then begin
+                    TESTFIELD("Mobile Money Service");
+                    TESTFIELD("Mobile Money Receiving Number")
+                end;
+
+
+                If "Mode of Disbursement" = "mode of disbursement"::"Bank Transfer" then begin
+
+                    TESTFIELD("Bank Code");
+                    TESTFIELD("Bank Account");
+                end
             end;
         }
         field(35; "Mode of Disbursement"; Enum "Mode Of Disbursement")// Option)
@@ -1156,9 +1173,17 @@ Table 51371 "Loans Register"
 
             trigger OnValidate()
             begin
-                // if "Mode of Disbursement" = "mode of disbursement"::"Bank Transfer" then begin
-                //     //TESTFIELD("Account No");
-                // end;
+                if "Mode of Disbursement" = "mode of disbursement"::"Mobile Money" then begin
+                    TESTFIELD("Mobile Money Service");
+                    TESTFIELD("Mobile Money Receiving Number")
+                end;
+
+
+                If "Mode of Disbursement" = "mode of disbursement"::"Bank Transfer" then begin
+
+                    TESTFIELD("Bank Code");
+                    TESTFIELD("Bank Account");
+                end
             end;
         }
         field(53; "Affidavit - Item 1 Details"; Text[5])
@@ -2729,8 +2754,8 @@ Table 51371 "Loans Register"
         }
         field(69024; "Recovery Mode"; Option)
         {
-            InitValue = "Payroll Deduction";
-            OptionMembers = ,"Payroll Deduction",MPESA,"Bank Deposit";
+            InitValue = "Bosa Receipt";
+            OptionMembers = ,"Payroll Deduction","BOSA Receipt","Bank Deposit";
 
             trigger OnValidate()
             begin
@@ -4578,6 +4603,18 @@ Table 51371 "Loans Register"
         field(69274; "Days Remaining in Blacklist"; Integer)
         {
             Caption = 'Days Remaining in Blacklist';
+        }
+
+        field(69275; "Mobile Money Service"; Option)
+        {
+            Caption = 'Mobile Money Service';
+            OptionMembers = " ",AirtelMoney,MPesa,TKash,MTNMobile,Orange,Equity,KCB,Safaricom;
+            OptionCaption = ' ,Airtel Money,M-Pesa,T-Kash,MTN Mobile Money,Orange Money,Equity Mobile,KCB M-Pesa,Safaricom';
+        }
+
+        field(69276; "Mobile Money Receiving Number"; Text[10])
+        {
+            Caption = 'Receiving Number';
         }
 
     }

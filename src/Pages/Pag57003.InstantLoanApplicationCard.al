@@ -277,7 +277,7 @@ page 57003 "Instant Loan Application Card"
                     ApplicationArea = Basic;
                     Caption = 'Bank Code';
                     ShowMandatory = true;
-                    NotBlank = true;
+                    //NotBlank = true;
                 }
                 field("Bank Name"; Rec."Bank Name")
                 {
@@ -294,6 +294,21 @@ page 57003 "Instant Loan Application Card"
                 {
                     ApplicationArea = Basic;
                 }
+            }
+
+            group("Mobile Money Details")
+            {
+
+                field("Mobile Money Service"; Rec."Mobile Money Service")
+                {
+                    ApplicationArea = Basic;
+                }
+
+                field("Mobile Money Receiving Number"; Rec."Mobile Money Receiving Number")
+                {
+                    ApplicationArea = Basic;
+                }
+
             }
             part(Control1000000003; "Loans CheckRisk List")
             {
@@ -466,10 +481,24 @@ page 57003 "Instant Loan Application Card"
     }
 
     trigger OnAfterGetCurrRecord()
+    var
+    //LoanApp: Record "Loans Register";
     begin
         UpdateControl();
         OpenApprovalEntriesExist := ApprovalsMgmt.HasOpenApprovalEntries(REC.RecordId);
         EnabledApprovalWorkflowsExist := true;
+
+        // if Rec."Client Code" <> '' then begin
+        //     LoanApp.SetRange("Client Code", Rec."Client Code");
+        //     if LoanApp.FindFirst() then begin
+        //         if LoanApp.IsBlacklisted() then begin
+        //             if not Confirm('Member has blacklisted Instant Loan No. %1 for %2 more days. Do you want to continue?', false, LoanApp."Loan  No.", LoanApp.GetDaysRemainingInBlacklist()) then
+        //                 CurrPage.Close();
+        //         end;
+        //     end;
+        // end
+
+
     end;
 
     trigger OnAfterGetRecord()

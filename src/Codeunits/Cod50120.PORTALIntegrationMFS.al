@@ -2218,7 +2218,7 @@ Codeunit 50120 "PORTALIntegration MFS"
         exit(BlacklistInfo);
     end;
 
-    procedure OnlineLoanApplication(BosaNo: Code[60]; LoanType: Code[60]; LoanAmount: Decimal; loanpurpose: Text; repaymentPeriod: Integer) GeneratedApplicationNo: Code[60]
+    procedure OnlineLoanApplication(BosaNo: Code[60]; LoanType: Code[60]; LoanAmount: Decimal; loanpurpose: Text; repaymentPeriod: Integer; DisbursementMode: Text; RecoveryMode: Text) GeneratedApplicationNo: Code[60]
     var
         ObjLoanApplications: Record "Online Loan Application";
         ObjLoanRegister: Record "Loans Register";

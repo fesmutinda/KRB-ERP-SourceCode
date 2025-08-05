@@ -30,4 +30,14 @@ enum 50026 "Mode Of Disbursement"
     {
 
     }
+
+    value(7; "BOSA Receipt")
+    {
+
+    }
+
+    value(8; "Mobile Money")
+    {
+
+    }
 }

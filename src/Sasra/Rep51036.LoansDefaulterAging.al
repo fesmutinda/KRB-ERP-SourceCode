@@ -365,9 +365,7 @@ Report 51036 "Loans Defaulter Aging"
             IF LoanRepaymentSchedule.FindLast() THEN begin
 
                 TotalExpected := Round(LoanRepaymentSchedule."Loan Balance");
-
             end;
-
         end;
 
         //lets use outstanding balance

@@ -101,6 +101,29 @@ Table 59047 "Online Loan Application"
         }
 
         field(30; "Guarantorship Requested"; Boolean) { }
+
+        field(31; "Mode of Disbursement"; Enum "Mode Of Disbursement")
+        {
+
+
+            trigger OnValidate()
+            begin
+                // if "Mode of Disbursement" = "mode of disbursement"::"Bank Transfer" then begin
+                //     //TESTFIELD("Account No");
+                // end;
+            end;
+        }
+
+        field(32; "Recovery Mode"; Option)
+        {
+            InitValue = "Bosa Receipt";
+            OptionMembers = ,"Payroll Deduction","BOSA Receipt","Bank Deposit";
+
+            trigger OnValidate()
+            begin
+                ///
+            end;
+        }
     }
 
     keys

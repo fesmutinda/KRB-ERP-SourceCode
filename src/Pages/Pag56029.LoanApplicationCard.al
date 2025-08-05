@@ -28,6 +28,15 @@ Page 56029 "Loan Application Card"
                     Caption = 'Member';
                     Editable = MNoEditable;
                     ShowMandatory = true;
+
+                    // trigger onValidate()
+                    // begin
+
+                    //     if LoanApp.IsBlacklisted() then begin
+                    //         if not Confirm('Member has blacklisted Instant Loan No. %1 for %2 more days. Do you want to continue?', false, LoanApp."Loan  No.", LoanApp.GetDaysRemainingInBlacklist()) then
+                    //             CurrPage.Close();
+                    //     end;
+                    // end;
                 }
                 field("Loan Product Type"; Rec."Loan Product Type")
                 {
@@ -306,7 +315,7 @@ Page 56029 "Loan Application Card"
                     Style = StrongAccent;
                     ShowMandatory = true;
                     Editable = MNoEditable;
-                    OptionCaption = 'Checkoff,Standing Order,Salary,Dividend';
+                    //OptionCaption = 'Checkoff,Standing Order,Salary,Dividend';
                 }
                 field("Mode of Disbursement"; Rec."Mode of Disbursement")
                 {
@@ -358,7 +367,7 @@ Page 56029 "Loan Application Card"
                     ApplicationArea = Basic;
                     Caption = 'Bank Code';
                     ShowMandatory = true;
-                    NotBlank = true;
+                    //NotBlank = true;
                 }
                 field("Bank Name"; Rec."Bank Name")
                 {
@@ -375,6 +384,22 @@ Page 56029 "Loan Application Card"
                 {
                     ApplicationArea = Basic;
                 }
+
+            }
+
+            group("Mobile Money Details")
+            {
+
+                field("Mobile Money Service"; Rec."Mobile Money Service")
+                {
+                    ApplicationArea = Basic;
+                }
+
+                field("Mobile Money Receiving Number"; Rec."Mobile Money Receiving Number")
+                {
+                    ApplicationArea = Basic;
+                }
+
             }
             part(Control1000000003; "Loans CheckRisk List")
             {
@@ -611,7 +636,8 @@ Page 56029 "Loan Application Card"
     begin
         Rec.Source := Rec.Source::BOSA;
         Rec."Mode of Disbursement" := Rec."mode of disbursement"::"Cheque";
-        Rec."Mode of Disbursement" := Rec."Mode Of Disbursement"::Cash;
+        Rec."Mode of Disbursement" := Rec."Mode Of Disbursement"::"Bank Transfer";
+
     end;
 
     trigger OnNextRecord(Steps: Integer): Integer
