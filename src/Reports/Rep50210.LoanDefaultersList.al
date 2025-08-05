@@ -286,9 +286,6 @@ Report 50210 "Loan Defaulters List"
                         TableRelation = "Loan Products Setup".Code;
                     }
 
-
-
-
                 }
             }
         }

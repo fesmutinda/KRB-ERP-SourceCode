@@ -4617,6 +4617,11 @@ Table 51371 "Loans Register"
             Caption = 'Receiving Number';
         }
 
+        field(69277; "Loan Aging Run Date"; Date)
+        {
+
+        }
+
     }
 
     keys

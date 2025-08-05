@@ -1,7 +1,7 @@
 #pragma warning disable AA0005, AA0008, AA0018, AA0021, AA0072, AA0137, AA0201, AA0204, AA0206, AA0218, AA0228, AL0254, AL0424, AS0011, AW0006 // ForNAV settings
-Report 51036 "Loans Defaulter Aging"
+Report 51037 "Loans Aging Presentation"
 {
-    RDLCLayout = './Layout/LoansDefaulterAging.rdl';
+    RDLCLayout = './Layout/LoansDefaulterAgingPresentation.rdl';
     DefaultLayout = RDLC;
 
     dataset
@@ -42,22 +42,22 @@ Report 51036 "Loans Defaulter Aging"
             column(V0Month_; "0Month")
             {
             }
-            column(AmountinArrears_LoansRegister; CalculatedAmountInArrears)
+            column(AmountinArrears_LoansRegister; "Loans Register"."Amount in Arrears")
             {
             }
             column(LoanProductType; "Loans Register"."Loan Product Type Name")
             {
             }
-            column(AsAt; AsAt)
+            column(AsAt; "Loans Register"."Loan Aging Run Date")
             {
             }
-            column(Days; CalculatedDaysInArrears)
+            column(Days; "Loans Register"."Days In Arrears")
             {
             }
-            column(Months; CalculatedMonthsInArrears)
+            column(Months; "Loans Register"."No of Months in Arrears")
             {
             }
-            column(LoanCategory; CalculatedLoanCategory)
+            column(LoanCategory; "Loans Register"."Loans Category")
             {
             }
             column(Company_Name; Company.Name)
@@ -115,10 +115,10 @@ Report 51036 "Loans Defaulter Aging"
                 "0Month" := 0;
 
                 // Calculate loan classification without modifying the table
-                CalculateLoanClassification();
+                //CalculateLoanClassification();
 
                 // Set aging buckets based on calculated loan category
-                case CalculatedLoanCategory of
+                case "Loans Register"."Loans Category" of
                     CalculatedLoanCategory::Performing:
                         "0Month" := "Loans Register"."Outstanding Balance";
                     CalculatedLoanCategory::Watch:
@@ -149,10 +149,10 @@ Report 51036 "Loans Defaulter Aging"
         {
             area(Content)
             {
-                field("As At"; AsAt)
-                {
-                    ApplicationArea = Basic;
-                }
+                // field("As At"; AsAt)
+                // {
+                //     ApplicationArea = Basic;
+                // }
 
                 field(LoanProductTypeFilter; LoanProductTypeCode)
                 {
@@ -295,7 +295,6 @@ Report 51036 "Loans Defaulter Aging"
         "Loans Register"."No of Days in Arrears" := CalculatedDaysInArrears;
         "Loans Register"."No of Months in Arrears" := CalculatedMonthsInArrears;
         "Loans Register"."Days In Arrears" := CalculatedDaysInArrears;
-        "Loans Register"."Loan Aging Run Date" := AsAt;
 
         case CalculatedLoanCategory of
             CalculatedLoanCategory::Performing:
