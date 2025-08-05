@@ -4609,7 +4609,7 @@ Table 51371 "Loans Register"
         {
             Caption = 'Mobile Money Service';
             OptionMembers = " ",AirtelMoney,MPesa,TKash,MTNMobile,Orange,Equity,KCB,Safaricom;
-            OptionCaption = ' ,Airtel Money,M-Pesa,T-Kash,MTN Mobile Money,Orange Money,Equity Mobile,KCB M-Pesa,Safaricom';
+            OptionCaption = ' ,Airtel Money,M-Pesa,T-Kash';
         }
 
         field(69276; "Mobile Money Receiving Number"; Text[10])

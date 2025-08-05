@@ -15,11 +15,15 @@ report 50245 InstantLoanAppraisal
             column(Bank_Account; "Bank Account") { }
             column(Bank_Branch; "Bank Branch") { }
             column(Mode_of_Disbursement; "Mode of Disbursement") { }
+
+            column(DisbursementService; DisbursementService) { }
+
+            column(DisbursementAccount; DisbursementAccount) { }
             column(Recovery_Mode; "Recovery Mode") { }
             column(CompanyEmail; CompanyEmail) { }
             column(Requested_Amount; "Requested Amount") { }
             column(CompanyAddress; CompanyAddress) { }
-            column(Amount_in_words; System.Format(Requested_Amount, 0, '###,###.00')) { }
+            column(Amount_in_words; ConvertAmountToWords("Requested Amount")) { }
             column(NumberText_1_; NumberText[1])
             {
             }
@@ -38,21 +42,15 @@ report 50245 InstantLoanAppraisal
             column(COMPANYNAME; COMPANYNAME)
             {
             }
-            column(CompanyInfo_Address; CompanyInfo.Address)
-            {
-            }
-            column(CompanyInfo_Address2; CompanyInfo."Address 2")
-            {
-            }
-            column(CompanyInfo__Phone_No__; CompanyInfo."Phone No.")
-            {
-            }
-            column(CompanyInfo__E_Mail_; CompanyInfo."E-Mail")
-            {
-            }
-            column(Loans__Application_Date_; "Application Date")
-            {
-            }
+
+            column(Company_Name; CompanyInfo.Name) { }
+            column(Company_Address; CompanyInfo.Address) { }
+            column(Company_Address_2; CompanyInfo."Address 2") { }
+            column(Company_Phone_No; CompanyInfo."Phone No.") { }
+            column(Company_Fax_No; CompanyInfo."Fax No.") { }
+            column(Company_Picture; CompanyInfo.Picture) { }
+            column(Company_Email; CompanyInfo."E-Mail") { }
+
             column(valuation_LoansRegister; "Loans Register"."Valuation Cost")
             {
             }
@@ -830,6 +828,19 @@ report 50245 InstantLoanAppraisal
 
 
 
+                if "Mode of Disbursement" = "Mode of Disbursement"::"Bank Transfer" then begin
+
+                    DisbursementService := "Bank Name";
+
+                    DisbursementAccount := "Bank Account";
+                end;
+
+                if "Mode of Disbursement" = "Mode of Disbursement"::"Mobile Money" then begin
+
+                    DisbursementService := Format("Mobile Money Service");
+                    DisbursementAccount := "Mobile Money Receiving Number";
+                end;
+
                 CheckReport.InitTextVariable();
                 CheckReport.FormatNoText(NumberText, "Requested Amount", ' ');
             end;
@@ -1139,6 +1150,10 @@ report 50245 InstantLoanAppraisal
         Booster: Decimal;
         Prembal: Decimal;
 
+        DisbursementAccount: Text;
+
+        DisbursementService: Text;
+
 
     procedure GetLoanCharges(ProductCode: Code[20]; ChargeCode: Code[20]; Amount: Decimal) Charge: Decimal
     var
@@ -1155,6 +1170,17 @@ report 50245 InstantLoanAppraisal
         end;
 
         exit(Charge);
+    end;
+
+
+    local procedure ConvertAmountToWords(Amount: Decimal): Text
+    var
+        CheckReport: Report Check;
+        NumberText: array[2] of Text[80];
+    begin
+        CheckReport.InitTextVariable();
+        CheckReport.FormatNoText(NumberText, Amount, '');
+        exit(NumberText[1] + ' ' + NumberText[2]);
     end;
 }
 

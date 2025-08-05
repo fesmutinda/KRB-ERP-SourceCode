@@ -178,6 +178,13 @@ page 57003 "Instant Loan Application Card"
                     ApplicationArea = Basic;
                     Editable = false;
                 }
+
+                field("Mode of Disbursement"; Rec."Mode of Disbursement")
+                {
+                    ApplicationArea = Basic;
+                    Editable = MNoEditable;
+                    ShowMandatory = true;
+                }
                 field("Recovery Mode"; Rec."Recovery Mode")
                 {
                     ApplicationArea = Basic;
