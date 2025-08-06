@@ -293,7 +293,7 @@ page 57004 "Instant Loan Disbursement Card"
                 {
                     ApplicationArea = Basic;
                     Caption = 'Print Voucher';
-                    Image = Print; // More appropriate icon for printing
+                    Image = Print;
                     Promoted = true;
                     PromotedCategory = Process;
                     ToolTip = 'Print the loan disbursement voucher for this application';

@@ -1564,7 +1564,7 @@ Table 51371 "Loans Register"
         {
             CalcFormula = sum("Cust. Ledger Entry"."Amount Posted" where("Customer No." = field("Client Code"),
                                                                   "Loan No" = field("Loan  No."),
-                                                                  "Transaction Type" = filter(Loan | "Loan Repayment" | "Interest Paid" | "Interest Due" | "Loan Transfer Charges"),
+                                                                  "Transaction Type" = filter(Loan | "Loan Repayment" | "Interest Paid" | "Interest Due" | "Loan Transfer Charges" | "Unallocated Funds"),
                                                                   "Currency Code" = field("Currency Filter"),
                                                                   "Posting Date" = field("Date filter"),
                                                                   Reversed = const(false)));
