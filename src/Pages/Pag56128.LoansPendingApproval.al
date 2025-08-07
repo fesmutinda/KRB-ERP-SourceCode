@@ -307,7 +307,8 @@ Page 56128 "Loans Pending Approval"
                         LoanApp.Reset;
                         LoanApp.SetRange(LoanApp."Loan  No.", Rec."Loan  No.");
                         if LoanApp.Find('-') then begin
-                            Report.Run(50244, true, false, LoanApp);
+                            //Report.Run(50244, true, false, LoanApp);
+                            Report.Run(56384, true, false, LoanApp);
                         end;
                     end;
                 }

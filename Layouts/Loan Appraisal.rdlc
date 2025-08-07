@@ -2373,7 +2373,6 @@
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -3963,7 +3962,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=User!UserID</Value>
+                    <Value>=Fields!UserFullName.Value</Value>
                     <Style>
                       <FontFamily>Segoe UI</FontFamily>
                       <FontSize>7pt</FontSize>
@@ -3971,10 +3970,19 @@
                     </Style>
                   </TextRun>
                   <TextRun>
-                    <Value>             Signature ................................................               Date ......................................</Value>
+                    <Value>             Signature ................................................               Date </Value>
                     <Style>
                       <FontFamily>Segoe UI</FontFamily>
                       <FontSize>7pt</FontSize>
+                      <TextDecoration>None</TextDecoration>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Value>=Fields!Appraisal_Date.Value</Value>
+                    <Style>
+                      <FontFamily>Segoe UI</FontFamily>
+                      <FontSize>7pt</FontSize>
+                      <Format>d MMM yyyy</Format>
                       <TextDecoration>None</TextDecoration>
                     </Style>
                   </TextRun>
@@ -4001,86 +4009,12 @@
               <PaddingBottom>2pt</PaddingBottom>
             </Style>
           </Textbox>
-          <Textbox Name="Textbox50">
-            <CanGrow>true</CanGrow>
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>Date:</Value>
-                    <Style>
-                      <FontFamily>Segoe UI</FontFamily>
-                      <FontSize>7pt</FontSize>
-                    </Style>
-                  </TextRun>
-                </TextRuns>
-                <Style>
-                  <TextAlign>Left</TextAlign>
-                </Style>
-              </Paragraph>
-            </Paragraphs>
-            <rd:DefaultName>Textbox50</rd:DefaultName>
-            <Top>7.86869in</Top>
-            <Left>0.22674in</Left>
-            <Height>0.20497in</Height>
-            <Width>0.91668in</Width>
-            <ZIndex>71</ZIndex>
-            <Style>
-              <Border>
-                <Color>LightGrey</Color>
-                <Style>None</Style>
-              </Border>
-              <PaddingLeft>2pt</PaddingLeft>
-              <PaddingRight>2pt</PaddingRight>
-              <PaddingTop>2pt</PaddingTop>
-              <PaddingBottom>2pt</PaddingBottom>
-            </Style>
-          </Textbox>
-          <Textbox Name="Textbox51">
-            <CanGrow>true</CanGrow>
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>=Globals!ExecutionTime</Value>
-                    <Style>
-                      <FontFamily>Segoe UI</FontFamily>
-                      <FontSize>7pt</FontSize>
-                      <Format>g</Format>
-                      <TextDecoration>Underline</TextDecoration>
-                    </Style>
-                  </TextRun>
-                </TextRuns>
-                <Style>
-                  <TextAlign>Left</TextAlign>
-                </Style>
-              </Paragraph>
-            </Paragraphs>
-            <rd:DefaultName>Textbox51</rd:DefaultName>
-            <Top>7.86869in</Top>
-            <Left>1.14342in</Left>
-            <Height>0.20497in</Height>
-            <Width>5.78315in</Width>
-            <ZIndex>72</ZIndex>
-            <Style>
-              <Border>
-                <Color>LightGrey</Color>
-                <Style>None</Style>
-              </Border>
-              <PaddingLeft>2pt</PaddingLeft>
-              <PaddingRight>2pt</PaddingRight>
-              <PaddingTop>2pt</PaddingTop>
-              <PaddingBottom>2pt</PaddingBottom>
-            </Style>
-          </Textbox>
           <Line Name="Line12">
             <Top>18.83416cm</Top>
             <Left>0.5759cm</Left>
             <Height>0cm</Height>
             <Width>17.72043cm</Width>
-            <ZIndex>73</ZIndex>
+            <ZIndex>71</ZIndex>
             <Style>
               <Border>
                 <Style>Dashed</Style>
@@ -4116,11 +4050,11 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox53</rd:DefaultName>
-            <Top>20.9269cm</Top>
-            <Left>0.5759cm</Left>
+            <Top>20.09936cm</Top>
+            <Left>0.57589cm</Left>
             <Height>0.44125cm</Height>
             <Width>17.00112cm</Width>
-            <ZIndex>74</ZIndex>
+            <ZIndex>72</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -4138,32 +4072,42 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Verified By :     .....</Value>
+                    <Value>Verified By : </Value>
                     <Style>
                       <FontFamily>Calibri</FontFamily>
                       <FontSize>8pt</FontSize>
                     </Style>
                   </TextRun>
                   <TextRun>
-                    <Value>Credit Commitee</Value>
+                    <Value>=Fields!Approver1Name.Value</Value>
                     <Style>
                       <FontFamily>Calibri</FontFamily>
-                      <FontSize>9pt</FontSize>
+                      <FontSize>8pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
                   <TextRun>
-                    <Value>......                 </Value>
+                    <Value xml:space="preserve">                                </Value>
                     <Style>
                       <FontFamily>Calibri</FontFamily>
                       <FontSize>8pt</FontSize>
                     </Style>
                   </TextRun>
                   <TextRun>
-                    <Value>Signature ................................................ ..........................              Date ................................</Value>
+                    <Value>Signature ................................................ ..........................              Date </Value>
                     <Style>
                       <FontFamily>Segoe UI</FontFamily>
                       <FontSize>7pt</FontSize>
+                      <TextDecoration>None</TextDecoration>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Value>=Fields!Approver1Date.Value</Value>
+                    <Style>
+                      <FontFamily>Segoe UI</FontFamily>
+                      <FontSize>7pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                      <Format>d MMM yyyy</Format>
                       <TextDecoration>None</TextDecoration>
                     </Style>
                   </TextRun>
@@ -4172,11 +4116,11 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox12</rd:DefaultName>
-            <Top>21.89759cm</Top>
+            <Top>20.85471cm</Top>
             <Left>0.5759cm</Left>
             <Height>0.44125cm</Height>
             <Width>17.00112cm</Width>
-            <ZIndex>75</ZIndex>
+            <ZIndex>73</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -4194,32 +4138,46 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Verified By :     .....</Value>
+                    <Value>Verified By :  </Value>
                     <Style>
                       <FontFamily>Calibri</FontFamily>
                       <FontSize>8pt</FontSize>
+                      <Format>d MMM yyyy</Format>
                     </Style>
                   </TextRun>
                   <TextRun>
-                    <Value>Credit Commitee</Value>
+                    <Value>=Fields!Approver2Name.Value</Value>
                     <Style>
                       <FontFamily>Calibri</FontFamily>
-                      <FontSize>9pt</FontSize>
+                      <FontSize>8pt</FontSize>
                       <FontWeight>Bold</FontWeight>
+                      <Format>d MMM yyyy</Format>
                     </Style>
                   </TextRun>
                   <TextRun>
-                    <Value>......                </Value>
+                    <Value xml:space="preserve">                              </Value>
                     <Style>
                       <FontFamily>Calibri</FontFamily>
                       <FontSize>8pt</FontSize>
+                      <Format>d MMM yyyy</Format>
                     </Style>
                   </TextRun>
                   <TextRun>
-                    <Value>Signature ................................................ ..........................              Date ................................</Value>
+                    <Value>Signature ................................................ ..........................              Date </Value>
                     <Style>
                       <FontFamily>Segoe UI</FontFamily>
                       <FontSize>7pt</FontSize>
+                      <Format>d MMM yyyy</Format>
+                      <TextDecoration>None</TextDecoration>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Value>=Fields!Approver2Date.Value</Value>
+                    <Style>
+                      <FontFamily>Segoe UI</FontFamily>
+                      <FontSize>7pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                      <Format>d MMM yyyy</Format>
                       <TextDecoration>None</TextDecoration>
                     </Style>
                   </TextRun>
@@ -4228,11 +4186,11 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox12</rd:DefaultName>
-            <Top>22.94047cm</Top>
+            <Top>21.89759cm</Top>
             <Left>0.60946cm</Left>
             <Height>0.44125cm</Height>
             <Width>17.00112cm</Width>
-            <ZIndex>76</ZIndex>
+            <ZIndex>74</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -4250,32 +4208,42 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Verified By :    .....</Value>
+                    <Value>Verified By : </Value>
                     <Style>
                       <FontFamily>Calibri</FontFamily>
                       <FontSize>8pt</FontSize>
                     </Style>
                   </TextRun>
                   <TextRun>
-                    <Value>Credit Commitee</Value>
+                    <Value>=Fields!Approver3Name.Value</Value>
                     <Style>
                       <FontFamily>Calibri</FontFamily>
-                      <FontSize>9pt</FontSize>
+                      <FontSize>8pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
                   <TextRun>
-                    <Value>......                </Value>
+                    <Value xml:space="preserve">                               </Value>
                     <Style>
                       <FontFamily>Calibri</FontFamily>
                       <FontSize>8pt</FontSize>
                     </Style>
                   </TextRun>
                   <TextRun>
-                    <Value>Signature ................................................ ..........................              Date ................................</Value>
+                    <Value>Signature ................................................ ..........................              Date </Value>
                     <Style>
                       <FontFamily>Segoe UI</FontFamily>
                       <FontSize>7pt</FontSize>
+                      <TextDecoration>None</TextDecoration>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Value>=Fields!Approver3Date.Value</Value>
+                    <Style>
+                      <FontFamily>Segoe UI</FontFamily>
+                      <FontSize>7pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                      <Format>d MMM yyyy</Format>
                       <TextDecoration>None</TextDecoration>
                     </Style>
                   </TextRun>
@@ -4284,11 +4252,11 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox12</rd:DefaultName>
-            <Top>24.10464cm</Top>
+            <Top>23.06176cm</Top>
             <Left>0.60946cm</Left>
             <Height>0.44125cm</Height>
             <Width>17.00112cm</Width>
-            <ZIndex>77</ZIndex>
+            <ZIndex>75</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -4306,29 +4274,29 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Verified By :    .....</Value>
+                    <Value>Verified By : </Value>
                     <Style>
                       <FontFamily>Calibri</FontFamily>
                       <FontSize>8pt</FontSize>
                     </Style>
                   </TextRun>
                   <TextRun>
-                    <Value>Treasurer</Value>
+                    <Value>=Fields!Approver4Name.Value</Value>
                     <Style>
                       <FontFamily>Calibri</FontFamily>
-                      <FontSize>9pt</FontSize>
+                      <FontSize>8pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
                   <TextRun>
-                    <Value>......</Value>
+                    <Value xml:space="preserve">                                </Value>
                     <Style>
                       <FontFamily>Calibri</FontFamily>
                       <FontSize>8pt</FontSize>
                     </Style>
                   </TextRun>
                   <TextRun>
-                    <Value>....................</Value>
+                    <Value>Signature ................................................ ..........................              Date </Value>
                     <Style>
                       <FontFamily>Segoe UI</FontFamily>
                       <FontSize>7pt</FontSize>
@@ -4336,17 +4304,12 @@
                     </Style>
                   </TextRun>
                   <TextRun>
-                    <Value xml:space="preserve">               </Value>
-                    <Style>
-                      <FontFamily>Calibri</FontFamily>
-                      <FontSize>8pt</FontSize>
-                    </Style>
-                  </TextRun>
-                  <TextRun>
-                    <Value>Signature ................................................ ..........................              Date ................................</Value>
+                    <Value>=Fields!Approver4Date.Value</Value>
                     <Style>
                       <FontFamily>Segoe UI</FontFamily>
                       <FontSize>7pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                      <Format>d MMM yyyy</Format>
                       <TextDecoration>None</TextDecoration>
                     </Style>
                   </TextRun>
@@ -4355,11 +4318,11 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox12</rd:DefaultName>
-            <Top>25.40374cm</Top>
+            <Top>24.36086cm</Top>
             <Left>0.59236cm</Left>
             <Height>0.44125cm</Height>
             <Width>17.00112cm</Width>
-            <ZIndex>78</ZIndex>
+            <ZIndex>76</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -4391,7 +4354,7 @@
             <Left>1.56673in</Left>
             <Height>0.17708in</Height>
             <Width>5.31307in</Width>
-            <ZIndex>79</ZIndex>
+            <ZIndex>77</ZIndex>
             <Style>
               <Border>
                 <Color>Indigo</Color>
@@ -4436,7 +4399,7 @@
             <Left>1.56673in</Left>
             <Height>0.25in</Height>
             <Width>5.31307in</Width>
-            <ZIndex>80</ZIndex>
+            <ZIndex>78</ZIndex>
             <Style>
               <Border>
                 <Color>Indigo</Color>
@@ -4481,7 +4444,7 @@
             <Left>1.56673in</Left>
             <Height>0.25in</Height>
             <Width>5.31307in</Width>
-            <ZIndex>81</ZIndex>
+            <ZIndex>79</ZIndex>
             <Style>
               <Border>
                 <Color>Indigo</Color>
@@ -4526,7 +4489,7 @@
             <Left>1.56673in</Left>
             <Height>0.25in</Height>
             <Width>5.31307in</Width>
-            <ZIndex>82</ZIndex>
+            <ZIndex>80</ZIndex>
             <Style>
               <Border>
                 <Color>Indigo</Color>
@@ -4558,7 +4521,7 @@
             <Left>0.2014in</Left>
             <Height>0.92708in</Height>
             <Width>0.99369in</Width>
-            <ZIndex>83</ZIndex>
+            <ZIndex>81</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -4570,7 +4533,7 @@
             <Left>0.24437cm</Left>
             <Height>0cm</Height>
             <Width>18.15804cm</Width>
-            <ZIndex>84</ZIndex>
+            <ZIndex>82</ZIndex>
             <Style>
               <Border>
                 <Style>Solid</Style>
@@ -5712,6 +5675,42 @@ kHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpBvD/AZI2
   <DataSets>
     <DataSet Name="DataSet_Result">
       <Fields>
+        <Field Name="Approver1Name">
+          <DataField>Approver1Name</DataField>
+        </Field>
+        <Field Name="Approver1Date">
+          <DataField>Approver1Date</DataField>
+        </Field>
+        <Field Name="Approver1Status">
+          <DataField>Approver1Status</DataField>
+        </Field>
+        <Field Name="Approver2Name">
+          <DataField>Approver2Name</DataField>
+        </Field>
+        <Field Name="Approver2Date">
+          <DataField>Approver2Date</DataField>
+        </Field>
+        <Field Name="Approver2Status">
+          <DataField>Approver2Status</DataField>
+        </Field>
+        <Field Name="Approver3Name">
+          <DataField>Approver3Name</DataField>
+        </Field>
+        <Field Name="Approver3Date">
+          <DataField>Approver3Date</DataField>
+        </Field>
+        <Field Name="Approver3Status">
+          <DataField>Approver3Status</DataField>
+        </Field>
+        <Field Name="Approver4Name">
+          <DataField>Approver4Name</DataField>
+        </Field>
+        <Field Name="Approver4Date">
+          <DataField>Approver4Date</DataField>
+        </Field>
+        <Field Name="Approver4Status">
+          <DataField>Approver4Status</DataField>
+        </Field>
         <Field Name="TotalTopUpDeductions">
           <DataField>TotalTopUpDeductions</DataField>
         </Field>
@@ -5756,6 +5755,15 @@ kHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpBvD/AZI2
         </Field>
         <Field Name="USERID">
           <DataField>USERID</DataField>
+        </Field>
+        <Field Name="Appraisal_Date">
+          <DataField>Appraisal_Date</DataField>
+        </Field>
+        <Field Name="UserFullName">
+          <DataField>UserFullName</DataField>
+        </Field>
+        <Field Name="UserSignature">
+          <DataField>UserSignature</DataField>
         </Field>
         <Field Name="Company_Name">
           <DataField>Company_Name</DataField>

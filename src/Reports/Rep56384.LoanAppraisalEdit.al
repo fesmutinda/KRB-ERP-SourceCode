@@ -10,6 +10,46 @@ Report 56384 "Loan Appraisal Edit"
         {
             DataItemTableView = sorting("Loan  No.");
             RequestFilterFields = "Loan  No.";
+
+            column(Approver1Name; Approver1Name)
+            {
+            }
+            column(Approver1Date; Approver1Date)
+            {
+            }
+            column(Approver1Status; Approver1Status)
+            {
+            }
+
+            column(Approver2Name; Approver2Name)
+            {
+            }
+            column(Approver2Date; Approver2Date)
+            {
+            }
+            column(Approver2Status; Approver2Status)
+            {
+            }
+
+            column(Approver3Name; Approver3Name)
+            {
+            }
+            column(Approver3Date; Approver3Date)
+            {
+            }
+            column(Approver3Status; Approver3Status)
+            {
+            }
+
+            column(Approver4Name; Approver4Name)
+            {
+            }
+            column(Approver4Date; Approver4Date)
+            {
+            }
+            column(Approver4Status; Approver4Status)
+            {
+            }
             column(TotalTopUpDeductions; TotalTopUpDeductions)
             {
             }
@@ -39,6 +79,22 @@ Report 56384 "Loan Appraisal Edit"
             column(USERID; UserId)
             {
             }
+
+            column(Appraisal_Date; "Appraisal Date")
+            {
+
+            }
+            column(UserFullName; UserfullName)
+            {
+
+            }
+
+            column(UserSignature; UserSignature)
+            {
+
+            }
+
+
             column(Company_Name; CompanyInfo.Name)
             {
             }
@@ -1187,6 +1243,9 @@ Report 56384 "Loan Appraisal Edit"
                     end
                 end;
 
+
+                SetApprovalDetails();
+
             end;
 
             trigger OnPreDataItem()
@@ -1218,6 +1277,8 @@ Report 56384 "Loan Appraisal Edit"
     begin
         if GenSetUp.Get(0) then
             CompanyInfo.Get;
+
+        GetUserDetails();
     end;
 
     local procedure GetMemberName(LoanNumber: code[60]): Text
@@ -1579,6 +1640,118 @@ Report 56384 "Loan Appraisal Edit"
         TotalOffsetCharge: Decimal;
 
         VarMonthlyInterest: Decimal;
+
+        UserRec: Record User;
+
+        UserFullName: Text;
+
+        UserSignature: Text;
+
+        // Approver 1 variables
+        Approver1Name: Text[100];
+        Approver1Date: DateTime;
+        Approver1Status: Text[20];
+
+        // Approver 2 variables
+        Approver2Name: Text[100];
+        Approver2Date: DateTime;
+        Approver2Status: Text[20];
+
+        // Approver 3 variables
+        Approver3Name: Text[100];
+        Approver3Date: Datetime;
+        Approver3Status: Text[20];
+
+        // Approver 4 variables
+        Approver4Name: Text[100];
+        Approver4Date: DateTime;
+        Approver4Status: Text[20];
+
+        // Helper variables
+        ApprovalEntryRec: Record "Approval Entry";
+        EmployeeRec: Record Employee;
+
+
+    procedure GetUserDetails()
+
+    begin
+
+
+        UserRec.Reset();
+        UserRec.SetRange("User Security ID", UserSecurityId());
+
+        if UserRec.Findfirst() then begin
+
+            UserFullName := UserRec."Full Name";
+
+        end
+    end;
+
+    local procedure SetApprovalDetails()
+    var
+        ApproverName: Text[100];
+        ApprovalDate: DateTime;
+        ApprovalStatus: Text[20];
+    begin
+
+        ApprovalEntryRec.Reset();
+        ApprovalEntryRec.SetRange("Table ID", Database::"Loans Register");
+        ApprovalEntryRec.SetRange("Record ID to Approve", "Loans Register".RecordId);
+        ApprovalEntryRec.SetRange(Status, ApprovalEntryRec.Status::Approved);
+
+
+        if ApprovalEntryRec.FindSet() then begin
+
+            repeat
+
+                UserRec.Reset();
+                UserRec.SetRange("User Name", ApprovalEntryRec."Approver ID");
+
+                IF UserRec.FindSet() THEN begin
+
+                    ApproverName := UserRec."Full Name";
+                    ApprovalDate := ApprovalEntryRec."Last Date-Time Modified"
+
+                end;
+
+
+
+                case ApprovalEntryRec."Approver ID" of
+                    'KRBSC - CHAIRPERSON SUPERVISORY':
+                        begin
+                            Approver1Name := ApproverName;
+                            Approver1Date := ApprovalDate;
+                            Approver1Status := ApprovalStatus;
+                        end;
+                    'SWIZZSOFT':
+                        begin
+                            Approver2Name := ApproverName;
+                            Approver2Date := ApprovalDate;
+                            Approver2Status := ApprovalStatus;
+                        end;
+                    'CREDITC2':
+                        begin
+                            Approver2Name := ApproverName;
+                            Approver2Date := ApprovalDate;
+                            Approver2Status := ApprovalStatus;
+                        end;
+                    'CREDITC3':
+                        begin
+                            Approver3Name := ApproverName;
+                            Approver3Date := ApprovalDate;
+                            Approver3Status := ApprovalStatus;
+                        end;
+                    'KRBSC-TREASURER':
+                        begin
+                            Approver4Name := ApproverName;
+                            Approver4Date := ApprovalDate;
+                            Approver4Status := ApprovalStatus;
+                        end;
+                end;
+            until ApprovalEntryRec.Next() = 0
+        end
+    end;
+
 
 
     procedure ComputeTax()

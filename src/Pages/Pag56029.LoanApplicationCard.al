@@ -478,8 +478,18 @@ Page 56029 "Loan Application Card"
                         LoanApp.Reset;
                         LoanApp.SetRange(LoanApp."Loan  No.", Rec."Loan  No.");
                         if LoanApp.Find('-') then begin
-                            Report.Run(56384, true, false, LoanApp);
+                            LoanApp."Appraisal Date" := Today;
+                            LoanApp.Modify();
+
                         end;
+
+                        Commit();
+
+                        if LoanApp.Find('-') then begin
+
+                            Report.Run(56384, true, false, LoanApp);
+
+                        end
 
                     end;
                 }

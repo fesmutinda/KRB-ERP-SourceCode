@@ -387,28 +387,73 @@ Page 51007 "BOSA Loans Disbursement Card"
                         end;
                     end;
                 }
-                action("Send Approvals")
+                action("Loan Appraisal Edit")
                 {
-                    Caption = 'Send For Approval';
-                    Visible = false;
-                    Enabled = (not OpenApprovalEntriesExist) AND EnabledApprovalWorkflowsExist AND (not RecordApproved);
-                    Image = SendApprovalRequest;
+                    ApplicationArea = Basic;
+                    Caption = 'View Appraisal';
+                    Enabled = true;
+                    Image = Aging;
                     Promoted = true;
                     PromotedCategory = Process;
+                    PromotedIsBig = true;
+                    PromotedOnly = true;
 
                     trigger OnAction()
+                    var
+                        LoanApp: Record "Loans Register";
+                        EntryNos: Integer;
+                        Audit: Record "Audit Entries";
                     begin
-                        FnCheckForTestFields();
-                        if Confirm('Send Approval Request For Loan Application of Ksh. ' + Format(Rec."Approved Amount") + ' applied by ' + Format(Rec."Client Name") + ' ?', false) = false then begin
-                            exit;
-                        end
-                        else begin
-                            SwizzApprovalsCodeUnit.SendLoanApplicationsRequestForApproval(rec."Loan  No.", Rec);
-                            FnSendLoanApprovalNotifications();
-                            CurrPage.close();
+                        //Audit Entries
+                        // if (UserId <> '') then begin
+                        //     EntryNos := 0;
+                        //     if Audit.FindLast then
+                        //         EntryNos := 1 + Audit."Entry No";
+                        //     Audit.Init;
+                        //     Audit."Entry No" := EntryNos;
+                        //     Audit."Transaction Type" := 'Loan Appraisal';
+                        //     Audit."Loan Number" := Rec."Loan  No.";
+                        //     Audit."Document Number" := Rec."Loan  No.";
+                        //     Audit.UsersId := UserId;
+                        //     Audit.Amount := Rec."Requested Amount";
+                        //     Audit.Date := Today;
+                        //     Audit.Time := Time;
+                        //     Audit.Source := 'LOAN APPLICATION';
+                        //     Audit.Insert;
+                        //     Commit;
+                        // end;
+                        //End Audit Entries
+
+                        LoanApp.Reset;
+                        LoanApp.SetRange(LoanApp."Loan  No.", Rec."Loan  No.");
+                        if LoanApp.Find('-') then begin
+                            Report.Run(56384, true, false, LoanApp);
                         end;
+
                     end;
                 }
+                // action("Send Approvals")
+                // {
+                //     Caption = 'Send For Approval';
+                //     Visible = false;
+                //     Enabled = (not OpenApprovalEntriesExist) AND EnabledApprovalWorkflowsExist AND (not RecordApproved);
+                //     Image = SendApprovalRequest;
+                //     Promoted = true;
+                //     PromotedCategory = Process;
+
+                //     trigger OnAction()
+                //     begin
+                //         FnCheckForTestFields();
+                //         if Confirm('Send Approval Request For Loan Application of Ksh. ' + Format(Rec."Approved Amount") + ' applied by ' + Format(Rec."Client Name") + ' ?', false) = false then begin
+                //             exit;
+                //         end
+                //         else begin
+                //             SwizzApprovalsCodeUnit.SendLoanApplicationsRequestForApproval(rec."Loan  No.", Rec);
+                //             FnSendLoanApprovalNotifications();
+                //             CurrPage.close();
+                //         end;
+                //     end;
+                // }
                 action("Cancel Approvals")
                 {
                     Caption = 'Cancel For Approval';

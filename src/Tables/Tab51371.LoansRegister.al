@@ -4620,6 +4620,11 @@ Table 51371 "Loans Register"
 
         }
 
+        field(69278; "Appraisal Date"; Date)
+        {
+
+        }
+
     }
 
     keys
