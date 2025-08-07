@@ -4244,10 +4244,8 @@ Table 51371 "Loans Register"
         }
         field(51516217; "Outstanding Penalty"; Decimal)
         {
-            CalcFormula = sum("Cust. Ledger Entry"."Amount Posted" where("Customer No." = field("Client Code"),
-                                                                  "Transaction Type" = filter("Loan Insurance Paid" | "Loan Insurance Charged"),
-                                                                  "Loan No" = field("Loan  No."),
-                                                                  "Posting Date" = field("Date filter")));
+
+            CalcFormula = sum("Loan Repayment Schedule".Penalty where("Loan No." = field("Loan  No.")));
             FieldClass = FlowField;
         }
         field(51516218; "Tranch Amount Disbursed"; Decimal)

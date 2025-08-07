@@ -90,6 +90,24 @@ Table 51375 "Loan Repayment Schedule"
         field(56; "Reschedule No"; Integer)
         {
         }
+
+        field(57; "Penalty"; Decimal)
+        {
+
+        }
+
+        field(58; PenaltyCharged; Boolean)
+        {
+
+        }
+
+        field(59; PenaltyPaid; Decimal)
+        {
+
+        }
+        field(60; "Outstanding Penalty Amount"; Decimal)
+        {
+        }
     }
 
     keys

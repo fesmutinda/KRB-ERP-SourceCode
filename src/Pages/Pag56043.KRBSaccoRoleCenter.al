@@ -1273,7 +1273,7 @@ Page 56043 "KRB Sacco Role Center"
                     {
                         ApplicationArea = all;
                         Caption = 'Loans Defaulter Aging';
-                        RunObject = report 51037;
+                        RunObject = report 51036;
                         visible = true;
                     }
                 }

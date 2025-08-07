@@ -251,6 +251,7 @@ page 57003 "Instant Loan Application Card"
                 {
                     ApplicationArea = Basic;
                     // Editable = MNoEditable;
+                    Visible = false;
                     Editable = true;
                     Style = StrongAccent;
                     ShowMandatory = true;
@@ -278,6 +279,8 @@ page 57003 "Instant Loan Application Card"
             }
             group("Bank Details")
             {
+
+                visible = false;
 
                 field("Bank Code"; Rec."Bank Code")
                 {

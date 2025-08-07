@@ -213,27 +213,24 @@ Report 51036 "Loans Defaulter Aging"
     local procedure CalculateLoanClassification()
     var
         LoanRepaymentSchedule: Record "Loan Repayment Schedule";
-        ExpectedAmount: Decimal;
-        ActualAmount: Decimal;
+        ExpectedOutstandingBalance: Decimal;
+        ActualOutstandingBalance: Decimal;
         LastDueDate: Date;
         DaysOverdue: Integer;
     begin
-
         CalculatedAmountInArrears := 0;
         CalculatedDaysInArrears := 0;
         CalculatedMonthsInArrears := 0;
         CalculatedLoanCategory := CalculatedLoanCategory::Performing;
 
-        // Calculate expected vs actual payments as of AsAt date
-        ExpectedAmount := GetExpectedPaymentAmount();
-        ActualAmount := GetActualPaymentAmount();
+        ExpectedOutstandingBalance := GetExpectedOutstandingBalance();
+        ActualOutstandingBalance := "Loans Register"."Outstanding Balance";
 
-        //lets use outstanding balance
-        if ActualAmount > ExpectedAmount then
-            CalculatedAmountInArrears := ActualAmount - ExpectedAmount;
+        if ActualOutstandingBalance > ExpectedOutstandingBalance then
+            CalculatedAmountInArrears := ActualOutstandingBalance - ExpectedOutstandingBalance;
 
         //LastDueDate := GetLastDueDateBeforeAsAt();
-        FirstArrearsDate := GetFirstDateWhereInArrears(ActualAmount);
+        FirstArrearsDate := GetFirstDateWhereInArrears(ActualOutstandingBalance);
 
         // Calculate days in arrears
         if (FirstArrearsDate <> 0D) and (CalculatedAmountInArrears > 0) then begin
@@ -268,6 +265,17 @@ Report 51036 "Loans Defaulter Aging"
                     "Loans Register"."Blacklist End Date" := 0D;
                     "Loans Register"."Days Remaining in Blacklist" := 0;
                 end;
+            end;
+
+
+            //penalty
+            LoanRepaymentSchedule.Reset();
+            LoanRepaymentSchedule.SetRange("Loan No.", "Loans Register"."Loan  No.");
+            LoanRepaymentSchedule.SetFilter("Repayment Date", '<=%1', AsAt);
+            if LoanRepaymentSchedule.FindLast() then begin
+                LoanRepaymentSchedule.Penalty := 0.05 * LoanRepaymentSchedule."Monthly Repayment";
+                LoanRepaymentSchedule.PenaltyCharged := TRUE;
+                LoanRepaymentSchedule.Modify();
             end;
 
         end else begin
@@ -330,15 +338,15 @@ Report 51036 "Loans Defaulter Aging"
 
 
 
-    local procedure GetExpectedPaymentAmount(): Decimal
+    local procedure GetExpectedOutstandingBalance(): Decimal
     var
         LoanRepaymentSchedule: Record "Loan Repayment Schedule";
+        LoansRegisterRec: Record "Loans Register";
         Swizzfactory: Codeunit 50009;
-        TotalExpected: Decimal;
-
+        ExpectedBalance: Decimal;
     begin
 
-        TotalExpected := "Loans Register"."Approved Amount";
+        ExpectedBalance := "Loans Register"."Approved Amount";
 
         LoanRepaymentSchedule.Reset();
         LoanRepaymentSchedule.SetRange("Loan No.", "Loans Register"."Loan  No.");
@@ -351,8 +359,7 @@ Report 51036 "Loans Defaulter Aging"
 
             IF LoanRepaymentSchedule.FindLast() THEN begin
 
-                TotalExpected := LoanRepaymentSchedule."Loan Balance";
-
+                ExpectedBalance := LoanRepaymentSchedule."Loan Balance";
             end;
         end ELSE begin
 
@@ -365,40 +372,42 @@ Report 51036 "Loans Defaulter Aging"
 
             IF LoanRepaymentSchedule.FindLast() THEN begin
 
-                TotalExpected := Round(LoanRepaymentSchedule."Loan Balance");
+                ExpectedBalance := Round(LoanRepaymentSchedule."Loan Balance");
             end;
         end;
 
-        //lets use outstanding balance
-        "Loans Register"."Expected Loan Balance" := TotalExpected;
-        exit(TotalExpected);
-
-    end;
-
-    local procedure GetActualPaymentAmount(): Decimal
-    var
-        LoanLedgerEntry: Record "Cust. Ledger Entry";
-        TotalActual: Decimal;
-    begin
-        TotalActual := 0;
-
-        LoanLedgerEntry.Reset();
-        LoanLedgerEntry.SetRange("Customer No.", "Loans Register"."Client Code");
-        LoanLedgerEntry.SetRange("Loan No", "Loans Register"."Loan  No.");
-        LoanLedgerEntry.SetFilter("Transaction Type", '%1|%2|%3|%4|%5|%6', LoanLedgerEntry."Transaction Type"::"Loan Repayment", LoanLedgerEntry."Transaction Type"::"Interest Paid", LoanLedgerEntry."Transaction Type"::Loan, LoanLedgerEntry."Transaction Type"::"Interest Due", LoanLedgerEntry."Transaction Type"::"Loan Transfer Charges", LoanLedgerEntry."Transaction Type"::"Unallocated Funds");
-        //LoanLedgerEntry.SetFilter("Transaction Type", '%1|%2|%3|%4', LoanLedgerEntry."Transaction Type"::"Loan Repayment", LoanLedgerEntry."Transaction Type"::"Interest Paid", LoanLedgerEntry."Transaction Type"::Loan, LoanLedgerEntry."Transaction Type"::"Interest Due");
-        LoanLedgeREntry.SetRange(Reversed, false);
-        LoanLedgerEntry.SetFilter("Posting Date", '<=%1', AsAt);
-
-        if LoanLedgerEntry.FindSet() then begin
-            repeat
-                //LoanLedgerEntry.CalcFields("Credit Amount");
-                TotalActual += LoanLedgerEntry."Amount Posted";
-            until LoanLedgerEntry.Next() = 0;
+        if LoansRegisterRec.Get("Loans Register"."Loan  No.") then begin
+            LoansRegisterRec."Expected Loan Balance" := ExpectedBalance;
+            LoansRegisterRec.Modify();
         end;
 
-        exit(TotalActual);
+        exit(ExpectedBalance);
     end;
+
+    // local procedure GetActualPaymentAmount(): Decimal
+    // var
+    //     LoanLedgerEntry: Record "Cust. Ledger Entry";
+    //     TotalActual: Decimal;
+    // begin
+    //     TotalActual := 0;
+
+    //     LoanLedgerEntry.Reset();
+    //     LoanLedgerEntry.SetRange("Customer No.", "Loans Register"."Client Code");
+    //     LoanLedgerEntry.SetRange("Loan No", "Loans Register"."Loan  No.");
+    //     LoanLedgerEntry.SetFilter("Transaction Type", '%1|%2|%3|%4|%5|%6', LoanLedgerEntry."Transaction Type"::"Loan Repayment", LoanLedgerEntry."Transaction Type"::"Interest Paid", LoanLedgerEntry."Transaction Type"::Loan, LoanLedgerEntry."Transaction Type"::"Interest Due", LoanLedgerEntry."Transaction Type"::"Loan Transfer Charges", LoanLedgerEntry."Transaction Type"::"Unallocated Funds");
+    //     //LoanLedgerEntry.SetFilter("Transaction Type", '%1|%2|%3|%4', LoanLedgerEntry."Transaction Type"::"Loan Repayment", LoanLedgerEntry."Transaction Type"::"Interest Paid", LoanLedgerEntry."Transaction Type"::Loan, LoanLedgerEntry."Transaction Type"::"Interest Due");
+    //     LoanLedgeREntry.SetRange(Reversed, false);
+    //     LoanLedgerEntry.SetFilter("Posting Date", '<=%1', AsAt);
+
+    //     if LoanLedgerEntry.FindSet() then begin
+    //         repeat
+    //             //LoanLedgerEntry.CalcFields("Credit Amount");
+    //             TotalActual += LoanLedgerEntry."Amount Posted";
+    //         until LoanLedgerEntry.Next() = 0;
+    //     end;
+
+    //     exit(TotalActual);
+    // end;
 
     local procedure GetLastDueDateBeforeAsAt(): Date
     var
@@ -441,6 +450,23 @@ Report 51036 "Loans Defaulter Aging"
             until LoanRepaymentSchedule.Next() = 0;
 
         exit(0D); // Not in arrears
+    end;
+
+
+    local procedure ChargePenaltyOnLatePayment()
+    var
+
+    begin
+
+
+
+
+
+
+
+
+
+
     end;
 
     trigger OnPreReport()

@@ -330,6 +330,7 @@ Page 56029 "Loan Application Card"
                     Editable = true;
                     Style = StrongAccent;
                     ShowMandatory = true;
+                    visible = false;
                 }
                 field("Paying Bank Account No"; Rec."Paying Bank Account No")
                 {
@@ -361,6 +362,8 @@ Page 56029 "Loan Application Card"
             }
             group("Bank Details")
             {
+
+                visible = false;
 
                 field("Bank Code"; Rec."Bank Code")
                 {
