@@ -127,6 +127,43 @@ tableextension 50040 "UserSetUpExt" extends "User Setup"
                 end;
             end;
         }
+
+        field(50104; "Digital Signature"; Media)
+        {
+            DataClassification = CustomerContent;
+            Caption = 'Digital Signature';
+        }
+
+        field(50103; "Signature Thumbnail"; Blob)
+        {
+            Caption = 'Signature Thumbnail';
+            DataClassification = CustomerContent;
+            SubType = Bitmap; // This enables image display in lists
+        }
+
+        field(50105; "Signature File Name"; Text[250])
+        {
+            DataClassification = EndUserPseudonymousIdentifiers;
+            Caption = 'Signature File Name';
+        }
+
+        field(50106; "Signature Date"; DateTime)
+        {
+            DataClassification = SystemMetadata;
+            Caption = 'Signature Upload Date';
+        }
+
+        field(50107; HasSignature; Boolean)
+        {
+
+        }
+
+        field(50100; "Signature Image"; Blob)
+        {
+            Caption = 'Digital Signature';
+            DataClassification = CustomerContent;
+            SubType = Bitmap;  // This makes it display as image in lists
+        }
     }
 
 
@@ -146,4 +183,6 @@ tableextension 50040 "UserSetUpExt" extends "User Setup"
         Text001: label 'The %1 Salesperson/Purchaser code is already assigned to another User ID %2.';
         Text003: label 'You cannot have both a %1 and %2. ';
         Text005: label 'You cannot have approval limits less than zero.';
+
+
 }

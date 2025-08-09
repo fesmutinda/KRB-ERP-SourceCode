@@ -2,6 +2,7 @@ pageextension 50619 "UserSetUpExt" extends "User Setup"
 {
     layout
     {
+
         addafter("Allow Posting To")
         {
 
@@ -57,9 +58,8 @@ pageextension 50619 "UserSetUpExt" extends "User Setup"
             field("Role Centre"; Rec."Role Centre")
             {
             }
-
-
         }
+
         modify("Allow Deferral Posting From")
         {
             Visible = false;
@@ -89,11 +89,13 @@ pageextension 50619 "UserSetUpExt" extends "User Setup"
             Visible = false;
         }
 
+
+
     }
+
 
     actions
     {
-
     }
     trigger OnOpenPage()
     begin

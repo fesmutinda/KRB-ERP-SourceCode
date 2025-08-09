@@ -21,6 +21,53 @@ Report 56384 "Loan Appraisal Edit"
             {
             }
 
+            column(Approver1SignatureBase64; Approver1SignatureBase64)
+            {
+
+            }
+
+
+
+            column(Approver2SignatureBase64; Approver2SignatureBase64)
+            {
+
+            }
+
+            column(Approver3SignatureBase64; Approver3SignatureBase64)
+            {
+
+            }
+
+            column(Approver4SignatureBase64; Approver4SignatureBase64)
+            {
+
+            }
+
+            column(Approver1SignatureMimeType; Approver1SignatureMimeType)
+            {
+
+            }
+
+            column(Approver2SignatureMimeType; Approver2SignatureMimeType)
+            {
+
+            }
+
+            column(Approver3SignatureMimeType; Approver3SignatureMimeType)
+            {
+
+            }
+
+            column(Approver4SignatureMimeType; Approver4SignatureMimeType)
+            {
+
+            }
+
+            column(UserSignatureMimeType; UserSignatureMimeType)
+            {
+
+            }
+
             column(Approver2Name; Approver2Name)
             {
             }
@@ -30,6 +77,7 @@ Report 56384 "Loan Appraisal Edit"
             column(Approver2Status; Approver2Status)
             {
             }
+
 
             column(Approver3Name; Approver3Name)
             {
@@ -67,6 +115,8 @@ Report 56384 "Loan Appraisal Edit"
             column(NHIF; NHIF)
             {
             }
+
+
             column(Sacco_Deductions; "Sacco Deductions")
             {
             }
@@ -79,6 +129,8 @@ Report 56384 "Loan Appraisal Edit"
             column(USERID; UserId)
             {
             }
+
+
 
             column(Appraisal_Date; "Appraisal Date")
             {
@@ -93,7 +145,6 @@ Report 56384 "Loan Appraisal Edit"
             {
 
             }
-
 
             column(Company_Name; CompanyInfo.Name)
             {
@@ -1652,27 +1703,49 @@ Report 56384 "Loan Appraisal Edit"
         Approver1Date: DateTime;
         Approver1Status: Text[20];
 
+        Approver1SignatureBase64: Text;
+
+        Approver1SignatureMimeType: Text;
+
         // Approver 2 variables
         Approver2Name: Text[100];
         Approver2Date: DateTime;
         Approver2Status: Text[20];
+
+        Approver2SignatureMimeType: Text;
+
+        Approver2SignatureBase64: Text;
 
         // Approver 3 variables
         Approver3Name: Text[100];
         Approver3Date: Datetime;
         Approver3Status: Text[20];
 
+        Approver3SignatureBase64: Text;
+
+        Approver3SignatureMimeType: Text;
+
         // Approver 4 variables
         Approver4Name: Text[100];
         Approver4Date: DateTime;
         Approver4Status: Text[20];
 
+        Approver4SignatureBase64: Text;
+
+        Approver4SignatureMimeType: Text;
+
         // Helper variables
         ApprovalEntryRec: Record "Approval Entry";
         EmployeeRec: Record Employee;
 
+        uSERSignatureBase64: Text;
+
+        UserSignatureMimeType: Text;
+
 
     procedure GetUserDetails()
+    var
+        UserSetupRec: Record "User Setup";
 
     begin
 
@@ -1680,9 +1753,27 @@ Report 56384 "Loan Appraisal Edit"
         UserRec.Reset();
         UserRec.SetRange("User Security ID", UserSecurityId());
 
-        if UserRec.Findfirst() then begin
 
+
+        if UserRec.Findfirst() then begin
             UserFullName := UserRec."Full Name";
+
+            UserSetupRec.RESET();
+            UserSetupRec.SetRange("User ID", UserRec."User Name");
+
+
+            if UserSetupRec.FindFirst() THEN BEGIN
+
+                //UserSignature := UserSetupRec."Digital Signature";
+
+                uSERSignatureBase64 := GetMediaAsBase64(UserSetupRec."Digital Signature".MediaId);
+                UserSignatureMimeType := GetMediaMimeType(UserSetupRec."Digital Signature".MediaId)
+
+            END
+
+
+
+
 
         end
     end;
@@ -1692,6 +1783,9 @@ Report 56384 "Loan Appraisal Edit"
         ApproverName: Text[100];
         ApprovalDate: DateTime;
         ApprovalStatus: Text[20];
+        UserSetupRecII: Record "User Setup";
+        ApproverSignatureBase64: Text;
+        ApproverSignatureMimeType: Text;
     begin
 
         ApprovalEntryRec.Reset();
@@ -1709,6 +1803,21 @@ Report 56384 "Loan Appraisal Edit"
 
                 IF UserRec.FindSet() THEN begin
 
+                    UserSetupRecII.RESET();
+                    UserSetupRecII.SetRange("User ID", UserRec."User Name");
+
+
+                    if UserSetupRecII.FindFirst() THEN BEGIN
+
+                        //UserSignature := UserSetupRec."Digital Signature";
+
+                        ApproverSignatureBase64 := GetMediaAsBase64(UserSetupRecII."Digital Signature".MediaId);
+                        ApproverSignatureMimeType := GetMediaMimeType(UserSetupRecII."Digital Signature".MediaId)
+
+
+                    END;
+
+
                     ApproverName := UserRec."Full Name";
                     ApprovalDate := ApprovalEntryRec."Last Date-Time Modified"
 
@@ -1722,40 +1831,96 @@ Report 56384 "Loan Appraisal Edit"
                             Approver1Name := ApproverName;
                             Approver1Date := ApprovalDate;
                             Approver1Status := ApprovalStatus;
+                            Approver1SignatureBase64 := ApproverSignatureBase64;
+                            Approver1SignatureMimeType := ApproverSignatureMimeType;
                         end;
                     'SWIZZSOFT':
                         begin
                             Approver2Name := ApproverName;
                             Approver2Date := ApprovalDate;
                             Approver2Status := ApprovalStatus;
-                        end;
+                            Approver2SignatureBase64 := ApproverSignatureBase64;
+                            Approver2SignatureMimeType := ApproverSignatureMimeType;
+                        END;
                     'CREDITC2':
                         begin
                             Approver2Name := ApproverName;
                             Approver2Date := ApprovalDate;
                             Approver2Status := ApprovalStatus;
+                            Approver2SignatureBase64 := ApproverSignatureBase64;
                         end;
                     'CREDITC3':
                         begin
                             Approver3Name := ApproverName;
                             Approver3Date := ApprovalDate;
                             Approver3Status := ApprovalStatus;
+                            Approver3SignatureBase64 := ApproverSignatureBase64;
                         end;
                     'KRBSC-TREASURER':
+
                         begin
                             Approver4Name := ApproverName;
                             Approver4Date := ApprovalDate;
                             Approver4Status := ApprovalStatus;
+                            Approver4SignatureBase64 := ApproverSignatureBase64;
                         end;
                 end;
-            until ApprovalEntryRec.Next() = 0
-        end
-    end;
 
+
+            until ApprovalEntryRec.Next() = 0
+
+
+        end;
+
+    end;
 
 
     procedure ComputeTax()
     begin
+    end;
+
+
+    local procedure GetMediaAsBase64(MediaId: Guid): Text
+    var
+        TenantMedia: Record "Tenant Media";
+        Base64Convert: Codeunit "Base64 Convert";
+        InStr: InStream;
+        Result: Text;
+    begin
+        if IsNullGuid(MediaId) then
+            exit('');
+
+        if TenantMedia.Get(MediaId) then begin
+            TenantMedia.Calcfields(Content);
+            if TenantMedia.Content.HasValue then begin
+                TenantMedia.Content.CreateInStream(InStr);
+
+                Result := Base64Convert.ToBase64(InStr, false);
+                exit(Result);
+            end;
+        end;
+
+        exit('');
+    end;
+
+    local procedure GetMediaMimeType(MediaId: Guid): Text
+    var
+        TenantMedia: Record "Tenant Media";
+    begin
+
+        if IsNullGuid(MediaId) then begin
+
+            exit('');
+        end;
+
+
+        if TenantMedia.Get(MediaId) then begin
+
+            exit(TenantMedia."Mime Type");
+        end;
+        ;
+
+
     end;
 }
 
