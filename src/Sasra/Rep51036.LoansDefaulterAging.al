@@ -273,9 +273,12 @@ Report 51036 "Loans Defaulter Aging"
             LoanRepaymentSchedule.SetRange("Loan No.", "Loans Register"."Loan  No.");
             LoanRepaymentSchedule.SetFilter("Repayment Date", '<=%1', AsAt);
             if LoanRepaymentSchedule.FindLast() then begin
-                LoanRepaymentSchedule.Penalty := 0.05 * LoanRepaymentSchedule."Monthly Repayment";
-                LoanRepaymentSchedule.PenaltyCharged := TRUE;
-                LoanRepaymentSchedule.Modify();
+
+                if LoanRepaymentSchedule.PenaltyCharged = false then begin
+                    LoanRepaymentSchedule.Penalty := 0.05 * LoanRepaymentSchedule."Monthly Repayment";
+                    LoanRepaymentSchedule.Modify();
+                    ChargePenaltyOnLatePayment(LoanRepaymentSchedule);
+                end;
             end;
 
         end else begin
@@ -421,26 +424,72 @@ Report 51036 "Loans Defaulter Aging"
                 // First date where actual balance exceeds expected balance
                 if ActualBalance > RunningExpectedBalance then
                     exit(LoanRepaymentSchedule."Repayment Date");
-
             until LoanRepaymentSchedule.Next() = 0;
-
         exit(0D); // Not in arrears
     end;
 
 
-    local procedure ChargePenaltyOnLatePayment()
+    local procedure ChargePenaltyOnLatePayment(var LoanScheduleRec: Record "Loan Repayment Schedule")
+
     var
+
+        GenJournalLine: Record "Gen. Journal Line";
+        GenJournalBatch: Record "Gen. Journal Batch";
+        NoSeriesMgt: Codeunit NoSeriesManagement;
+        DocumentNo: Code[20];
+        LineNo: Integer;
 
     begin
 
+        GenJournalBatch.Get('GENERAL', 'DEFAULT'); // Adjust as per your setup
+
+        // Get document number
+        DocumentNo := NoSeriesMgt.GetNextNo(GenJournalBatch."No. Series", AsAt, false);
+
+        // Get next line number
+        GenJournalLine.SetRange("Journal Template Name", 'GENERAL');
+        GenJournalLine.SetRange("Journal Batch Name", 'DEFAULT');
+        if GenJournalLine.FindLast() then
+            LineNo := GenJournalLine."Line No." + 10000
+        else
+            LineNo := 10000;
 
 
+        // Create penalty charge entry (Debit customer)
+        GenJournalLine.Init();
+        GenJournalLine."Journal Template Name" := 'GENERAL';
+        GenJournalLine."Journal Batch Name" := 'DEFAULT';
+        GenJournalLine."Line No." := LineNo;
+        GenJournalLine."Document Type" := GenJournalLine."Document Type"::Invoice;
+        GenJournalLine."Document No." := DocumentNo;
+        GenJournalLine."Posting Date" := AsAt;
+        GenJournalLine."Account Type" := GenJournalLine."Account Type"::Customer;
+        GenJournalLine."Account No." := "Loans Register"."Client Code";
+        GenJournalLine.Amount := LoanScheduleRec.Penalty;
+        GenJournalLine."Loan No" := "Loans Register"."Loan  No.";
+        GenJournalLine."Transaction Type" := GenJournalLine."Transaction Type"::"Penalty Charged";
+        GenJournalLine.Description := 'Late Payment Penalty - ' + "Loans Register"."Loan  No." + ' Due: ' + Format(LoanScheduleRec."Monthly Repayment");
+        GenJournalLine.Insert();
 
+        // Create corresponding credit entry (Income account)
+        LineNo += 10000;
+        GenJournalLine.Init();
+        GenJournalLine."Journal Template Name" := 'GENERAL';
+        GenJournalLine."Journal Batch Name" := 'DEFAULT';
+        GenJournalLine."Line No." := LineNo;
+        GenJournalLine."Document Type" := GenJournalLine."Document Type"::Invoice;
+        GenJournalLine."Document No." := DocumentNo;
+        GenJournalLine."Posting Date" := AsAt;
+        GenJournalLine."Account Type" := GenJournalLine."Account Type"::"G/L Account";
+        GenJournalLine."Account No." := '4002'; // Penalty Income Account - adjust as needed
+        GenJournalLine.Amount := -LoanScheduleRec.Penalty;
+        GenJournalLine.Description := 'Late Payment Penalty Income - ' + "Loans Register"."Loan  No.";
+        GenJournalLine.Insert();
 
+        Codeunit.Run(Codeunit::"Gen. Jnl.-Post Batch", GenJournalLine);
 
-
-
-
+        LoanScheduleRec.PenaltyCharged := true;
+        LoanScheduleRec.Modify(true);
 
     end;
 

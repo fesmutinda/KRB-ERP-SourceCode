@@ -35,10 +35,10 @@ enum 51516010 "TransactionTypesEnum"
     {
         Caption = 'Deposit Contribution';
     }
-    // value(9; "Penalty Charged")
-    // {
-    //     Caption = 'Penalty Charged';
-    // }
+    value(9; "Penalty Charged")
+    {
+        Caption = 'Penalty Charged';
+    }
     // value(10; "Application Fee")
     // {
     //     Caption = 'Application Fee';
@@ -91,10 +91,10 @@ enum 51516010 "TransactionTypesEnum"
     // {
     //     Caption = 'Xmas Contribution';
     // }
-    // value(23; "Penalty Paid")
-    // {
-    //     Caption = 'Penalty Paid';
-    // }
+    value(23; "Penalty Paid")
+    {
+        Caption = 'Penalty Paid';
+    }
     // value(24; "Property Shares")
     // {
 
