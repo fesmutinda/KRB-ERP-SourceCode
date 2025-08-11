@@ -1294,7 +1294,7 @@ Report 56384 "Loan Appraisal Edit"
                     end
                 end;
 
-
+                GetUserDetails();
                 SetApprovalDetails();
 
             end;
@@ -1328,8 +1328,6 @@ Report 56384 "Loan Appraisal Edit"
     begin
         if GenSetUp.Get(0) then
             CompanyInfo.Get;
-
-        GetUserDetails();
     end;
 
     local procedure GetMemberName(LoanNumber: code[60]): Text
@@ -1751,7 +1749,8 @@ Report 56384 "Loan Appraisal Edit"
 
 
         UserRec.Reset();
-        UserRec.SetRange("User Security ID", UserSecurityId());
+        //UserRec.SetRange("User Security ID", UserSecurityId);
+        UserRec.SetRange("User Name", "Loans Register"."Captured By");
 
 
 
@@ -1770,11 +1769,6 @@ Report 56384 "Loan Appraisal Edit"
                 UserSignatureMimeType := GetMediaMimeType(UserSetupRec."Digital Signature".MediaId)
 
             END
-
-
-
-
-
         end
     end;
 

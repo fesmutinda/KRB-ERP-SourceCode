@@ -116,6 +116,7 @@ Report 51036 "Loans Defaulter Aging"
 
                 // Calculate loan classification without modifying the table
                 CalculateLoanClassification();
+                "Loans Register".Modify();
 
                 // Set aging buckets based on calculated loan category
                 case CalculatedLoanCategory of
@@ -213,6 +214,7 @@ Report 51036 "Loans Defaulter Aging"
     local procedure CalculateLoanClassification()
     var
         LoanRepaymentSchedule: Record "Loan Repayment Schedule";
+        LoansRegisterRec: Record "Loans Register";
         ExpectedOutstandingBalance: Decimal;
         ActualOutstandingBalance: Decimal;
         LastDueDate: Date;
@@ -269,17 +271,17 @@ Report 51036 "Loans Defaulter Aging"
 
 
             //penalty
-            LoanRepaymentSchedule.Reset();
-            LoanRepaymentSchedule.SetRange("Loan No.", "Loans Register"."Loan  No.");
-            LoanRepaymentSchedule.SetFilter("Repayment Date", '<=%1', AsAt);
-            if LoanRepaymentSchedule.FindLast() then begin
+            // LoanRepaymentSchedule.Reset();
+            // LoanRepaymentSchedule.SetRange("Loan No.", "Loans Register"."Loan  No.");
+            // LoanRepaymentSchedule.SetFilter("Repayment Date", '<=%1', AsAt);
+            // if LoanRepaymentSchedule.FindLast() then begin
 
-                if LoanRepaymentSchedule.PenaltyCharged = false then begin
-                    LoanRepaymentSchedule.Penalty := 0.05 * LoanRepaymentSchedule."Monthly Repayment";
-                    LoanRepaymentSchedule.Modify();
-                    ChargePenaltyOnLatePayment(LoanRepaymentSchedule);
-                end;
-            end;
+            //     if LoanRepaymentSchedule.PenaltyCharged = false then begin
+            //         LoanRepaymentSchedule.Penalty := 0.05 * LoanRepaymentSchedule."Monthly Repayment";
+            //         LoanRepaymentSchedule.Modify();
+            //         ChargePenaltyOnLatePayment(LoanRepaymentSchedule);
+            //     end;
+            // end;
 
         end else begin
             CalculatedLoanCategory := CalculatedLoanCategory::Performing;
@@ -336,7 +338,7 @@ Report 51036 "Loans Defaulter Aging"
                 end;
         end;
 
-        "Loans Register".Modify();
+        //"Loans Register".Modify();
     end;
 
 
@@ -356,8 +358,8 @@ Report 51036 "Loans Defaulter Aging"
 
         if LoanRepaymentSchedule.Findset() then begin
 
-            LoanRepaymentSchedule.Reset();
-            LoanRepaymentSchedule.SetRange("Loan No.", "Loans Register"."Loan  No.");
+            //LoanRepaymentSchedule.Reset();
+            //LoanRepaymentSchedule.SetRange("Loan No.", "Loans Register"."Loan  No.");
             LoanRepaymentSchedule.SetFilter("Repayment Date", '<=%1', AsAt);
 
             IF LoanRepaymentSchedule.FindLast() THEN begin
@@ -368,9 +370,8 @@ Report 51036 "Loans Defaulter Aging"
 
             Swizzfactory.FnGenerateRepaymentSchedule("Loans Register"."Loan  No.");
 
-            LoanRepaymentSchedule.Reset();
-            LoanRepaymentSchedule.Reset();
-            LoanRepaymentSchedule.SetRange("Loan No.", "Loans Register"."Loan  No.");
+            //LoanRepaymentSchedule.Reset();
+            //LoanRepaymentSchedule.SetRange("Loan No.", "Loans Register"."Loan  No.");
             LoanRepaymentSchedule.SetFilter("Repayment Date", '<=%1', AsAt);
 
             IF LoanRepaymentSchedule.FindLast() THEN begin
@@ -379,10 +380,12 @@ Report 51036 "Loans Defaulter Aging"
             end;
         end;
 
-        if LoansRegisterRec.Get("Loans Register"."Loan  No.") then begin
-            LoansRegisterRec."Expected Loan Balance" := ExpectedBalance;
-            LoansRegisterRec.Modify();
-        end;
+        // if LoansRegisterRec.Get("Loans Register"."Loan  No.") then begin
+        //     LoansRegisterRec."Expected Loan Balance" := ExpectedBalance;
+        //     //LoansRegisterRec.Modify();
+        // end;
+
+        "Loans Register"."Expected Loan Balance" := ExpectedBalance;
 
         exit(ExpectedBalance);
     end;
@@ -430,7 +433,6 @@ Report 51036 "Loans Defaulter Aging"
 
 
     local procedure ChargePenaltyOnLatePayment(var LoanScheduleRec: Record "Loan Repayment Schedule")
-
     var
 
         GenJournalLine: Record "Gen. Journal Line";

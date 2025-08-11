@@ -17,12 +17,10 @@ report 59067 "Loan Disbursement Voucher"
             DataItemTableView = sorting("Loan  No.");
             RequestFilterFields = "Loan  No.";
 
-
             column(ClientAddress; GetLoanCustomerAddress("Client Code"))
             {
 
             }
-
 
             column(LoanApplied; "Approved Amount") { }
             column(InsuranceDeduction; "Loan Insurance") { }
@@ -97,14 +95,15 @@ report 59067 "Loan Disbursement Voucher"
                 if LoanTopUp.Find('-') then begin
                     repeat
                         // Bridged_Amount+=
+                        TotalOffsetCommission += LoanTopUp.Commision;
                         TotalTopUpDeductions += LoanTopUp."Principle Top Up" + loantopup."Interest Top Up" + LoanTopUp.Commision;
                     until LoanTopUp.Next = 0;
                 end;
 
 
                 if "Approved Amount" > 0 then begin
-                    Upfronts := "Facilitation Cost" + "Valuation Cost" + "Loan Insurance";
-                    total_deductions := Upfronts + TotalTopUpDeductions;
+                    Upfronts := "Facilitation Cost" + "Valuation Cost";
+                    total_deductions := Upfronts + "Loan Insurance" + TotalTopUpDeductions;
                     Netdisbursed := "Approved Amount" - total_deductions;
                 end;
             end;

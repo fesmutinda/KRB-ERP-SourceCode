@@ -58,7 +58,7 @@
                   <Width>1in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>3.70139in</Width>
+                  <Width>2.97223in</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -76,7 +76,7 @@
                                 <TextRun>
                                   <Value>Description</Value>
                                   <Style>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -207,6 +207,7 @@
                           <Style>
                             <Border>
                               <Style>Solid</Style>
+                              <Width>0.5pt</Width>
                             </Border>
                             <TopBorder>
                               <Color>Black</Color>
@@ -214,6 +215,7 @@
                             <BottomBorder>
                               <Color>Black</Color>
                               <Style>Dotted</Style>
+                              <Width>0.5pt</Width>
                             </BottomBorder>
                             <RightBorder>
                               <Style>None</Style>
@@ -248,6 +250,7 @@
                           <Style>
                             <Border>
                               <Style>Solid</Style>
+                              <Width>0.5pt</Width>
                             </Border>
                             <TopBorder>
                               <Color>Black</Color>
@@ -255,6 +258,7 @@
                             <BottomBorder>
                               <Color>Black</Color>
                               <Style>None</Style>
+                              <Width>0.5pt</Width>
                             </BottomBorder>
                             <LeftBorder>
                               <Style>None</Style>
@@ -281,7 +285,7 @@
                                 <TextRun>
                                   <Value>KSHS</Value>
                                   <Style>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -294,6 +298,7 @@
                           <Style>
                             <Border>
                               <Style>Solid</Style>
+                              <Width>0.5pt</Width>
                             </Border>
                             <TopBorder>
                               <Color>Black</Color>
@@ -301,6 +306,7 @@
                             <BottomBorder>
                               <Color>Black</Color>
                               <Style>Dotted</Style>
+                              <Width>0.5pt</Width>
                             </BottomBorder>
                             <LeftBorder>
                               <Style>None</Style>
@@ -330,7 +336,7 @@
                                 <TextRun>
                                   <Value>=Fields!Loan_Product_Type_Name.Value</Value>
                                   <Style>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -341,6 +347,7 @@
                           <Style>
                             <Border>
                               <Style>Solid</Style>
+                              <Width>0.5pt</Width>
                             </Border>
                             <TopBorder>
                               <Style>Dotted</Style>
@@ -371,7 +378,7 @@
                                 <TextRun>
                                   <Value>=Fields!ApprovedAmount.Value</Value>
                                   <Style>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                     <Format>n2</Format>
                                   </Style>
                                 </TextRun>
@@ -383,6 +390,7 @@
                           <Style>
                             <Border>
                               <Style>Solid</Style>
+                              <Width>0.5pt</Width>
                             </Border>
                             <TopBorder>
                               <Style>Dotted</Style>
@@ -425,6 +433,7 @@
                           <Style>
                             <Border>
                               <Style>Solid</Style>
+                              <Width>0.5pt</Width>
                             </Border>
                             <TopBorder>
                               <Style>Dotted</Style>
@@ -460,7 +469,7 @@
                                 <TextRun>
                                   <Value>Less:Insurance</Value>
                                   <Style>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -471,6 +480,7 @@
                           <Style>
                             <Border>
                               <Style>Solid</Style>
+                              <Width>0.5pt</Width>
                             </Border>
                             <TopBorder>
                               <Style>None</Style>
@@ -501,7 +511,7 @@
                                 <TextRun>
                                   <Value>=Fields!InsuranceDeduction.Value</Value>
                                   <Style>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                     <Format>n2</Format>
                                   </Style>
                                 </TextRun>
@@ -513,6 +523,7 @@
                           <Style>
                             <Border>
                               <Style>Solid</Style>
+                              <Width>0.5pt</Width>
                             </Border>
                             <TopBorder>
                               <Style>None</Style>
@@ -555,6 +566,7 @@
                           <Style>
                             <Border>
                               <Style>Solid</Style>
+                              <Width>0.5pt</Width>
                             </Border>
                             <TopBorder>
                               <Style>None</Style>
@@ -590,7 +602,7 @@
                                 <TextRun>
                                   <Value>Less:Fees</Value>
                                   <Style>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -601,6 +613,7 @@
                           <Style>
                             <Border>
                               <Style>Solid</Style>
+                              <Width>0.5pt</Width>
                             </Border>
                             <TopBorder>
                               <Style>Dotted</Style>
@@ -631,7 +644,7 @@
                                 <TextRun>
                                   <Value>=Fields!total_fees_and_commisions.Value</Value>
                                   <Style>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                     <Format>n2</Format>
                                   </Style>
                                 </TextRun>
@@ -643,6 +656,7 @@
                           <Style>
                             <Border>
                               <Style>Solid</Style>
+                              <Width>0.5pt</Width>
                             </Border>
                             <TopBorder>
                               <Style>None</Style>
@@ -685,6 +699,7 @@
                           <Style>
                             <Border>
                               <Style>Solid</Style>
+                              <Width>0.5pt</Width>
                             </Border>
                             <TopBorder>
                               <Style>Dotted</Style>
@@ -720,7 +735,7 @@
                                 <TextRun>
                                   <Value>Less: Refinancing Fees</Value>
                                   <Style>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -731,6 +746,7 @@
                           <Style>
                             <Border>
                               <Style>Solid</Style>
+                              <Width>0.5pt</Width>
                             </Border>
                             <TopBorder>
                               <Style>Dotted</Style>
@@ -761,7 +777,7 @@
                                 <TextRun>
                                   <Value>=Fields!TotalOffsetCommission.Value</Value>
                                   <Style>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                     <Format>n2</Format>
                                   </Style>
                                 </TextRun>
@@ -773,6 +789,7 @@
                           <Style>
                             <Border>
                               <Style>Solid</Style>
+                              <Width>0.5pt</Width>
                             </Border>
                             <TopBorder>
                               <Style>None</Style>
@@ -805,7 +822,9 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value />
-                                  <Style />
+                                  <Style>
+                                    <FontSize>9pt</FontSize>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -815,6 +834,7 @@
                           <Style>
                             <Border>
                               <Style>Solid</Style>
+                              <Width>0.5pt</Width>
                             </Border>
                             <TopBorder>
                               <Style>Dotted</Style>
@@ -867,7 +887,7 @@
             <Top>2.61334in</Top>
             <Left>0.50827in</Left>
             <Height>1.14583in</Height>
-            <Width>7.61015in</Width>
+            <Width>6.88099in</Width>
             <ZIndex>1</ZIndex>
             <Style>
               <Border>
@@ -1148,7 +1168,7 @@
                   <Width>1in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>3.70139in</Width>
+                  <Width>2.97223in</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -1167,7 +1187,7 @@
                                 <TextRun>
                                   <Value>="Less: " + Fields!Loans_Top_up__Loan_Type_Name.Value + " Balance"</Value>
                                   <Style>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1181,6 +1201,7 @@
                           <Style>
                             <Border>
                               <Style>Dotted</Style>
+                              <Width>0.5pt</Width>
                             </Border>
                             <TopBorder>
                               <Style>Dotted</Style>
@@ -1190,6 +1211,7 @@
                             </BottomBorder>
                             <LeftBorder>
                               <Style>None</Style>
+                              <Width>0.5pt</Width>
                             </LeftBorder>
                             <RightBorder>
                               <Style>None</Style>
@@ -1214,7 +1236,7 @@
                                 <TextRun>
                                   <Value>=Fields!Loans_Top_Up_OutstandingBal.Value</Value>
                                   <Style>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                     <Format>n2</Format>
                                   </Style>
                                 </TextRun>
@@ -1229,6 +1251,7 @@
                           <Style>
                             <Border>
                               <Style>Dotted</Style>
+                              <Width>0.5pt</Width>
                             </Border>
                             <TopBorder>
                               <Style>Dotted</Style>
@@ -1278,6 +1301,7 @@
                           <Style>
                             <Border>
                               <Style>Dotted</Style>
+                              <Width>0.5pt</Width>
                             </Border>
                             <TopBorder>
                               <Style>Dotted</Style>
@@ -1290,6 +1314,7 @@
                             </LeftBorder>
                             <RightBorder>
                               <Style>None</Style>
+                              <Width>0.5pt</Width>
                             </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -1324,7 +1349,7 @@
             <Top>3.77306in</Top>
             <Left>0.50827in</Left>
             <Height>0.17361in</Height>
-            <Width>7.61015in</Width>
+            <Width>6.88099in</Width>
             <ZIndex>5</ZIndex>
             <Style>
               <Border>
@@ -1359,7 +1384,7 @@
                   <TextRun>
                     <Value>Amount in Words</Value>
                     <Style>
-                      <FontSize>8pt</FontSize>
+                      <FontSize>9pt</FontSize>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1916,7 +1941,7 @@
                   <Width>1in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>3.70139in</Width>
+                  <Width>2.97223in</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -1946,6 +1971,7 @@
                           <Style>
                             <Border>
                               <Style>Dotted</Style>
+                              <Width>0.5pt</Width>
                             </Border>
                             <TopBorder>
                               <Style>Dotted</Style>
@@ -1991,6 +2017,7 @@
                           <Style>
                             <Border>
                               <Style>Dotted</Style>
+                              <Width>0.5pt</Width>
                             </Border>
                             <TopBorder>
                               <Style>None</Style>
@@ -2024,7 +2051,7 @@
                                 <TextRun>
                                   <Value>=Fields!Netdisbursed.Value</Value>
                                   <Style>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                     <Format>n2</Format>
                                   </Style>
                                 </TextRun>
@@ -2038,6 +2065,7 @@
                           <Style>
                             <Border>
                               <Style>Dotted</Style>
+                              <Width>0.5pt</Width>
                             </Border>
                             <TopBorder>
                               <Style>Dotted</Style>
@@ -2084,6 +2112,7 @@
                           <Style>
                             <Border>
                               <Style>Solid</Style>
+                              <Width>0.5pt</Width>
                             </Border>
                             <TopBorder>
                               <Style>None</Style>
@@ -2124,6 +2153,7 @@
                           <Style>
                             <Border>
                               <Style>Solid</Style>
+                              <Width>0.5pt</Width>
                             </Border>
                             <TopBorder>
                               <Style>None</Style>
@@ -2165,6 +2195,7 @@
                           <Style>
                             <Border>
                               <Style>Solid</Style>
+                              <Width>0.5pt</Width>
                             </Border>
                             <TopBorder>
                               <Style>None</Style>
@@ -2208,7 +2239,7 @@
             <Top>3.94667in</Top>
             <Left>0.50827in</Left>
             <Height>0.375in</Height>
-            <Width>7.61015in</Width>
+            <Width>6.88099in</Width>
             <ZIndex>19</ZIndex>
             <Style>
               <Border>
@@ -2225,7 +2256,7 @@
                   <TextRun>
                     <Value>=Fields!NetdisbursedInWords.Value</Value>
                     <Style>
-                      <FontSize>8pt</FontSize>
+                      <FontSize>9pt</FontSize>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2258,7 +2289,7 @@
                   <Width>1.01325in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>3.70801in</Width>
+                  <Width>2.97223in</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -2274,9 +2305,9 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Total</Value>
+                                  <Value>Net Disbursed</Value>
                                   <Style>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -2287,6 +2318,7 @@
                           <Style>
                             <Border>
                               <Style>Dotted</Style>
+                              <Width>0.5pt</Width>
                             </Border>
                             <TopBorder>
                               <Style>Dotted</Style>
@@ -2319,7 +2351,7 @@
                                 <TextRun>
                                   <Value />
                                   <Style>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -2330,6 +2362,7 @@
                           <Style>
                             <Border>
                               <Style>Dotted</Style>
+                              <Width>0.5pt</Width>
                             </Border>
                             <TopBorder>
                               <Style>Dotted</Style>
@@ -2362,7 +2395,7 @@
                                 <TextRun>
                                   <Value>=Fields!Netdisbursed.Value</Value>
                                   <Style>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                     <Format>n2</Format>
                                   </Style>
                                 </TextRun>
@@ -2376,6 +2409,7 @@
                           <Style>
                             <Border>
                               <Style>Dotted</Style>
+                              <Width>0.5pt</Width>
                             </Border>
                             <TopBorder>
                               <Style>Dotted</Style>
@@ -2417,7 +2451,7 @@
             <Top>4.32167in</Top>
             <Left>0.50827in</Left>
             <Height>0.19444in</Height>
-            <Width>7.61677in</Width>
+            <Width>6.88099in</Width>
             <ZIndex>21</ZIndex>
             <Style>
               <Border>
