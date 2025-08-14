@@ -1124,6 +1124,7 @@ Page 56043 "KRB Sacco Role Center"
 
                 group("Loan Batching")
                 {
+                    Visible = FALSE;
                     action("Loan Batch List")
                     {
                         ApplicationArea = Basic, Suite;
@@ -1275,6 +1276,13 @@ Page 56043 "KRB Sacco Role Center"
                         Caption = 'Loans Defaulter Aging';
                         RunObject = report 51036;
                         visible = true;
+                    }
+
+                    action("Charge Loan Penalties")
+                    {
+                        Visible = true;
+                        ApplicationArea = all;
+                        RunObject = report "Loan Penalty Processing";
                     }
                 }
             }

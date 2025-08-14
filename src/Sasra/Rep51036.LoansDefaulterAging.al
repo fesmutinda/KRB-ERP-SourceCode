@@ -9,7 +9,7 @@ Report 51036 "Loans Defaulter Aging"
         dataitem("Loans Register"; "Loans Register")
         {
             CalcFields = "Outstanding Balance", "Last Pay Date";
-            DataItemTableView = where("Outstanding Balance" = filter('>0'), Posted = const(true), Reversed = const(false));
+            DataItemTableView = where("Outstanding Balance" = filter('>0'), "Approved Amount" = filter('>0'), Posted = const(true), Reversed = const(false));
             RequestFilterFields = "Loan  No.", "Client Code", "Outstanding Balance", "Date filter", "Account No";
 
             column(Company_Letter_Head; Company.Picture)
@@ -231,6 +231,7 @@ Report 51036 "Loans Defaulter Aging"
         if ActualOutstandingBalance > ExpectedOutstandingBalance then
             CalculatedAmountInArrears := ActualOutstandingBalance - ExpectedOutstandingBalance;
 
+
         //LastDueDate := GetLastDueDateBeforeAsAt();
         FirstArrearsDate := GetFirstDateWhereInArrears(ActualOutstandingBalance);
 
@@ -271,17 +272,20 @@ Report 51036 "Loans Defaulter Aging"
 
 
             //penalty
-            // LoanRepaymentSchedule.Reset();
-            // LoanRepaymentSchedule.SetRange("Loan No.", "Loans Register"."Loan  No.");
-            // LoanRepaymentSchedule.SetFilter("Repayment Date", '<=%1', AsAt);
-            // if LoanRepaymentSchedule.FindLast() then begin
+            LoanRepaymentSchedule.Reset();
+            LoanRepaymentSchedule.SetRange("Loan No.", "Loans Register"."Loan  No.");
+            LoanRepaymentSchedule.SetFilter("Repayment Date", '%1..%2', FirstArrearsDate, AsAt);
+            if LoanRepaymentSchedule.FindSet() then begin
+                repeat
 
-            //     if LoanRepaymentSchedule.PenaltyCharged = false then begin
-            //         LoanRepaymentSchedule.Penalty := 0.05 * LoanRepaymentSchedule."Monthly Repayment";
-            //         LoanRepaymentSchedule.Modify();
-            //         ChargePenaltyOnLatePayment(LoanRepaymentSchedule);
-            //     end;
-            // end;
+                    if LoanRepaymentSchedule.PenaltyCharged = false then begin
+                        // LoanRepaymentSchedule.Penalty := 0.05 * LoanRepaymentSchedule."Monthly Repayment";
+                        LoanRepaymentSchedule.Penalty := Round(0.05 * LoanRepaymentSchedule."Monthly Repayment", 1, '>');
+                        LoanRepaymentSchedule.Modify();
+                        //ChargePenaltyOnLatePayment(LoanRepaymentSchedule);
+                    end;
+                until LoanRepaymentSchedule.Next() = 0;
+            end;
 
         end else begin
             CalculatedLoanCategory := CalculatedLoanCategory::Performing;
@@ -341,54 +345,97 @@ Report 51036 "Loans Defaulter Aging"
         //"Loans Register".Modify();
     end;
 
-
-
     local procedure GetExpectedOutstandingBalance(): Decimal
     var
         LoanRepaymentSchedule: Record "Loan Repayment Schedule";
         LoansRegisterRec: Record "Loans Register";
         Swizzfactory: Codeunit 50009;
         ExpectedBalance: Decimal;
+        HasSchedule: Boolean;
     begin
-
         ExpectedBalance := "Loans Register"."Approved Amount";
 
+        // Check if schedule exists with a simple approach
         LoanRepaymentSchedule.Reset();
         LoanRepaymentSchedule.SetRange("Loan No.", "Loans Register"."Loan  No.");
+        HasSchedule := not LoanRepaymentSchedule.IsEmpty();
 
-        if LoanRepaymentSchedule.Findset() then begin
-
-            //LoanRepaymentSchedule.Reset();
-            //LoanRepaymentSchedule.SetRange("Loan No.", "Loans Register"."Loan  No.");
-            LoanRepaymentSchedule.SetFilter("Repayment Date", '<=%1', AsAt);
-
-            IF LoanRepaymentSchedule.FindLast() THEN begin
-
-                ExpectedBalance := LoanRepaymentSchedule."Loan Balance";
-            end;
-        end ELSE begin
-
+        if not HasSchedule then begin
+            // Generate schedule if it doesn't exist
             Swizzfactory.FnGenerateRepaymentSchedule("Loans Register"."Loan  No.");
 
-            //LoanRepaymentSchedule.Reset();
-            //LoanRepaymentSchedule.SetRange("Loan No.", "Loans Register"."Loan  No.");
-            LoanRepaymentSchedule.SetFilter("Repayment Date", '<=%1', AsAt);
-
-            IF LoanRepaymentSchedule.FindLast() THEN begin
-
-                ExpectedBalance := Round(LoanRepaymentSchedule."Loan Balance");
-            end;
+            // Force a commit to ensure the generated data is available
+            Commit();
         end;
 
-        // if LoansRegisterRec.Get("Loans Register"."Loan  No.") then begin
-        //     LoansRegisterRec."Expected Loan Balance" := ExpectedBalance;
-        //     //LoansRegisterRec.Modify();
-        // end;
+        // Always start with a clean slate for the actual query
+        LoanRepaymentSchedule.Reset();
+        LoanRepaymentSchedule.SetRange("Loan No.", "Loans Register"."Loan  No.");
+        LoanRepaymentSchedule.SetFilter("Repayment Date", '<=%1', AsAt);
+        LoanRepaymentSchedule.SetCurrentKey("Repayment Date");
+
+        // Find the last repayment date within our date range
+        IF LoanRepaymentSchedule.FindLast() THEN begin
+            ExpectedBalance := Round(LoanRepaymentSchedule."Loan Balance", 0.01);
+        end else begin
+            // Fallback: if no schedule entries found within date range,
+            // use the original loan amount
+            ExpectedBalance := "Loans Register"."Approved Amount";
+        end;
 
         "Loans Register"."Expected Loan Balance" := ExpectedBalance;
-
         exit(ExpectedBalance);
     end;
+
+
+
+    // local procedure GetExpectedOutstandingBalance(): Decimal
+    // var
+    //     LoanRepaymentSchedule: Record "Loan Repayment Schedule";
+    //     LoansRegisterRec: Record "Loans Register";
+    //     Swizzfactory: Codeunit 50009;
+    //     ExpectedBalance: Decimal;
+    // begin
+
+    //     ExpectedBalance := "Loans Register"."Approved Amount";
+
+    //     LoanRepaymentSchedule.Reset();
+    //     LoanRepaymentSchedule.SetRange("Loan No.", "Loans Register"."Loan  No.");
+
+    //     if LoanRepaymentSchedule.Findset() then begin
+
+    //         //LoanRepaymentSchedule.Reset();
+    //         //LoanRepaymentSchedule.SetRange("Loan No.", "Loans Register"."Loan  No.");
+    //         LoanRepaymentSchedule.SetFilter("Repayment Date", '<=%1', AsAt);
+
+    //         IF LoanRepaymentSchedule.FindLast() THEN begin
+
+    //             ExpectedBalance := LoanRepaymentSchedule."Loan Balance";
+
+    //         end;
+    //     end ELSE begin
+
+    //         Swizzfactory.FnGenerateRepaymentSchedule("Loans Register"."Loan  No.");
+
+    //         //LoanRepaymentSchedule.Reset();
+    //         //LoanRepaymentSchedule.SetRange("Loan No.", "Loans Register"."Loan  No.");
+    //         LoanRepaymentSchedule.SetFilter("Repayment Date", '<=%1', AsAt);
+
+    //         IF LoanRepaymentSchedule.FindLast() THEN begin
+
+    //             ExpectedBalance := Round(LoanRepaymentSchedule."Loan Balance");
+    //         end;
+    //     end;
+
+    //     // if LoansRegisterRec.Get("Loans Register"."Loan  No.") then begin
+    //     //     LoansRegisterRec."Expected Loan Balance" := ExpectedBalance;
+    //     //     //LoansRegisterRec.Modify();
+    //     // end;
+
+    //     "Loans Register"."Expected Loan Balance" := ExpectedBalance;
+
+    //     exit(ExpectedBalance);
+    // end;
 
     local procedure GetLastDueDateBeforeAsAt(): Date
     var
@@ -443,12 +490,10 @@ Report 51036 "Loans Defaulter Aging"
 
     begin
 
-        GenJournalBatch.Get('GENERAL', 'DEFAULT'); // Adjust as per your setup
+        GenJournalBatch.Get('GENERAL', 'DEFAULT');
 
-        // Get document number
         DocumentNo := NoSeriesMgt.GetNextNo(GenJournalBatch."No. Series", AsAt, false);
 
-        // Get next line number
         GenJournalLine.SetRange("Journal Template Name", 'GENERAL');
         GenJournalLine.SetRange("Journal Batch Name", 'DEFAULT');
         if GenJournalLine.FindLast() then
@@ -483,7 +528,7 @@ Report 51036 "Loans Defaulter Aging"
         GenJournalLine."Document No." := DocumentNo;
         GenJournalLine."Posting Date" := AsAt;
         GenJournalLine."Account Type" := GenJournalLine."Account Type"::"G/L Account";
-        GenJournalLine."Account No." := '4002'; // Penalty Income Account - adjust as needed
+        GenJournalLine."Account No." := '4002'; // Penalty Income AccounT
         GenJournalLine.Amount := -LoanScheduleRec.Penalty;
         GenJournalLine.Description := 'Late Payment Penalty Income - ' + "Loans Register"."Loan  No.";
         GenJournalLine.Insert();

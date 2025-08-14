@@ -228,6 +228,22 @@ codeunit 50015 "PostCustomerExtension"
                 end;
             end;
         end;
+        if (GenJournalLine."Transaction Type" = GenJournalLine."transaction type"::"Penalty Charged") then begin
+            if GenJournalLine."Loan No" = '' then begin
+                Error('Loan No Field is empty! Loan No must be specified for %1', GenJournalLine."Account No.");
+            end;
+            LoanApp.Reset;
+            LoanApp.SetCurrentkey(LoanApp."Loan  No.");
+            LoanApp.SetRange(LoanApp."Loan  No.", GenJournalLine."Loan No");
+            if LoanApp.Find('-') then begin
+                if LoanTypes.Get(LoanApp."Loan Product Type") then begin
+                    LoanTypes.TestField(LoanTypes."Loan Account");
+                    GenJournalLine."Posting Group" := FnHandlePostingGroup(LoanTypes."Loan Account", 'PENALTY-' + FORMAT(COPYSTR(LoanApp."Loan Product Type", 1, 19)));
+                    GenJournalLine.Found := true;
+                    GenJournalLine.Modify();
+                end;
+            end;
+        end;
         // if (GenJournalLine."Transaction Type" = GenJournalLine."transaction type"::"Partial Disbursement") then begin
         //     if GenJournalLine."Loan No" = '' then begin
         //         Error('Loan No Field is empty! Loan No must be specified for %1', GenJournalLine."Account No.");
@@ -463,6 +479,22 @@ codeunit 50015 "PostCustomerExtension"
         CustLedgerEntry."Group Code" := GenJournalLine."Group Code";
         CustLedgerEntry."Document No." := GenJournalLine."Document No.";
         // CustLedgerEntry."BLoan Officer No." := sfactory.FnGetLoanOfficerFromMemberNo(GenJournalLine."Account No.");
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post Line", 'OnAfterPostGenJnlLine', '', false, false)]
+    local procedure OnAfterPostGenJnlLine(var GenJournalLine: Record "Gen. Journal Line")
+    var
+        LoanScheduleRec: Record "Loan Repayment Schedule";
+    begin
+        if GenJournalLine."Transaction Type" = GenJournalLine."Transaction Type"::"Penalty Charged" then begin
+            LoanScheduleRec.SetRange("Loan No.", GenJournalLine."Loan No");
+            LoanScheduleRec.SetFilter(Penalty, '>0');
+            LoanScheduleRec.SetRange(PenaltyCharged, false);
+            if LoanScheduleRec.FindFirst() then begin
+                LoanScheduleRec.PenaltyCharged := true;
+                LoanScheduleRec.Modify(true);
+            end;
+        end;
     end;
 
 

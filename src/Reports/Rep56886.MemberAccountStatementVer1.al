@@ -441,7 +441,7 @@ Report 56886 "Member Account Statement(Ver1)"
                 dataitem(loan; "Cust. Ledger Entry")
                 {
                     DataItemLink = "Customer No." = field("Client Code"), "Loan No" = field("Loan  No."), "Posting Date" = field("Date filter");
-                    DataItemTableView = sorting("Posting Date") where("Transaction Type" = filter(Loan | "Loan Repayment" | "Interest Due" | "Interest Paid" | "Loan Transfer Charges" | "Unallocated Funds"), Reversed = const(false));
+                    DataItemTableView = sorting("Posting Date") where("Transaction Type" = filter(Loan | "Loan Repayment" | "Interest Due" | "Interest Paid" | "Loan Transfer Charges" | "Unallocated Funds" | "Penalty Charged"), Reversed = const(false));
 
                     column(PostingDate_loan; loan."Posting Date")
                     {

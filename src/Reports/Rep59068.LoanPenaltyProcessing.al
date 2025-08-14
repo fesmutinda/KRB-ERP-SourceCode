@@ -1,10 +1,11 @@
-Report 50210 "Loan Defaulters List"
+Report 59068 "Loan Penalty Processing"
 {
-    ApplicationArea = All;
-    Caption = 'Loan Defaulters List';
-    UsageCategory = ReportsAndAnalysis;
-    DefaultLayout = RDLC;
-    RDLCLayout = './Layouts/LoanDefualterList.rdlc';
+    //ApplicationArea = All;
+    //Caption = 'Loan Defaulters List';
+    //UsageCategory = ReportsAndAnalysis;
+    //DefaultLayout = RDLC;
+    //RDLCLayout = './Layouts/LoanDefualterList.rdlc';
+    ProcessingOnly = true;
     dataset
     {
         dataitem(Loans; "Loans Register")
@@ -220,17 +221,33 @@ Report 50210 "Loan Defaulters List"
             trigger OnAfterGetRecord()
             var
                 LoanRepaymentScheduleRec: Record "Loan Repayment Schedule";
-
             begin
-
                 LCount := LCount + 1;
-                ChargePenaltyOnLatePayment(LoanRepaymentScheduleRec);
+                //penalty
+                LoanRepaymentScheduleRec.Reset();
+                LoanRepaymentScheduleRec.SetRange("Loan No.", Loans."Loan  No.");
+                LoanRepaymentScheduleRec.SetFilter(Penalty, '>0');
+                LoanRepaymentScheduleRec.setrange(PenaltyCharged, false);
+                LoanRepaymentScheduleRec.SetFilter("Repayment Date", '<=%1', Loans."Loan Aging Run Date");
+                if LoanRepaymentScheduleRec.FindSet() then begin
 
+                    repeat
+
+                        ChargePenaltyOnLatePayment(LoanRepaymentScheduleRec);
+
+                    until LoanRepaymentScheduleRec.Next() = 0;
+                end;
             end;
 
             trigger OnPreDataItem()
             begin
 
+                //delete journal line
+                GenJournalLine.Reset;
+                GenJournalLine.SetRange("Journal Template Name", 'GENERAL');
+                GenJournalLine.SetRange("Journal Batch Name", 'PENALTY');
+                GenJournalLine.DeleteAll;
+                //end of deletion
                 if LoanProductTypeCode <> '' then
                     Loans.SetRange("Loan Product Type", LoanProductTypeCode);
 
@@ -262,6 +279,17 @@ Report 50210 "Loan Defaulters List"
 
                 //Datefilter:=Loans.GETRANGEMAX(Loans."Date filter");
                 //Loans.SETRANGE(Loans."Date filter",0D,Datefilter);
+            end;
+
+
+            trigger OnPostDataItem()
+            begin
+
+                GenJournalLine.Reset;
+                GenJournalLine.SetRange("Journal Template Name", 'GENERAL');
+                GenJournalLine.SetRange("Journal Batch Name", 'PENALTY');
+                page.Run(Page::"General Journal");
+
             end;
         }
     }
@@ -344,8 +372,8 @@ Report 50210 "Loan Defaulters List"
 
         LoanProductTypeCode: Code[20];
 
-
-
+        LoanApp: Record "Loans Register";
+        GenJournalLine: Record "Gen. Journal Line";
 
     local procedure ChargePenaltyOnLatePayment(var LoanScheduleRec: Record "Loan Repayment Schedule")
     var
@@ -356,6 +384,7 @@ Report 50210 "Loan Defaulters List"
         DocumentNo: Code[20];
         LineNo: Integer;
         AsAt: dATE;
+        LoanType: Record "Loan Products Setup";
 
     begin
 
@@ -363,10 +392,10 @@ Report 50210 "Loan Defaulters List"
 
         GenJournalBatch.Get('GENERAL', 'PENALTY');
 
-        // Get document number
+
         DocumentNo := NoSeriesMgt.GetNextNo(GenJournalBatch."No. Series", AsAt, false);
 
-        // Get next line number
+
         GenJournalLine.SetRange("Journal Template Name", 'GENERAL');
         GenJournalLine.SetRange("Journal Batch Name", 'PENALTY');
         if GenJournalLine.FindLast() then
@@ -380,31 +409,51 @@ Report 50210 "Loan Defaulters List"
         GenJournalLine."Journal Template Name" := 'GENERAL';
         GenJournalLine."Journal Batch Name" := 'PENALTY';
         GenJournalLine."Line No." := LineNo;
-        GenJournalLine."Document Type" := GenJournalLine."Document Type"::Invoice;
+        //GenJournalLine."Document Type" := GenJournalLine."Document Type"::Invoice;
         GenJournalLine."Document No." := DocumentNo;
         GenJournalLine."Posting Date" := AsAt;
         GenJournalLine."Account Type" := GenJournalLine."Account Type"::Customer;
         GenJournalLine."Account No." := Loans."Client Code";
         GenJournalLine.Amount := LoanScheduleRec.Penalty;
+        GenJournalLine.Validate(GenJournalLine."Account No.");
         GenJournalLine."Loan No" := Loans."Loan  No.";
+        GenJournalLine.Validate(GenJournalLine."Loan No");
         GenJournalLine."Transaction Type" := GenJournalLine."Transaction Type"::"Penalty Charged";
-        GenJournalLine.Description := 'Late Payment Penalty - ' + Loans."Loan  No." + ' Due: ' + Format(LoanScheduleRec."Monthly Repayment");
+        GenJournalLine.Description := 'Late penalty for: ' + Loans."Loan Product Type Name" + ' - ' + Format(LoanScheduleRec."Repayment Date", 0, '<Month Text> <Year4>') + ' (Due: ' + Format(LoanScheduleRec."Monthly Repayment") + ')';
+
+        if LoanType.Get(Loans."Loan Product Type") then begin
+            GenJournalLine.Validate(GenJournalLine.Amount);
+
+            GenJournalLine."Bal. Account Type" := GenJournalLine."bal. account type"::"G/L Account";
+            GenJournalLine."Bal. Account No." := '4002';
+            GenJournalLine."Loan Product Type" := LoanType.Code;
+            GenJournalLine.Validate(GenJournalLine."Bal. Account No.");
+        end;
+        if loanapp.Source = loanapp.Source::BOSA then begin
+            GenJournalLine."Shortcut Dimension 1 Code" := Cust."Global Dimension 1 Code";
+            GenJournalLine."Shortcut Dimension 2 Code" := Cust."Global Dimension 2 Code";
+        end;
+        GenJournalLine.Validate(GenJournalLine."Shortcut Dimension 1 Code");
+        GenJournalLine.Validate(GenJournalLine."Shortcut Dimension 2 Code");
+
+
+
         GenJournalLine.Insert();
 
         // Create corresponding credit entry (Income account)
-        LineNo += 10000;
-        GenJournalLine.Init();
-        GenJournalLine."Journal Template Name" := 'GENERAL';
-        GenJournalLine."Journal Batch Name" := 'PENALTY';
-        GenJournalLine."Line No." := LineNo;
-        GenJournalLine."Document Type" := GenJournalLine."Document Type"::Invoice;
-        GenJournalLine."Document No." := DocumentNo;
-        GenJournalLine."Posting Date" := AsAt;
-        GenJournalLine."Account Type" := GenJournalLine."Account Type"::"G/L Account";
-        GenJournalLine."Account No." := '4002'; // Penalty Income Account - adjust as needed
-        GenJournalLine.Amount := -LoanScheduleRec.Penalty;
-        GenJournalLine.Description := 'Late Payment Penalty Income - ' + Loans."Loan  No.";
-        GenJournalLine.Insert();
+        // LineNo += 10000;
+        // GenJournalLine.Init();
+        // GenJournalLine."Journal Template Name" := 'GENERAL';
+        // GenJournalLine."Journal Batch Name" := 'PENALTY';
+        // GenJournalLine."Line No." := LineNo;
+        // GenJournalLine."Document Type" := GenJournalLine."Document Type"::Invoice;
+        // GenJournalLine."Document No." := DocumentNo;
+        // GenJournalLine."Posting Date" := AsAt;
+        // GenJournalLine."Account Type" := GenJournalLine."Account Type"::"G/L Account";
+        // GenJournalLine."Account No." := '4002'; // Penalty Income Account - adjust as needed
+        // GenJournalLine.Amount := -LoanScheduleRec.Penalty;
+        // GenJournalLine.Description := 'Late Payment Penalty Income - ' + Loans."Loan  No.";
+        // GenJournalLine.Insert();
 
         //Codeunit.Run(Codeunit::"Gen. Jnl.-Post Batch", GenJournalLine);
 
