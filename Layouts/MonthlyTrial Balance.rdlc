@@ -1994,7 +1994,6 @@
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>
@@ -2084,7 +2083,7 @@
                 </FilterValues>
               </Filter>
             </Filters>
-            <Top>6.16999cm</Top>
+            <Top>6.53744cm</Top>
             <Left>0.13354in</Left>
             <Height>1.7106cm</Height>
             <Width>39.19259cm</Width>
@@ -2135,7 +2134,7 @@
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>1.96528in</Top>
+            <Top>2.10995in</Top>
             <Left>5.87585in</Left>
             <Height>0.59906cm</Height>
             <Width>7.5cm</Width>
@@ -2267,10 +2266,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Company_Fax_No</rd:DefaultName>
-            <Top>1.42361in</Top>
-            <Left>5.27253in</Left>
+            <Top>1.72916in</Top>
+            <Left>4.60528in</Left>
             <Height>0.25in</Height>
-            <Width>2.06307in</Width>
+            <Width>5.31307in</Width>
             <ZIndex>4</ZIndex>
             <Style>
               <Border>
@@ -2302,6 +2301,13 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
+                    <Value>EMAIL:</Value>
+                    <Style>
+                      <FontSize>9pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
                     <Value>=First(Fields!Company_Email.Value, "DataSet_Result")</Value>
                     <Style>
                       <FontSize>9pt</FontSize>
@@ -2315,10 +2321,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Company_Email</rd:DefaultName>
-            <Top>1.42361in</Top>
-            <Left>7.34948in</Left>
+            <Top>1.45139in</Top>
+            <Left>4.60528in</Left>
             <Height>0.25in</Height>
-            <Width>2.06307in</Width>
+            <Width>5.31307in</Width>
             <ZIndex>5</ZIndex>
             <Style>
               <Border>
@@ -2358,8 +2364,8 @@
             </Style>
           </Image>
           <Line Name="Line1">
-            <Top>5.80254cm</Top>
-            <Left>0.33919cm</Left>
+            <Top>6.16999cm</Top>
+            <Left>0.3392cm</Left>
             <Height>0cm</Height>
             <Width>39.19258cm</Width>
             <ZIndex>7</ZIndex>
@@ -2370,13 +2376,13 @@
             </Style>
           </Line>
         </ReportItems>
-        <Height>4.00715in</Height>
+        <Height>4.19465in</Height>
         <Style />
       </Body>
-      <Width>15.56369in</Width>
+      <Width>15.5637in</Width>
       <Page>
         <PageHeader>
-          <Height>1.22701cm</Height>
+          <Height>0.83014cm</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
@@ -2423,8 +2429,8 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>0.66229cm</Top>
-              <Left>1.60694cm</Left>
+              <Top>0.17057cm</Top>
+              <Left>35.76663cm</Left>
               <Height>0.423cm</Height>
               <Width>2.13224cm</Width>
               <ZIndex>1</ZIndex>
@@ -2480,7 +2486,8 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox1</rd:DefaultName>
-              <Top>0.66229cm</Top>
+              <Top>0.17057cm</Top>
+              <Left>34.15969cm</Left>
               <Height>0.45889cm</Height>
               <Width>1.50111cm</Width>
               <ZIndex>3</ZIndex>

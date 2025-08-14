@@ -67,7 +67,7 @@ report 59067 "Loan Disbursement Voucher"
                 column(Loans_Top_Up_OutstandingBal; "Outstanding Balance") { }
                 column(Loans_Top_up__Principle_Top_Up_; "Principle Top Up") { }
                 column(Loans_Top_up__Loan_Type_; "Loan Type") { }
-                column(Loans_Top_up__Loan_Type_Name; "Loan Product Type Name") { }
+                //column(Loans_Top_up__Loan_Type_Name; "Loan Product Type Name") { }
                 column(Loans_Top_up__Client_Code_; "Client Code") { }
                 column(Loans_Top_up__Loan_No__; "Loan No.") { }
                 column(Loans_Top_up__Total_Top_Up_; "Total Top Up") { }
@@ -97,7 +97,7 @@ report 59067 "Loan Disbursement Voucher"
                 if LoanTopUp.Find('-') then begin
                     repeat
                         // Bridged_Amount+=
-                        TotalTopUpDeductions += LoanTopUp."Principle Top Up" + loantopup."Interest Top Up" + LoanTopUp.Commision;
+                        TotalTopUpDeductions += LoanTopUp."Principle Top Up" + LoanTopUp."Interest Top Up" + LoanTopUp.Commision;
                     until LoanTopUp.Next = 0;
                 end;
 
@@ -136,7 +136,7 @@ report 59067 "Loan Disbursement Voucher"
         TotalOffsetPrinciple: Decimal;
         TotalOffsetInterest: Decimal;
         TotalOffsetCommission: Decimal;
-        NetDisbursed: Decimal;
+        Netdisbursed: Decimal;
         total_deductions: Decimal;
         Upfronts: Decimal;
         HasOffsetDetails: Boolean;

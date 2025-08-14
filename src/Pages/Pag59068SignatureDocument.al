@@ -19,22 +19,22 @@ page 59068 "SignatureDocument"
             {
                 Caption = 'General';
 
-                field("Digital Signature"; Rec."Digital Signature")
-                {
+                /*  field("Digital Signature"; Rec."Digital Signature")
+                 {
 
-                    ApplicationArea = All;
-                    ShowCaption = false;
-                    ToolTip = 'Specifies the value of the Digital Signature field.';
-                    ShowMandatory = true;
-                }
-                field("Signature Date"; Rec."Signature Date")
-                {
-                    ToolTip = 'Specifies the value of the Signature Upload Date field.', Comment = '%';
-                }
-                field("Signature File Name"; Rec."Signature File Name")
-                {
-                    ToolTip = 'Specifies the value of the Signature File Name field.', Comment = '%';
-                }
+                     ApplicationArea = All;
+                     ShowCaption = false;
+                     ToolTip = 'Specifies the value of the Digital Signature field.';
+                     ShowMandatory = true;
+                 }
+                 field("Signature Date"; Rec."Signature Date")
+                 {
+                     ToolTip = 'Specifies the value of the Signature Upload Date field.', Comment = '%';
+                 }
+                 field("Signature File Name"; Rec."Signature File Name")
+                 {
+                     ToolTip = 'Specifies the value of the Signature File Name field.', Comment = '%';
+                 } */
             }
         }
     }
@@ -61,15 +61,16 @@ page 59068 "SignatureDocument"
                 begin
                     Rec.TestField(Rec."User ID");
                     if UploadIntoStream(DialogTittle, '', 'All Files (*.*)|*.*', FileName, InstreamFile) then begin
-                        if Rec."Digital Signature".HasValue() then begin
+                        //  if Rec."Digital Signature".HasValue() then
+                        begin
                             if Confirm(OverrideImageQst, false) = false then begin
                                 exit;
                             end else begin
-                                Clear(REC."Digital Signature");
+                                //  Clear(REC."Digital Signature");
                                 rec.Modify();
                             end;
                         end;
-                        rec."Digital Signature".ImportStream(InstreamFile, FileName);
+                        //  rec."Digital Signature".ImportStream(InstreamFile, FileName);
                         if not Rec.Modify(true) then
                             Rec.Insert(true);
                     end;
@@ -91,7 +92,7 @@ page 59068 "SignatureDocument"
                     if not Confirm(DeleteImageQst) then
                         exit;
 
-                    Clear(Rec."Digital Signature");
+                    // Clear(Rec."Digital Signature");
                     Rec.Modify(true);
                 end;
             }
@@ -128,7 +129,7 @@ page 59068 "SignatureDocument"
 
     local procedure SetEditableOnPictureActions()
     begin
-        DeleteExportEnabled := Rec."Digital Signature".HasValue;
+        // DeleteExportEnabled := Rec."Digital Signature".HasValue;
     end;
 
 

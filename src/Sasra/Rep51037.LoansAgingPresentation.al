@@ -42,22 +42,22 @@ Report 51037 "Loans Aging Presentation"
             column(V0Month_; "0Month")
             {
             }
-            column(AmountinArrears_LoansRegister; "Loans Register"."Amount in Arrears")
+            column(AmountinArrears; CalculatedAmountInArrears)
             {
             }
             column(LoanProductType; "Loans Register"."Loan Product Type Name")
             {
             }
-            column(AsAt; "Loans Register"."Loan Aging Run Date")
+            // column(AsAt; "Loans Register"."Loan Aging Run Date")
+            //{
+            //}
+            column(Days; CalculatedDaysInArrears)
             {
             }
-            column(Days; "Loans Register"."Days In Arrears")
+            column(Months; CalculatedMonthsInArrears)
             {
             }
-            column(Months; "Loans Register"."No of Months in Arrears")
-            {
-            }
-            column(LoanCategory; "Loans Register"."Loans Category")
+            column(LoanCategory; CalculatedLoanCategory)
             {
             }
             column(Company_Name; Company.Name)
@@ -210,122 +210,8 @@ Report 51037 "Loans Aging Presentation"
         LoanProdType: Record "Loan Products Setup";
 
 
-    local procedure CalculateLoanClassification()
-    var
-        LoanRepaymentSchedule: Record "Loan Repayment Schedule";
-        ExpectedAmount: Decimal;
-        ActualAmount: Decimal;
-        LastDueDate: Date;
-        DaysOverdue: Integer;
-    begin
-
-        CalculatedAmountInArrears := 0;
-        CalculatedDaysInArrears := 0;
-        CalculatedMonthsInArrears := 0;
-        CalculatedLoanCategory := CalculatedLoanCategory::Performing;
-
-        // Calculate expected vs actual payments as of AsAt date
-        ExpectedAmount := GetExpectedPaymentAmount();
-        ActualAmount := GetActualPaymentAmount();
-
-        //lets use outstanding balance
-        if ActualAmount > ExpectedAmount then
-            CalculatedAmountInArrears := ActualAmount - ExpectedAmount;
-
-        //LastDueDate := GetLastDueDateBeforeAsAt();
-        FirstArrearsDate := GetFirstDateWhereInArrears(ActualAmount);
-
-        // Calculate days in arrears
-        if (FirstArrearsDate <> 0D) and (CalculatedAmountInArrears > 0) then begin
-
-            CalculatedDaysInArrears := AsAt - FirstArrearsDate;
-            CalculatedMonthsInArrears := CalculatedDaysInArrears div 30;
-
-            case CalculatedDaysInArrears of
-                1 .. 30:
-                    CalculatedLoanCategory := CalculatedLoanCategory::Watch;
-                31 .. 180:
-                    CalculatedLoanCategory := CalculatedLoanCategory::Substandard;
-                181 .. 360:
-                    CalculatedLoanCategory := CalculatedLoanCategory::Doubtful;
-                else
-                    CalculatedLoanCategory := CalculatedLoanCategory::Loss;
-            end;
-
-            // Handle LT007 blacklisting when in arrears
-            if "Loans Register"."Loan Product Type" = 'LT007' then begin
-                if "Loans Register"."Blacklist Status" <> "Loans Register"."Blacklist Status"::Blacklisted then begin
-                    "Loans Register"."Blacklist Status" := "Loans Register"."Blacklist Status"::Blacklisted;
-                    "Loans Register"."Blacklist Start Date" := AsAt;
-                    "Loans Register"."Blacklist End Date" := CalcDate('+45D', AsAt);
-                end;
-
-                if "Loans Register"."Blacklist End Date" > AsAt then
-                    "Loans Register"."Days Remaining in Blacklist" := "Loans Register"."Blacklist End Date" - AsAt
-                else begin
-                    "Loans Register"."Blacklist Status" := "Loans Register"."Blacklist Status"::" ";
-                    "Loans Register"."Blacklist Start Date" := 0D;
-                    "Loans Register"."Blacklist End Date" := 0D;
-                    "Loans Register"."Days Remaining in Blacklist" := 0;
-                end;
-            end;
-
-        end else begin
-            CalculatedLoanCategory := CalculatedLoanCategory::Performing;
-
-            // if "Loans Register"."Loan Product Type" = 'LT007' then begin
-            //     "Loans Register"."Blacklist Status" := "Loans Register"."Blacklist Status"::" ";
-            //     "Loans Register"."Blacklist Start Date" := 0D;
-            //     "Loans Register"."Blacklist End Date" := 0D;
-            //     "Loans Register"."Days Remaining in Blacklist" := 0;
-            // end;
-            if "Loans Register"."Loan Product Type" = 'LT007' then begin
-                if ("Loans Register"."Blacklist End Date" <> 0D) and ("Loans Register"."Blacklist End Date" <= AsAt) then begin
-                    "Loans Register"."Blacklist Status" := "Loans Register"."Blacklist Status"::" ";
-                    "Loans Register"."Blacklist Start Date" := 0D;
-                    "Loans Register"."Blacklist End Date" := 0D;
-                    "Loans Register"."Days Remaining in Blacklist" := 0;
-                end else if "Loans Register"."Blacklist End Date" > AsAt then begin
-                    "Loans Register"."Days Remaining in Blacklist" := "Loans Register"."Blacklist End Date" - AsAt;
-                end;
-            end;
-        end;
-
-        "Loans Register"."Amount in Arrears" := CalculatedAmountInArrears;
-        "Loans Register"."No of Days in Arrears" := CalculatedDaysInArrears;
-        "Loans Register"."No of Months in Arrears" := CalculatedMonthsInArrears;
-        "Loans Register"."Days In Arrears" := CalculatedDaysInArrears;
-
-        case CalculatedLoanCategory of
-            CalculatedLoanCategory::Performing:
-                begin
-                    "Loans Register"."Loans Category" := "Loans Register"."Loans Category"::Perfoming;
-                    "Loans Register"."Loans Category-SASRA" := "Loans Register"."Loans Category-SASRA"::Perfoming;
-                end;
-            CalculatedLoanCategory::Watch:
-                begin
-                    "Loans Register"."Loans Category" := "Loans Register"."Loans Category"::Watch;
-                    "Loans Register"."Loans Category-SASRA" := "Loans Register"."Loans Category-SASRA"::Watch;
-                end;
-            CalculatedLoanCategory::Substandard:
-                begin
-                    "Loans Register"."Loans Category" := "Loans Register"."Loans Category"::Substandard;
-                    "Loans Register"."Loans Category-SASRA" := "Loans Register"."Loans Category-SASRA"::Substandard;
-                end;
-            CalculatedLoanCategory::Doubtful:
-                begin
-                    "Loans Register"."Loans Category" := "Loans Register"."Loans Category"::Doubtful;
-                    "Loans Register"."Loans Category-SASRA" := "Loans Register"."Loans Category-SASRA"::Doubtful;
-                end;
-            CalculatedLoanCategory::Loss:
-                begin
-                    "Loans Register"."Loans Category" := "Loans Register"."Loans Category"::Loss;
-                    "Loans Register"."Loans Category-SASRA" := "Loans Register"."Loans Category-SASRA"::Loss;
-                end;
-        end;
-
-        "Loans Register".Modify();
-    end;
+    // Removed CalculateLoanClassification procedure: direct modifications to table fields are not allowed in reports.
+    // All calculations should be done using local variables only.
 
 
 

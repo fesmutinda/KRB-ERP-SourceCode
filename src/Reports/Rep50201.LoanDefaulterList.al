@@ -4,7 +4,7 @@ report 50201 "Loan Defaulters List Print"
     ApplicationArea = All;
     DefaultLayout = RDLC;
     RDLCLayout = './Layout/LoanDefaultersList.rdlc';
-    Caption = 'Loan Defaulters List';
+    Caption = 'Loan Defaulters List2';
 
     dataset
     {
@@ -16,6 +16,7 @@ report 50201 "Loan Defaulters List Print"
             column(MemberNo; "No.") { }
             column(MemberName; Name) { }
             column(PhoneNo; "Phone No.") { }
+            column(USERID; UserId) { }
 
             dataitem("Loan Products Setup"; "Loan Products Setup")
             {
@@ -34,6 +35,9 @@ report 50201 "Loan Defaulters List Print"
                     column(ClientName; "Client Name") { }
                     column(ClientCode; "Client Code") { }
                     column(LoanStatus; "Loan Status") { }
+                    column(Company_Email; Company."E-Mail") { }
+                    column(Company_Phone_No; Company."Phone No.") { }
+                    column(Company_Name; Company.Name) { }
 
                     dataitem(Schedule; "Loan Repayment Schedule")
                     {
@@ -71,4 +75,6 @@ report 50201 "Loan Defaulters List Print"
     {
         Caption = 'Loan Defaulters List';
     }
+    var
+        Company: Record "Company Information";
 }

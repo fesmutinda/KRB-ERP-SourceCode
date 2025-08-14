@@ -768,8 +768,8 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox18</rd:DefaultName>
-            <Top>2.33999in</Top>
-            <Left>1.66301in</Left>
+            <Top>2.31221in</Top>
+            <Left>2.04552in</Left>
             <Height>0.24329in</Height>
             <Width>2.38072in</Width>
             <ZIndex>15</ZIndex>
@@ -801,8 +801,8 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox19</rd:DefaultName>
-            <Top>2.33999in</Top>
-            <Left>4.07152in</Left>
+            <Top>2.31221in</Top>
+            <Left>4.45403in</Left>
             <Height>0.22941in</Height>
             <Width>0.5in</Width>
             <ZIndex>16</ZIndex>
@@ -834,8 +834,8 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox19</rd:DefaultName>
-            <Top>2.33999in</Top>
-            <Left>4.5854in</Left>
+            <Top>2.31221in</Top>
+            <Left>4.96791in</Left>
             <Height>0.2433in</Height>
             <Width>0.96242in</Width>
             <ZIndex>17</ZIndex>
@@ -1005,7 +1005,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Company_Fax_No</rd:DefaultName>
-            <Top>1.57425in</Top>
+            <Top>1.81035in</Top>
             <Left>2.89096in</Left>
             <Height>0.25in</Height>
             <Width>2.06307in</Width>
@@ -1040,6 +1040,13 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
+                    <Value>EMAIL:</Value>
+                    <Style>
+                      <FontSize>8pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
                     <Value>=First(Fields!Company_Email.Value, "DataSet_Result")</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
@@ -1053,7 +1060,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Company_Email</rd:DefaultName>
-            <Top>1.85202in</Top>
+            <Top>1.56035in</Top>
             <Left>2.89096in</Left>
             <Height>0.25in</Height>
             <Width>2.06307in</Width>
@@ -1107,7 +1114,7 @@
       <Width>8.23718in</Width>
       <Page>
         <PageHeader>
-          <Height>0.47196in</Height>
+          <Height>0.23238in</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
@@ -1180,7 +1187,6 @@
               </Paragraphs>
               <rd:DefaultName>Textbox1</rd:DefaultName>
               <Top>0.00001cm</Top>
-              <Left>0cm</Left>
               <Height>0.45889cm</Height>
               <Width>1.61806cm</Width>
               <ZIndex>2</ZIndex>

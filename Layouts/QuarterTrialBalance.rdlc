@@ -33,7 +33,7 @@
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>1.99901in</Top>
+            <Top>2.24875in</Top>
             <Left>4.1019in</Left>
             <Height>0.59906cm</Height>
             <Width>7.5cm</Width>
@@ -50,7 +50,6 @@
                   <TextRun>
                     <Value>=First(Fields!Company_Address.Value, "DataSet_Result")</Value>
                     <Style>
-                      <FontSize>9pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
@@ -146,14 +145,12 @@
                   <TextRun>
                     <Value>TEL: </Value>
                     <Style>
-                      <FontSize>9pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
                   <TextRun>
                     <Value>=First(Fields!Company_Phone_No.Value, "DataSet_Result")</Value>
                     <Style>
-                      <FontSize>9pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
@@ -164,10 +161,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Company_Fax_No</rd:DefaultName>
-            <Top>1.45734in</Top>
-            <Left>3.49858in</Left>
+            <Top>1.73512in</Top>
+            <Left>2.83133in</Left>
             <Height>0.25in</Height>
-            <Width>2.06307in</Width>
+            <Width>5.31307in</Width>
             <ZIndex>3</ZIndex>
             <Style>
               <Border>
@@ -199,9 +196,14 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
+                    <Value>EMAIL:</Value>
+                    <Style>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
                     <Value>=First(Fields!Company_Email.Value, "DataSet_Result")</Value>
                     <Style>
-                      <FontSize>9pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
@@ -213,9 +215,9 @@
             </Paragraphs>
             <rd:DefaultName>Company_Email</rd:DefaultName>
             <Top>1.45734in</Top>
-            <Left>5.57553in</Left>
+            <Left>2.83133in</Left>
             <Height>0.25in</Height>
-            <Width>2.06307in</Width>
+            <Width>5.31307in</Width>
             <ZIndex>4</ZIndex>
             <Style>
               <Border>
@@ -1333,7 +1335,7 @@
                 </FilterValues>
               </Filter>
             </Filters>
-            <Top>5.81764cm</Top>
+            <Top>6.45197cm</Top>
             <Left>0.16854in</Left>
             <Height>1.7106cm</Height>
             <Width>28.11115cm</Width>
@@ -1368,7 +1370,7 @@
             </Style>
           </Tablix>
           <Line Name="Line1">
-            <Top>2.24875in</Top>
+            <Top>2.49849in</Top>
             <Left>0.16854in</Left>
             <Height>0in</Height>
             <Width>11.06739in</Width>
@@ -1386,7 +1388,7 @@
       <Width>11.23593in</Width>
       <Page>
         <PageHeader>
-          <Height>0.42708in</Height>
+          <Height>0.25in</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
@@ -1433,8 +1435,8 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>0.6259cm</Top>
-              <Left>2.03504cm</Left>
+              <Top>0.07089cm</Top>
+              <Left>26.407cm</Left>
               <Height>0.423cm</Height>
               <Width>2.13224cm</Width>
               <ZIndex>1</ZIndex>
@@ -1491,8 +1493,8 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox1</rd:DefaultName>
-              <Top>0.6259cm</Top>
-              <Left>0.4281cm</Left>
+              <Top>0.07089cm</Top>
+              <Left>24.80006cm</Left>
               <Height>0.45889cm</Height>
               <Width>1.50111cm</Width>
               <ZIndex>3</ZIndex>

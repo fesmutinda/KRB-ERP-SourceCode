@@ -687,7 +687,7 @@ Page 56043 "KRB Sacco Role Center"
                     action("KRB Balance Sheet 2")
                     {
                         ApplicationArea = Basic, Suite;
-                        Caption = 'KRB Financial Position';
+                        Caption = 'KRB Financial Position2';
                         RunObject = report KRBFinancialPosition2;
                     }
 
@@ -1231,12 +1231,13 @@ Page 56043 "KRB Sacco Role Center"
                         ToolTip = 'Loans Guard Report';
                         Visible = false;
                     }
-
                     action("Loan defaulter List")
                     {
                         ApplicationArea = all;
                         RunObject = report "Loan Defaulters List";
                     }
+
+
 
                     action("Loans Register")
                     {

@@ -2246,23 +2246,17 @@ kHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpBvD/AZI2
         <Field Name="V0Month_Format">
           <DataField>V0Month_Format</DataField>
         </Field>
-        <Field Name="AmountinArrears_LoansRegister">
-          <DataField>AmountinArrears_LoansRegister</DataField>
+        <Field Name="AmountinArrears">
+          <DataField>AmountinArrears</DataField>
         </Field>
-        <Field Name="AmountinArrears_LoansRegisterFormat">
-          <DataField>AmountinArrears_LoansRegisterFormat</DataField>
+        <Field Name="AmountinArrearsFormat">
+          <DataField>AmountinArrearsFormat</DataField>
         </Field>
         <Field Name="LoanProductType">
           <DataField>LoanProductType</DataField>
         </Field>
-        <Field Name="AsAt">
-          <DataField>AsAt</DataField>
-        </Field>
         <Field Name="Days">
           <DataField>Days</DataField>
-        </Field>
-        <Field Name="DaysFormat">
-          <DataField>DaysFormat</DataField>
         </Field>
         <Field Name="Months">
           <DataField>Months</DataField>

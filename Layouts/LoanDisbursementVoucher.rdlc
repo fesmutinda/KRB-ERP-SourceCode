@@ -2899,9 +2899,6 @@ kHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpBvD/AZI2
         <Field Name="Loans_Top_up__Loan_Type_">
           <DataField>Loans_Top_up__Loan_Type_</DataField>
         </Field>
-        <Field Name="Loans_Top_up__Loan_Type_Name">
-          <DataField>Loans_Top_up__Loan_Type_Name</DataField>
-        </Field>
         <Field Name="Loans_Top_up__Client_Code_">
           <DataField>Loans_Top_up__Client_Code_</DataField>
         </Field>
