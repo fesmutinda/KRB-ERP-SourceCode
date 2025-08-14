@@ -681,13 +681,12 @@ Page 56043 "KRB Sacco Role Center"
                         ApplicationArea = Basic, Suite;
                         Caption = 'KRB Financial Position';
                         RunObject = report "KRBFinancialPosition";
-
                     }
 
                     action("KRB Balance Sheet 2")
                     {
                         ApplicationArea = Basic, Suite;
-                        Caption = 'KRB Financial Position';
+                        Caption = 'KRB Financial Position 2';
                         RunObject = report KRBFinancialPosition2;
                     }
 
@@ -696,8 +695,18 @@ Page 56043 "KRB Sacco Role Center"
                         ApplicationArea = Basic, Suite;
                         Caption = 'Statement of Comprehensive Income';
                         RunObject = report "KRBProfitAndLoss";
-
                     }
+
+
+                    action("KRB Profit & Loss 2")
+                    {
+                        ApplicationArea = Basic, Suite;
+                        Caption = 'Statement of Comprehensive Income 2';
+                        RunObject = report "KRBProfitAndLoss2";
+                    }
+
+
+
 
                     action("KRB Statement OF Cash Flows")
                     {
@@ -1205,7 +1214,7 @@ Page 56043 "KRB Sacco Role Center"
                     RunObject = page "Loans Calculator List";
                 }
 
-                group("Loans' Reports")
+                group("Loans Reports")
                 {
                     action("Loans Balances Report")
                     {
@@ -1268,6 +1277,7 @@ Page 56043 "KRB Sacco Role Center"
                         ApplicationArea = all;
                         Caption = 'Member Excess Loan Repayments';
                         RunObject = report MemberExcessList2;
+                        Visible = false;
                     }
 
                     action("Loan Defaulter Aging")
@@ -1278,11 +1288,13 @@ Page 56043 "KRB Sacco Role Center"
                         visible = true;
                     }
 
-                    action("Charge Loan Penalties")
+
+                    action("Approved Loans Report")
                     {
-                        Visible = true;
                         ApplicationArea = all;
-                        RunObject = report "Loan Penalty Processing";
+                        Caption = 'Approved Loans';
+                        RunObject = report "Approved Loans List";
+                        Visible = true;
                     }
                 }
             }
@@ -1373,6 +1385,14 @@ Page 56043 "KRB Sacco Role Center"
                         RunObject = page "Bank Acc. Reconciliation List";
                         Visible = true;
                     }
+                }
+
+
+                action("Charge Loan Penalties")
+                {
+                    Visible = true;
+                    ApplicationArea = all;
+                    RunObject = report "Loan Penalty Processing";
                 }
 
 
