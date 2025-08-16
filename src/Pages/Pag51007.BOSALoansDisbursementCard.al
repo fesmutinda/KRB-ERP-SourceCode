@@ -292,6 +292,23 @@ Page 51007 "BOSA Loans Disbursement Card"
                 }
             }
 
+            group("Mobile Money Details")
+            {
+
+                visible = true;
+
+                field("Mobile Money Service"; Rec."Mobile Money Service")
+                {
+                    ApplicationArea = Basic;
+                }
+
+                field("Mobile Money Receiving Number"; Rec."Mobile Money Receiving Number")
+                {
+                    ApplicationArea = Basic;
+                }
+
+            }
+
             part(Control1000000004; "Loans Guarantee Details")
             {
                 Caption = 'Guarantors  Detail';

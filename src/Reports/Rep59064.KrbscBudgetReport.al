@@ -98,6 +98,8 @@ report 59064 KrbscBudget
                     GLAccount: Record "G/L Account";
                     TotalBalance: Decimal;
                 begin
+
+                    DisplayBalance := 0;
                     // Get the G/L Account record and calculate its fields
                     if GLAccount.Get("G/L Account No.") then begin
                         GLAccount.CalcFields(Balance, "Net Change");

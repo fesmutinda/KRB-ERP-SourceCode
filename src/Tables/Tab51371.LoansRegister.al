@@ -1153,17 +1153,17 @@ Table 51371 "Loans Register"
                 //"Expected Date of Completion":=CALCDATE(FORMAT(Installments)+'M',"Repayment Start Date");
                 Validate("Repayment Start Date");
 
-                if "Mode of Disbursement" = "mode of disbursement"::"Mobile Money" then begin
-                    TESTFIELD("Mobile Money Service");
-                    TESTFIELD("Mobile Money Receiving Number")
-                end;
+                // if "Mode of Disbursement" = "mode of disbursement"::"Mobile Money" then begin
+                //     TESTFIELD("Mobile Money Service");
+                //     TESTFIELD("Mobile Money Receiving Number")
+                // end;
 
 
-                If "Mode of Disbursement" = "mode of disbursement"::"Bank Transfer" then begin
+                // If "Mode of Disbursement" = "mode of disbursement"::"Bank Transfer" then begin
 
-                    TESTFIELD("Bank Code");
-                    TESTFIELD("Bank Account");
-                end
+                //     TESTFIELD("Bank Code");
+                //     TESTFIELD("Bank Account");
+                // end
             end;
         }
         field(35; "Mode of Disbursement"; Enum "Mode Of Disbursement")// Option)
