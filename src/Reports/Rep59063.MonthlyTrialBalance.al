@@ -130,7 +130,47 @@ Report 59063 "Monthly Trial Balance"
                 StartOfMonth: Date;
                 EndOfMonth: Date;
                 GLAccEntry: Record "G/L Entry";
+                OpeningBalanceDate: Date;
+                OpeningBalanceAmount: Decimal;
+                OpeningBalanceDebit: Decimal;
+                OpeningBalanceCredit: Decimal;
+                OpeningBalanceNetChange: Decimal;
             begin
+                GLAccEntry.Reset();
+                GLAccEntry.SetRange("G/L Account No.", "No.");
+                GLAccEntry.SetRange("Posting Date", DMY2Date(31, 12, 2024));
+                GLAccEntry.CalcSums(Amount, "Debit Amount", "Credit Amount");
+
+                // Store opening balance amounts
+                OpeningBalanceDebit := GLAccEntry."Debit Amount";
+                OpeningBalanceCredit := GLAccEntry."Credit Amount";
+
+                GLAccEntry.CalcSums(Amount);
+                OpeningBalanceAmount := GLAccEntry.Amount;
+
+                // Add opening balance to the Net Change
+                // "Net Change" := "Net Change" + OpeningBalanceAmount;
+
+
+                // Calculate opening balance net change based on account type
+                if ("No." = '2227') or (CopyStr("No.", 1, 1) = '5') then begin
+                    OpeningBalanceNetChange := OpeningBalanceDebit - OpeningBalanceCredit;
+                end else begin
+                    case CopyStr("No.", 1, 1) of
+                        '1':
+                            OpeningBalanceNetChange := OpeningBalanceDebit - OpeningBalanceCredit;
+                        '2':
+                            OpeningBalanceNetChange := OpeningBalanceCredit - OpeningBalanceDebit;
+                        '3':
+                            OpeningBalanceNetChange := OpeningBalanceCredit - OpeningBalanceDebit;
+                        '4':
+                            OpeningBalanceNetChange := OpeningBalanceCredit - OpeningBalanceDebit;
+                        else
+                            OpeningBalanceNetChange := GLAccEntry.Amount;
+                    end;
+                end;
+
+
                 // Reset monthly arrays for each account
                 for i := 1 to 12 do begin
                     MonthNetChange[i] := 0;
@@ -188,8 +228,20 @@ Report 59063 "Monthly Trial Balance"
                             end;
                         end;
 
+                        // // Sum monthly total (absolute value of activity)
+                        // MonthTotal[i] := GLAccEntry."Debit Amount" + GLAccEntry."Credit Amount";
+
+                        // ADD opening balance to the first month (January)
+                        if i = 1 then
+                            MonthNetChange[i] := MonthNetChange[i] + OpeningBalanceNetChange;
+
                         // Sum monthly total (absolute value of activity)
                         MonthTotal[i] := GLAccEntry."Debit Amount" + GLAccEntry."Credit Amount";
+
+                        // ADD opening balance amounts to first month total
+                        if i = 1 then
+                            MonthTotal[i] := MonthTotal[i] + OpeningBalanceDebit + OpeningBalanceCredit;
+
 
                         // Balance at end of month (cumulative from beginning of time to end of month)
                         GLAccEntry.Reset();
@@ -245,6 +297,9 @@ Report 59063 "Monthly Trial Balance"
 
                 TotalDebit := 0;
                 Totalcredit := 0;
+
+
+                "Net Change" := "Net Change" + OpeningBalanceAmount;
 
                 // FIXED: Proper debit/credit classification for trial balance totals
                 if "G/L Account"."Account Type" = "G/L Account"."Account Type"::Posting then begin
