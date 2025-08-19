@@ -224,7 +224,7 @@ Report 50210 "Loan Defaulters List"
             begin
 
                 LCount := LCount + 1;
-                ChargePenaltyOnLatePayment(LoanRepaymentScheduleRec);
+                //ChargePenaltyOnLatePayment(LoanRepaymentScheduleRec);
 
             end;
 

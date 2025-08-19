@@ -214,18 +214,22 @@ Report 51036 "Loans Defaulter Aging"
     local procedure CalculateLoanClassification()
     var
         LoanRepaymentSchedule: Record "Loan Repayment Schedule";
+        LoanRepaymentScheduleRec: Record "Loan Repayment Schedule";
         LoansRegisterRec: Record "Loans Register";
         ExpectedOutstandingBalance: Decimal;
         ActualOutstandingBalance: Decimal;
         LastDueDate: Date;
         DaysOverdue: Integer;
+        ArrearsAtRepaymentDate: Decimal;
     begin
+        ArrearsAtRepaymentDate := 0;
         CalculatedAmountInArrears := 0;
         CalculatedDaysInArrears := 0;
         CalculatedMonthsInArrears := 0;
+        FirstArrearsDate := 0D;
         CalculatedLoanCategory := CalculatedLoanCategory::Performing;
 
-        ExpectedOutstandingBalance := GetExpectedOutstandingBalance();
+        ExpectedOutstandingBalance := GetExpectedOutstandingBalance(AsAt);
         ActualOutstandingBalance := "Loans Register"."Outstanding Balance";
 
         if ActualOutstandingBalance > ExpectedOutstandingBalance then
@@ -272,19 +276,41 @@ Report 51036 "Loans Defaulter Aging"
 
 
             //penalty
-            LoanRepaymentSchedule.Reset();
-            LoanRepaymentSchedule.SetRange("Loan No.", "Loans Register"."Loan  No.");
-            LoanRepaymentSchedule.SetFilter("Repayment Date", '%1..%2', FirstArrearsDate, AsAt);
-            if LoanRepaymentSchedule.FindSet() then begin
-                repeat
+            // LoanRepaymentSchedule.Reset();
+            // LoanRepaymentSchedule.SetRange("Loan No.", "Loans Register"."Loan  No.");
+            // LoanRepaymentSchedule.SetFilter("Repayment Date", '%1..%2', FirstArrearsDate, AsAt);
+            // if LoanRepaymentSchedule.FindSet() then begin
+            //     repeat
 
-                    if LoanRepaymentSchedule.PenaltyCharged = false then begin
-                        // LoanRepaymentSchedule.Penalty := 0.05 * LoanRepaymentSchedule."Monthly Repayment";
-                        LoanRepaymentSchedule.Penalty := Round(0.05 * LoanRepaymentSchedule."Monthly Repayment", 1, '>');
-                        LoanRepaymentSchedule.Modify();
-                        //ChargePenaltyOnLatePayment(LoanRepaymentSchedule);
+            //         if LoanRepaymentSchedule.PenaltyCharged = false then begin
+            //             // LoanRepaymentSchedule.Penalty := 0.05 * LoanRepaymentSchedule."Monthly Repayment";
+            //             //LoanRepaymentSchedule.Penalty := Round(0.05 * LoanRepaymentSchedule."Monthly Repayment", 1, '>');
+            //             LoanRepaymentSchedule.Penalty := Round(0.05 * CalculatedAmountInArrears, 1, '>');
+            //             LoanRepaymentSchedule.Modify();
+            //             //ChargePenaltyOnLatePayment(LoanRepaymentSchedule);
+            //         end;
+            //     until LoanRepaymentSchedule.Next() = 0;
+            // end;
+
+
+            LoanRepaymentScheduleRec.Reset();
+            LoanRepaymentScheduleRec.SetRange("Loan No.", "Loans Register"."Loan  No.");
+            LoanRepaymentScheduleRec.SetFilter("Repayment Date", '<=%1', AsAt);
+            LoanRepaymentScheduleRec.SetFilter("Repayment Date", '>=%1', FirstArrearsDate);
+            LoanRepaymentScheduleRec.SetRange("PenaltyCharged", false);
+
+            if LoanRepaymentScheduleRec.FindSet() then begin
+                repeat
+                    if LoanRepaymentScheduleRec."Repayment Date" < AsAt then begin
+                        // Calculate arrears amount as of this specific repayment date
+                        ArrearsAtRepaymentDate := CalculateArrearsAmountAsOfDate(LoanRepaymentScheduleRec."Repayment Date");
+
+                        LoanRepaymentScheduleRec.Arrears := ArrearsAtRepaymentDate;
+                        LoanRepaymentScheduleRec.Penalty := Round(0.05 * ArrearsAtRepaymentDate, 1, '>');
+                        //LoanRepaymentScheduleRec.PenaltyCharged := true; // Don't forget this!
+                        LoanRepaymentScheduleRec.Modify();
                     end;
-                until LoanRepaymentSchedule.Next() = 0;
+                until LoanRepaymentScheduleRec.Next() = 0;
             end;
 
         end else begin
@@ -345,97 +371,185 @@ Report 51036 "Loans Defaulter Aging"
         //"Loans Register".Modify();
     end;
 
-    local procedure GetExpectedOutstandingBalance(): Decimal
+
+    local procedure CalculateArrearsAmountAsOfDate(SpecificDate: Date): Decimal
     var
-        LoanRepaymentSchedule: Record "Loan Repayment Schedule";
-        LoansRegisterRec: Record "Loans Register";
-        Swizzfactory: Codeunit 50009;
-        ExpectedBalance: Decimal;
-        HasSchedule: Boolean;
+        ExpectedBalanceAtDate: Decimal;
+        ActualBalanceAtDate: Decimal;
+        GracePeriodDays: Integer;
+        ExtendedDate: Date;
     begin
-        ExpectedBalance := "Loans Register"."Approved Amount";
+        // Get expected balance as of the specific date
+        ExpectedBalanceAtDate := GetExpectedOutstandingBalance(SpecificDate);
+        GracePeriodDays := 15; // Allow 15 days grace period for payments
+        ExtendedDate := SpecificDate + GracePeriodDays;
 
-        // Check if schedule exists with a simple approach
-        LoanRepaymentSchedule.Reset();
-        LoanRepaymentSchedule.SetRange("Loan No.", "Loans Register"."Loan  No.");
-        HasSchedule := not LoanRepaymentSchedule.IsEmpty();
+        // Get actual balance as of the specific date (you'll need to implement this)
+        ActualBalanceAtDate := GetActualOutstandingBalance(ExtendedDate);
 
-        if not HasSchedule then begin
-            // Generate schedule if it doesn't exist
-            Swizzfactory.FnGenerateRepaymentSchedule("Loans Register"."Loan  No.");
+        if ActualBalanceAtDate > ExpectedBalanceAtDate then
+            exit(ActualBalanceAtDate - ExpectedBalanceAtDate)
+        else
+            exit(0);
+    end;
 
-            // Force a commit to ensure the generated data is available
-            Commit();
+
+    local procedure GetActualOutstandingBalance(AsAtDate: Date): Decimal
+    var
+        LoanLedgerEntry: Record "Cust. Ledger Entry";
+        TotalActual: Decimal;
+    begin
+        TotalActual := 0;
+
+        LoanLedgerEntry.Reset();
+        LoanLedgerEntry.SetRange("Customer No.", "Loans Register"."Client Code");
+        LoanLedgerEntry.SetRange("Loan No", "Loans Register"."Loan  No.");
+        LoanLedgerEntry.SetFilter("Transaction Type", '%1|%2|%3|%4|%5|%6|%7', LoanLedgerEntry."Transaction Type"::"Loan Repayment", LoanLedgerEntry."Transaction Type"::"Interest Paid", LoanLedgerEntry."Transaction Type"::Loan, LoanLedgerEntry."Transaction Type"::"Interest Due", LoanLedgerEntry."Transaction Type"::"Loan Transfer Charges", LoanLedgerEntry."Transaction Type"::"Penalty Charged", LoanLedgerEntry."Transaction Type"::"Penalty Paid");
+        //LoanLedgerEntry.SetFilter("Transaction Type", '%1|%2|%3|%4', LoanLedgerEntry."Transaction Type"::"Loan Repayment", LoanLedgerEntry."Transaction Type"::"Interest Paid", LoanLedgerEntry."Transaction Type"::Loan, LoanLedgerEntry."Transaction Type"::"Interest Due");
+        LoanLedgeREntry.SetRange(Reversed, false);
+        LoanLedgerEntry.SetFilter("Posting Date", '<=%1', AsAtDate);
+
+        if LoanLedgerEntry.FindSet() then begin
+            repeat
+                //LoanLedgerEntry.CalcFields("Credit Amount");
+                TotalActual += LoanLedgerEntry."Amount Posted";
+            until LoanLedgerEntry.Next() = 0;
         end;
 
-        // Always start with a clean slate for the actual query
-        LoanRepaymentSchedule.Reset();
-        LoanRepaymentSchedule.SetRange("Loan No.", "Loans Register"."Loan  No.");
-        LoanRepaymentSchedule.SetFilter("Repayment Date", '<=%1', AsAt);
-        LoanRepaymentSchedule.SetCurrentKey("Repayment Date");
+        exit(TotalActual);
+    end;
 
-        // Find the last repayment date within our date range
-        IF LoanRepaymentSchedule.FindLast() THEN begin
-            ExpectedBalance := Round(LoanRepaymentSchedule."Loan Balance", 0.01);
-        end else begin
-            // Fallback: if no schedule entries found within date range,
-            // use the original loan amount
-            ExpectedBalance := "Loans Register"."Approved Amount";
-        end;
+    local procedure GetExpectedOutstandingBalance(AsAtDate: Date): Decimal
+    var
+        ObjLoans: Record "Loans Register";
+        VarRunningDate: Date;
+        VarLoanAmount: Decimal;
+        VarInterestRate: Decimal;
+        VarRepayPeriod: Integer;
+        VarLBalance: Decimal;
+        VarInstalNo: Decimal;
+        VarTotalMRepay: Decimal;
+        VarLInterest: Decimal;
+        VarMonthlyInterest: Decimal;
+        VarLPrincipal: Decimal;
+        VarGrPrinciple: Integer;
+        VarGrInterest: Integer;
+        VarRepaymentStartDate: Date;
+        VarMonthIncreament: Text;
+        VarInPeriod: DateFormula;
+        ExpectedBalance: Decimal;
+    begin
+        // Get fresh loan record
+        if not ObjLoans.Get("Loans Register"."Loan  No.") then
+            exit("Loans Register"."Approved Amount");
 
-        "Loans Register"."Expected Loan Balance" := ExpectedBalance;
-        exit(ExpectedBalance);
+        // Initialize variables using same logic as FnGenerateRepaymentSchedule
+        if ObjLoans."Repayment Frequency" = ObjLoans."repayment frequency"::Daily then
+            Evaluate(VarInPeriod, '1D')
+        else if ObjLoans."Repayment Frequency" = ObjLoans."repayment frequency"::Weekly then
+            Evaluate(VarInPeriod, '1W')
+        else if ObjLoans."Repayment Frequency" = ObjLoans."repayment frequency"::Monthly then
+            Evaluate(VarInPeriod, '1M')
+        else if ObjLoans."Repayment Frequency" = ObjLoans."repayment frequency"::Quaterly then
+            Evaluate(VarInPeriod, '1Q');
+
+        VarGrPrinciple := ObjLoans."Grace Period - Principle (M)";
+        VarGrInterest := ObjLoans."Grace Period - Interest (M)";
+        VarLoanAmount := ObjLoans."Approved Amount";
+        VarInterestRate := ObjLoans.Interest;
+        VarMonthlyInterest := VarInterestRate / 12 / 100;
+        VarRepayPeriod := ObjLoans.Installments;
+        VarLBalance := VarLoanAmount;
+        VarRunningDate := ObjLoans."Repayment Start Date";
+        VarRepaymentStartDate := ObjLoans."Repayment Start Date";
+        VarInstalNo := 0;
+
+        // Calculate expected balance up to AsAt date using same logic
+        repeat
+            if (VarGrPrinciple > 0) and (VarGrInterest > 0) then begin
+                // Grace period - no principal reduction
+                VarGrPrinciple := VarGrPrinciple - 1;
+                VarGrInterest := VarGrInterest - 1;
+            end else begin
+                VarInstalNo := VarInstalNo + 1;
+
+                // Calculate repayment amounts using same logic as schedule generation
+                if ObjLoans."Repayment Method" = ObjLoans."repayment method"::Amortised then begin
+                    if VarTotalMRepay = 0 then begin
+                        VarTotalMRepay := Round(VarLBalance * ((VarMonthlyInterest * Power((1 + VarMonthlyInterest), VarRepayPeriod)) / (Power((1 + VarMonthlyInterest), VarRepayPeriod) - 1)), 1);
+                    end;
+
+                    VarLInterest := Round(VarLBalance * VarMonthlyInterest, 1);
+                    VarLPrincipal := VarTotalMRepay - VarLInterest;
+                end;
+
+                if ObjLoans."Repayment Method" = ObjLoans."repayment method"::"Straight Line" then begin
+                    if ObjLoans."Loan Product Type" = 'LT008' then begin
+                        VarLPrincipal := Round(VarLoanAmount / VarRepayPeriod, 1, '>');
+                        VarLInterest := 0;
+                    end else begin
+                        VarLPrincipal := Round(VarLoanAmount / VarRepayPeriod, 1, '>');
+                        VarLInterest := Round((VarInterestRate / 1200) * VarLoanAmount, 1, '>');
+                        if VarInstalNo - ObjLoans."Grace Period - Interest (M)" = 1 then
+                            VarLInterest := VarLInterest * VarInstalNo;
+                    end;
+                end;
+
+                if ObjLoans."Repayment Method" = ObjLoans."repayment method"::"Reducing Balance" then begin
+                    VarLPrincipal := Round(VarLoanAmount / VarRepayPeriod, 1, '>');
+                    VarLInterest := Round((VarInterestRate / 12 / 100) * VarLBalance, 1, '>');
+                end;
+
+                if ObjLoans."Repayment Method" = ObjLoans."repayment method"::Constants then begin
+                    if VarLBalance < ObjLoans.Repayment then
+                        VarLPrincipal := VarLBalance
+                    else
+                        VarLPrincipal := ObjLoans.Repayment;
+                    VarLInterest := ObjLoans.Interest;
+                end;
+
+                // Handle final installment
+                if VarInstalNo = VarRepayPeriod then begin
+                    VarLPrincipal := VarLBalance;
+                    VarTotalMRepay := VarLPrincipal + VarLInterest;
+                end;
+
+                // Reduce balance
+                VarLBalance := VarLBalance - VarLPrincipal;
+            end;
+
+            // Get next repayment date using same logic
+            VarMonthIncreament := Format(VarInstalNo) + 'M';
+            if ObjLoans."Repayment Frequency" = ObjLoans."repayment frequency"::Daily then
+                VarRunningDate := CalcDate('1D', VarRunningDate)
+            else if ObjLoans."Repayment Frequency" = ObjLoans."repayment frequency"::Weekly then
+                VarRunningDate := CalcDate('1W', VarRunningDate)
+            else if ObjLoans."Repayment Frequency" = ObjLoans."repayment frequency"::Monthly then
+                VarRunningDate := CalcDate(VarMonthIncreament, VarRepaymentStartDate)
+            else if ObjLoans."Repayment Frequency" = ObjLoans."repayment frequency"::Quaterly then
+                VarRunningDate := CalcDate('1Q', VarRunningDate);
+
+            // Stop when we reach or pass the AsAt date
+            if VarRunningDate > AsAtDate then begin
+                ExpectedBalance := VarLBalance;
+                break;
+            end;
+
+        until VarInstalNo = VarRepayPeriod;
+
+        // If we completed all installments and still haven't reached AsAt, balance should be 0
+        if VarInstalNo = VarRepayPeriod then
+            ExpectedBalance := 0
+        else
+            ExpectedBalance := VarLBalance;
+
+        "Loans Register"."Expected Loan Balance" := Round(ExpectedBalance, 0.01);
+        exit(Round(ExpectedBalance, 0.01));
     end;
 
 
 
-    // local procedure GetExpectedOutstandingBalance(): Decimal
-    // var
-    //     LoanRepaymentSchedule: Record "Loan Repayment Schedule";
-    //     LoansRegisterRec: Record "Loans Register";
-    //     Swizzfactory: Codeunit 50009;
-    //     ExpectedBalance: Decimal;
-    // begin
 
-    //     ExpectedBalance := "Loans Register"."Approved Amount";
-
-    //     LoanRepaymentSchedule.Reset();
-    //     LoanRepaymentSchedule.SetRange("Loan No.", "Loans Register"."Loan  No.");
-
-    //     if LoanRepaymentSchedule.Findset() then begin
-
-    //         //LoanRepaymentSchedule.Reset();
-    //         //LoanRepaymentSchedule.SetRange("Loan No.", "Loans Register"."Loan  No.");
-    //         LoanRepaymentSchedule.SetFilter("Repayment Date", '<=%1', AsAt);
-
-    //         IF LoanRepaymentSchedule.FindLast() THEN begin
-
-    //             ExpectedBalance := LoanRepaymentSchedule."Loan Balance";
-
-    //         end;
-    //     end ELSE begin
-
-    //         Swizzfactory.FnGenerateRepaymentSchedule("Loans Register"."Loan  No.");
-
-    //         //LoanRepaymentSchedule.Reset();
-    //         //LoanRepaymentSchedule.SetRange("Loan No.", "Loans Register"."Loan  No.");
-    //         LoanRepaymentSchedule.SetFilter("Repayment Date", '<=%1', AsAt);
-
-    //         IF LoanRepaymentSchedule.FindLast() THEN begin
-
-    //             ExpectedBalance := Round(LoanRepaymentSchedule."Loan Balance");
-    //         end;
-    //     end;
-
-    //     // if LoansRegisterRec.Get("Loans Register"."Loan  No.") then begin
-    //     //     LoansRegisterRec."Expected Loan Balance" := ExpectedBalance;
-    //     //     //LoansRegisterRec.Modify();
-    //     // end;
-
-    //     "Loans Register"."Expected Loan Balance" := ExpectedBalance;
-
-    //     exit(ExpectedBalance);
-    // end;
 
     local procedure GetLastDueDateBeforeAsAt(): Date
     var
@@ -454,29 +568,154 @@ Report 51036 "Loans Defaulter Aging"
         exit(LastDate);
     end;
 
-
     local procedure GetFirstDateWhereInArrears(ActualBalance: Decimal): Date
     var
-        LoanRepaymentSchedule: Record "Loan Repayment Schedule";
+        ObjLoans: Record "Loans Register";
+        VarRunningDate: Date;
+        VarLoanAmount: Decimal;
+        VarInterestRate: Decimal;
+        VarRepayPeriod: Integer;
+        VarLBalance: Decimal;
+        VarInstalNo: Decimal;
+        VarTotalMRepay: Decimal;
+        VarLInterest: Decimal;
+        VarMonthlyInterest: Decimal;
+        VarLPrincipal: Decimal;
+        VarGrPrinciple: Integer;
+        VarGrInterest: Integer;
+        VarRepaymentStartDate: Date;
+        VarMonthIncreament: Text;
+        VarInPeriod: DateFormula;
         RunningExpectedBalance: Decimal;
     begin
+        // Get fresh loan record
+        if not ObjLoans.Get("Loans Register"."Loan  No.") then
+            exit(0D);
 
-        LoanRepaymentSchedule.Reset();
-        LoanRepaymentSchedule.SetRange("Loan No.", "Loans Register"."Loan  No.");
-        LoanRepaymentSchedule.SetFilter("Repayment Date", '<=%1', AsAt);
-        LoanRepaymentSchedule.SetCurrentKey("Repayment Date");
+        // Initialize variables using same logic as FnGenerateRepaymentSchedule
+        if ObjLoans."Repayment Frequency" = ObjLoans."repayment frequency"::Daily then
+            Evaluate(VarInPeriod, '1D')
+        else if ObjLoans."Repayment Frequency" = ObjLoans."repayment frequency"::Weekly then
+            Evaluate(VarInPeriod, '1W')
+        else if ObjLoans."Repayment Frequency" = ObjLoans."repayment frequency"::Monthly then
+            Evaluate(VarInPeriod, '1M')
+        else if ObjLoans."Repayment Frequency" = ObjLoans."repayment frequency"::Quaterly then
+            Evaluate(VarInPeriod, '1Q');
 
-        if LoanRepaymentSchedule.FindSet() then
-            repeat
-                // Calculate what balance should be after this repayment
-                RunningExpectedBalance := LoanRepaymentSchedule."Loan Balance";
+        VarGrPrinciple := ObjLoans."Grace Period - Principle (M)";
+        VarGrInterest := ObjLoans."Grace Period - Interest (M)";
+        VarLoanAmount := ObjLoans."Approved Amount";
+        VarInterestRate := ObjLoans.Interest;
+        VarMonthlyInterest := VarInterestRate / 12 / 100;
+        VarRepayPeriod := ObjLoans.Installments;
+        VarLBalance := VarLoanAmount;
+        VarRunningDate := ObjLoans."Repayment Start Date";
+        VarRepaymentStartDate := ObjLoans."Repayment Start Date";
+        VarInstalNo := 0;
 
-                // First date where actual balance exceeds expected balance
-                if ActualBalance > RunningExpectedBalance then
-                    exit(LoanRepaymentSchedule."Repayment Date");
-            until LoanRepaymentSchedule.Next() = 0;
+        // Simulate the schedule and check for first arrears date
+        repeat
+            if (VarGrPrinciple > 0) and (VarGrInterest > 0) then begin
+                // Grace period - no principal reduction
+                VarGrPrinciple := VarGrPrinciple - 1;
+                VarGrInterest := VarGrInterest - 1;
+            end else begin
+                VarInstalNo := VarInstalNo + 1;
+
+                // Calculate repayment amounts using same logic as schedule generation
+                if ObjLoans."Repayment Method" = ObjLoans."repayment method"::Amortised then begin
+                    if VarTotalMRepay = 0 then begin
+                        VarTotalMRepay := Round(VarLBalance * ((VarMonthlyInterest * Power((1 + VarMonthlyInterest), VarRepayPeriod)) / (Power((1 + VarMonthlyInterest), VarRepayPeriod) - 1)), 1);
+                    end;
+
+                    VarLInterest := Round(VarLBalance * VarMonthlyInterest, 1);
+                    VarLPrincipal := VarTotalMRepay - VarLInterest;
+                end;
+
+                if ObjLoans."Repayment Method" = ObjLoans."repayment method"::"Straight Line" then begin
+                    if ObjLoans."Loan Product Type" = 'LT008' then begin
+                        VarLPrincipal := Round(VarLoanAmount / VarRepayPeriod, 1, '>');
+                        VarLInterest := 0;
+                    end else begin
+                        VarLPrincipal := Round(VarLoanAmount / VarRepayPeriod, 1, '>');
+                        VarLInterest := Round((VarInterestRate / 1200) * VarLoanAmount, 1, '>');
+                        if VarInstalNo - ObjLoans."Grace Period - Interest (M)" = 1 then
+                            VarLInterest := VarLInterest * VarInstalNo;
+                    end;
+                end;
+
+                if ObjLoans."Repayment Method" = ObjLoans."repayment method"::"Reducing Balance" then begin
+                    VarLPrincipal := Round(VarLoanAmount / VarRepayPeriod, 1, '>');
+                    VarLInterest := Round((VarInterestRate / 12 / 100) * VarLBalance, 1, '>');
+                end;
+
+                if ObjLoans."Repayment Method" = ObjLoans."repayment method"::Constants then begin
+                    if VarLBalance < ObjLoans.Repayment then
+                        VarLPrincipal := VarLBalance
+                    else
+                        VarLPrincipal := ObjLoans.Repayment;
+                    VarLInterest := ObjLoans.Interest;
+                end;
+
+                // Handle final installment
+                if VarInstalNo = VarRepayPeriod then begin
+                    VarLPrincipal := VarLBalance;
+                    VarTotalMRepay := VarLPrincipal + VarLInterest;
+                end;
+
+                // Reduce balance AFTER checking for arrears
+                VarLBalance := VarLBalance - VarLPrincipal;
+                RunningExpectedBalance := VarLBalance;
+
+                // Check if this is the first date where we're in arrears
+                // Only check dates that have passed (<=AsAt)
+                if (VarRunningDate <= AsAt) and (ActualBalance > RunningExpectedBalance) then
+                    exit(VarRunningDate);
+            end;
+
+            // Get next repayment date using same logic as schedule generation
+            VarMonthIncreament := Format(VarInstalNo) + 'M';
+            if ObjLoans."Repayment Frequency" = ObjLoans."repayment frequency"::Daily then
+                VarRunningDate := CalcDate('1D', VarRunningDate)
+            else if ObjLoans."Repayment Frequency" = ObjLoans."repayment frequency"::Weekly then
+                VarRunningDate := CalcDate('1W', VarRunningDate)
+            else if ObjLoans."Repayment Frequency" = ObjLoans."repayment frequency"::Monthly then
+                VarRunningDate := CalcDate(VarMonthIncreament, VarRepaymentStartDate)
+            else if ObjLoans."Repayment Frequency" = ObjLoans."repayment frequency"::Quaterly then
+                VarRunningDate := CalcDate('1Q', VarRunningDate);
+
+            // Stop if we've gone past AsAt date
+            if VarRunningDate > AsAt then
+                break;
+
+        until VarInstalNo = VarRepayPeriod;
+
         exit(0D); // Not in arrears
     end;
+
+
+    // local procedure GetFirstDateWhereInArrears(ActualBalance: Decimal): Date
+    // var
+    //     LoanRepaymentSchedule: Record "Loan Repayment Schedule";
+    //     RunningExpectedBalance: Decimal;
+    // begin
+
+    //     LoanRepaymentSchedule.Reset();
+    //     LoanRepaymentSchedule.SetRange("Loan No.", "Loans Register"."Loan  No.");
+    //     LoanRepaymentSchedule.SetFilter("Repayment Date", '<=%1', AsAt);
+    //     LoanRepaymentSchedule.SetCurrentKey("Repayment Date");
+
+    //     if LoanRepaymentSchedule.FindSet() then
+    //         repeat
+    //             // Calculate what balance should be after this repayment
+    //             RunningExpectedBalance := LoanRepaymentSchedule."Loan Balance";
+
+    //             // First date where actual balance exceeds expected balance
+    //             if ActualBalance > RunningExpectedBalance then
+    //                 exit(LoanRepaymentSchedule."Repayment Date");
+    //         until LoanRepaymentSchedule.Next() = 0;
+    //     exit(0D); // Not in arrears
+    // end;
 
 
     local procedure ChargePenaltyOnLatePayment(var LoanScheduleRec: Record "Loan Repayment Schedule")

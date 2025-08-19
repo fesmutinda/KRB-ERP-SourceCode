@@ -250,17 +250,18 @@ Codeunit 50009 "Swizzsoft Factory"
         //ObjLoansII.SetFilter(ObjLoansII."Outstanding Balance", '>0');
         if ObjLoansII.FindSet then begin
 
-            if ObjLoansII."Repayment Frequency" = ObjLoansII."repayment frequency"::Daily then
-                Evaluate(VarInPeriod, '1D')
-            else
-                if ObjLoansII."Repayment Frequency" = ObjLoansII."repayment frequency"::Weekly then
-                    Evaluate(VarInPeriod, '1W')
-                else
-                    if ObjLoansII."Repayment Frequency" = ObjLoansII."repayment frequency"::Monthly then
-                        Evaluate(VarInPeriod, '1M')
-                    else
-                        if ObjLoansII."Repayment Frequency" = ObjLoansII."repayment frequency"::Quaterly then
-                            Evaluate(VarInPeriod, '1Q');
+            // if ObjLoansII."Repayment Frequency" = ObjLoansII."repayment frequency"::Daily then
+            //     Evaluate(VarInPeriod, '1D')
+            // else
+            //     if ObjLoansII."Repayment Frequency" = ObjLoansII."repayment frequency"::Weekly then
+            //         Evaluate(VarInPeriod, '1W')
+            //     else
+            //         if ObjLoansII."Repayment Frequency" = ObjLoansII."repayment frequency"::Monthly then
+            //             Evaluate(VarInPeriod, '1M')
+            //         else
+            //             if ObjLoansII."Repayment Frequency" = ObjLoansII."repayment frequency"::Quaterly then
+            //                 Evaluate(VarInPeriod, '1Q');
+            Evaluate(VarInPeriod, '1M');
 
             VarRunDate := 0D;
             VarQCounter := 0;
@@ -292,7 +293,7 @@ Codeunit 50009 "Swizzsoft Factory"
             VarRepaymentStartDate := ObjLoansII."Repayment Start Date";
 
             VarInstalNo := 0;
-            Evaluate(VarRepayInterval, '1W');
+            //Evaluate(VarRepayInterval, '1W');
 
             repeat
                 if (VarGrPrinciple > 0) and (VarGrInterest > 0) then begin
@@ -424,17 +425,19 @@ Codeunit 50009 "Swizzsoft Factory"
 
                     //=======================================================================Get Next Repayment Date
                     VarMonthIncreament := Format(VarInstalNo) + 'M';
-                    if ObjLoansII."Repayment Frequency" = ObjLoansII."repayment frequency"::Daily then
-                        VarRunDate := CalcDate('1D', VarRunDate)
-                    else
-                        if ObjLoansII."Repayment Frequency" = ObjLoansII."repayment frequency"::Weekly then
-                            VarRunDate := CalcDate('1W', VarRunDate)
-                        else
-                            if ObjLoansII."Repayment Frequency" = ObjLoansII."repayment frequency"::Monthly then
-                                VarRunDate := CalcDate(VarMonthIncreament, VarRepaymentStartDate)
-                            else
-                                if ObjLoansII."Repayment Frequency" = ObjLoansII."repayment frequency"::Quaterly then
-                                    VarRunDate := CalcDate('1Q', VarRunDate);
+                    // if ObjLoansII."Repayment Frequency" = ObjLoansII."repayment frequency"::Daily then
+                    //     VarRunDate := CalcDate('1D', VarRunDate)
+                    // else
+                    //     if ObjLoansII."Repayment Frequency" = ObjLoansII."repayment frequency"::Weekly then
+                    //         VarRunDate := CalcDate('1W', VarRunDate)
+                    //     else
+                    //         if ObjLoansII."Repayment Frequency" = ObjLoansII."repayment frequency"::Monthly then
+                    //             VarRunDate := CalcDate(VarMonthIncreament, VarRepaymentStartDate)
+                    //         else
+                    //             if ObjLoansII."Repayment Frequency" = ObjLoansII."repayment frequency"::Quaterly then
+                    //                 VarRunDate := CalcDate('1Q', VarRunDate);
+                    VarRunDate := CalcDate(VarMonthIncreament, VarRepaymentStartDate)
+
                 end;
 
 

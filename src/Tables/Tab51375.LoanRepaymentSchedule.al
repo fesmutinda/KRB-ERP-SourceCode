@@ -108,6 +108,11 @@ Table 51375 "Loan Repayment Schedule"
         field(60; "Outstanding Penalty Amount"; Decimal)
         {
         }
+
+        field(61; "Arrears"; Decimal)
+        {
+
+        }
     }
 
     keys
@@ -132,6 +137,13 @@ Table 51375 "Loan Repayment Schedule"
         key(Key6; "Loan No.", "Member No.", Paid, "Loan Category")
         {
         }
+
+        key(Key7; "Loan No.", "Member No.")
+        {
+        }
+
+
+
     }
 
     fieldgroups

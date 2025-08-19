@@ -419,7 +419,7 @@ Report 59068 "Loan Penalty Processing"
         GenJournalLine."Loan No" := Loans."Loan  No.";
         GenJournalLine.Validate(GenJournalLine."Loan No");
         GenJournalLine."Transaction Type" := GenJournalLine."Transaction Type"::"Penalty Charged";
-        GenJournalLine.Description := 'Late penalty for: ' + Loans."Loan Product Type Name" + ' - ' + Format(LoanScheduleRec."Repayment Date", 0, '<Month Text> <Year4>') + ' (Due: ' + Format(LoanScheduleRec."Monthly Repayment") + ')';
+        GenJournalLine.Description := 'Late penalty for: ' + Loans."Loan Product Type Name" + ' - ' + Format(LoanScheduleRec."Repayment Date", 0, '<Month Text> <Year4>') + ' (Due: ' + Format(LoanScheduleRec."Arrears") + ')';
 
         if LoanType.Get(Loans."Loan Product Type") then begin
             GenJournalLine.Validate(GenJournalLine.Amount);

@@ -11,358 +11,6 @@
       <rd:DataSourceID>7cb87dba-96b7-47fc-b90f-2d9e1f8764ea</rd:DataSourceID>
     </DataSource>
   </DataSources>
-  <DataSets>
-    <DataSet Name="DataSet_Result">
-      <Query>
-        <DataSourceName>DataSource</DataSourceName>
-        <CommandText />
-      </Query>
-      <Fields>
-        <Field Name="Company_Name">
-          <DataField>Company_Name</DataField>
-        </Field>
-        <Field Name="AccountName">
-          <DataField>AccountName</DataField>
-        </Field>
-        <Field Name="Company_Address">
-          <DataField>Company_Address</DataField>
-        </Field>
-        <Field Name="Company_Address_2">
-          <DataField>Company_Address_2</DataField>
-        </Field>
-        <Field Name="Company_Phone_No">
-          <DataField>Company_Phone_No</DataField>
-        </Field>
-        <Field Name="Company_Fax_No">
-          <DataField>Company_Fax_No</DataField>
-        </Field>
-        <Field Name="Company_Picture">
-          <DataField>Company_Picture</DataField>
-        </Field>
-        <Field Name="Company_Email">
-          <DataField>Company_Email</DataField>
-        </Field>
-        <Field Name="PeriodText">
-          <DataField>PeriodText</DataField>
-        </Field>
-        <Field Name="GLFilter">
-          <DataField>GLFilter</DataField>
-        </Field>
-        <Field Name="G_L_Account_No_">
-          <DataField>G_L_Account_No_</DataField>
-        </Field>
-        <Field Name="Trial_BalanceCaption">
-          <DataField>Trial_BalanceCaption</DataField>
-        </Field>
-        <Field Name="CurrReport_PAGENOCaption">
-          <DataField>CurrReport_PAGENOCaption</DataField>
-        </Field>
-        <Field Name="Net_ChangeCaption">
-          <DataField>Net_ChangeCaption</DataField>
-        </Field>
-        <Field Name="Totaldebit">
-          <DataField>Totaldebit</DataField>
-        </Field>
-        <Field Name="TotaldebitFormat">
-          <DataField>TotaldebitFormat</DataField>
-        </Field>
-        <Field Name="Totalcredit">
-          <DataField>Totalcredit</DataField>
-        </Field>
-        <Field Name="TotalcreditFormat">
-          <DataField>TotalcreditFormat</DataField>
-        </Field>
-        <Field Name="BalanceCaption">
-          <DataField>BalanceCaption</DataField>
-        </Field>
-        <Field Name="G_L_Account___No__Caption">
-          <DataField>G_L_Account___No__Caption</DataField>
-        </Field>
-        <Field Name="PADSTR_____G_L_Account__Indentation___2___G_L_Account__NameCaption">
-          <DataField>PADSTR_____G_L_Account__Indentation___2___G_L_Account__NameCaption</DataField>
-        </Field>
-        <Field Name="G_L_Account___Net_Change_Caption">
-          <DataField>G_L_Account___Net_Change_Caption</DataField>
-        </Field>
-        <Field Name="G_L_Account___Net_Change__Control22Caption">
-          <DataField>G_L_Account___Net_Change__Control22Caption</DataField>
-        </Field>
-        <Field Name="G_L_Account___Balance_at_Date_Caption">
-          <DataField>G_L_Account___Balance_at_Date_Caption</DataField>
-        </Field>
-        <Field Name="G_L_Account___Balance_at_Date__Control24Caption">
-          <DataField>G_L_Account___Balance_at_Date__Control24Caption</DataField>
-        </Field>
-        <Field Name="PageGroupNo">
-          <DataField>PageGroupNo</DataField>
-        </Field>
-        <Field Name="COMPANYPICTURE">
-          <DataField>COMPANYPICTURE</DataField>
-        </Field>
-        <Field Name="Jan_NetChange">
-          <DataField>Jan_NetChange</DataField>
-        </Field>
-        <Field Name="Jan_NetChangeFormat">
-          <DataField>Jan_NetChangeFormat</DataField>
-        </Field>
-        <Field Name="Feb_NetChange">
-          <DataField>Feb_NetChange</DataField>
-        </Field>
-        <Field Name="Feb_NetChangeFormat">
-          <DataField>Feb_NetChangeFormat</DataField>
-        </Field>
-        <Field Name="Mar_NetChange">
-          <DataField>Mar_NetChange</DataField>
-        </Field>
-        <Field Name="Mar_NetChangeFormat">
-          <DataField>Mar_NetChangeFormat</DataField>
-        </Field>
-        <Field Name="Apr_NetChange">
-          <DataField>Apr_NetChange</DataField>
-        </Field>
-        <Field Name="Apr_NetChangeFormat">
-          <DataField>Apr_NetChangeFormat</DataField>
-        </Field>
-        <Field Name="May_NetChange">
-          <DataField>May_NetChange</DataField>
-        </Field>
-        <Field Name="May_NetChangeFormat">
-          <DataField>May_NetChangeFormat</DataField>
-        </Field>
-        <Field Name="Jun_NetChange">
-          <DataField>Jun_NetChange</DataField>
-        </Field>
-        <Field Name="Jun_NetChangeFormat">
-          <DataField>Jun_NetChangeFormat</DataField>
-        </Field>
-        <Field Name="Jul_NetChange">
-          <DataField>Jul_NetChange</DataField>
-        </Field>
-        <Field Name="Jul_NetChangeFormat">
-          <DataField>Jul_NetChangeFormat</DataField>
-        </Field>
-        <Field Name="Aug_NetChange">
-          <DataField>Aug_NetChange</DataField>
-        </Field>
-        <Field Name="Aug_NetChangeFormat">
-          <DataField>Aug_NetChangeFormat</DataField>
-        </Field>
-        <Field Name="Sep_NetChange">
-          <DataField>Sep_NetChange</DataField>
-        </Field>
-        <Field Name="Sep_NetChangeFormat">
-          <DataField>Sep_NetChangeFormat</DataField>
-        </Field>
-        <Field Name="Oct_NetChange">
-          <DataField>Oct_NetChange</DataField>
-        </Field>
-        <Field Name="Oct_NetChangeFormat">
-          <DataField>Oct_NetChangeFormat</DataField>
-        </Field>
-        <Field Name="Nov_NetChange">
-          <DataField>Nov_NetChange</DataField>
-        </Field>
-        <Field Name="Nov_NetChangeFormat">
-          <DataField>Nov_NetChangeFormat</DataField>
-        </Field>
-        <Field Name="Dec_NetChange">
-          <DataField>Dec_NetChange</DataField>
-        </Field>
-        <Field Name="Dec_NetChangeFormat">
-          <DataField>Dec_NetChangeFormat</DataField>
-        </Field>
-        <Field Name="Jan_Balance">
-          <DataField>Jan_Balance</DataField>
-        </Field>
-        <Field Name="Jan_BalanceFormat">
-          <DataField>Jan_BalanceFormat</DataField>
-        </Field>
-        <Field Name="Feb_Balance">
-          <DataField>Feb_Balance</DataField>
-        </Field>
-        <Field Name="Feb_BalanceFormat">
-          <DataField>Feb_BalanceFormat</DataField>
-        </Field>
-        <Field Name="Mar_Balance">
-          <DataField>Mar_Balance</DataField>
-        </Field>
-        <Field Name="Mar_BalanceFormat">
-          <DataField>Mar_BalanceFormat</DataField>
-        </Field>
-        <Field Name="Apr_Balance">
-          <DataField>Apr_Balance</DataField>
-        </Field>
-        <Field Name="Apr_BalanceFormat">
-          <DataField>Apr_BalanceFormat</DataField>
-        </Field>
-        <Field Name="May_Balance">
-          <DataField>May_Balance</DataField>
-        </Field>
-        <Field Name="May_BalanceFormat">
-          <DataField>May_BalanceFormat</DataField>
-        </Field>
-        <Field Name="Jun_Balance">
-          <DataField>Jun_Balance</DataField>
-        </Field>
-        <Field Name="Jun_BalanceFormat">
-          <DataField>Jun_BalanceFormat</DataField>
-        </Field>
-        <Field Name="Jul_Balance">
-          <DataField>Jul_Balance</DataField>
-        </Field>
-        <Field Name="Jul_BalanceFormat">
-          <DataField>Jul_BalanceFormat</DataField>
-        </Field>
-        <Field Name="Aug_Balance">
-          <DataField>Aug_Balance</DataField>
-        </Field>
-        <Field Name="Aug_BalanceFormat">
-          <DataField>Aug_BalanceFormat</DataField>
-        </Field>
-        <Field Name="Sep_Balance">
-          <DataField>Sep_Balance</DataField>
-        </Field>
-        <Field Name="Sep_BalanceFormat">
-          <DataField>Sep_BalanceFormat</DataField>
-        </Field>
-        <Field Name="Oct_Balance">
-          <DataField>Oct_Balance</DataField>
-        </Field>
-        <Field Name="Oct_BalanceFormat">
-          <DataField>Oct_BalanceFormat</DataField>
-        </Field>
-        <Field Name="Nov_Balance">
-          <DataField>Nov_Balance</DataField>
-        </Field>
-        <Field Name="Nov_BalanceFormat">
-          <DataField>Nov_BalanceFormat</DataField>
-        </Field>
-        <Field Name="Dec_Balance">
-          <DataField>Dec_Balance</DataField>
-        </Field>
-        <Field Name="Dec_BalanceFormat">
-          <DataField>Dec_BalanceFormat</DataField>
-        </Field>
-        <Field Name="Total_Jan_NetChange">
-          <DataField>Total_Jan_NetChange</DataField>
-        </Field>
-        <Field Name="Total_Jan_NetChangeFormat">
-          <DataField>Total_Jan_NetChangeFormat</DataField>
-        </Field>
-        <Field Name="Total_Feb_NetChange">
-          <DataField>Total_Feb_NetChange</DataField>
-        </Field>
-        <Field Name="Total_Feb_NetChangeFormat">
-          <DataField>Total_Feb_NetChangeFormat</DataField>
-        </Field>
-        <Field Name="Total_Mar_NetChange">
-          <DataField>Total_Mar_NetChange</DataField>
-        </Field>
-        <Field Name="Total_Mar_NetChangeFormat">
-          <DataField>Total_Mar_NetChangeFormat</DataField>
-        </Field>
-        <Field Name="Total_Apr_NetChange">
-          <DataField>Total_Apr_NetChange</DataField>
-        </Field>
-        <Field Name="Total_Apr_NetChangeFormat">
-          <DataField>Total_Apr_NetChangeFormat</DataField>
-        </Field>
-        <Field Name="Total_May_NetChange">
-          <DataField>Total_May_NetChange</DataField>
-        </Field>
-        <Field Name="Total_May_NetChangeFormat">
-          <DataField>Total_May_NetChangeFormat</DataField>
-        </Field>
-        <Field Name="Total_Jun_NetChange">
-          <DataField>Total_Jun_NetChange</DataField>
-        </Field>
-        <Field Name="Total_Jun_NetChangeFormat">
-          <DataField>Total_Jun_NetChangeFormat</DataField>
-        </Field>
-        <Field Name="Total_Jul_NetChange">
-          <DataField>Total_Jul_NetChange</DataField>
-        </Field>
-        <Field Name="Total_Jul_NetChangeFormat">
-          <DataField>Total_Jul_NetChangeFormat</DataField>
-        </Field>
-        <Field Name="Total_Aug_NetChange">
-          <DataField>Total_Aug_NetChange</DataField>
-        </Field>
-        <Field Name="Total_Aug_NetChangeFormat">
-          <DataField>Total_Aug_NetChangeFormat</DataField>
-        </Field>
-        <Field Name="Total_Sep_NetChange">
-          <DataField>Total_Sep_NetChange</DataField>
-        </Field>
-        <Field Name="Total_Sep_NetChangeFormat">
-          <DataField>Total_Sep_NetChangeFormat</DataField>
-        </Field>
-        <Field Name="Total_Oct_NetChange">
-          <DataField>Total_Oct_NetChange</DataField>
-        </Field>
-        <Field Name="Total_Oct_NetChangeFormat">
-          <DataField>Total_Oct_NetChangeFormat</DataField>
-        </Field>
-        <Field Name="Total_Nov_NetChange">
-          <DataField>Total_Nov_NetChange</DataField>
-        </Field>
-        <Field Name="Total_Nov_NetChangeFormat">
-          <DataField>Total_Nov_NetChangeFormat</DataField>
-        </Field>
-        <Field Name="Total_Dec_NetChange">
-          <DataField>Total_Dec_NetChange</DataField>
-        </Field>
-        <Field Name="Total_Dec_NetChangeFormat">
-          <DataField>Total_Dec_NetChangeFormat</DataField>
-        </Field>
-        <Field Name="ReportForNavId_5444">
-          <DataField>ReportForNavId_5444</DataField>
-        </Field>
-        <Field Name="G_L_Account___No__">
-          <DataField>G_L_Account___No__</DataField>
-        </Field>
-        <Field Name="PADSTR_____G_L_Account__Indentation___2___G_L_Account__Name">
-          <DataField>PADSTR_____G_L_Account__Indentation___2___G_L_Account__Name</DataField>
-        </Field>
-        <Field Name="G_L_Account___Net_Change_">
-          <DataField>G_L_Account___Net_Change_</DataField>
-        </Field>
-        <Field Name="G_L_Account___Net_Change_Format">
-          <DataField>G_L_Account___Net_Change_Format</DataField>
-        </Field>
-        <Field Name="G_L_Account___Net_Change__Control22">
-          <DataField>G_L_Account___Net_Change__Control22</DataField>
-        </Field>
-        <Field Name="G_L_Account___Net_Change__Control22Format">
-          <DataField>G_L_Account___Net_Change__Control22Format</DataField>
-        </Field>
-        <Field Name="G_L_Account___Balance_at_Date_">
-          <DataField>G_L_Account___Balance_at_Date_</DataField>
-        </Field>
-        <Field Name="G_L_Account___Balance_at_Date_Format">
-          <DataField>G_L_Account___Balance_at_Date_Format</DataField>
-        </Field>
-        <Field Name="G_L_Account___Balance_at_Date__Control24">
-          <DataField>G_L_Account___Balance_at_Date__Control24</DataField>
-        </Field>
-        <Field Name="G_L_Account___Balance_at_Date__Control24Format">
-          <DataField>G_L_Account___Balance_at_Date__Control24Format</DataField>
-        </Field>
-        <Field Name="G_L_Account___Account_Type_">
-          <DataField>G_L_Account___Account_Type_</DataField>
-        </Field>
-        <Field Name="No__of_Blank_Lines">
-          <DataField>No__of_Blank_Lines</DataField>
-        </Field>
-        <Field Name="ReportForNavId_7">
-          <DataField>ReportForNavId_7</DataField>
-        </Field>
-        <Field Name="BlankLineNo">
-          <DataField>BlankLineNo</DataField>
-        </Field>
-      </Fields>
-    </DataSet>
-  </DataSets>
   <ReportSections>
     <ReportSection>
       <Body>
@@ -2919,12 +2567,6 @@
       </Page>
     </ReportSection>
   </ReportSections>
-  <ReportParametersLayout>
-    <GridLayoutDefinition>
-      <NumberOfColumns>4</NumberOfColumns>
-      <NumberOfRows>2</NumberOfRows>
-    </GridLayoutDefinition>
-  </ReportParametersLayout>
   <Code>
     Public Function BlankZero(ByVal Value As Decimal)
     if Value = 0 then
@@ -2994,4 +2636,356 @@ kHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpBvD/AZI2
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Cm</rd:ReportUnitType>
   <rd:ReportID>97c2726a-a59d-4c8b-a9f6-9342c3a58452</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="Company_Name">
+          <DataField>Company_Name</DataField>
+        </Field>
+        <Field Name="AccountName">
+          <DataField>AccountName</DataField>
+        </Field>
+        <Field Name="Company_Address">
+          <DataField>Company_Address</DataField>
+        </Field>
+        <Field Name="Company_Address_2">
+          <DataField>Company_Address_2</DataField>
+        </Field>
+        <Field Name="Company_Phone_No">
+          <DataField>Company_Phone_No</DataField>
+        </Field>
+        <Field Name="Company_Fax_No">
+          <DataField>Company_Fax_No</DataField>
+        </Field>
+        <Field Name="Company_Picture">
+          <DataField>Company_Picture</DataField>
+        </Field>
+        <Field Name="Company_Email">
+          <DataField>Company_Email</DataField>
+        </Field>
+        <Field Name="PeriodText">
+          <DataField>PeriodText</DataField>
+        </Field>
+        <Field Name="GLFilter">
+          <DataField>GLFilter</DataField>
+        </Field>
+        <Field Name="G_L_Account_No_">
+          <DataField>G_L_Account_No_</DataField>
+        </Field>
+        <Field Name="Trial_BalanceCaption">
+          <DataField>Trial_BalanceCaption</DataField>
+        </Field>
+        <Field Name="CurrReport_PAGENOCaption">
+          <DataField>CurrReport_PAGENOCaption</DataField>
+        </Field>
+        <Field Name="Net_ChangeCaption">
+          <DataField>Net_ChangeCaption</DataField>
+        </Field>
+        <Field Name="Totaldebit">
+          <DataField>Totaldebit</DataField>
+        </Field>
+        <Field Name="TotaldebitFormat">
+          <DataField>TotaldebitFormat</DataField>
+        </Field>
+        <Field Name="Totalcredit">
+          <DataField>Totalcredit</DataField>
+        </Field>
+        <Field Name="TotalcreditFormat">
+          <DataField>TotalcreditFormat</DataField>
+        </Field>
+        <Field Name="BalanceCaption">
+          <DataField>BalanceCaption</DataField>
+        </Field>
+        <Field Name="G_L_Account___No__Caption">
+          <DataField>G_L_Account___No__Caption</DataField>
+        </Field>
+        <Field Name="PADSTR_____G_L_Account__Indentation___2___G_L_Account__NameCaption">
+          <DataField>PADSTR_____G_L_Account__Indentation___2___G_L_Account__NameCaption</DataField>
+        </Field>
+        <Field Name="G_L_Account___Net_Change_Caption">
+          <DataField>G_L_Account___Net_Change_Caption</DataField>
+        </Field>
+        <Field Name="G_L_Account___Net_Change__Control22Caption">
+          <DataField>G_L_Account___Net_Change__Control22Caption</DataField>
+        </Field>
+        <Field Name="G_L_Account___Balance_at_Date_Caption">
+          <DataField>G_L_Account___Balance_at_Date_Caption</DataField>
+        </Field>
+        <Field Name="G_L_Account___Balance_at_Date__Control24Caption">
+          <DataField>G_L_Account___Balance_at_Date__Control24Caption</DataField>
+        </Field>
+        <Field Name="PageGroupNo">
+          <DataField>PageGroupNo</DataField>
+        </Field>
+        <Field Name="COMPANYPICTURE">
+          <DataField>COMPANYPICTURE</DataField>
+        </Field>
+        <Field Name="Jan_NetChange">
+          <DataField>Jan_NetChange</DataField>
+        </Field>
+        <Field Name="Jan_NetChangeFormat">
+          <DataField>Jan_NetChangeFormat</DataField>
+        </Field>
+        <Field Name="Feb_NetChange">
+          <DataField>Feb_NetChange</DataField>
+        </Field>
+        <Field Name="Feb_NetChangeFormat">
+          <DataField>Feb_NetChangeFormat</DataField>
+        </Field>
+        <Field Name="Mar_NetChange">
+          <DataField>Mar_NetChange</DataField>
+        </Field>
+        <Field Name="Mar_NetChangeFormat">
+          <DataField>Mar_NetChangeFormat</DataField>
+        </Field>
+        <Field Name="Apr_NetChange">
+          <DataField>Apr_NetChange</DataField>
+        </Field>
+        <Field Name="Apr_NetChangeFormat">
+          <DataField>Apr_NetChangeFormat</DataField>
+        </Field>
+        <Field Name="May_NetChange">
+          <DataField>May_NetChange</DataField>
+        </Field>
+        <Field Name="May_NetChangeFormat">
+          <DataField>May_NetChangeFormat</DataField>
+        </Field>
+        <Field Name="Jun_NetChange">
+          <DataField>Jun_NetChange</DataField>
+        </Field>
+        <Field Name="Jun_NetChangeFormat">
+          <DataField>Jun_NetChangeFormat</DataField>
+        </Field>
+        <Field Name="Jul_NetChange">
+          <DataField>Jul_NetChange</DataField>
+        </Field>
+        <Field Name="Jul_NetChangeFormat">
+          <DataField>Jul_NetChangeFormat</DataField>
+        </Field>
+        <Field Name="Aug_NetChange">
+          <DataField>Aug_NetChange</DataField>
+        </Field>
+        <Field Name="Aug_NetChangeFormat">
+          <DataField>Aug_NetChangeFormat</DataField>
+        </Field>
+        <Field Name="Sep_NetChange">
+          <DataField>Sep_NetChange</DataField>
+        </Field>
+        <Field Name="Sep_NetChangeFormat">
+          <DataField>Sep_NetChangeFormat</DataField>
+        </Field>
+        <Field Name="Oct_NetChange">
+          <DataField>Oct_NetChange</DataField>
+        </Field>
+        <Field Name="Oct_NetChangeFormat">
+          <DataField>Oct_NetChangeFormat</DataField>
+        </Field>
+        <Field Name="Nov_NetChange">
+          <DataField>Nov_NetChange</DataField>
+        </Field>
+        <Field Name="Nov_NetChangeFormat">
+          <DataField>Nov_NetChangeFormat</DataField>
+        </Field>
+        <Field Name="Dec_NetChange">
+          <DataField>Dec_NetChange</DataField>
+        </Field>
+        <Field Name="Dec_NetChangeFormat">
+          <DataField>Dec_NetChangeFormat</DataField>
+        </Field>
+        <Field Name="Jan_Balance">
+          <DataField>Jan_Balance</DataField>
+        </Field>
+        <Field Name="Jan_BalanceFormat">
+          <DataField>Jan_BalanceFormat</DataField>
+        </Field>
+        <Field Name="Feb_Balance">
+          <DataField>Feb_Balance</DataField>
+        </Field>
+        <Field Name="Feb_BalanceFormat">
+          <DataField>Feb_BalanceFormat</DataField>
+        </Field>
+        <Field Name="Mar_Balance">
+          <DataField>Mar_Balance</DataField>
+        </Field>
+        <Field Name="Mar_BalanceFormat">
+          <DataField>Mar_BalanceFormat</DataField>
+        </Field>
+        <Field Name="Apr_Balance">
+          <DataField>Apr_Balance</DataField>
+        </Field>
+        <Field Name="Apr_BalanceFormat">
+          <DataField>Apr_BalanceFormat</DataField>
+        </Field>
+        <Field Name="May_Balance">
+          <DataField>May_Balance</DataField>
+        </Field>
+        <Field Name="May_BalanceFormat">
+          <DataField>May_BalanceFormat</DataField>
+        </Field>
+        <Field Name="Jun_Balance">
+          <DataField>Jun_Balance</DataField>
+        </Field>
+        <Field Name="Jun_BalanceFormat">
+          <DataField>Jun_BalanceFormat</DataField>
+        </Field>
+        <Field Name="Jul_Balance">
+          <DataField>Jul_Balance</DataField>
+        </Field>
+        <Field Name="Jul_BalanceFormat">
+          <DataField>Jul_BalanceFormat</DataField>
+        </Field>
+        <Field Name="Aug_Balance">
+          <DataField>Aug_Balance</DataField>
+        </Field>
+        <Field Name="Aug_BalanceFormat">
+          <DataField>Aug_BalanceFormat</DataField>
+        </Field>
+        <Field Name="Sep_Balance">
+          <DataField>Sep_Balance</DataField>
+        </Field>
+        <Field Name="Sep_BalanceFormat">
+          <DataField>Sep_BalanceFormat</DataField>
+        </Field>
+        <Field Name="Oct_Balance">
+          <DataField>Oct_Balance</DataField>
+        </Field>
+        <Field Name="Oct_BalanceFormat">
+          <DataField>Oct_BalanceFormat</DataField>
+        </Field>
+        <Field Name="Nov_Balance">
+          <DataField>Nov_Balance</DataField>
+        </Field>
+        <Field Name="Nov_BalanceFormat">
+          <DataField>Nov_BalanceFormat</DataField>
+        </Field>
+        <Field Name="Dec_Balance">
+          <DataField>Dec_Balance</DataField>
+        </Field>
+        <Field Name="Dec_BalanceFormat">
+          <DataField>Dec_BalanceFormat</DataField>
+        </Field>
+        <Field Name="Total_Jan_NetChange">
+          <DataField>Total_Jan_NetChange</DataField>
+        </Field>
+        <Field Name="Total_Jan_NetChangeFormat">
+          <DataField>Total_Jan_NetChangeFormat</DataField>
+        </Field>
+        <Field Name="Total_Feb_NetChange">
+          <DataField>Total_Feb_NetChange</DataField>
+        </Field>
+        <Field Name="Total_Feb_NetChangeFormat">
+          <DataField>Total_Feb_NetChangeFormat</DataField>
+        </Field>
+        <Field Name="Total_Mar_NetChange">
+          <DataField>Total_Mar_NetChange</DataField>
+        </Field>
+        <Field Name="Total_Mar_NetChangeFormat">
+          <DataField>Total_Mar_NetChangeFormat</DataField>
+        </Field>
+        <Field Name="Total_Apr_NetChange">
+          <DataField>Total_Apr_NetChange</DataField>
+        </Field>
+        <Field Name="Total_Apr_NetChangeFormat">
+          <DataField>Total_Apr_NetChangeFormat</DataField>
+        </Field>
+        <Field Name="Total_May_NetChange">
+          <DataField>Total_May_NetChange</DataField>
+        </Field>
+        <Field Name="Total_May_NetChangeFormat">
+          <DataField>Total_May_NetChangeFormat</DataField>
+        </Field>
+        <Field Name="Total_Jun_NetChange">
+          <DataField>Total_Jun_NetChange</DataField>
+        </Field>
+        <Field Name="Total_Jun_NetChangeFormat">
+          <DataField>Total_Jun_NetChangeFormat</DataField>
+        </Field>
+        <Field Name="Total_Jul_NetChange">
+          <DataField>Total_Jul_NetChange</DataField>
+        </Field>
+        <Field Name="Total_Jul_NetChangeFormat">
+          <DataField>Total_Jul_NetChangeFormat</DataField>
+        </Field>
+        <Field Name="Total_Aug_NetChange">
+          <DataField>Total_Aug_NetChange</DataField>
+        </Field>
+        <Field Name="Total_Aug_NetChangeFormat">
+          <DataField>Total_Aug_NetChangeFormat</DataField>
+        </Field>
+        <Field Name="Total_Sep_NetChange">
+          <DataField>Total_Sep_NetChange</DataField>
+        </Field>
+        <Field Name="Total_Sep_NetChangeFormat">
+          <DataField>Total_Sep_NetChangeFormat</DataField>
+        </Field>
+        <Field Name="Total_Oct_NetChange">
+          <DataField>Total_Oct_NetChange</DataField>
+        </Field>
+        <Field Name="Total_Oct_NetChangeFormat">
+          <DataField>Total_Oct_NetChangeFormat</DataField>
+        </Field>
+        <Field Name="Total_Nov_NetChange">
+          <DataField>Total_Nov_NetChange</DataField>
+        </Field>
+        <Field Name="Total_Nov_NetChangeFormat">
+          <DataField>Total_Nov_NetChangeFormat</DataField>
+        </Field>
+        <Field Name="Total_Dec_NetChange">
+          <DataField>Total_Dec_NetChange</DataField>
+        </Field>
+        <Field Name="Total_Dec_NetChangeFormat">
+          <DataField>Total_Dec_NetChangeFormat</DataField>
+        </Field>
+        <Field Name="ReportForNavId_5444">
+          <DataField>ReportForNavId_5444</DataField>
+        </Field>
+        <Field Name="G_L_Account___No__">
+          <DataField>G_L_Account___No__</DataField>
+        </Field>
+        <Field Name="PADSTR_____G_L_Account__Indentation___2___G_L_Account__Name">
+          <DataField>PADSTR_____G_L_Account__Indentation___2___G_L_Account__Name</DataField>
+        </Field>
+        <Field Name="G_L_Account___Net_Change_">
+          <DataField>G_L_Account___Net_Change_</DataField>
+        </Field>
+        <Field Name="G_L_Account___Net_Change_Format">
+          <DataField>G_L_Account___Net_Change_Format</DataField>
+        </Field>
+        <Field Name="G_L_Account___Net_Change__Control22">
+          <DataField>G_L_Account___Net_Change__Control22</DataField>
+        </Field>
+        <Field Name="G_L_Account___Net_Change__Control22Format">
+          <DataField>G_L_Account___Net_Change__Control22Format</DataField>
+        </Field>
+        <Field Name="G_L_Account___Balance_at_Date_">
+          <DataField>G_L_Account___Balance_at_Date_</DataField>
+        </Field>
+        <Field Name="G_L_Account___Balance_at_Date_Format">
+          <DataField>G_L_Account___Balance_at_Date_Format</DataField>
+        </Field>
+        <Field Name="G_L_Account___Balance_at_Date__Control24">
+          <DataField>G_L_Account___Balance_at_Date__Control24</DataField>
+        </Field>
+        <Field Name="G_L_Account___Balance_at_Date__Control24Format">
+          <DataField>G_L_Account___Balance_at_Date__Control24Format</DataField>
+        </Field>
+        <Field Name="G_L_Account___Account_Type_">
+          <DataField>G_L_Account___Account_Type_</DataField>
+        </Field>
+        <Field Name="No__of_Blank_Lines">
+          <DataField>No__of_Blank_Lines</DataField>
+        </Field>
+        <Field Name="ReportForNavId_7">
+          <DataField>ReportForNavId_7</DataField>
+        </Field>
+        <Field Name="BlankLineNo">
+          <DataField>BlankLineNo</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
 </Report>

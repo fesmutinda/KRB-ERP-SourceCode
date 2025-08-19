@@ -1115,61 +1115,6 @@
               <PaddingBottom>2pt</PaddingBottom>
             </Style>
           </Textbox>
-          <Textbox Name="Company_Fax_No">
-            <CanGrow>true</CanGrow>
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>TEL: </Value>
-                    <Style>
-                      <FontSize>9pt</FontSize>
-                      <FontWeight>Bold</FontWeight>
-                    </Style>
-                  </TextRun>
-                  <TextRun>
-                    <Value>=First(Fields!Company_Phone_No.Value, "DataSet_Result")</Value>
-                    <Style>
-                      <FontSize>9pt</FontSize>
-                      <FontWeight>Bold</FontWeight>
-                    </Style>
-                  </TextRun>
-                </TextRuns>
-                <Style>
-                  <TextAlign>Center</TextAlign>
-                </Style>
-              </Paragraph>
-            </Paragraphs>
-            <rd:DefaultName>Company_Fax_No</rd:DefaultName>
-            <Top>1.47916in</Top>
-            <Left>4.03in</Left>
-            <Height>0.25in</Height>
-            <Width>2.06307in</Width>
-            <ZIndex>3</ZIndex>
-            <Style>
-              <Border>
-                <Color>Indigo</Color>
-                <Style>None</Style>
-              </Border>
-              <TopBorder>
-                <Color>Indigo</Color>
-              </TopBorder>
-              <BottomBorder>
-                <Color>Indigo</Color>
-              </BottomBorder>
-              <LeftBorder>
-                <Color>Indigo</Color>
-              </LeftBorder>
-              <RightBorder>
-                <Color>Indigo</Color>
-              </RightBorder>
-              <PaddingLeft>2pt</PaddingLeft>
-              <PaddingRight>2pt</PaddingRight>
-              <PaddingTop>2pt</PaddingTop>
-              <PaddingBottom>2pt</PaddingBottom>
-            </Style>
-          </Textbox>
           <Textbox Name="Company_Email">
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
@@ -1197,11 +1142,11 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Company_Email</rd:DefaultName>
-            <Top>1.74305in</Top>
-            <Left>4.03in</Left>
+            <Top>1.47916in</Top>
+            <Left>4.09512in</Left>
             <Height>0.25in</Height>
             <Width>2.06307in</Width>
-            <ZIndex>4</ZIndex>
+            <ZIndex>3</ZIndex>
             <Style>
               <Border>
                 <Color>Indigo</Color>
@@ -1233,7 +1178,7 @@
             <Left>4.58222in</Left>
             <Height>0.92708in</Height>
             <Width>0.99369in</Width>
-            <ZIndex>5</ZIndex>
+            <ZIndex>4</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1259,14 +1204,69 @@
             </Paragraphs>
             <rd:DefaultName>Textbox20</rd:DefaultName>
             <Top>2.41081in</Top>
-            <Left>4.24252in</Left>
+            <Left>4.31891in</Left>
             <Height>0.25in</Height>
             <Width>1.58334in</Width>
-            <ZIndex>6</ZIndex>
+            <ZIndex>5</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
               </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="Company_Fax_No">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>TEL: </Value>
+                    <Style>
+                      <FontSize>9pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Value>=First(Fields!Company_Phone_No.Value, "DataSet_Result")</Value>
+                    <Style>
+                      <FontSize>9pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Center</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Company_Fax_No</rd:DefaultName>
+            <Top>1.75694in</Top>
+            <Left>4.09512in</Left>
+            <Height>0.25in</Height>
+            <Width>2.06307in</Width>
+            <ZIndex>6</ZIndex>
+            <Style>
+              <Border>
+                <Color>Indigo</Color>
+                <Style>None</Style>
+              </Border>
+              <TopBorder>
+                <Color>Indigo</Color>
+              </TopBorder>
+              <BottomBorder>
+                <Color>Indigo</Color>
+              </BottomBorder>
+              <LeftBorder>
+                <Color>Indigo</Color>
+              </LeftBorder>
+              <RightBorder>
+                <Color>Indigo</Color>
+              </RightBorder>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
