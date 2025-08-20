@@ -42,7 +42,7 @@ Report 51036 "Loans Defaulter Aging"
             column(V0Month_; "0Month")
             {
             }
-            column(AmountinArrears_LoansRegister; CalculatedAmountInArrears)
+            column(AmountinArrears_LoansRegister; "Loans Register"."Amount in Arrears")
             {
             }
             column(LoanProductType; "Loans Register"."Loan Product Type Name")
@@ -107,6 +107,7 @@ Report 51036 "Loans Defaulter Aging"
 
             trigger OnAfterGetRecord();
             begin
+
                 // Initialize aging buckets
                 Over3Month := 0;
                 "3Month" := 0;
@@ -211,6 +212,31 @@ Report 51036 "Loans Defaulter Aging"
         LoanProdType: Record "Loan Products Setup";
 
 
+
+    local procedure GetTotalDebitForLoan(LoanNo: Code[20]): Decimal
+    var
+        LoanLedgerEntry: Record "Cust. Ledger Entry";
+        TotalDebit: Decimal;
+    begin
+        TotalDebit := 0;
+
+        LoanLedgerEntry.Reset();
+        LoanLedgerEntry.SetRange("Loan No", LoanNo);
+        LoanLedgerEntry.SetFilter("Transaction Type", '<>%1&<>%2',
+            LoanLedgerEntry."Transaction Type"::"Interest Due",
+            LoanLedgerEntry."Transaction Type"::"Penalty Charged");
+
+        if LoanLedgerEntry.FindSet() then begin
+            repeat
+                LoanLedgerEntry.CalcFields("Debit Amount");
+                TotalDebit += LoanLedgerEntry."Debit Amount";
+            until LoanLedgerEntry.Next() = 0;
+        end;
+
+        exit(TotalDebit);
+    end;
+
+
     local procedure CalculateLoanClassification()
     var
         LoanRepaymentSchedule: Record "Loan Repayment Schedule";
@@ -221,15 +247,28 @@ Report 51036 "Loans Defaulter Aging"
         LastDueDate: Date;
         DaysOverdue: Integer;
         ArrearsAtRepaymentDate: Decimal;
+        LoanLedgerEntry: Record "Cust. Ledger Entry";
+        TotalDebitAmount: Decimal;
     begin
         ArrearsAtRepaymentDate := 0;
         CalculatedAmountInArrears := 0;
         CalculatedDaysInArrears := 0;
         CalculatedMonthsInArrears := 0;
+        TotalDebitAmount := 0;
         FirstArrearsDate := 0D;
         CalculatedLoanCategory := CalculatedLoanCategory::Performing;
 
-        ExpectedOutstandingBalance := GetExpectedOutstandingBalance(AsAt);
+        if ("Loans Register"."Loan  No." = 'LN1092') or ("Loans Register"."Loan  No." = 'LN1760') then begin
+
+            TotalDebitAmount := GetTotalDebitForLoan("Loans Register"."Loan  No.");
+
+            ExpectedOutstandingBalance := GetExpectedOutstandingBalance(AsAt, TotalDebitAmount);
+
+        end else begin
+
+            ExpectedOutstandingBalance := GetExpectedOutstandingBalance(AsAt, 0);
+        end;
+
         ActualOutstandingBalance := "Loans Register"."Outstanding Balance";
 
         if ActualOutstandingBalance > ExpectedOutstandingBalance then
@@ -237,7 +276,22 @@ Report 51036 "Loans Defaulter Aging"
 
 
         //LastDueDate := GetLastDueDateBeforeAsAt();
-        FirstArrearsDate := GetFirstDateWhereInArrears(ActualOutstandingBalance);
+
+
+
+        if ("Loans Register"."Loan  No." = 'LN1092') or ("Loans Register"."Loan  No." = 'LN1760') then begin
+
+
+            FirstArrearsDate := GetFirstDateWhereInArrears(ActualOutstandingBalance, TotalDebitAmount);
+
+        end else begin
+
+
+            FirstArrearsDate := GetFirstDateWhereInArrears(ActualOutstandingBalance, 0);
+
+
+        end;
+
 
         // Calculate days in arrears
         if (FirstArrearsDate <> 0D) and (CalculatedAmountInArrears > 0) then begin
@@ -316,6 +370,11 @@ Report 51036 "Loans Defaulter Aging"
         end else begin
             CalculatedLoanCategory := CalculatedLoanCategory::Performing;
 
+            CalculatedAmountInArrears := 0;
+            CalculatedDaysInArrears := 0;
+            CalculatedMonthsInArrears := 0;
+            FirstArrearsDate := 0D;
+
             // if "Loans Register"."Loan Product Type" = 'LT007' then begin
             //     "Loans Register"."Blacklist Status" := "Loans Register"."Blacklist Status"::" ";
             //     "Loans Register"."Blacklist Start Date" := 0D;
@@ -368,7 +427,7 @@ Report 51036 "Loans Defaulter Aging"
                 end;
         end;
 
-        //"Loans Register".Modify();
+        "Loans Register".Modify();
     end;
 
 
@@ -379,8 +438,17 @@ Report 51036 "Loans Defaulter Aging"
         GracePeriodDays: Integer;
         ExtendedDate: Date;
     begin
-        // Get expected balance as of the specific date
-        ExpectedBalanceAtDate := GetExpectedOutstandingBalance(SpecificDate);
+
+        if ("Loans Register"."Loan  No." = 'LN1092') or ("Loans Register"."Loan  No." = 'LN1760') then begin
+
+            ExpectedBalanceAtDate := GetExpectedOutstandingBalance(SpecificDate, GetTotalDebitForLoan("Loans Register"."Loan  No."))
+        end else begin
+
+            ExpectedBalanceAtDate := GetExpectedOutstandingBalance(SpecificDate, 0);
+
+        end;
+
+
         GracePeriodDays := 15; // Allow 15 days grace period for payments
         ExtendedDate := SpecificDate + GracePeriodDays;
 
@@ -419,7 +487,7 @@ Report 51036 "Loans Defaulter Aging"
         exit(TotalActual);
     end;
 
-    local procedure GetExpectedOutstandingBalance(AsAtDate: Date): Decimal
+    local procedure GetExpectedOutstandingBalance(AsAtDate: Date; OverrideLoanAmount: Decimal): Decimal
     var
         ObjLoans: Record "Loans Register";
         VarRunningDate: Date;
@@ -455,7 +523,15 @@ Report 51036 "Loans Defaulter Aging"
 
         VarGrPrinciple := ObjLoans."Grace Period - Principle (M)";
         VarGrInterest := ObjLoans."Grace Period - Interest (M)";
-        VarLoanAmount := ObjLoans."Approved Amount";
+
+
+        //VarLoanAmount := ObjLoans."Approved Amount";
+        if OverrideLoanAmount <> 0 then
+            VarLoanAmount := OverrideLoanAmount
+        else
+            VarLoanAmount := ObjLoans."Approved Amount";
+
+
         VarInterestRate := ObjLoans.Interest;
         VarMonthlyInterest := VarInterestRate / 12 / 100;
         VarRepayPeriod := ObjLoans.Installments;
@@ -568,7 +644,7 @@ Report 51036 "Loans Defaulter Aging"
         exit(LastDate);
     end;
 
-    local procedure GetFirstDateWhereInArrears(ActualBalance: Decimal): Date
+    local procedure GetFirstDateWhereInArrears(ActualBalance: Decimal; OverrideLoanAmount: Decimal): Date
     var
         ObjLoans: Record "Loans Register";
         VarRunningDate: Date;
@@ -604,7 +680,14 @@ Report 51036 "Loans Defaulter Aging"
 
         VarGrPrinciple := ObjLoans."Grace Period - Principle (M)";
         VarGrInterest := ObjLoans."Grace Period - Interest (M)";
-        VarLoanAmount := ObjLoans."Approved Amount";
+
+        //VarLoanAmount := ObjLoans."Approved Amount";
+
+        if OverrideLoanAmount <> 0 then
+            VarLoanAmount := OverrideLoanAmount
+        else
+            VarLoanAmount := ObjLoans."Approved Amount";
+
         VarInterestRate := ObjLoans.Interest;
         VarMonthlyInterest := VarInterestRate / 12 / 100;
         VarRepayPeriod := ObjLoans.Installments;
