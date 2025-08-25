@@ -7,7 +7,7 @@ Page 51007 "BOSA Loans Disbursement Card"
     InsertAllowed = false;
     PromotedActionCategories = 'New,Process,Reports,Approval,Budgetary Control,Cancellation,Category7_caption,Category8_caption,Category9_caption,Category10_caption';
     SourceTable = "Loans Register";
-    SourceTableView = where(Source = const(BOSA), Posted = const(false));
+    //SourceTableView = where(Source = const(BOSA), Posted = const(false));
 
     layout
     {
@@ -111,6 +111,70 @@ Page 51007 "BOSA Loans Disbursement Card"
 
 
                     end;
+                }
+
+                field("Amount To Disburse"; Rec."Amount to Disburse")
+                {
+                    ApplicationArea = Basic;
+                    Caption = 'Amount to Disburse';
+                    Editable = true;
+
+                    trigger OnValidate()
+                    begin
+                        // if Rec."Disbursed Amount" > Rec."Approved Amount" then
+                        //     Error('Disbursed amount cannot exceed approved amount');
+
+                        // if Rec."Disbursed Amount" <= 0 then
+                        //     Error('Disbursed amount must be greater than zero');
+
+                        // Rec.TestField(Posted, false);
+                        if Rec."Disbursement Status" = Rec."Disbursement Status"::"Partially Disbursed" then begin
+                            // For subsequent disbursements, validate against remaining amount
+                            if Rec."Amount To Disburse" > Rec."Remaining Amount" then
+                                Error('Disbursement amount cannot exceed remaining amount of %1', Rec."Remaining Amount");
+                        end else begin
+                            // For first disbursement, validate against approved amount
+                            if Rec."Amount To Disburse" > Rec."Approved Amount" then
+                                Error('Disbursed amount cannot exceed approved amount');
+                        end;
+
+                        if Rec."Amount To Disburse" <= 0 then
+                            Error('Disbursed amount must be greater than zero');
+
+                        Rec.TestField(Posted, false);
+                    end;
+                }
+
+                field("Remaining Amount"; Rec."Remaining Amount")
+                {
+                    ApplicationArea = Basic;
+                    Caption = 'Remaining Amount';
+                    Editable = false;
+                }
+
+                field("Is Partial Disbursement"; Rec."Is Partial Disbursement")
+                {
+                    ApplicationArea = Basic;
+                    Caption = 'Partial Disbursement';
+                    Editable = true;
+
+                    trigger OnValidate()
+                    begin
+                        if Rec."Is Partial Disbursement" then begin
+                            if Rec."Disbursed Amount" = 0 then
+                                Rec."Disbursed Amount" := Rec."Approved Amount";
+                        end else begin
+                            Rec."Disbursed Amount" := Rec."Approved Amount";
+                        end;
+                    end;
+                }
+
+                field("Disbursement Status"; Rec."Disbursement Status")
+                {
+                    ApplicationArea = Basic;
+                    Caption = 'Disbursement Status';
+                    Editable = false;
+                    OptionCaption = 'Not Disbursed,Partially Disbursed,Fully Disbursed';
                 }
                 field("Main Sector"; Rec."Main-Sector")
                 {
@@ -330,6 +394,7 @@ Page 51007 "BOSA Loans Disbursement Card"
         {
             group(Loan)
             {
+
                 action("POST")
                 {
                     Caption = 'POST LOAN';
@@ -339,69 +404,160 @@ Page 51007 "BOSA Loans Disbursement Card"
                     Promoted = true;
                     PromotedCategory = Process;
                     Visible = true;
+
                     trigger OnAction()
                     var
                         FundsUserSetup: Record "Funds User Setup";
                         CustLed: Record "Cust. Ledger Entry";
+                        DisbursementAmount: Decimal;
+                        ConfirmMessage: Text;
                     begin
+                        // Permission check
                         If FnCanPostLoans(UserId) = false then begin
                             Error('Prohibited ! You are not allowed to POST this Loan');
                         end;
-                        // if "Mode of Disbursement" <> "Mode of Disbursement"::Cheque then begin
-                        //     Error('Prohibited ! Mode of disbursement cannot be ' + Format("Mode of Disbursement"));
-                        // end;
+
+                        // Status validations
                         if Rec.Posted = true then begin
                             Error('Prohibited ! The loan is already Posted');
                         end;
+
                         if Rec."Loan Status" <> Rec."Loan Status"::Approved then begin
-                            Error('Prohibited ! The loan is Status MUST be Approved');
+                            Error('Prohibited ! The loan Status MUST be Approved');
                         end;
 
-                        // if Confirm('Are you sure you want to POST Loan Approved amount of Ksh. ' + Format(Rec."Approved Amount") + ' to member -' + Format(Rec."Client Name") + ' ?', false) = false then begin
-                        //     exit;
-                        Rec.CalcFields("Top Up Amount");
-                        if Confirm('Are you sure you want to POST Loan Net amount of Ksh. ' + Format(Rec."Approved Amount" - (Rec."Loan Processing Fee" + Rec."Loan Dirbusement Fee" + Rec."Loan Insurance" + REC."Top Up Amount" + Rec."Valuation Cost")) + ' to member -' + Format(Rec."Client Name") + ' ?', false) = false then begin
+                        // Handle partial disbursement logic
+                        if Rec."Is Partial Disbursement" then begin
+                            if Rec."Amount To Disburse" = 0 then
+                                Error('Please specify the amount to disburse');
+
+                            if Rec."Amount To Disburse" > 0 then begin
+
+
+                                if not Rec."Is Partial Disbursement" then
+                                    Error('Please toggle Is Partial Dibursement')
+                            end;
+
+                            DisbursementAmount := Rec."Amount To Disburse";
+                            ConfirmMessage := 'Are you sure you want to PARTIALLY DISBURSE Loan amount of Ksh. ' +
+                                             Format(DisbursementAmount) + ' to member - ' + Format(Rec."Client Name") + ' ?';
+                        end else begin
+                            DisbursementAmount := Rec."Approved Amount";
+                            Rec.CalcFields("Top Up Amount");
+                            ConfirmMessage := 'Are you sure you want to POST Loan Net amount of Ksh. ' +
+                                             Format(Rec."Approved Amount" - (Rec."Loan Processing Fee" +
+                                             Rec."Loan Dirbusement Fee" + Rec."Loan Insurance" +
+                                             REC."Top Up Amount" + Rec."Valuation Cost")) +
+                                             ' to member - ' + Format(Rec."Client Name") + ' ?';
+                        end;
+
+                        if Confirm(ConfirmMessage, false) = false then begin
                             exit;
-                        end
-                        else begin
+                        end else begin
                             TemplateName := 'GENERAL';
                             BatchName := 'LOANS';
                             LoanApps.Reset;
                             LoanApps.SetRange(LoanApps."Loan  No.", Rec."Loan  No.");
+
                             if LoanApps.FindSet then begin
                                 repeat
-                                    // CustLed.Reset();
-                                    // CustLed.Init();
-                                    // CustLed."Entry No." := CustLed."Entry No." + 2000;
+                                    // Call modified function with disbursement amount
+                                    FnInsertBOSALines(LoanApps, LoanApps."Loan  No.", DisbursementAmount);
 
-                                    FnInsertBOSALines(LoanApps, LoanApps."Loan  No.");
-                                    // exit;
                                     GenJournalLine.RESET;
                                     GenJournalLine.SETRANGE("Journal Template Name", TemplateName);
                                     GenJournalLine.SETRANGE("Journal Batch Name", BatchName);
+
                                     if GenJournalLine.Find('-') then begin
                                         CODEUNIT.RUN(CODEUNIT::"Gen. Jnl.-Post Batch", GenJournalLine);
-                                        FnSendNotifications(); //Send Notifications
+                                        FnSendNotifications();
+
                                         Rec.Get(Rec."Loan  No.");
-                                        Rec."Loan Status" := Rec."Loan Status"::Issued;
-                                        Rec.Posted := true;
+
+                                        // Update disbursement status
+                                        if Rec."Is Partial Disbursement" then begin
+                                            Rec."Disbursement Status" := Rec."Disbursement Status"::"Partially Disbursed";
+                                            Rec."Remaining Amount" := Rec."Approved Amount" - DisbursementAmount;
+                                            Rec."Loan Status" := Rec."Loan Status"::Issued;
+                                            Rec.Posted := true;
+
+                                            // If this completes the disbursement
+                                            if Rec."Remaining Amount" <= 0 then begin
+                                                Rec."Disbursement Status" := Rec."Disbursement Status"::"Fully Disbursed";
+                                                Rec."Loan Status" := Rec."Loan Status"::Issued;
+                                                Rec.Posted := true;
+                                            end;
+                                        end else begin
+                                            Rec."Disbursement Status" := Rec."Disbursement Status"::"Fully Disbursed";
+                                            Rec."Loan Status" := Rec."Loan Status"::Issued;
+                                            Rec.Posted := true;
+                                        end;
+
                                         Rec."Posted By" := UserId;
+                                        Rec."Disbursed Amount" += DisbursementAmount;
                                         Rec."Posting Date" := Today;
                                         Rec."Issued Date" := Rec."Loan Disbursement Date";
                                         Rec."Approval Status" := Rec."Approval Status"::Approved;
                                         Rec."Loans Category-SASRA" := Rec."Loans Category-SASRA"::Perfoming;
-                                        Rec.Modify();
-                                        //...................Recover Overdraft Loan On Loan
+                                        //Rec.Modify();
+
+
+                                        if Rec.Modify() then begin
+                                            Commit;
+                                            CurrPage.Update(false);
+                                        end;
+
+                                        // Recover Overdraft Loan On Loan
                                         SFactory.FnRecoverOnLoanOverdrafts(Rec."Client Code");
-
-
                                     end;
                                 until LoanApps.Next = 0;
-                                //.................................................
-                                Message('Loan has successfully been posted and member notified');
+
+                                Message('Loan disbursement has been processed successfully and member notified');
                                 CurrPage.close();
                             end;
                         end;
+                    end;
+                }
+
+                action("Disburse Remaining")
+                {
+                    Caption = 'Disburse Remaining Amount';
+                    Enabled = Rec."Disbursement Status" = Rec."Disbursement Status"::"Partially Disbursed";
+                    Image = PaymentLines;
+                    Promoted = true;
+                    PromotedCategory = Process;
+
+
+                    trigger OnAction()
+                    var
+                        ConfirmMessage: Text;
+                    begin
+
+                        if Rec."Disbursement Status" <> Rec."Disbursement Status"::"Partially Disbursed" then
+                            Error('Can only disburse remaining amount for partially disbursed loans');
+
+                        if Rec."Remaining Amount" <= 0 then
+                            Error('No remaining amount to disburse');
+
+                        if Rec."Loan Status" <> Rec."Loan Status"::Issued then
+                            Error('Loan must be in Issued status to disburse remaining amount');
+
+                        if Rec."Remaining Amount" <= 0 then
+                            Error('No remaining amount to disburse');
+
+                        // Set up for final disbursement
+                        ConfirmMessage := 'Are you sure you want to disburse the remaining amount of Ksh. ' +
+                                         Format(Rec."Remaining Amount") + ' to member - ' +
+                                         Format(Rec."Client Name") + ' ?';
+
+                        if Confirm(ConfirmMessage, false) = false then
+                            exit;
+
+                        // Set disbursement amount to remaining amount
+                        //Rec."Disbursed Amount" := Rec."Remaining Amount";
+
+                        // Trigger the posting process
+                        PostRemainingDisbursement();
                     end;
                 }
                 action("Loan Appraisal Edit")
@@ -565,25 +721,25 @@ Page 51007 "BOSA Loans Disbursement Card"
         end;
     end;
 
-    trigger OnModifyRecord(): Boolean
-    begin
-        LoanAppPermisions();
-    end;
+    // trigger OnModifyRecord(): Boolean
+    // begin
+    //     LoanAppPermisions();
+    // end;
 
-    trigger OnNewRecord(BelowxRec: Boolean)
-    begin
-        Rec.Source := Rec.Source::BOSA;
-        Rec."Mode of Disbursement" := Rec."mode of disbursement"::Cheque;
-    end;
+    // trigger OnNewRecord(BelowxRec: Boolean)
+    // begin
+    //     Rec.Source := Rec.Source::BOSA;
+    //     Rec."Mode of Disbursement" := Rec."mode of disbursement"::Cheque;
+    // end;
 
-    trigger OnNextRecord(Steps: Integer): Integer
-    begin
-    end;
+    // trigger OnNextRecord(Steps: Integer): Integer
+    // begin
+    // end;
 
-    trigger OnOpenPage()
-    begin
-        Rec.SetRange(Posted, false);
-    end;
+    // trigger OnOpenPage()
+    // begin
+    //     Rec.SetRange(Posted, false);
+    // end;
 
     var
         ClientCode: Code[40];
@@ -808,6 +964,19 @@ Page 51007 "BOSA Loans Disbursement Card"
             RecordApproved := true;
             CanCancelApprovalForRecord := false;
         end;
+
+        if Rec."Disbursement Status" = Rec."Disbursement Status"::"Partially Disbursed" then begin
+            MNoEditable := false;
+            DisbursementDateEditable := true;
+            // Enable only fields needed for remaining disbursement
+        end;
+
+        // Calculate remaining amount
+        // if Rec."Is Partial Disbursement" then begin
+        //     Rec."Remaining Amount" := Rec."Approved Amount" - Rec."Disbursed Amount";
+        //     if Rec."Remaining Amount" < 0 then
+        //         Rec."Remaining Amount" := 0;
+        // end;
     end;
 
     procedure LoanAppPermisions()
@@ -999,7 +1168,7 @@ Page 51007 "BOSA Loans Disbursement Card"
         exit(Balance);
     end;
 
-    local procedure FnInsertBOSALines(var LoanApps: Record "Loans Register"; LoanNo: Code[30])
+    local procedure FnInsertBOSALines(var LoanApps: Record "Loans Register"; LoanNo: Code[30]; DisbursementAmount: Decimal)
     var
         EndMonth: Date;
         RemainingDays: Integer;
@@ -1007,145 +1176,375 @@ Page 51007 "BOSA Loans Disbursement Card"
         Sfactorycode: Codeunit "Swizzsoft Factory";
         AmountTop: Decimal;
         NetAmount: Decimal;
+        ChargeRatio: Decimal;
+        Insurance: Decimal;
+        Valuation: Decimal;
+        SaccoGeneralSetup: Record "Sacco General Set-Up";
+        UndisbursedAmount: Decimal;
+        TotalApprovedAmount: Decimal;
+        RemainingCommitment: Decimal;
+        IsFirstDisbursement: Boolean;
     begin
         AmountTop := 0;
         NetAmount := 0;
         bankTransferCharges := 0;
-        //--------------------Generate Schedule
-        Sfactorycode.FnGenerateRepaymentSchedule(Rec."Loan  No.");
+
+        GenSetUp.GET;
+        if not SaccoGeneralSetup.Get() then
+            Error('Sacco General Setup record not found. Please configure the setup.');
+
+        if SaccoGeneralSetup."Undisbursed Loan Committments Account" = '' then
+            Error('Undisbursed Loan Commitments Account not configured in Sacco General Setup.');
+
+        if SaccoGeneralSetup."Loan Commitment Liability Account" = '' then
+            Error('Loan Commitment Liability Account not configured in Sacco General Setup.');
+
+        if LoanApps."Client Code" = '' then
+            Error('Client Code cannot be empty for Loan No. %1', LoanApps."Loan  No.");
+
+        if not Cust.Get(LoanApps."Client Code") then
+            Error('Customer %1 not found.', LoanApps."Client Code");
+
+        if LoanApps."Paying Bank Account No" = '' then
+            Error('Paying Bank Account No. cannot be empty for Loan No. %1', LoanApps."Loan  No.");
+
+        // Determine if this is first disbursement or subsequent
+        IsFirstDisbursement := (Rec."Disbursement Status" = Rec."Disbursement Status"::"Not Disbursed") or
+                              (Rec."Disbursement Status" = Rec."Disbursement Status"::" ");
+
+        TotalApprovedAmount := Rec."Approved Amount";
+        UndisbursedAmount := Abs(Rec."Remaining Amount" - Rec."Approved Amount");
+
+        Insurance := Rec."Loan Insurance";
+        Valuation := Rec."Valuation Cost";
+
+        // Generate Schedule (only for first disbursement or full disbursement)
+        if IsFirstDisbursement or not Rec."Is Partial Disbursement" then
+            Sfactorycode.FnGenerateRepaymentSchedule(Rec."Loan  No.");
+
         DirbursementDate := Rec."Loan Disbursement Date";
-        VarAmounttoDisburse := Rec."Approved Amount";
+        VarAmounttoDisburse := DisbursementAmount;
         insurancePremium := 0;
-        //....................PRORATED DAYS
+
+        // Prorated Days calculation
         EndMonth := CALCDATE('-1D', CALCDATE('1M', DMY2DATE(1, DATE2DMY(Today, 2), DATE2DMY(Today, 3))));
         RemainingDays := (EndMonth - Today) + 1;
         TMonthDays := DATE2DMY(EndMonth, 1);
-        //....................Ensure that If Batch doesnt exist then create
+
+        // Ensure batch exists
         IF NOT GenBatch.GET(TemplateName, BatchName) THEN BEGIN
             GenBatch.INIT;
             GenBatch."Journal Template Name" := TemplateName;
             GenBatch.Name := BatchName;
             GenBatch.INSERT;
         END;
-        //....................Reset General Journal Lines
+
+        // Reset General Journal Lines
         GenJournalLine.RESET;
         GenJournalLine.SETRANGE("Journal Template Name", TemplateName);
         GenJournalLine.SETRANGE("Journal Batch Name", BatchName);
         GenJournalLine.DELETEALL;
-        //....................Loan Posting Lines
-        GenSetUp.GET;
+
+        // Get dimensions
         DActivity := '';
         DBranch := '';
-        IF Cust.GET(LoanApps."Client Code") THEN BEGIN
-            DActivity := Cust."Global Dimension 1 Code";
-            DBranch := Cust."Global Dimension 2 Code";
-        END;
-        //**************Loan Principal Posting**********************************
-        LineNo := LineNo + 10000;
-        SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, Rec."Loan  No.", LineNo, GenJournalLine."Transaction Type"::Loan, GenJournalLine."Account Type"::Customer, LoanApps."Client Code", DirbursementDate, VarAmounttoDisburse, 'BOSA', LoanApps."Loan  No.", 'Loan Disbursement principle ' + LoanApps."Loan Product Type", LoanApps."Loan  No.");
-        //--------------------------------RECOVER OVERDRAFT()-------------------------------------------------------
-        //Code Here
+        DActivity := Cust."Global Dimension 1 Code";
+        DBranch := Cust."Global Dimension 2 Code";
 
-        //...................Cater for Loan Offset Now !
-        Rec.CalcFields("Top Up Amount");
-        if Rec."Top Up Amount" > 0 then begin
-            LoanTopUp.RESET;
-            LoanTopUp.SETRANGE(LoanTopUp."Loan No.", Rec."Loan  No.");
-            IF LoanTopUp.FIND('-') THEN BEGIN
-                repeat
-                    LineNo := LineNo + 10000;
-                    SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, Rec."Loan  No.", LineNo, GenJournalLine."Transaction Type"::"Loan Repayment", GenJournalLine."Account Type"::Customer, LoanApps."Client Code", DirbursementDate, LoanTopUp."Principle Top Up" * -1, 'BOSA', LoanApps."Loan  No.", 'Loan OffSet By - ' + LoanApps."Loan  No.", LoanTopUp."Loan Top Up");
-                    //..................Recover Interest On Top Up
-                    LineNo := LineNo + 10000;
-                    SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, Rec."Loan  No.", LineNo, GenJournalLine."Transaction Type"::"Interest Paid", GenJournalLine."Account Type"::Customer, LoanApps."Client Code", DirbursementDate, LoanTopUp."Interest Top Up" * -1, 'BOSA', LoanApps."Loan  No.", 'Interest Due Paid on top up - ', LoanTopUp."Loan Top Up");
-                    //If there is top up commission charged write it here start
-                    LineNo := LineNo + 10000;
-                    SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, LoanApps."Loan  No.", LineNo, GenJournalLine."Transaction Type"::" ", GenJournalLine."Account Type"::"G/L Account", GenSetUp."Top up Account", DirbursementDate, LoanTopUp.Commision * -1, 'BOSA', Rec."Batch No.", 'Commision on top up - ', LoanTopUp."Loan Top Up");
-                    //If there is top up commission charged write it here end
-                    AmountTop := (LoanTopUp."Principle Top Up" + LoanTopUp."Interest Top Up" + LoanTopUp.Commision);
-                    VarAmounttoDisburse := VarAmounttoDisburse - (LoanTopUp."Principle Top Up" + LoanTopUp."Interest Top Up" + LoanTopUp.Commision);
-                UNTIL LoanTopUp.NEXT = 0;
-            END;
-        end;
-        //If there is top up commission charged write it here start // "Loan Insurance"
-        //If there is top up commission charged write it here end
+        // === COMMITMENT ACCOUNTING ENTRIES ===
+        if IsFirstDisbursement then begin
+            // 1. Record Full Loan Commitment on First Disbursement
+            // DR: Member Loan Account (Disbursed Amount)
+            LineNo := LineNo + 10000;
+            SFactory.FnCreateGnlJournalLine(
+                TemplateName, BatchName, Rec."Loan  No.", LineNo,
+                GenJournalLine."Transaction Type"::Loan,
+                GenJournalLine."Account Type"::Customer,
+                LoanApps."Client Code", DirbursementDate, DisbursementAmount,
+                'BOSA', LoanApps."Loan  No.",
+                'Loan Disbursement' + GetDisbursementSuffix() + Format(LoanApps."Loan Product Type"),
+                LoanApps."Loan  No."
+            );
 
-        NetAmount := Rec."Approved Amount" - (Rec."Loan Processing Fee" + Rec."Loan Dirbusement Fee" + Rec."Loan Insurance" + AmountTop);
-        //***************************Loan Product Charges code
-        PCharges.Reset();
-        PCharges.SETRANGE(PCharges."Product Code", Rec."Loan Product Type");
-        IF PCharges.FIND('-') THEN BEGIN
-            REPEAT
-                //Credit G/L
-                PCharges.TESTFIELD(PCharges."G/L Account");
+            // DR: Undisbursed Loan Commitments (Remaining Amount)
+            if UndisbursedAmount > 0 then begin
+                // VALIDATION: Check account exists
+                if SaccoGeneralSetup."Undisbursed Loan Committments Account" = '' then
+                    Error('Undisbursed Loan Commitments Account not configured.');
+
                 LineNo := LineNo + 10000;
-                GenJournalLine.INIT;
-                GenJournalLine."Journal Template Name" := TemplateName;
-                GenJournalLine."Journal Batch Name" := BatchName;
-                GenJournalLine."Line No." := LineNo;
-                GenJournalLine."Account Type" := GenJournalLine."Account Type"::"G/L Account";
-                GenJournalLine."Account No." := PCharges."G/L Account";
-                GenJournalLine.VALIDATE(GenJournalLine."Account No.");
-                GenJournalLine."Document No." := Rec."Loan  No.";
-                GenJournalLine."External Document No." := Rec."Loan  No.";
-                GenJournalLine."Posting Date" := DirbursementDate;
-                GenJournalLine.Description := PCharges.Description + '-' + Format(Rec."Loan  No.");
-                IF PCharges."Use Perc" = TRUE THEN BEGIN
-                    GenJournalLine.Amount := (Rec."Approved Amount" * (PCharges.Percentage / 100)) * -1
-                END
-                ELSE
-                    IF PCharges."Use Perc" = false then begin
-                        if (NetAmount >= 1000000) then
-                            GenJournalLine.Amount := PCharges.Amount2 * -1
-                        else
-                            GenJournalLine.Amount := PCharges.Amount * -1
-                    end;
-                GenJournalLine.VALIDATE(GenJournalLine.Amount);
-                GenJournalLine."Shortcut Dimension 1 Code" := DActivity;
-                GenJournalLine."Shortcut Dimension 2 Code" := DBranch;
-                IF GenJournalLine.Amount <> 0 THEN GenJournalLine.INSERT;
+                SFactory.FnCreateGnlJournalLine(
+                    TemplateName, BatchName, Rec."Loan  No.", LineNo,
+                    GenJournalLine."Transaction Type"::" ",
+                    GenJournalLine."Account Type"::"G/L Account",
+                    SaccoGeneralSetup."Undisbursed Loan Committments Account", DirbursementDate,
+                    UndisbursedAmount,
+                    'BOSA', LoanApps."Loan  No.",
+                    'Undisbursed Loan Commitment - ' + LoanApps."Loan Product Type",
+                    LoanApps."Loan  No."
+                );
+            end;
 
-            UNTIL PCharges.NEXT = 0;
-        END;
-        //end of code
-        //....Bank Transfer Charges....
+            // CR: Loan Commitment Liability (Remaining/Undisbursed Amount Only)
+            if UndisbursedAmount > 0 then begin
+                // VALIDATION: Check account exists
+                if SaccoGeneralSetup."Loan Commitment Liability Account" = '' then
+                    Error('Loan Commitment Liability Account not configured.');
 
+                LineNo := LineNo + 10000;
+                SFactory.FnCreateGnlJournalLine(
+                    TemplateName, BatchName, Rec."Loan  No.", LineNo,
+                    GenJournalLine."Transaction Type"::" ",
+                    GenJournalLine."Account Type"::"G/L Account",
+                    SaccoGeneralSetup."Loan Commitment Liability Account", DirbursementDate,
+                    UndisbursedAmount * -1,
+                    'BOSA', LoanApps."Loan  No.",
+                    'Loan Commitment Liability - ' + LoanApps."Loan Product Type",
+                    LoanApps."Loan  No."
+                );
+            end;
+
+        end else begin
+            // Subsequent Disbursement - Transfer from Undisbursed to Member Account
+            // DR: Member Loan Account (Disbursement Amount)
+            LineNo := LineNo + 10000;
+            SFactory.FnCreateGnlJournalLine(
+                TemplateName, BatchName, Rec."Loan  No.", LineNo,
+                GenJournalLine."Transaction Type"::Loan,
+                GenJournalLine."Account Type"::Customer,
+                LoanApps."Client Code", DirbursementDate, DisbursementAmount,
+                'BOSA', LoanApps."Loan  No.",
+                'Loan Disbursement (Subsequent) - ' + LoanApps."Loan Product Type",
+                LoanApps."Loan  No."
+            );
+
+            // CR: Undisbursed Loan Commitments (Disbursement Amount)
+            if SaccoGeneralSetup."Undisbursed Loan Committments Account" <> '' then begin
+                LineNo := LineNo + 10000;
+                SFactory.FnCreateGnlJournalLine(
+                    TemplateName, BatchName, Rec."Loan  No.", LineNo,
+                    GenJournalLine."Transaction Type"::" ",
+                    GenJournalLine."Account Type"::"G/L Account",
+                    SaccoGeneralSetup."Undisbursed Loan Committments Account", DirbursementDate,
+                    DisbursementAmount * -1,
+                    'BOSA', LoanApps."Loan  No.",
+                    'Release Undisbursed Commitment - ' + LoanApps."Loan Product Type",
+                    LoanApps."Loan  No."
+                );
+            end;
+        end;
+
+        // Handle Loan Offset for full disbursements only
+        if not Rec."Is Partial Disbursement" then begin
+            Rec.CalcFields("Top Up Amount");
+            if Rec."Top Up Amount" > 0 then begin
+                LoanTopUp.RESET;
+                LoanTopUp.SETRANGE(LoanTopUp."Loan No.", Rec."Loan  No.");
+                IF LoanTopUp.FIND('-') THEN BEGIN
+                    repeat
+                        LineNo := LineNo + 10000;
+                        SFactory.FnCreateGnlJournalLine(
+                            TemplateName, BatchName, Rec."Loan  No.", LineNo,
+                            GenJournalLine."Transaction Type"::"Loan Repayment",
+                            GenJournalLine."Account Type"::Customer,
+                            LoanApps."Client Code", DirbursementDate,
+                            LoanTopUp."Principle Top Up" * -1,
+                            'BOSA', LoanApps."Loan  No.",
+                            'Loan OffSet By - ' + LoanApps."Loan  No.",
+                            LoanTopUp."Loan Top Up"
+                        );
+
+                        // Interest on Top Up
+                        LineNo := LineNo + 10000;
+                        SFactory.FnCreateGnlJournalLine(
+                            TemplateName, BatchName, Rec."Loan  No.", LineNo,
+                            GenJournalLine."Transaction Type"::"Interest Paid",
+                            GenJournalLine."Account Type"::Customer,
+                            LoanApps."Client Code", DirbursementDate,
+                            LoanTopUp."Interest Top Up" * -1,
+                            'BOSA', LoanApps."Loan  No.",
+                            'Interest Due Paid on top up - ',
+                            LoanTopUp."Loan Top Up"
+                        );
+
+                        // Top up commission (with validation)
+                        if GenSetUp."Top up Account" <> '' then begin
+                            LineNo := LineNo + 10000;
+                            SFactory.FnCreateGnlJournalLine(
+                                TemplateName, BatchName, LoanApps."Loan  No.", LineNo,
+                                GenJournalLine."Transaction Type"::" ",
+                                GenJournalLine."Account Type"::"G/L Account",
+                                GenSetUp."Top up Account", DirbursementDate,
+                                LoanTopUp.Commision * -1,
+                                'BOSA', Rec."Batch No.",
+                                'Commision on top up - ',
+                                LoanTopUp."Loan Top Up"
+                            );
+                        end;
+
+                        AmountTop := (LoanTopUp."Principle Top Up" + LoanTopUp."Interest Top Up" + LoanTopUp.Commision);
+                        VarAmounttoDisburse := VarAmounttoDisburse - AmountTop;
+                    UNTIL LoanTopUp.NEXT = 0;
+                END;
+            end;
+        end;
+
+        // Calculate net amount
+        NetAmount := VarAmounttoDisburse - (Insurance + Valuation);
+
+        // Bank Transfer Charges (only on first disbursement for partial loans)
         bankTransferCharges := Rec."Bank Transfer Charges";
-        //.....credit Bank
-        LineNo := LineNo + 10000;
-        SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, LoanApps."Loan  No.", LineNo, GenJournalLine."Transaction Type"::" ", GenJournalLine."Account Type"::"Bank Account", LoanApps."Paying Bank Account No", DirbursementDate, bankTransferCharges * -1, 'BOSA', Rec."Batch No.", 'Bank transfer charges ' + Format(LoanApps."Loan  No."), '');
-        //....debit member & Bank trans duty....
-        LineNo := LineNo + 10000;
-        SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, Rec."Loan  No.", LineNo, GenJournalLine."Transaction Type"::"Loan Transfer Charges", GenJournalLine."Account Type"::Customer, LoanApps."Client Code", DirbursementDate, bankTransferCharges, 'BOSA', LoanApps."Loan  No.", 'Bank transfer charges ' + Format(LoanApps."Loan  No."), LoanApps."Loan  No.");
+        if Rec."Is Partial Disbursement" and not IsFirstDisbursement then begin
+            bankTransferCharges := 0; // No charges on subsequent disbursements
+            Insurance := 0;
+            Valuation := 0;
 
-        //....Insuarance
-        // PREMIUM = LOAN AMOUNT x (5.03 x PERIOD +21.15)/6000 x 0.6
-        LineNo := LineNo + 10000;
+        end;
 
-        insurancePremium := Rec."Loan Insurance";// ROUND(((Rec."Requested Amount") * (5.03 * Rec.Installments + 21.15) / 6000) * 0.6, 1, '=');
-        SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, LoanApps."Loan  No.", LineNo, GenJournalLine."Transaction Type"::" ", GenJournalLine."Account Type"::"G/L Account", GenSetUp."Insurance Retension Account", DirbursementDate, insurancePremium * -1, 'BOSA', Rec."Batch No.", 'Loan Insurance Amount ' + Format(LoanApps."Loan  No."), '');
-        VarAmounttoDisburse := VarAmounttoDisburse - insurancePremium;
+        if bankTransferCharges > 0 then begin
+            // Credit Bank (with validation)
+            if LoanApps."Paying Bank Account No" <> '' then begin
+                LineNo := LineNo + 10000;
+                SFactory.FnCreateGnlJournalLine(
+                    TemplateName, BatchName, LoanApps."Loan  No.", LineNo,
+                    GenJournalLine."Transaction Type"::" ",
+                    GenJournalLine."Account Type"::"Bank Account",
+                    LoanApps."Paying Bank Account No", DirbursementDate,
+                    bankTransferCharges * -1,
+                    'BOSA', Rec."Batch No.",
+                    'Bank transfer charges ' + GetDisbursementSuffix() + Format(LoanApps."Loan  No."),
+                    ''
+                );
+            end;
 
-        //.....Valuation
-        // VarAmounttoDisburse := VarAmounttoDisburse - (Rec."Loan Processing Fee" + Rec."Loan Dirbusement Fee" + Rec."Loan Insurance");
-        LineNo := LineNo + 10000;
-        SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, LoanApps."Loan  No.", LineNo, GenJournalLine."Transaction Type"::" ", GenJournalLine."Account Type"::"G/L Account", GenSetUp."Asset Valuation Cost", DirbursementDate, LoanApps."Valuation Cost" * -1, 'BOSA', Rec."Batch No.", 'Loan valuation fee ' + Format(LoanApps."Loan  No."), '');
-        VarAmounttoDisburse := VarAmounttoDisburse - LoanApps."Valuation Cost";
-        //...Debosting amount
-        LineNo := LineNo + 10000;
-        SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, LoanApps."Loan  No.", LineNo, GenJournalLine."Transaction Type"::" ", GenJournalLine."Account Type"::"G/L Account", GenSetUp."Boosting Fees Account", DirbursementDate, LoanApps."Deboost Commision" * -1, 'BOSA', Rec."Batch No.", 'Debosting commision ' + Format(LoanApps."Loan  No."), '');
-        VarAmounttoDisburse := VarAmounttoDisburse - LoanApps."Deboost Commision";
-        //Debosting commsion
-        LineNo := LineNo + 10000;
-        SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, LoanApps."Loan  No.", LineNo, GenJournalLine."Transaction Type"::"Deposit Contribution", GenJournalLine."Account Type"::Customer, LoanApps."Client Code", DirbursementDate, LoanApps."Deboost Amount" * -1, 'BOSA', Rec."Batch No.", 'Debosted shares ' + Format(LoanApps."Loan  No."), '');
-        VarAmounttoDisburse := VarAmounttoDisburse - LoanApps."Deboost Amount";
-        //..Faciliation Fee
-        LineNo := LineNo + 10000;
-        SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, LoanApps."Loan  No.", LineNo, GenJournalLine."Transaction Type"::" ", GenJournalLine."Account Type"::"G/L Account", GenSetUp."Facilitation Fee", DirbursementDate, LoanApps."Facilitation Cost" * -1, 'BOSA', Rec."Batch No.", 'Loan facilitation fees ' + Format(LoanApps."Loan  No."), '');
-        VarAmounttoDisburse := VarAmounttoDisburse - LoanApps."Facilitation Cost";
-        //------------------------------------2. CREDIT MEMBER BANK A/C---------------------------------------------------------------------------------------------
-        LineNo := LineNo + 10000;
-        SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, Rec."Loan  No.", LineNo, GenJournalLine."Transaction Type"::" ", GenJournalLine."Account Type"::"Bank Account", LoanApps."Paying Bank Account No", DirbursementDate, VarAmounttoDisburse * -1, 'BOSA', LoanApps."Loan  No.", 'Loan net amount disbursement ' + Format(Rec."Loan  No."), '');
+            // Debit member
+            LineNo := LineNo + 10000;
+            SFactory.FnCreateGnlJournalLine(
+                TemplateName, BatchName, Rec."Loan  No.", LineNo,
+                GenJournalLine."Transaction Type"::"Loan Transfer Charges",
+                GenJournalLine."Account Type"::Customer,
+                LoanApps."Client Code", DirbursementDate, bankTransferCharges,
+                'BOSA', LoanApps."Loan  No.",
+                'Bank transfer charges ' + GetDisbursementSuffix() + Format(LoanApps."Loan  No."),
+                LoanApps."Loan  No."
+            );
+
+            //VarAmounttoDisburse := VarAmounttoDisburse - bankTransferCharges;
+        end;
+
+        // Insurance (only on first disbursement)
+        if Insurance > 0 then begin
+            if GenSetUp."Insurance Retension Account" <> '' then begin
+                LineNo := LineNo + 10000;
+                SFactory.FnCreateGnlJournalLine(
+                    TemplateName, BatchName, LoanApps."Loan  No.", LineNo,
+                    GenJournalLine."Transaction Type"::" ",
+                    GenJournalLine."Account Type"::"G/L Account",
+                    GenSetUp."Insurance Retension Account", DirbursementDate,
+                    Insurance * -1,
+                    'BOSA', Rec."Batch No.",
+                    'Loan Insurance Amount ' + GetDisbursementSuffix() + Format(LoanApps."Loan  No."),
+                    ''
+                );
+                VarAmounttoDisburse := VarAmounttoDisburse - Insurance;
+            end else begin
+                Error('Insurance Retension Account not configured in General Setup.');
+            end;
+        end;
+
+        // Valuation costs (only on first disbursement)
+        if Valuation > 0 then begin
+            if GenSetUp."Asset Valuation Cost" <> '' then begin
+                LineNo := LineNo + 10000;
+                SFactory.FnCreateGnlJournalLine(
+                    TemplateName, BatchName, LoanApps."Loan  No.", LineNo,
+                    GenJournalLine."Transaction Type"::" ",
+                    GenJournalLine."Account Type"::"G/L Account",
+                    GenSetUp."Asset Valuation Cost", DirbursementDate,
+                    Valuation * -1,
+                    'BOSA', Rec."Batch No.",
+                    'Loan valuation fee ' + GetDisbursementSuffix() + Format(LoanApps."Loan  No."),
+                    ''
+                );
+                VarAmounttoDisburse := VarAmounttoDisburse - Valuation;
+            end else begin
+                Error('Asset Valuation Cost Account not configured in General Setup.');
+            end;
+        end;
+
+        // Facilitation Fee (only for full disbursements)
+        if not Rec."Is Partial Disbursement" and (LoanApps."Facilitation Cost" > 0) then begin
+            if GenSetUp."Facilitation Fee" <> '' then begin
+                LineNo := LineNo + 10000;
+                SFactory.FnCreateGnlJournalLine(
+                    TemplateName, BatchName, LoanApps."Loan  No.", LineNo,
+                    GenJournalLine."Transaction Type"::" ",
+                    GenJournalLine."Account Type"::"G/L Account",
+                    GenSetUp."Facilitation Fee", DirbursementDate,
+                    LoanApps."Facilitation Cost" * -1,
+                    'BOSA', Rec."Batch No.",
+                    'Loan facilitation fees ' + Format(LoanApps."Loan  No."),
+                    ''
+                );
+                VarAmounttoDisburse := VarAmounttoDisburse - LoanApps."Facilitation Cost";
+            end else begin
+                Error('Facilitation Fee Account not configured in General Setup.');
+            end;
+        end;
+
+        // credit bank account
+        if VarAmounttoDisburse > 0 then begin
+            if LoanApps."Paying Bank Account No" <> '' then begin
+                LineNo := LineNo + 10000;
+                SFactory.FnCreateGnlJournalLine(
+                    TemplateName, BatchName, Rec."Loan  No.", LineNo,
+                    GenJournalLine."Transaction Type"::" ",
+                    GenJournalLine."Account Type"::"Bank Account",
+                    LoanApps."Paying Bank Account No", DirbursementDate,
+                    VarAmounttoDisburse * -1,
+                    'BOSA', LoanApps."Loan  No.",
+                    'Loan net amount disbursement ' + GetDisbursementSuffix() + Format(Rec."Loan  No."),
+                    ''
+                );
+            end else begin
+                Error('Paying Bank Account No. is not configured for Loan No. %1', LoanApps."Loan  No.");
+            end;
+        end;
+
+        // === FINAL COMMITMENT CLEANUP ===
+        // If this is the final disbursement, close the remaining commitment liability
+        if not Rec."Is Partial Disbursement" or (UndisbursedAmount - Rec."Remaining Amount" = 0) then begin
+            // Calculate the remaining commitment to close
+            RemainingCommitment := Rec."Remaining Amount";
+            if RemainingCommitment > 0 then begin
+                if SaccoGeneralSetup."Loan Commitment Liability Account" <> '' then begin
+                    LineNo := LineNo + 10000;
+                    SFactory.FnCreateGnlJournalLine(
+                        TemplateName, BatchName, Rec."Loan  No.", LineNo,
+                        GenJournalLine."Transaction Type"::" ",
+                        GenJournalLine."Account Type"::"G/L Account",
+                        SaccoGeneralSetup."Loan Commitment Liability Account", DirbursementDate,
+                        RemainingCommitment,
+                        'BOSA', LoanApps."Loan  No.",
+                        'Close Loan Commitment Liability - ' + LoanApps."Loan Product Type",
+                        LoanApps."Loan  No."
+                    );
+                end;
+            end;
+        end;
+    end;
+
+    // Helper function to add disbursement suffix
+    local procedure GetDisbursementSuffix(): Text[20]
+    begin
+        if Rec."Is Partial Disbursement" then begin
+            if (Rec."Disbursement Status" = Rec."Disbursement Status"::"Not Disbursed") or
+               (Rec."Disbursement Status" = Rec."Disbursement Status"::" ") then
+                exit('(1st Partial) ')
+            else
+                exit('(Subsequent) ');
+        end else
+            exit('');
     end;
 
     local procedure FnSendNotifications()
@@ -1241,6 +1640,59 @@ Page 51007 "BOSA Loans Disbursement Card"
             end;
         end;
         exit(false);
+    end;
+
+
+    local procedure PostRemainingDisbursement()
+    var
+        DisbursementAmount: Decimal;
+    begin
+        DisbursementAmount := Rec."Remaining Amount";
+
+        // Permission check
+        If FnCanPostLoans(UserId) = false then begin
+            Error('Prohibited ! You are not allowed to POST this Loan');
+        end;
+
+        TemplateName := 'GENERAL';
+        BatchName := 'LOANS';
+        LoanApps.Reset;
+        LoanApps.SetRange(LoanApps."Loan  No.", Rec."Loan  No.");
+
+        if LoanApps.FindSet then begin
+            repeat
+                // Call disbursement function with remaining amount
+                FnInsertBOSALines(LoanApps, LoanApps."Loan  No.", DisbursementAmount);
+
+                GenJournalLine.RESET;
+                GenJournalLine.SETRANGE("Journal Template Name", TemplateName);
+                GenJournalLine.SETRANGE("Journal Batch Name", BatchName);
+
+                if GenJournalLine.Find('-') then begin
+                    CODEUNIT.RUN(CODEUNIT::"Gen. Jnl.-Post Batch", GenJournalLine);
+
+                    // Update loan record for final disbursement
+                    Rec.Get(Rec."Loan  No.");
+                    Rec."Disbursement Status" := Rec."Disbursement Status"::"Fully Disbursed";
+                    Rec."Remaining Amount" := 0;
+                    Rec."Disbursed Amount" := Rec."Approved Amount"; // Total disbursed
+                    Rec."Disbursed Amount" += DisbursementAmount;
+                    Rec."Is Partial Disbursement" := false;
+                    //Rec.Modify();
+
+
+                    if Rec.Modify() then begin
+                        Commit;
+                        CurrPage.Update(false);
+                    end;
+
+                    FnSendNotifications();
+                end;
+            until LoanApps.Next = 0;
+
+            Message('Remaining loan amount has been disbursed successfully and member notified');
+            CurrPage.close();
+        end;
     end;
 
 

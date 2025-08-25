@@ -136,6 +136,21 @@ page 50411 "Sacco General Set-Up"
                 }
 
 
+                // field("Undisbursed Loan Commitments"; Rec.)
+
+                field("Undisbursed Loan Committments Account"; Rec."Undisbursed Loan Committments Account")
+                {
+                    ApplicationArea = Basic;
+                    Caption = 'Undisbursed Loans Account';
+                }
+
+
+                field("Loan Commitment Liability Account"; Rec."Loan Commitment Liability Account")
+                {
+                    ApplicationArea = Basic;
+                }
+
+
                 field("Registration Fee"; Rec."Registration Fee")
                 {
                     ApplicationArea = Basic;

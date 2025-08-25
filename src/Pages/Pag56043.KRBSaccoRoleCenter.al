@@ -1108,6 +1108,14 @@ Page 56043 "KRB Sacco Role Center"
                         RunObject = Page "Loan Application BOSA-Approved";
                         ToolTip = 'Open the list of Approved Loans Pending Disbursement.';
                     }
+
+                    action("Bosa Loans Partially Disbursed")
+                    {
+                        ApplicationArea = Basic, Suite;
+                        Caption = 'BOSA Loans Partially Disbursed.';
+                        RunObject = Page BOSAPartialDisbursed;
+                        ToolTip = 'Open the list of Partially Disbursed Loans';
+                    }
                 }
 
                 group("Instant Loan")

@@ -65,6 +65,7 @@ pageextension 50622 "ChartOfAccoutnsExt" extends "Chart of Accounts"
         {
             Editable = Enable;
         }
+        modify("Balance at Date") { Visible = true; }
         modify("Account Subcategory Descript.")
         {
             Visible = false;

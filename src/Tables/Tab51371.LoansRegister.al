@@ -4330,13 +4330,13 @@ Table 51371 "Loans Register"
         {
             DataClassification = ToBeClassified;
         }
-        field(51516228; "Disbursement Status"; Option)
-        {
-            DataClassification = ToBeClassified;
-            InitValue = Full;
-            OptionCaption = ' ,Partial,Full';
-            OptionMembers = " ",Partial,Full;
-        }
+        // field(51516228; "Disbursement Status"; Option)
+        // {
+        //     DataClassification = ToBeClassified;
+        //     InitValue = Full;
+        //     OptionCaption = ' ,Partial,Full';
+        //     OptionMembers = " ",Partial,Full;
+        // }
         field(51516229; "Initial Trunch"; Decimal)
         {
             DataClassification = ToBeClassified;
@@ -4624,6 +4624,28 @@ Table 51371 "Loans Register"
         {
 
         }
+
+        field(69279; "Disbursed Amount"; Decimal)
+        {
+
+        }
+
+        field(69280; "Remaining Amount"; Decimal)
+        {
+        }
+
+        field(69281; "Is Partial Disbursement"; Boolean)
+        {
+
+        }
+
+        field(69282; "Disbursement Status"; Option)
+        {
+            Caption = 'Disbursement Status';
+            OptionMembers = " ","Not Disbursed","Partially Disbursed","Fully Disbursed";
+            OptionCaption = ' ,Not Disbursed,Partially Disbursed,Fully Disbursed';
+        }
+
 
     }
 

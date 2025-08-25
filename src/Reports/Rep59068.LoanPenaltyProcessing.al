@@ -392,7 +392,6 @@ Report 59068 "Loan Penalty Processing"
 
         GenJournalBatch.Get('GENERAL', 'PENALTY');
 
-
         DocumentNo := NoSeriesMgt.GetNextNo(GenJournalBatch."No. Series", AsAt, false);
 
 
@@ -435,34 +434,7 @@ Report 59068 "Loan Penalty Processing"
         end;
         GenJournalLine.Validate(GenJournalLine."Shortcut Dimension 1 Code");
         GenJournalLine.Validate(GenJournalLine."Shortcut Dimension 2 Code");
-
-
-
         GenJournalLine.Insert();
-
-        // Create corresponding credit entry (Income account)
-        // LineNo += 10000;
-        // GenJournalLine.Init();
-        // GenJournalLine."Journal Template Name" := 'GENERAL';
-        // GenJournalLine."Journal Batch Name" := 'PENALTY';
-        // GenJournalLine."Line No." := LineNo;
-        // GenJournalLine."Document Type" := GenJournalLine."Document Type"::Invoice;
-        // GenJournalLine."Document No." := DocumentNo;
-        // GenJournalLine."Posting Date" := AsAt;
-        // GenJournalLine."Account Type" := GenJournalLine."Account Type"::"G/L Account";
-        // GenJournalLine."Account No." := '4002'; // Penalty Income Account - adjust as needed
-        // GenJournalLine.Amount := -LoanScheduleRec.Penalty;
-        // GenJournalLine.Description := 'Late Payment Penalty Income - ' + Loans."Loan  No.";
-        // GenJournalLine.Insert();
-
-        //Codeunit.Run(Codeunit::"Gen. Jnl.-Post Batch", GenJournalLine);
-
-        //LoanScheduleRec.PenaltyCharged := true;
-        //LoanScheduleRec.Modify(true);
-
     end;
-
-
-
 }
 

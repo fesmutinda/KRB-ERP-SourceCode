@@ -19,19 +19,19 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>1.23397in</Width>
+                  <Width>1.39091in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.84148in</Width>
+                  <Width>0.85954in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.45138in</Width>
+                  <Width>1.82361in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1in</Width>
+                  <Width>1.01806in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.84028in</Width>
+                  <Width>0.85834in</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -95,7 +95,7 @@
                                 </TextRun>
                               </TextRuns>
                               <Style>
-                                <TextAlign>Right</TextAlign>
+                                <TextAlign>Left</TextAlign>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
@@ -137,7 +137,7 @@
                                 </TextRun>
                               </TextRuns>
                               <Style>
-                                <TextAlign>Right</TextAlign>
+                                <TextAlign>Left</TextAlign>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
@@ -179,7 +179,7 @@
                                 </TextRun>
                               </TextRuns>
                               <Style>
-                                <TextAlign>Right</TextAlign>
+                                <TextAlign>Left</TextAlign>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
@@ -213,7 +213,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Usage</Value>
+                                  <Value>Variance</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
@@ -221,7 +221,7 @@
                                 </TextRun>
                               </TextRuns>
                               <Style>
-                                <TextAlign>Right</TextAlign>
+                                <TextAlign>Left</TextAlign>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
@@ -314,7 +314,7 @@
                                 </TextRun>
                               </TextRuns>
                               <Style>
-                                <TextAlign>Right</TextAlign>
+                                <TextAlign>Left</TextAlign>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
@@ -340,7 +340,6 @@
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -352,7 +351,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=IIF(Fields!Line_Type.Value = "Header Line", "", Fields!G_L_Account_Name.Value)</Value>
+                                  <Value>=IIF(Fields!Line_Type.Value = "Header Line", "", StrConv(Fields!G_L_Account_Name.Value, VbStrConv.ProperCase))</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>=IIF(Fields!Line_Type.Value = "Total Line", "Bold", "Normal")</FontWeight>
@@ -361,7 +360,7 @@
                                 </TextRun>
                               </TextRuns>
                               <Style>
-                                <TextAlign>Right</TextAlign>
+                                <TextAlign>Left</TextAlign>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
@@ -407,7 +406,7 @@
                                 </TextRun>
                               </TextRuns>
                               <Style>
-                                <TextAlign>Right</TextAlign>
+                                <TextAlign>Left</TextAlign>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
@@ -453,7 +452,7 @@
                                 </TextRun>
                               </TextRuns>
                               <Style>
-                                <TextAlign>Right</TextAlign>
+                                <TextAlign>Left</TextAlign>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
@@ -509,9 +508,9 @@
             </TablixRowHierarchy>
             <DataSetName>DataSet_Result</DataSetName>
             <Top>2.91889in</Top>
-            <Left>1.39728in</Left>
+            <Left>1.15442in</Left>
             <Height>0.48612in</Height>
-            <Width>5.36711in</Width>
+            <Width>5.95045in</Width>
             <Style>
               <Border>
                 <Style>None</Style>

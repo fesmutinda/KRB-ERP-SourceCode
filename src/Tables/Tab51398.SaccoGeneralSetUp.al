@@ -403,6 +403,8 @@ Table 51398 "Sacco General Set-Up"
                 TestNoEntriesExist(FieldCaption("Withdrawal Fee Account"), "Withdrawal Fee Account");
             end;
         }
+
+
         field(105; "Dividend Payable Account"; Code[20])
         {
             TableRelation = "G/L Account";
@@ -905,6 +907,17 @@ Table 51398 "Sacco General Set-Up"
         }
         field(1622; "Negative Reminder Time"; Time)
         {
+        }
+
+        field(1623; "Undisbursed Loan Committments Account"; Code[20])
+        {
+
+
+        }
+
+        field(1624; "Loan Commitment Liability Account"; Code[20])
+        {
+
         }
     }
 
