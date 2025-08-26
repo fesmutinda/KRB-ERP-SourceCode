@@ -935,39 +935,6 @@
               </Border>
             </Style>
           </Tablix>
-          <Textbox Name="Textbox3">
-            <CanGrow>true</CanGrow>
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>MEMBER SAVINGS REPORT</Value>
-                    <Style>
-                      <FontSize>9pt</FontSize>
-                      <FontWeight>Bold</FontWeight>
-                    </Style>
-                  </TextRun>
-                </TextRuns>
-                <Style />
-              </Paragraph>
-            </Paragraphs>
-            <rd:DefaultName>Textbox3</rd:DefaultName>
-            <Top>2.13406in</Top>
-            <Left>3.0741in</Left>
-            <Height>0.19097in</Height>
-            <Width>1.79415in</Width>
-            <ZIndex>1</ZIndex>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-              <PaddingLeft>2pt</PaddingLeft>
-              <PaddingRight>2pt</PaddingRight>
-              <PaddingTop>2pt</PaddingTop>
-              <PaddingBottom>2pt</PaddingBottom>
-            </Style>
-          </Textbox>
           <Textbox Name="Company_Address2">
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
@@ -992,7 +959,7 @@
             <Left>1.26428in</Left>
             <Height>0.17708in</Height>
             <Width>5.31307in</Width>
-            <ZIndex>2</ZIndex>
+            <ZIndex>1</ZIndex>
             <Style>
               <Border>
                 <Color>Indigo</Color>
@@ -1040,7 +1007,7 @@
             <Left>1.26428in</Left>
             <Height>0.25in</Height>
             <Width>5.31307in</Width>
-            <ZIndex>3</ZIndex>
+            <ZIndex>2</ZIndex>
             <Style>
               <Border>
                 <Color>Indigo</Color>
@@ -1095,7 +1062,7 @@
             <Left>2.97376in</Left>
             <Height>0.25in</Height>
             <Width>2.06307in</Width>
-            <ZIndex>4</ZIndex>
+            <ZIndex>3</ZIndex>
             <Style>
               <Border>
                 <Color>Indigo</Color>
@@ -1143,7 +1110,7 @@
             <Left>2.97376in</Left>
             <Height>0.25in</Height>
             <Width>2.06307in</Width>
-            <ZIndex>5</ZIndex>
+            <ZIndex>4</ZIndex>
             <Style>
               <Border>
                 <Color>Indigo</Color>
@@ -1175,7 +1142,7 @@
             <Left>3.42284in</Left>
             <Height>0.92708in</Height>
             <Width>0.99369in</Width>
-            <ZIndex>6</ZIndex>
+            <ZIndex>5</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1189,27 +1156,37 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Account: </Value>
+                    <Value xml:space="preserve"> </Value>
                     <Style>
-                      <FontSize>8pt</FontSize>
+                      <FontSize>9pt</FontSize>
                     </Style>
                   </TextRun>
                   <TextRun>
                     <Value>=Fields!Name_GLAccount.Value</Value>
                     <Style>
-                      <FontSize>8pt</FontSize>
+                      <FontSize>9pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Value> REPORT</Value>
+                    <Style>
+                      <FontSize>9pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
                 </TextRuns>
-                <Style />
+                <Style>
+                  <TextAlign>Left</TextAlign>
+                </Style>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox11</rd:DefaultName>
-            <Top>2.45698in</Top>
-            <Left>0.11988in</Left>
-            <Height>0.18056in</Height>
-            <Width>2.06944in</Width>
-            <ZIndex>7</ZIndex>
+            <Top>2.13406in</Top>
+            <Left>2.97376in</Left>
+            <Height>0.19097in</Height>
+            <Width>2.2089in</Width>
+            <ZIndex>6</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>

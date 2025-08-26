@@ -1309,8 +1309,7 @@ Page 56043 "KRB Sacco Role Center"
                     action("Approved Loans Report")
                     {
                         ApplicationArea = all;
-                        Caption = 'Approved Loans';
-                        RunObject = report "Approved Loans List";
+                        RunObject = report "Approved Loans List-Grouped";
                         Visible = true;
                     }
                 }
