@@ -740,10 +740,10 @@ Page 56043 "KRB Sacco Role Center"
                     }
 
 
-                    action("Member Savings Report")
+                    action("Member Savings/Loans Report")
                     {
                         ApplicationArea = Basic, Suite;
-                        Caption = 'Member Savings Report';
+                        Caption = 'Member Savings/Loans Report';
                         RunObject = report "Member Savings Report2";
                     }
                 }
