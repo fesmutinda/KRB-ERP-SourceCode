@@ -12,12 +12,14 @@ pageextension 50621 "General Ledger Entries Ext" extends "General Ledger Entries
             {
                 ApplicationArea = Basic;
             }
-            // field(RunningBalanceE; CalcRunningAccBalance.GetGLAccBalance(Rec))
-            // {
-            //     ApplicationArea = Basic, Suite;
-            //     Caption = 'Running Balance';
-            //     ToolTip = 'Specifies the running balance.';
-            // }
+            field(RunningBalance1; CalcRunningAccBalance.GetGLAccBalance(Rec))
+            {
+                ApplicationArea = Basic, Suite;
+                Caption = 'Running Balance';
+                ToolTip = 'Specifies the running balance.';
+            }
+
+
             field("Reverse"; Rec.Reversed)
             {
                 Caption = 'Reversed';
@@ -37,6 +39,19 @@ pageextension 50621 "General Ledger Entries Ext" extends "General Ledger Entries
 
 
         }
+        addafter("Credit Amount")
+        {
+            // field("Credit Amounts"; Rec."Credit Amount")
+            // {
+            //     ApplicationArea = Basic;
+            // }
+
+        }
+        // modify(RunningBalance)
+        // {
+        //     Visible = true;
+        //     Caption = 'Running Balance';
+        // }
         addafter("Posting Date")
         {
 
@@ -84,7 +99,7 @@ pageextension 50621 "General Ledger Entries Ext" extends "General Ledger Entries
     }
     var
         RunningBal: Decimal;
-    // CalcRunningAccBalance: Codeunit "System General Setup";
+        CalcRunningAccBalance: Codeunit "System General Setup";
 
     trigger OnAfterGetRecord()
     var
@@ -97,6 +112,7 @@ pageextension 50621 "General Ledger Entries Ext" extends "General Ledger Entries
         //     RunningBal := FnGetSumLessTheGLEntryNo(GLEntryTable."Entry No.", GLEntryTable."G/L Account No.")
         // end;
     end;
+
 
     local procedure FnGetSumLessTheGLEntryNo(EntryNo: Integer; GLAccountNo: Code[20]): Decimal
     var
