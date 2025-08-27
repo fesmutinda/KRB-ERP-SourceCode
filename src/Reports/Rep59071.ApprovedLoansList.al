@@ -41,13 +41,12 @@ report 59071 "Approved Loans List-Grouped"
                 else if EndDateFilter <> 0D then
                     SetFilter("Application Date", '<=%1', EndDateFilter);
 
-                // Apply loan type filter based on Loan Products Setup
-                if (LoanProductCodeFilter <> '') and (LoanProductCodeFilter <> '<ALL>') then begin
-                    // Get the product description from Loan Products Setup and filter by it
-                    LoanProductsSetup.Reset();
-                    if LoanProductsSetup.Get(LoanProductCodeFilter) then
-                        SetFilter("Loan Product Type Name", '%1', LoanProductsSetup."Product Description");
+                // Apply loan type filter - SIMPLIFIED LOGIC
+                if SelectedLoanProductCode <> '' then begin
+                    // Filter by the selected loan product code
+                    SetRange("Loan Product Type", SelectedLoanProductCode);
                 end;
+                // If SelectedLoanProductCode is empty, show ALL loan types (no filter applied)
 
                 // Init totals
                 GrandTotalAmountApplied := 0;
@@ -98,10 +97,7 @@ report 59071 "Approved Loans List-Grouped"
                 // Display values
                 DateToShow := LoansRegister."Application Date";
                 MemberNameToShow := LoansRegister."Client Name";
-
-                // Use the existing loan type name from the record
                 LoanTypeToShow := LoansRegister."Loan Product Type Name";
-
                 AmountAppliedToShow := LoansRegister."Requested Amount";
                 AmountPayableToShow := netdisbursed;
                 AmountPaidToShow := netpaid;
@@ -164,20 +160,11 @@ report 59071 "Approved Loans List-Grouped"
                 {
                     Caption = 'Loan Type Filter';
 
-                    field(LoanProduct; LoanProductDisplayText)
+                    field(LoanProductType; SelectedLoanProductCode)
                     {
                         ApplicationArea = All;
-                        Caption = 'Loan Type';
-
-                        trigger OnLookup(var Text: Text): Boolean
-                        begin
-                            exit(SelectLoanProduct());
-                        end;
-
-                        trigger OnAssistEdit()
-                        begin
-                            SelectLoanProduct();
-                        end;
+                        Caption = 'Loan Product Type';
+                        TableRelation = "Loan Products Setup";
                     }
                 }
             }
@@ -187,56 +174,19 @@ report 59071 "Approved Loans List-Grouped"
         begin
             StartDateFilter := CalcDate('<-CM>', Today);
             EndDateFilter := Today;
-            LoanProductCodeFilter := '<ALL>';
-            LoanProductDisplayText := 'All Loan Products';
+            SelectedLoanProductCode := ''; // Empty = Show All
         end;
     }
 
-    local procedure SelectLoanProduct(): Boolean
-    var
-        LoanProductsSetup: Record "Loan Products Setup";
-        LoanProductSimpleLookup: Page "Loan Product Simple Lookup";
-        TempLoanProducts: Record "Loan Products Setup" temporary;
+    trigger OnInitReport()
     begin
-        // Add <ALL> option first
-        TempLoanProducts.Init();
-        TempLoanProducts.Code := '<ALL>';
-        TempLoanProducts."Product Description" := 'All Loan Products';
-        TempLoanProducts.Insert();
-
-        // Add all existing loan products
-        LoanProductsSetup.Reset();
-        if LoanProductsSetup.FindSet() then
-            repeat
-                TempLoanProducts.Init();
-                TempLoanProducts.Code := LoanProductsSetup.Code;
-                TempLoanProducts."Product Description" := LoanProductsSetup."Product Description";
-                TempLoanProducts.Insert();
-            until LoanProductsSetup.Next() = 0;
-
-        // Set the temporary table as source for the lookup page
-        TempLoanProducts.Reset();
-        LoanProductSimpleLookup.SetTableView(TempLoanProducts);
-        LoanProductSimpleLookup.LookupMode(true);
-
-        if LoanProductSimpleLookup.RunModal() = Action::LookupOK then begin
-            LoanProductSimpleLookup.GetRecord(TempLoanProducts);
-            LoanProductCodeFilter := TempLoanProducts.Code;
-
-            if LoanProductCodeFilter = '<ALL>' then
-                LoanProductDisplayText := 'All Loan Products'
-            else
-                LoanProductDisplayText := TempLoanProducts.Code + ' - ' + TempLoanProducts."Product Description";
-
-            exit(true);
-        end;
-
-        exit(false);
+        Company.Get();
     end;
 
     var
         StartDateFilter: Date;
         EndDateFilter: Date;
+        SelectedLoanProductCode: Code[20];
         netdisbursed: Decimal;
         netpaid: Decimal;
         netdueamount: Decimal;
@@ -257,7 +207,4 @@ report 59071 "Approved Loans List-Grouped"
         AmountDueToShow: Decimal;
         RepaymentPeriodToShow: Integer;
         StatusToShow: Text[50];
-
-        LoanProductCodeFilter: Code[20];
-        LoanProductDisplayText: Text[100];
 }

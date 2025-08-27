@@ -359,6 +359,13 @@ Table 51371 "Loans Register"
                             if not Confirm('Member has blacklisted Instant Loan No. %1 for %2 more days. Do you want to continue?', false, LoanApp."Loan  No.", LoanApp.GetDaysRemainingInBlacklist()) then
                                 Error('Cannot proceed with blacklisted member.');
                         end;
+
+                        if LoanApp."Amount in Arrears" > 0 then begin
+
+                            if not Confirm('%1 has %2 in arrears, should we recover it?', false, LoanApp."Loan Product Type Name", LoanApp."Amount in Arrears") then
+                                Error('Cannot proceed due to arrears.');
+
+                        end;
                     until LoanApp.Next = 0;
                 end;
                 "Sacco Deductions" := Saccodeduct;

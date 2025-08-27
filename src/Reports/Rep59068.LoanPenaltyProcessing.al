@@ -424,7 +424,7 @@ Report 59068 "Loan Penalty Processing"
             GenJournalLine.Validate(GenJournalLine.Amount);
 
             GenJournalLine."Bal. Account Type" := GenJournalLine."bal. account type"::"G/L Account";
-            GenJournalLine."Bal. Account No." := '4002';
+            GenJournalLine."Bal. Account No." := '4002'; //PENALTY GL
             GenJournalLine."Loan Product Type" := LoanType.Code;
             GenJournalLine.Validate(GenJournalLine."Bal. Account No.");
         end;

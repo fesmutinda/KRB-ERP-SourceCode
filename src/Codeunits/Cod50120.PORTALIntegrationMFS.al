@@ -2233,33 +2233,34 @@ Codeunit 50120 "PORTALIntegration MFS"
         if objMember.Find('-') then begin
 
 
-            if LoanType = 'LT007' then begin
-                ObjLoanRegister.Reset;
-                ObjLoanRegister.SetRange("Client Code", BosaNo);
-                ObjLoanRegister.SetFilter("Amount in Arrears", '>0');
-                ObjLoanRegister.SetRange(Posted, true);
-                ObjLoanRegister.SetRange(Reversed, false);
+            //if LoanType = 'LT007' then begin
+            ObjLoanRegister.Reset;
+            ObjLoanRegister.SetRange("Client Code", BosaNo);
+            ObjLoanRegister.SetFilter("Amount in Arrears", '>0');
+            ObjLoanRegister.SetRange(Posted, true);
+            ObjLoanRegister.SetRange(Reversed, false);
 
-                if ObjLoanRegister.FindSet() then begin
-                    GeneratedApplicationNo := '';
-                    exit('Application failed, member has existing loans with arrears');
-                end;
-
-                ObjLoanRegister.Reset;
-                ObjLoanRegister.SetRange("Client Code", BosaNo);
-                ObjLoanRegister.SetRange("Loan Product Type", 'LT007');
-                ObjLoanRegister.SetRange(Posted, true);
-                ObjLoanRegister.SetRange(Reversed, false);
-
-                if ObjLoanRegister.FindSet() then
-                    repeat
-                        if ObjLoanRegister.IsBlacklisted() then begin
-                            GeneratedApplicationNo := '';
-                            exit(StrSubstNo('Application failed, member has blacklisted LT007 loan for %1 more days',
-                                ObjLoanRegister.GetDaysRemainingInBlacklist()));
-                        end;
-                    until ObjLoanRegister.Next() = 0;
+            if ObjLoanRegister.FindSet() then begin
+                GeneratedApplicationNo := '';
+                if not Confirm('%1 has %2 in arrears, should we recover it?', false, ObjLoanRegister."Loan Product Type Name", ObjLoanRegister."Amount in Arrears") then
+                    Error('Cannot proceed due to arrears.');
             end;
+
+            ObjLoanRegister.Reset;
+            ObjLoanRegister.SetRange("Client Code", BosaNo);
+            ObjLoanRegister.SetRange("Loan Product Type", 'LT007');
+            ObjLoanRegister.SetRange(Posted, true);
+            ObjLoanRegister.SetRange(Reversed, false);
+
+            if ObjLoanRegister.FindSet() then
+                repeat
+                    if ObjLoanRegister.IsBlacklisted() then begin
+                        GeneratedApplicationNo := '';
+                        exit(StrSubstNo('Application failed, member has blacklisted LT007 loan for %1 more days',
+                            ObjLoanRegister.GetDaysRemainingInBlacklist()));
+                    end;
+                until ObjLoanRegister.Next() = 0;
+            //end;
 
             if LoanProductType.Get(LoanType) then;
 
