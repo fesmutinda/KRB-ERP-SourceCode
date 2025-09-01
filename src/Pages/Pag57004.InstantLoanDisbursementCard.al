@@ -806,6 +806,8 @@ page 57004 "Instant Loan Disbursement Card"
         AmountTop: Decimal;
         NetAmount: Decimal;
         bankTransferCharges: Decimal;
+        LoansRec: Record "Loans Register";
+        VarTotalRecovered: Decimal;
     begin
         AmountTop := 0;
         NetAmount := 0;
@@ -842,6 +844,30 @@ page 57004 "Instant Loan Disbursement Card"
         //**************Loan Principal Posting**********************************
         LineNo := LineNo + 10000;
         SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, Rec."Loan  No.", LineNo, GenJournalLine."Transaction Type"::Loan, GenJournalLine."Account Type"::Customer, LoanApps."Client Code", DirbursementDate, VarAmounttoDisburse, 'BOSA', LoanApps."Loan  No.", 'Loan Disbursement - ' + LoanApps."Loan Product Type", LoanApps."Loan  No.");
+
+        VarTotalRecovered := 0;
+        LoansRec.Reset();
+        LoansRec.SetRange("Client Code", Rec."Client Code");
+        LoansRec.SetFilter("Outstanding Balance", '>0');
+        LoansRec.SetFilter("Amount in Arrears", '>0');
+
+        if LoansRec.FindSet() then begin
+            repeat
+                LineNo := LineNo + 10000;
+                SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, Rec."Loan  No.", LineNo,
+                    GenJournalLine."Transaction Type"::"Loan Repayment",
+                    GenJournalLine."Account Type"::Customer, LoanApps."Client Code", DirbursementDate,
+                    LoansRec."Amount in Arrears" * -1, 'BOSA', LoanApps."Loan  No.",
+                    'Arrears Recovered from - ' + LoanApps."Loan  No.", LoansRec."Loan  No.");
+                VarTotalRecovered += LoansRec."Amount in Arrears";
+            until LoansRec.Next() = 0;
+
+            // Round to whole number at the end
+            VarTotalRecovered := Round(VarTotalRecovered, 1);
+        end;
+
+        VarAmounttoDisburse := VarAmounttoDisburse - VarTotalRecovered;
+
 
         //...................Cater for Loan Offset Now !
         Rec.CalcFields("Instant Top Up Amount");

@@ -38,17 +38,21 @@ table 50057 "Members Cues"
         field(8; "Requests to Approve"; Integer)
         {
             CalcFormula = count("Approval Entry" where("Approver ID" = field("User ID"),
+             "Table ID" = const(DATABASE::"Loans Register"),
                                                         Status = filter(Open)));
-            Caption = 'Requests to Approve';
+            Caption = 'Loans Requests to Approve';
             FieldClass = FlowField;
         }
         field(9; "Requests Sent for Approval"; Integer)
         {
             CalcFormula = count("Approval Entry" where("Sender ID" = field("User ID"),
+            "Table ID" = const(DATABASE::"Loans Register"),
                                                         Status = filter(Open)));
-            Caption = 'Requests Sent for Approval';
+            Caption = 'Loans Requests Sent for Approval';
             FieldClass = FlowField;
         }
+
+
 
 
         field(10; "Awaiting Exit"; Integer)
@@ -66,11 +70,29 @@ table 50057 "Members Cues"
             CalcFormula = count(Customer where(Gender = Const(Male), "Customer Posting Group" = filter('Member')));
             FieldClass = FlowField;
         }
+        field(15; "Requests Sent for Approval Al."; Integer)
+        {
+            CalcFormula = count("Approval Entry" where("Sender ID" = field("User ID"),
+            "Table ID" = const(DATABASE::"Membership Applications"),
+                                                        Status = filter(Open)));
+            Caption = 'MemberApp Requests Sent for Approval';
+            FieldClass = FlowField;
+        }
+        field(16; "MemberApp Requests to Approve"; Integer)
+        {
+            CalcFormula = count("Approval Entry" where("Approver ID" = field("User ID"),
+             "Table ID" = const(DATABASE::"Membership Applications"),
+                                                        Status = filter(Open)));
+            Caption = 'MemberApp Requests to Approve';
+            FieldClass = FlowField;
+        }
     }
 
     keys
     {
         key(Key1; "User ID")
+
+
         {
             Clustered = true;
         }

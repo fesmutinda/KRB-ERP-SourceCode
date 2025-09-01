@@ -343,28 +343,30 @@ Table 51371 "Loans Register"
                     "Client Name" := MembReg.Name;
                 end;
 
+
                 LoanApp.Reset;
+
+                LoanApp.CalcFields(LoanApp."Outstanding Balance");
                 LoanApp.SetRange(LoanApp."Client Code", "Client Code");
+                LoanApp.SetFilter(LoanApp."Outstanding Balance", '>0');
                 if LoanApp.Find('-') then begin
                     repeat
-                        LoanApp.CalcFields(LoanApp."Outstanding Balance");
-                        if LoanApp."Outstanding Balance" > 0 then begin
-                            if LoanType.Get(LoanApp."Loan Product Type") then begin
-                                SaccoDedInt := LoanApp."Outstanding Balance" * (LoanType."Interest rate" / 1200);
-                                Saccodeduct := Saccodeduct + LoanApp."Loan Principle Repayment" + SaccoDedInt;
-                            end;
+                        //if LoanApp."Outstanding Balance" > 0 then begin
+                        if LoanType.Get(LoanApp."Loan Product Type") then begin
+                            SaccoDedInt := LoanApp."Outstanding Balance" * (LoanType."Interest rate" / 1200);
+                            Saccodeduct := Saccodeduct + LoanApp."Loan Principle Repayment" + SaccoDedInt;
                         end;
+                        //end;
 
                         if LoanApp.IsBlacklisted() then begin
                             if not Confirm('Member has blacklisted Instant Loan No. %1 for %2 more days. Do you want to continue?', false, LoanApp."Loan  No.", LoanApp.GetDaysRemainingInBlacklist()) then
                                 Error('Cannot proceed with blacklisted member.');
                         end;
 
-                        if LoanApp."Amount in Arrears" > 0 then begin
+                        if (LoanApp."Amount in Arrears" > 0) and (LoanApp."Days In Arrears" > 30) then begin
 
                             if not Confirm('%1 has %2 in arrears, should we recover it?', false, LoanApp."Loan Product Type Name", LoanApp."Amount in Arrears") then
                                 Error('Cannot proceed due to arrears.');
-
                         end;
                     until LoanApp.Next = 0;
                 end;

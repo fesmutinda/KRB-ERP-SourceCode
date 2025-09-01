@@ -1277,7 +1277,7 @@ Page 51007 "BOSA Loans Disbursement Card"
         //recover arrears, IF ANY
         //FnRecoverLoanArrears(LoanApps, LoanNo, LineNo);
 
-        //VarAmounttoDisburse := VarAmounttoDisburse - FnRecoverLoanArrears(LoanApps, LoanNo, LineNo);
+        VarAmounttoDisburse := VarAmounttoDisburse - FnRecoverLoanArrears(LoanApps, LoanNo, LineNo);
         VarTotalRecovered := 0;
         LoansRec.Reset();
         LoansRec.SetRange("Client Code", Rec."Client Code");
@@ -1292,9 +1292,11 @@ Page 51007 "BOSA Loans Disbursement Card"
                     GenJournalLine."Account Type"::Customer, LoanApps."Client Code", DirbursementDate,
                     LoansRec."Amount in Arrears" * -1, 'BOSA', LoanApps."Loan  No.",
                     'Arrears Recovered from - ' + LoanApps."Loan  No.", LoansRec."Loan  No.");
-
                 VarTotalRecovered += LoansRec."Amount in Arrears";
             until LoansRec.Next() = 0;
+
+            // Round to whole number at the end
+            VarTotalRecovered := Round(VarTotalRecovered, 1);
         end;
 
         VarAmounttoDisburse := VarAmounttoDisburse - VarTotalRecovered;
@@ -1628,9 +1630,11 @@ Page 51007 "BOSA Loans Disbursement Card"
                     GenJournalLine."Account Type"::Customer, LoanApps."Client Code", DirbursementDate,
                     LoansRec."Amount in Arrears" * -1, 'BOSA', LoanApps."Loan  No.",
                     'Arrears Recovered from - ' + LoanApps."Loan  No.", LoansRec."Loan  No.");
-
                 VarTotalRecovered += LoansRec."Amount in Arrears";
             until LoansRec.Next() = 0;
+
+            // Round to whole number at the end
+            VarTotalRecovered := Round(VarTotalRecovered, 1);
         end;
 
         VarAmounttoDisburse := VarAmounttoDisburse - VarTotalRecovered;
