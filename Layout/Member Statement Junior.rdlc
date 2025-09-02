@@ -1145,7 +1145,7 @@
           </Textbox>
           <Line Name="Line5">
             <Top>5.42014cm</Top>
-            <Left>0.09518in</Left>
+            <Left>0.1586in</Left>
             <Height>0cm</Height>
             <Width>20.26147cm</Width>
             <ZIndex>6</ZIndex>
@@ -1616,7 +1616,7 @@
           <Border />
         </Style>
       </Body>
-      <Width>8.46907in</Width>
+      <Width>8.21069in</Width>
       <Page>
         <PageHeader>
           <Height>0.28581in</Height>
@@ -1666,8 +1666,8 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>0.26708cm</Top>
-              <Left>18.90046cm</Left>
+              <Top>0.15941cm</Top>
+              <Left>18.41041cm</Left>
               <Height>0.423cm</Height>
               <Width>2.13224cm</Width>
               <ZIndex>1</ZIndex>
@@ -1724,8 +1724,8 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox1</rd:DefaultName>
-              <Top>0.26708cm</Top>
-              <Left>17.29352cm</Left>
+              <Top>0.15941cm</Top>
+              <Left>16.80347cm</Left>
               <Height>0.45889cm</Height>
               <Width>1.50111cm</Width>
               <ZIndex>3</ZIndex>
@@ -1783,8 +1783,8 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>0.26708cm</Top>
-              <Left>18.90046cm</Left>
+              <Top>0.15941cm</Top>
+              <Left>18.41041cm</Left>
               <Height>0.423cm</Height>
               <Width>2.13224cm</Width>
               <ZIndex>5</ZIndex>
@@ -1841,8 +1841,8 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox1</rd:DefaultName>
-              <Top>0.26708cm</Top>
-              <Left>17.29352cm</Left>
+              <Top>0.15941cm</Top>
+              <Left>16.80347cm</Left>
               <Height>0.45889cm</Height>
               <Width>1.50111cm</Width>
               <ZIndex>7</ZIndex>

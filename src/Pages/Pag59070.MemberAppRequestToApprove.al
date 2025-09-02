@@ -3,17 +3,17 @@ namespace System.Automation;
 using System.Security.User;
 using Microsoft.Sales.Customer;
 
-page 59059 "Custom Requests to Approve"
+page 59070 "MemberApp Requests to Approve"
 {
     ApplicationArea = Suite;
-    Caption = 'Loans Requests to Approve';
+    Caption = ' MemberApp Requests to Approve';
     Editable = false;
     PageType = List;
     RefreshOnActivate = true;
     SourceTable = "Approval Entry";
     SourceTableView = sorting("Approver ID", Status, "Due Date", "Date-Time Sent for Approval")
     order(ascending)
-    where("Table ID" = filter(DATABASE::"Loans Register"));
+    where("Table ID" = filter(DATABASE::"Membership Applications"));
 
     UsageCategory = Lists;
 
@@ -25,48 +25,41 @@ page 59059 "Custom Requests to Approve"
             {
                 ShowCaption = false;
 
-                field(LoanNo; LoanNo)
+                field("No."; "No.")
                 {
                     ApplicationArea = Suite;
-                    Caption = 'Loan No.';
-                    ToolTip = 'Specifies the loan number.';
+                    Caption = 'No.';
                 }
-                field(CustomerName; CustomerName)
+                field(Name; Name)
                 {
                     ApplicationArea = Suite;
-                    Caption = 'Customer Name';
-                    ToolTip = 'Specifies the name of the customer/borrower.';
+                    Caption = 'Name';
                 }
-                field(LoanAmount; LoanAmount)
+                field(PhoneNumber; PhoneNumber)
                 {
                     ApplicationArea = Suite;
-                    Caption = 'Loan Amount';
-                    ToolTip = 'Specifies the loan amount.';
+                    Caption = 'Phone Number';
                 }
-                field(LoanType; LoanType)
+                field(MaritalStatus; MaritalStatus)
                 {
                     ApplicationArea = Suite;
-                    Caption = 'Loan Type';
-                    ToolTip = 'Specifies the type of loan.';
+                    Caption = 'Marital Status';
                 }
-                field(LoanStatus; LoanStatus)
+                field(Status5; Status)
                 {
                     ApplicationArea = Suite;
-                    Caption = 'Loan Status';
-                    ToolTip = 'Specifies the current status of the loan.';
+                    Caption = 'Member Status';
                 }
                 field(ToApprove; Rec.RecordCaption())
                 {
                     ApplicationArea = Suite;
                     Caption = 'To Approve';
-                    ToolTip = 'Specifies the record that you are requested to approve. On the Home tab, in the Process group, choose Record to view the record on a new page where you can also act on the approval request.';
                     Width = 30;
                 }
                 field(Details; Rec.RecordDetails())
                 {
                     ApplicationArea = Suite;
                     Caption = 'Details';
-                    ToolTip = 'Specifies details about the approval request, such as what and who the request is about.';
                     Width = 50;
                     Visible = false;
                 }
@@ -74,13 +67,10 @@ page 59059 "Custom Requests to Approve"
                 {
                     ApplicationArea = Suite;
                     HideValue = not Rec.Comment;
-                    ToolTip = 'Specifies whether there are comments relating to the approval of the record. If you want to read the comments, choose the field to open the Approval Comment Sheet window.';
                 }
                 field("Sender ID"; Rec."Sender ID")
                 {
                     ApplicationArea = Suite;
-                    ToolTip = 'Specifies the ID of the user who sent the approval request for the document to be approved.';
-
                     trigger OnDrillDown()
                     var
                         UserMgt: Codeunit "User Management";
@@ -92,26 +82,15 @@ page 59059 "Custom Requests to Approve"
                 {
                     ApplicationArea = Suite;
                     StyleExpr = DateStyle;
-                    ToolTip = 'Specifies when the record must be approved, by one or more approvers.';
                 }
                 field(Status; Rec.Status)
                 {
                     ApplicationArea = Suite;
-                    ToolTip = 'Specifies the approval status for the entry:';
+
                     Visible = ShowAllEntries;
                 }
-                field(Amount; Rec.Amount)
-                {
-                    ApplicationArea = Suite;
-                    ToolTip = 'Specifies the total amount (excl. VAT) on the document awaiting approval.';
-                    Visible = false;
-                }
-                field("Amount (LCY)"; Rec."Amount (LCY)")
-                {
-                    ApplicationArea = Suite;
-                    ToolTip = 'Specifies the total amount in LCY (excl. VAT) on the document awaiting approval.';
-                    Visible = false;
-                }
+
+
                 field("Currency Code"; Rec."Currency Code")
                 {
                     ApplicationArea = Suite;
@@ -164,7 +143,6 @@ page 59059 "Custom Requests to Approve"
                     Enabled = ShowRecCommentsEnabled;
                     Image = Document;
                     Scope = Repeater;
-                    ToolTip = 'Open the document, journal line, or card that the approval is requested for.';
 
                     trigger OnAction()
                     begin
@@ -178,7 +156,6 @@ page 59059 "Custom Requests to Approve"
                     Enabled = ShowRecCommentsEnabled;
                     Image = ViewComments;
                     Scope = Repeater;
-                    ToolTip = 'View or add comments for the record.';
 
                     trigger OnAction()
                     var
@@ -200,7 +177,6 @@ page 59059 "Custom Requests to Approve"
                 Caption = 'Approve';
                 Image = Approve;
                 Scope = Repeater;
-                ToolTip = 'Approve the requested changes.';
 
                 trigger OnAction()
                 var
@@ -217,7 +193,6 @@ page 59059 "Custom Requests to Approve"
                 Caption = 'Reject';
                 Image = Reject;
                 Scope = Repeater;
-                ToolTip = 'Reject the approval request.';
 
                 trigger OnAction()
                 var
@@ -234,8 +209,6 @@ page 59059 "Custom Requests to Approve"
                 Caption = 'Delegate';
                 Image = Delegate;
                 Scope = Repeater;
-                ToolTip = 'Delegate the approval to a substitute approver.';
-
                 trigger OnAction()
                 var
                     ApprovalEntry: Record "Approval Entry";
@@ -253,7 +226,6 @@ page 59059 "Custom Requests to Approve"
                     ApplicationArea = Suite;
                     Caption = 'Open Requests';
                     Image = Approvals;
-                    ToolTip = 'Open the approval requests that remain to be approved or rejected.';
 
                     trigger OnAction()
                     begin
@@ -266,7 +238,6 @@ page 59059 "Custom Requests to Approve"
                     ApplicationArea = Suite;
                     Caption = 'All Requests';
                     Image = AllLines;
-                    ToolTip = 'View all approval requests that are assigned to you.';
 
                     trigger OnAction()
                     begin
@@ -324,7 +295,7 @@ page 59059 "Custom Requests to Approve"
     trigger OnAfterGetRecord()
     begin
         SetDateStyle();
-        GetLoanRegisterDetails();
+        GetMemberAppDetails();
     end;
 
     trigger OnOpenPage()
@@ -343,13 +314,13 @@ page 59059 "Custom Requests to Approve"
         ShowRecCommentsEnabled: Boolean;
         ShowCommentFactbox: Boolean;
 
-        // New variables for loan register details
-        LoanNo: Code[20];
-        CustomerName: Text[100];
-        LoanAmount: Decimal;
-        LoanType: Text[50];
-        LoanStatus: Text[50];
-        ApplicationDate: Date;
+        // New variables for Member details
+        "No.": Code[20];
+        Name: Text[100];
+        PhoneNumber: Code[20];
+        MaritalStatus: Text[50];
+        Status: Text[50];
+
 
     local procedure SetDateStyle()
     begin
@@ -363,36 +334,36 @@ page 59059 "Custom Requests to Approve"
     begin
     end;
 
-    local procedure GetLoanRegisterDetails()
+    local procedure GetMemberAppDetails()
     var
-        LoanRegister: Record "Loans Register";
+        MemberApp: Record "Membership Applications";
         Customer: Record Customer;
         RecRef: RecordRef;
     begin
         // Clear variables
-        Clear(LoanNo);
-        Clear(CustomerName);
-        Clear(LoanAmount);
-        Clear(LoanType);
-        Clear(LoanStatus);
-        Clear(ApplicationDate);
+        Clear("No.");
+        Clear(Name);
+        Clear(PhoneNumber);
+        Clear(MaritalStatus);
+        Clear(Status);
 
         if not RecRef.Get(Rec."Record ID to Approve") then
             exit;
 
-        if RecRef.Number = Database::"Loans Register" then begin
-            RecRef.SetTable(LoanRegister);
+        if RecRef.Number = Database::"Membership Applications" then begin
+            RecRef.SetTable(MemberApp);
 
-            // Populate loan fields
-            LoanNo := LoanRegister."Loan  No.";
-            LoanAmount := LoanRegister."Approved Amount";
-            LoanType := Format(LoanRegister."Loan Product Type Name");
-            LoanStatus := Format(LoanRegister."Loan Status");
-            ApplicationDate := LoanRegister."Application Date";
+            // Populate Member fields
+            "No." := MemberApp."No.";
+            Name := MemberApp.Name;
+            PhoneNumber := MemberApp."Mobile Phone No";
+            MaritalStatus := Format(MemberApp."Marital Status");
+            Status := Format(MemberApp.Status);
 
 
-            if Customer.Get(LoanRegister."Client Code") then
-                CustomerName := Customer.Name;
+
+            if Customer.Get(MemberApp.Name) then
+                Name := MemberApp.Name;
         end;
     end;
 }

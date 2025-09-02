@@ -1,13 +1,13 @@
-page 59058 "Custom Approval Entries"
+page 59069 "MemberApp Approval Entries"
 {
     ApplicationArea = Suite;
-    Caption = 'Loan Approval Entries';
+    Caption = 'MemberApp Approval Entries';
     Editable = false;
     PageType = List;
     SourceTable = "Approval Entry";
     SourceTableView = sorting("Table ID", "Document Type", "Document No.", "Date-Time Sent for Approval")
     order(ascending)
-                      where("Table ID" = filter(DATABASE::"Loans Register"));
+                      where("Table ID" = filter(DATABASE::"Membership Applications"));
     UsageCategory = Lists;
 
     layout
@@ -18,44 +18,41 @@ page 59058 "Custom Approval Entries"
             {
                 ShowCaption = false;
 
-                // New fields for loan register details
-                field(LoanNo; LoanNo)
+                // New fields for member register details
+                field(No; No)
                 {
                     ApplicationArea = Suite;
-                    Caption = 'Loan No.';
+                    Caption = 'No.';
                 }
-                field(CustomerName; CustomerName)
+                field(Name; Name)
                 {
                     ApplicationArea = Suite;
-                    Caption = 'Customer Name';
-                }
-                field(LoanAmount; LoanAmount)
-                {
-                    ApplicationArea = Suite;
-                    Caption = 'Loan Amount';
-                }
-                field(LoanType; LoanType)
-                {
-                    ApplicationArea = Suite;
-                    Caption = 'Loan Type';
-                }
-                field(LoanStatus; LoanStatus)
-                {
-                    ApplicationArea = Suite;
-                    Caption = 'Loan Status';
+                    Caption = 'Name';
 
                 }
-                field(ApplicationDate; ApplicationDate)
+                field(PhoneNumber; PhoneNumber)
                 {
                     ApplicationArea = Suite;
-                    Caption = 'Application Date';
+                    Caption = 'Phone Number';
+
                 }
+                field(MaritalStatus; MaritalStatus)
+                {
+                    ApplicationArea = Suite;
+                    Caption = 'Marital Status';
+
+                }
+                field(Status5; Status)
+                {
+                    ApplicationArea = Suite;
+                    Caption = 'Status';
+                }
+
                 field(Overdue; Overdue)
                 {
                     ApplicationArea = Suite;
                     Caption = 'Overdue';
                     Editable = false;
-
                 }
                 field("Table ID"; Rec."Table ID")
                 {
@@ -66,48 +63,42 @@ page 59058 "Custom Approval Entries"
                 {
                     ApplicationArea = Suite;
                     Visible = false;
-                    ToolTip = 'Specifies the type of limit that applies to the approval template:';
                 }
                 field("Approval Type"; Rec."Approval Type")
                 {
                     ApplicationArea = Suite;
                     Visible = false;
-                    ToolTip = 'Specifies which approvers apply to this approval template:';
                 }
                 field("Document Type"; Rec."Document Type")
                 {
                     ApplicationArea = Suite;
-                    ToolTip = 'Specifies the type of document that an approval entry has been created for. Approval entries can be created for six different types of sales or purchase documents:';
                     Visible = false;
                 }
                 field("Document No."; Rec."Document No.")
                 {
                     ApplicationArea = Suite;
+                    Visible = false;
                 }
                 field(RecordIDText; RecordIDText)
                 {
                     ApplicationArea = Suite;
                     Visible = false;
                     Caption = 'To Approve';
-
                 }
                 field(Details; Rec.RecordDetails())
                 {
                     ApplicationArea = Suite;
                     Visible = false;
                     Caption = 'Details';
-
                 }
                 field("Sequence No."; Rec."Sequence No.")
                 {
                     ApplicationArea = Suite;
-
                 }
                 field(Status; Rec.Status)
                 {
                     ApplicationArea = Suite;
                     Visible = false;
-
                 }
                 field("Sender ID"; Rec."Sender ID")
                 {
@@ -124,12 +115,10 @@ page 59058 "Custom Approval Entries"
                 {
                     ApplicationArea = Suite;
                     Visible = false;
-                    ToolTip = 'Specifies the code for the salesperson or purchaser that was in the document to be approved. It is not a mandatory field, but is useful if a salesperson or a purchaser responsible for the customer/vendor needs to approve the document before it is processed.';
                 }
                 field("Approver ID"; Rec."Approver ID")
                 {
                     ApplicationArea = Suite;
-
 
                     trigger OnDrillDown()
                     var
@@ -142,7 +131,6 @@ page 59058 "Custom Approval Entries"
                 {
                     ApplicationArea = Suite;
                     Visible = false;
-
                 }
                 field("Amount (LCY)"; Rec."Amount (LCY)")
                 {
@@ -157,7 +145,6 @@ page 59058 "Custom Approval Entries"
                 field("Date-Time Sent for Approval"; Rec."Date-Time Sent for Approval")
                 {
                     ApplicationArea = Suite;
-
                 }
                 field("Last Date-Time Modified"; Rec."Last Date-Time Modified")
                 {
@@ -166,7 +153,7 @@ page 59058 "Custom Approval Entries"
                 field("Last Modified By User ID"; Rec."Last Modified By User ID")
                 {
                     ApplicationArea = Suite;
-
+                    //ToolTip = 'Specifies the ID of the user who last modified the approval entry. If, for example, the document approval is canceled, this field will be updated accordingly.';
 
                     trigger OnDrillDown()
                     var
@@ -178,12 +165,12 @@ page 59058 "Custom Approval Entries"
                 field(Comment; Rec.Comment)
                 {
                     ApplicationArea = Suite;
-
+                    // ToolTip = 'Specifies whether there are comments relating to the approval of the record. If you want to read the comments, choose the field to open the Approval Comment Sheet window.';
                 }
                 field("Due Date"; Rec."Due Date")
                 {
                     ApplicationArea = Suite;
-
+                    // ToolTip = 'Specifies when the record must be approved, by one or more approvers.';
                 }
             }
         }
@@ -225,26 +212,29 @@ page 59058 "Custom Approval Entries"
                     Caption = 'Record';
                     Enabled = ShowRecCommentsEnabled;
                     Image = Document;
+                    //ToolTip = 'Open the document, journal line, or card that the approval request is for.';
+
                     trigger OnAction()
                     begin
                         Rec.ShowRecord();
                     end;
                 }
-                action("View Loan")
+                action("View Member")
                 {
                     ApplicationArea = Suite;
-                    Caption = 'View Loan';
+                    Caption = 'View Member';
                     Visible = false;
                     Enabled = ShowRecCommentsEnabled;
                     Image = Document;
+                    // ToolTip = 'Open the member record for this approval.';
 
                     trigger OnAction()
                     var
-                        LoansRegister: Record "Loans Register";
+                        MembershipApp: Record "Membership Applications";
                     begin
-                        if LoanNo <> '' then
-                            if LoansRegister.Get(LoanNo) then
-                                PAGE.Run(PAGE::"Loan Application Card", LoansRegister);
+                        if No <> '' then
+                            if MembershipApp.Get(No) then
+                                PAGE.Run(PAGE::"Member Application Card", MembershipApp);
                     end;
                 }
                 action(Comments)
@@ -253,6 +243,7 @@ page 59058 "Custom Approval Entries"
                     Caption = 'Comments';
                     Enabled = ShowRecCommentsEnabled;
                     Image = ViewComments;
+                    // ToolTip = 'View or add comments for the record.';
 
                     trigger OnAction()
                     var
@@ -269,6 +260,7 @@ page 59058 "Custom Approval Entries"
                     ApplicationArea = Suite;
                     Caption = 'O&verdue Entries';
                     Image = OverdueEntries;
+                    // ToolTip = 'View approval requests that are overdue.';
 
                     trigger OnAction()
                     begin
@@ -279,7 +271,7 @@ page 59058 "Custom Approval Entries"
                 action("All Entries")
                 {
                     ApplicationArea = Suite;
-                    Caption = 'All Loan Entries';
+                    Caption = 'All members Entries';
                     Image = Entries;
 
                     trigger OnAction()
@@ -294,6 +286,7 @@ page 59058 "Custom Approval Entries"
                     ApplicationArea = Suite;
                     Caption = 'Pending Entries';
                     Image = Entries;
+
 
                     trigger OnAction()
                     begin
@@ -312,6 +305,7 @@ page 59058 "Custom Approval Entries"
                 Caption = '&Delegate';
                 Enabled = DelegateEnable;
                 Image = Delegate;
+                //ToolTip = 'Delegate the approval request to another approver that has been set up as your substitute approver.';
 
                 trigger OnAction()
                 var
@@ -332,7 +326,7 @@ page 59058 "Custom Approval Entries"
                 actionref("&Delegate_Promoted"; "&Delegate")
                 {
                 }
-                actionref("View Loan_Promoted"; "View Loan")
+                actionref("View member_Promoted"; "View member")
                 {
                 }
                 actionref(Record_Promoted; Record)
@@ -376,8 +370,8 @@ page 59058 "Custom Approval Entries"
 
         RecordIDText := Format(Rec."Record ID to Approve", 0, 1);
 
-        // Populate loan register details
-        GetLoanRegisterDetails()
+        // Populate members details
+        GetMemberAppDetails()
     end;
 
     trigger OnOpenPage()
@@ -385,13 +379,13 @@ page 59058 "Custom Approval Entries"
         // Mark all entries where user is approver or sender
         Rec.MarkAllWhereUserisApproverOrSender();
 
-        // Set permanent filter for loans only
+        // Set permanent filter for members only
         Rec.FilterGroup(2);
-        Rec.SetRange("Table ID", DATABASE::"Loans Register");
+        Rec.SetRange("Table ID", DATABASE::"Membership Applications");
         Rec.FilterGroup(0);
 
         // Update page caption
-        CurrPage.Caption := 'Loan Approval Entries';
+        CurrPage.Caption := 'Member Approval Entries';
     end;
 
     var
@@ -401,12 +395,12 @@ page 59058 "Custom Approval Entries"
         DelegateEnable: Boolean;
         ShowRecCommentsEnabled: Boolean;
 
-        // Variables for loan register details
-        LoanNo: Code[20];
-        CustomerName: Text[100];
-        LoanAmount: Decimal;
-        LoanType: Text[50];
-        LoanStatus: Text[50];
+        // Variables for membership application details
+        No: Code[20];
+        Name: Text[100];
+        PhoneNumber: Code[10];
+        MaritalStatus: Text[50];
+        Status: Text[50];
         ApplicationDate: Date;
 
     procedure SetRecordFilters(TableId: Integer; DocumentType: Enum "Approval Document Type"; DocumentNo: Code[20])
@@ -416,7 +410,7 @@ page 59058 "Custom Approval Entries"
             Rec.SetCurrentKey("Table ID", "Document Type", "Document No.", "Date-Time Sent for Approval");
             Rec.SetRange("Table ID", TableId);
 
-            // For loans, we mainly filter by document number (loan number)
+            // For memeber, we mainly filter by document number (member number)
             if DocumentNo <> '' then
                 Rec.SetRange("Document No.", DocumentNo);
 
@@ -428,24 +422,24 @@ page 59058 "Custom Approval Entries"
         end;
     end;
 
-    procedure SetLoanFilter(LoanNo: Code[20])
+    procedure SetmemberFilter(No: Code[20])
     begin
-        if LoanNo <> '' then begin
+        if No <> '' then begin
             Rec.FilterGroup(2);
-            // Filter to show only approvals for this specific loan
-            Rec.SetRange("Document No.", LoanNo);
+            // Filter to show only approvals for this specific member
+            Rec.SetRange("Document No.", No);
             Rec.FilterGroup(0);
 
-            // Update page caption to show specific loan
-            CurrPage.Caption := 'Loan Approval Entries - ' + LoanNo;
+            // Update page caption to show specific member
+            CurrPage.Caption := 'Member Approval Entries - ' + No;
         end;
     end;
 
-    procedure SetLoanRecordFilter(LoanRecordID: RecordID)
+    procedure SetMemberRecordFilter(MemberRecordID: RecordID)
     begin
-        if LoanRecordID.TableNo <> 0 then begin
+        if MemberRecordID.TableNo <> 0 then begin
             Rec.FilterGroup(2);
-            Rec.SetRange("Record ID to Approve", LoanRecordID);
+            Rec.SetRange("Record ID to Approve", MemberRecordID);
             Rec.FilterGroup(0);
         end;
     end;
@@ -465,35 +459,36 @@ page 59058 "Custom Approval Entries"
         Overdue := Overdue::" ";
     end;
 
-    local procedure GetLoanRegisterDetails()
+    local procedure GetMemberAppDetails()
     var
-        LoanRegister: Record "Loans Register";
+        MembershipApp: Record "Membership Applications";
         Customer: Record Customer;
         RecRef: RecordRef;
     begin
         // Clear variables
-        Clear(LoanNo);
-        Clear(CustomerName);
-        Clear(LoanAmount);
-        Clear(LoanType);
-        Clear(LoanStatus);
-        Clear(ApplicationDate);
+        Clear(No);
+        Clear(Name);
+        Clear(PhoneNumber);
+        Clear(MaritalStatus);
+        Clear(Status);
+
 
         if not RecRef.Get(Rec."Record ID to Approve") then
             exit;
 
-        if RecRef.Number = Database::"Loans Register" then begin
-            RecRef.SetTable(LoanRegister);
+        if RecRef.Number = Database::"Membership Applications" then begin
+            RecRef.SetTable(MembershipApp);
 
-            // Populate loan fields
-            LoanNo := LoanRegister."Loan  No.";
-            LoanAmount := LoanRegister."Approved Amount";
-            LoanType := Format(LoanRegister."Loan Product Type Name");
-            LoanStatus := Format(LoanRegister."Loan Status");
-            ApplicationDate := LoanRegister."Application Date";
+            // Populate member fields
+            No := MembershipApp."No.";
+            Name := MembershipApp.Name;
+            PhoneNumber := MembershipApp."Mobile Phone No";
+            MaritalStatus := Format(MembershipApp."Marital Status");
+            Status := Format(MembershipApp.Status);
+            //ApplicationDate := MembershipApp."Application Date";
 
-            if Customer.Get(LoanRegister."Client Code") then
-                CustomerName := Customer.Name;
+            if Customer.Get(MembershipApp.Name) then
+                Name := MembershipApp.Name;
         end;
     end;
 }

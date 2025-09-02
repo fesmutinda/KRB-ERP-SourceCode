@@ -19,7 +19,7 @@
             "tenant": "default",
             "schemaUpdateMode": "ForceSync",
             "usePublicURLFromServer": true
-        },
+        },/* 
         {
             "name": "krb server",
             "request": "launch",
@@ -38,7 +38,7 @@
             "tenant": "default",
             "schemaUpdateMode": "ForceSync",
             "usePublicURLFromServer": true
-        },
+        }, */
         {
             "name": "snapshotInitialize: Microsoft production cloud",
             "type": "al",

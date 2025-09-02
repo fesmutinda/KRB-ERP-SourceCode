@@ -14,12 +14,26 @@ Page 56050 "General Cue"
                 field("Requests Sent for Approval"; Rec."Requests Sent for Approval")
                 {
                     ApplicationArea = Basic;
+                    Image = appproval;
                     DrillDownPageID = "Custom Approval Entries";
+                }
+                field("Requests Sent for Approval Al."; Rec."Requests Sent for Approval Al.")
+                {
+                    ApplicationArea = Basic;
+                    Image = appproval;
+                    DrillDownPageID = "MemberApp Approval Entries";
                 }
                 field("Requests to Approve"; Rec."Requests to Approve")
                 {
                     ApplicationArea = Basic;
+                    Image = approved;
                     DrillDownPageID = "Custom Requests to Approve";
+                }
+                field("MemberApp Requests to Approve"; Rec."MemberApp Requests to Approve")
+                {
+                    ApplicationArea = Basic;
+                    Image = approved;
+                    DrillDownPageID = "MemberApp Requests to Approve";
                 }
             }
             cuegroup(ApprovalRequestCue2)
