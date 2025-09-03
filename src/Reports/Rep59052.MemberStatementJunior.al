@@ -4,6 +4,7 @@ Report 59052 "Member Statement Junior"
     Caption = 'Member Junior Savings Statement';
     RDLCLayout = './Layout/Member Statement Junior.rdlc';
 
+
     dataset
     {
         dataitem("Members Register"; customer)

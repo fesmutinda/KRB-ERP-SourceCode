@@ -148,179 +148,160 @@ Report 56886 "Member Account Statement(Ver1)"
                 end;
             }
 
-            // ENHANCED JUNIOR SAVINGS SECTION - Completely updated for proper functionality
-            dataitem(JuniorAccountsList; Customer)
+            // RESTRUCTURED JUNIOR SAVINGS SECTION - Clean and Organized
+            dataitem(JuniorAccounts; Customer)
             {
                 DataItemLink = "Guardian No." = field("No.");
                 RequestFilterFields = "No.", "Name";
 
-                // Junior Account Summary Columns - Account Level Information
-                column(JuniorAccountNo; JuniorAccountsList."No.") { }
-                column(JuniorMemberName; JuniorAccountsList.Name) { }
-                column(JuniorMemberName9; JuniorAccountsList.Name) { }  // Alternative name for RDLC
-                column(JuniorGuardianNo; JuniorAccountsList."Guardian No.") { }
-                column(JuniorAccountOpeningBalance; JuniorAccountOpeningBalance) { }
-                column(JuniorAccountClosingBalance; JuniorAccountClosingBalance) { }
-                column(JuniorIDNo; JuniorAccountsList."ID No.") { }
-                column(JuniorRegistrationDate; JuniorAccountsList."Registration Date") { }
-                column(JuniorPhoneNo; JuniorAccountsList."Phone No.") { }
-                column(JuniorAddress; JuniorAccountsList.Address) { }
+                // === JUNIOR ACCOUNT HEADER INFORMATION ===
+                column(Junior_AccountNo; JuniorAccounts."No.") { }
+                column(Junior_MemberName; JuniorAccounts.Name) { }
+                column(Junior_GuardianNo; JuniorAccounts."Guardian No.") { }
+                column(Junior_IDNo; JuniorAccounts."ID No.") { }
+                column(Junior_RegistrationDate; JuniorAccounts."Registration Date") { }
+                column(Junior_PhoneNo; JuniorAccounts."Phone No.") { }
+                column(Junior_Address; JuniorAccounts.Address) { }
 
-                // Summary columns for totals
-                column(JuniorAccountsCount; JuniorAccountsCount) { }
-                column(TotalJuniorOpeningBalance; TotalJuniorOpeningBalance) { }
-                column(TotalJuniorClosingBalance; TotalJuniorClosingBalance) { }
+                // === JUNIOR ACCOUNT BALANCES ===
+                column(Junior_OpeningBalance; JuniorOpeningBalance) { }
+                column(Junior_ClosingBalance; JuniorClosingBalance) { }
+                column(Junior_RunningBalance; JuniorCurrentBalance) { }
 
-                // Individual Junior Savings Transactions for each junior account
-                dataitem(JuniorTransactions; "Cust. Ledger Entry")
+                // === SUMMARY INFORMATION ===
+                column(Junior_AccountsCount; JuniorAccountsCount) { }
+                column(Junior_TotalOpeningBalance; TotalJuniorOpeningBalance) { }
+                column(Junior_TotalClosingBalance; TotalJuniorClosingBalance) { }
+
+                // Individual Junior Account Transactions
+                dataitem(JuniorSavingsTransactions; "Cust. Ledger Entry")
                 {
                     DataItemLink = "Customer No." = field("No."), "Posting Date" = field("Date Filter");
                     DataItemTableView = sorting("Posting Date") where("Transaction Type" = filter("Junior Savings"), Reversed = const(false));
 
-                    // Core Transaction Detail Columns
-                    column(PostingDate_JuniorTrans; JuniorTransactions."Posting Date") { }
-                    column(DocumentNo_JuniorTrans; JuniorTransactions."Document No.") { }
-                    column(Description_JuniorTrans; JuniorTransactions.Description) { }
-                    column(Amount_JuniorTrans; JuniorTransactions."Amount Posted") { }
-                    column(UserID_JuniorTrans; JuniorTransactions."User ID") { }
-                    column(DebitAmount_JuniorTrans; Junior_DebitAmount) { }
-                    column(CreditAmount_JuniorTrans; Junior_CreditAmount) { }
-                    column(TransactionType_JuniorTrans; JuniorTransactions."Transaction Type") { }
-                    column(RunningBalance_JuniorTrans; JuniorRunningBalance) { }
-                    column(ExternalDocumentNo_JuniorTrans; JuniorTransactions."External Document No.") { }
+                    // === TRANSACTION DETAILS ===
+                    column(JuniorTrans_PostingDate; JuniorSavingsTransactions."Posting Date") { }
+                    column(JuniorTrans_DocumentNo; JuniorSavingsTransactions."Document No.") { }
+                    column(JuniorTrans_Description; JuniorSavingsTransactions.Description) { }
+                    column(JuniorTrans_Amount; JuniorSavingsTransactions."Amount Posted") { }
+                    column(JuniorTrans_ExternalDocNo; JuniorSavingsTransactions."External Document No.") { }
+                    column(JuniorTrans_UserID; JuniorSavingsTransactions."User ID") { }
+                    column(JuniorTrans_TransactionType; JuniorSavingsTransactions."Transaction Type") { }
+                    column(JuniorBF; JuniorBF) { }
 
-                    // CRITICAL: Junior account identification fields for RDLC grouping
-                    column(CurrentJuniorAccountNo; CurrentJuniorAccountNo) { }
-                    column(CurrentJuniorMemberName; CurrentJuniorMemberName) { }
-                    column(CurrentJuniorGuardianNo; CurrentJuniorGuardianNo) { }
+                    // === DEBIT/CREDIT AMOUNTS ===
+                    column(JuniorTrans_DebitAmount; JuniorTrans_DebitAmount) { }
+                    column(JuniorTrans_CreditAmount; JuniorTrans_CreditAmount) { }
 
-                    // Alternative field names for RDLC compatibility and flexibility
-                    column(JuniorMemberNo; CurrentJuniorAccountNo) { }
-                    column(JuniorAccountNumber; CurrentJuniorAccountNo) { }
-                    column(JuniorNo; CurrentJuniorAccountNo) { }
-                    column(JuniorName; CurrentJuniorMemberName) { }
-                    column(JuniorAccountName; CurrentJuniorMemberName) { }
+                    // === RUNNING BALANCE ===
+                    column(JuniorTrans_RunningBalance; JuniorTransRunningBalance) { }
 
-                    // Balance information repeated at transaction level for grouping
-                    column(OpenBalanceJunior; JuniorAccountOpeningBalance) { }
-                    column(ClosingBalanceJunior; JuniorAccountClosingBalance) { }
-                    column(JuniorBF; JuniorAccountOpeningBalance) { }
-                    column(JuniorOpeningBalance; JuniorAccountOpeningBalance) { }
-                    column(JuniorClosingBalance; JuniorAccountClosingBalance) { }
+                    // === ACCOUNT IDENTIFICATION (for RDLC grouping) ===
+                    column(JuniorTrans_AccountNo; JuniorAccounts."No.") { }
+                    column(JuniorTrans_AccountName; JuniorAccounts.Name) { }
+                    column(JuniorTrans_GuardianNo; JuniorAccounts."Guardian No.") { }
 
-                    // Legacy field names for backward compatibility
-                    column(TransactionType_Junior; JuniorTransactions."Transaction Type") { }
-                    column(PostingDate_Junior; JuniorTransactions."Posting Date") { }
-                    column(DocumentNo_Junior; JuniorTransactions."Document No.") { }
-                    column(Description_Junior; JuniorTransactions.Description) { }
-                    column(Amount_Junior; JuniorTransactions."Amount Posted") { }
-                    column(UserID_Junior; JuniorTransactions."User ID") { }
-                    column(DebitAmount_Junior; Junior_DebitAmount) { }
-                    column(CreditAmount_Junior; Junior_CreditAmount) { }
-
-                    // Transaction sequence and identification
-                    column(JuniorTransactionSequence; JuniorTransactionSequence) { }
+                    // === TRANSACTION SEQUENCE ===
+                    column(JuniorTrans_SequenceNo; JuniorTransSequenceNo) { }
 
                     trigger OnAfterGetRecord()
                     begin
-                        // CRITICAL: Populate the junior account identification fields for each transaction
-                        CurrentJuniorAccountNo := JuniorAccountsList."No.";
-                        CurrentJuniorMemberName := JuniorAccountsList.Name;
-                        CurrentJuniorGuardianNo := JuniorAccountsList."Guardian No.";
+                        // Increment transaction sequence for this account
+                        JuniorTransSequenceNo += 1;
 
-                        // Increment transaction sequence
-                        JuniorTransactionSequence += 1;
+                        // Calculate Debit/Credit amounts
+                        JuniorTrans_DebitAmount := 0;
+                        JuniorTrans_CreditAmount := 0;
 
-                        // Reset and calculate debit/credit amounts properly with Junior-specific variables
-                        Junior_CreditAmount := 0;
-                        Junior_DebitAmount := 0;
+                        if JuniorSavingsTransactions."Amount Posted" > 0 then
+                            JuniorTrans_DebitAmount := JuniorSavingsTransactions."Amount Posted"
+                        else if JuniorSavingsTransactions."Amount Posted" < 0 then
+                            JuniorTrans_CreditAmount := Abs(JuniorSavingsTransactions."Amount Posted");
 
-                        if JuniorTransactions."Amount Posted" > 0 then
-                            Junior_DebitAmount := JuniorTransactions."Amount Posted"
-                        else if JuniorTransactions."Amount Posted" < 0 then
-                            Junior_CreditAmount := Abs(JuniorTransactions."Amount Posted");
+                        // Update running balance (proper calculation)
+                        JuniorTransRunningBalance += (JuniorSavingsTransactions."Amount Posted" * -1);
 
-                        // Update running balance for this specific junior account
-                        JuniorRunningBalance := JuniorRunningBalance + (JuniorTransactions."Amount Posted" * -1);
-
-                        // Validation: Ensure balance calculations are consistent
-                        if JuniorRunningBalance < 0 then begin
-                            // Log potential issue but continue processing
-                            Message('Warning: Junior account %1 has negative balance: %2', CurrentJuniorAccountNo, JuniorRunningBalance);
-                        end;
+                        // Validation check
+                        if JuniorTransRunningBalance < -999999 then
+                            Message('Warning: Junior account %1 has unusual balance: %2', JuniorAccounts."No.", JuniorTransRunningBalance);
                     end;
 
                     trigger OnPreDataItem()
                     begin
-                        // Initialize running balance with the opening balance for this specific junior account
-                        JuniorRunningBalance := JuniorAccountOpeningBalance;
-                        JuniorTransactionSequence := 0;
+                        // Initialize running balance with opening balance for this specific account
+                        JuniorTransRunningBalance := JuniorOpeningBalance;
+                        JuniorTransSequenceNo := 0;
 
-                        // Apply date filter if exists from main member filter
+                        // Apply date filter from main member if exists
                         if "Members Register".GetFilter("Date Filter") <> '' then
-                            JuniorTransactions.SetFilter("Posting Date", "Members Register".GetFilter("Date Filter"));
+                            JuniorSavingsTransactions.SetFilter("Posting Date", "Members Register".GetFilter("Date Filter"));
 
-                        // Additional filter for data integrity
-                        JuniorTransactions.SetRange(Reversed, false);
+                        // Ensure only valid transactions
+                        JuniorSavingsTransactions.SetRange(Reversed, false);
                     end;
 
                     trigger OnPostDataItem()
                     begin
-                        // Set closing balance for this junior account after all transactions
-                        JuniorAccountClosingBalance := JuniorRunningBalance;
-
-                        // Update totals for summary reporting
-                        TotalJuniorClosingBalance += JuniorAccountClosingBalance;
+                        // Set final closing balance for this account
+                        JuniorClosingBalance := JuniorTransRunningBalance;
                     end;
                 }
 
                 trigger OnAfterGetRecord()
                 begin
-                    // Calculate opening balance for this specific junior account independently
-                    JuniorAccountOpeningBalance := CalculateJuniorAccountOpeningBalance(JuniorAccountsList."No.", DateFilterBF);
+                    // Calculate opening balance for this specific junior account
+                    JuniorOpeningBalance := CalculateJuniorAccountOpeningBalance(JuniorAccounts."No.", DateFilterBF);
 
-                    // Initialize closing balance with opening balance
-                    JuniorAccountClosingBalance := JuniorAccountOpeningBalance;
+                    // Initialize closing balance
+                    JuniorClosingBalance := JuniorOpeningBalance;
+                    JuniorCurrentBalance := JuniorOpeningBalance;
 
-                    // Initialize the current account variables at the account level
-                    CurrentJuniorAccountNo := JuniorAccountsList."No.";
-                    CurrentJuniorMemberName := JuniorAccountsList.Name;
-                    CurrentJuniorGuardianNo := JuniorAccountsList."Guardian No.";
-
-                    // Update counters and totals
+                    // Update summary counters
                     JuniorAccountsCount += 1;
-                    TotalJuniorOpeningBalance += JuniorAccountOpeningBalance;
+                    TotalJuniorOpeningBalance += JuniorOpeningBalance;
 
-                    // Validate guardian relationship
-                    if JuniorAccountsList."Guardian No." <> "Members Register"."No." then
-                        Error('Data integrity error: Junior account %1 guardian mismatch', JuniorAccountsList."No.");
+                    // Validate data integrity
+                    if JuniorAccounts."Guardian No." <> "Members Register"."No." then
+                        Error('Data integrity error: Junior account %1 guardian mismatch. Expected: %2, Found: %3',
+                              JuniorAccounts."No.", "Members Register"."No.", JuniorAccounts."Guardian No.");
                 end;
 
                 trigger OnPreDataItem()
                 begin
-                    // Filter for junior accounts where this member is the guardian
-                    JuniorAccountsList.SetRange("Guardian No.", "Members Register"."No.");
+                    // Filter for junior accounts where current member is the guardian
+                    JuniorAccounts.SetRange("Guardian No.", "Members Register"."No.");
 
                     // Apply date filter if exists
                     if "Members Register".GetFilter("Date Filter") <> '' then
-                        JuniorAccountsList.SetFilter("Date Filter", "Members Register".GetFilter("Date Filter"));
+                        JuniorAccounts.SetFilter("Date Filter", "Members Register".GetFilter("Date Filter"));
 
-                    // Initialize counters
+                    // Initialize summary counters
                     JuniorAccountsCount := 0;
                     TotalJuniorOpeningBalance := 0;
                     TotalJuniorClosingBalance := 0;
+
+                    // Clear any previous filters that might interfere
+                    JuniorAccounts.SetRange(Blocked, JuniorAccounts.Blocked::" ");
                 end;
 
                 trigger OnPostDataItem()
                 begin
-                    // Final validation and summary calculations
+                    // Update final totals
+                    TotalJuniorClosingBalance := TotalJuniorOpeningBalance;
+
+                    // Calculate total closing balance from all individual account balances
                     if JuniorAccountsCount > 0 then begin
-                        Message('Processed %1 junior accounts for member %2', JuniorAccountsCount, "Members Register"."No.");
+                        JuniorAccounts.Reset();
+                        JuniorAccounts.SetRange("Guardian No.", "Members Register"."No.");
+                        if JuniorAccounts.FindSet() then
+                            repeat
+                                TotalJuniorClosingBalance += CalculateJuniorAccountClosingBalance(JuniorAccounts."No.");
+                            until JuniorAccounts.Next() = 0;
                     end;
                 end;
             }
 
-            // Loans Section (existing code preserved)
+            // Loans Section
             dataitem(Loans; "Loans Register")
             {
                 DataItemLink = "Client Code" = field("No."), "Date filter" = field("Date Filter"), "Loan Product Type" = field("Loan Product Filter");
@@ -479,7 +460,9 @@ Report 56886 "Member Account Statement(Ver1)"
         Clear(TotalJuniorClosingBalance);
     end;
 
-    // ENHANCED: Function to calculate opening balance for individual junior account
+    // === SUPPORTING FUNCTIONS ===
+
+    // Calculate opening balance for specific junior account
     local procedure CalculateJuniorAccountOpeningBalance(JuniorAccountNo: Code[20]; DateFilter: Text): Decimal
     var
         CustLedgerEntry: Record "Cust. Ledger Entry";
@@ -496,17 +479,41 @@ Report 56886 "Member Account Statement(Ver1)"
 
             if CustLedgerEntry.FindSet() then
                 repeat
-                    OpeningBalance := OpeningBalance + (CustLedgerEntry."Amount Posted" * -1);
+                    OpeningBalance += (CustLedgerEntry."Amount Posted" * -1);
                 until CustLedgerEntry.Next() = 0;
         end;
 
         exit(OpeningBalance);
     end;
 
+    // Calculate closing balance for specific junior account
+    local procedure CalculateJuniorAccountClosingBalance(JuniorAccountNo: Code[20]): Decimal
+    var
+        CustLedgerEntry: Record "Cust. Ledger Entry";
+        ClosingBalance: Decimal;
+    begin
+        ClosingBalance := 0;
+
+        CustLedgerEntry.Reset();
+        CustLedgerEntry.SetRange("Customer No.", JuniorAccountNo);
+        CustLedgerEntry.SetRange("Transaction Type", CustLedgerEntry."Transaction Type"::"Junior Savings");
+        CustLedgerEntry.SetRange(Reversed, false);
+
+        // Apply date filter if exists
+        if "Members Register".GetFilter("Date Filter") <> '' then
+            CustLedgerEntry.SetFilter("Posting Date", "Members Register".GetFilter("Date Filter"));
+
+        if CustLedgerEntry.FindSet() then
+            repeat
+                ClosingBalance += (CustLedgerEntry."Amount Posted" * -1);
+            until CustLedgerEntry.Next() = 0;
+
+        exit(ClosingBalance);
+    end;
+
     // ENHANCED: Function to calculate consolidated junior savings BF (for summary purposes)
     local procedure CalculateJuniorSavingsBF(MemberNo: Code[20]; DateFilter: Text): Decimal
     var
-        CustLedgerEntry: Record "Cust. Ledger Entry";
         TempMember: Record Customer;
         TotalBF: Decimal;
     begin
@@ -548,7 +555,7 @@ Report 56886 "Member Account Statement(Ver1)"
         exit(TotalBF);
     end;
 
-    // NEW: Helper function to initialize BF values
+    // Helper function to initialize BF values
     local procedure InitializeBFValues()
     begin
         SharesBF := 0;
@@ -566,7 +573,7 @@ Report 56886 "Member Account Statement(Ver1)"
         InterestBF := 0;
     end;
 
-    // NEW: Helper function to calculate main member BF values
+    // Helper function to calculate main member BF values
     local procedure CalculateMainMemberBFValues()
     begin
         Cust.Reset;
@@ -581,7 +588,7 @@ Report 56886 "Member Account Statement(Ver1)"
         end;
     end;
 
-    // NEW: Function to get junior account count for a guardian
+    // Function to get junior account count for a guardian
     local procedure GetJuniorAccountCount(GuardianNo: Code[20]): Integer
     var
         TempMember: Record Customer;
@@ -599,7 +606,7 @@ Report 56886 "Member Account Statement(Ver1)"
     end;
 
     var
-        // UPDATED: Separate variables for each transaction type to prevent contamination
+        // === CLEAN VARIABLE DECLARATIONS ===
 
         // Share Capital specific variables
         ShareCap_CreditAmount: Decimal;
@@ -622,20 +629,20 @@ Report 56886 "Member Account Statement(Ver1)"
         ClosingBalanceWithdrawable: Decimal;
         WithdrawableBF: Decimal;
 
-        // ENHANCED: Junior Savings specific variables
-        Junior_CreditAmount: Decimal;
-        Junior_DebitAmount: Decimal;
-        CurrentJuniorAccountNo: Code[20];
-        CurrentJuniorMemberName: Text[100];
-        CurrentJuniorGuardianNo: Code[20];
-        JuniorAccountOpeningBalance: Decimal;
-        JuniorAccountClosingBalance: Decimal;
-        JuniorRunningBalance: Decimal;
-        JuniorBF: Decimal;
+        // Junior Savings specific variables - Clean and organized
+        JuniorTrans_DebitAmount: Decimal;
+        JuniorTrans_CreditAmount: Decimal;
+        JuniorOpeningBalance: Decimal;
+        JuniorClosingBalance: Decimal;
+        JuniorCurrentBalance: Decimal;
+        JuniorTransRunningBalance: Decimal;
+        JuniorTransSequenceNo: Integer;
+
+        // Junior Summary variables
         JuniorAccountsCount: Integer;
         TotalJuniorOpeningBalance: Decimal;
         TotalJuniorClosingBalance: Decimal;
-        JuniorTransactionSequence: Integer;
+        JuniorBF: Decimal;  // Keep for compatibility
 
         // Loan specific variables
         Loan_CreditAmount: Decimal;

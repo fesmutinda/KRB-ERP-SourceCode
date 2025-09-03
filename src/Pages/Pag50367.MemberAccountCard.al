@@ -693,22 +693,7 @@ page 50367 "Member Account Card"
                             Report.Run(50225, true, false, Cust);
                     end;
                 }
-                action("Juniors Statement")
-                {
-                    ApplicationArea = Basic;
-                    Caption = 'Juniors';
-                    Image = "Report";
-                    Promoted = true;
-                    PromotedCategory = "Report";
 
-                    trigger OnAction()
-                    begin
-                        Cust.Reset;
-                        Cust.SetRange(Cust."No.", Rec."No.");
-                        if Cust.Find('-') then
-                            Report.Run(59069, true, false, Cust);
-                    end;
-                }
 
                 // action("Excess Statement")
                 // {
