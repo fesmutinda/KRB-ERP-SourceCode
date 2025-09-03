@@ -1,4 +1,5 @@
 page 59071 "MemberApp Approval Entries"
+
 {
     ApplicationArea = Suite;
     Caption = 'MemberApp Approval Entries';
