@@ -1,7 +1,6 @@
 enum 51517002 "Bosa Transfers SourceTypeEnum"
 {
     Extensible = true;
-
     value(1; Member)
     {
         Caption = 'Member';
