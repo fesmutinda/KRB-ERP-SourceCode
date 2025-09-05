@@ -14,7 +14,7 @@ Page 50017 "Posted PettyCash Payment Line"
                 {
                     ApplicationArea = Basic;
                 }
-                field("Transaction Type Description"; Rec."Transaction Type Description")
+                field("Transaction Name"; Rec."Transaction Name")
                 {
                     ApplicationArea = Basic;
                 }

@@ -74,5 +74,5 @@ page 50399 "BOSA Receipts List"
     var
         ObjUserSetup: Record "User Setup";
 }
-
+ 
 

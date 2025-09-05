@@ -1775,14 +1775,14 @@
     </ReportSection>
   </ReportSections>
   <ReportParameters>
-    <ReportParameter Name="BankCaption">
+    <ReportParameter Name="Paying_Bank_AccountCaption">
       <DataType>String</DataType>
       <DefaultValue>
         <Values>
-          <Value>BankCaption</Value>
+          <Value>Paying_Bank_AccountCaption</Value>
         </Values>
       </DefaultValue>
-      <Prompt>BankCaption</Prompt>
+      <Prompt>Paying_Bank_AccountCaption</Prompt>
     </ReportParameter>
     <ReportParameter Name="BankNameCaption">
       <DataType>String</DataType>
@@ -1811,7 +1811,7 @@
         <CellDefinition>
           <ColumnIndex>0</ColumnIndex>
           <RowIndex>0</RowIndex>
-          <ParameterName>BankCaption</ParameterName>
+          <ParameterName>Paying_Bank_AccountCaption</ParameterName>
         </CellDefinition>
         <CellDefinition>
           <ColumnIndex>0</ColumnIndex>
@@ -2048,8 +2048,8 @@ End Function
         <Field Name="CompanyWebPage">
           <DataField>CompanyWebPage</DataField>
         </Field>
-        <Field Name="Bank">
-          <DataField>Bank</DataField>
+        <Field Name="Paying_Bank_Account">
+          <DataField>Paying_Bank_Account</DataField>
         </Field>
         <Field Name="BankName">
           <DataField>BankName</DataField>

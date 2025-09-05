@@ -1,232 +1,569 @@
-#pragma warning disable AA0005, AA0008, AA0018, AA0021, AA0072, AA0137, AA0201, AA0206, AA0218, AA0228, AL0254, AL0424, AS0011, AW0006 // ForNAV settings
+#pragma warning disable AA0005, AA0008, AA0018, AA0021, AA0072, AA0137, AA0201, AA0204, AA0206, AA0218, AA0228, AL0254, AL0424, AS0011, AW0006 // ForNAV settings
 Table 51000 "Payment Header"
 {
-
     fields
     {
-        field(10; "No."; Code[20])
+        field(1; "No."; Code[20])
         {
+            Description = 'Stores the reference of the payment voucher in the database';
+            NotBlank = false;
+        }
+        field(2; Date; Date)
+        {
+            Description = 'Stores the date when the payment voucher was inserted into the system';
             Editable = false;
-        }
-        field(11; "Document Type"; Option)
-        {
-            Editable = false;
-            OptionCaption = ' ,Payment,Invoice,Credit Memo,Finance Charge Memo,Reminder,Refund,Receipt';
-            OptionMembers = " ",Payment,Invoice,"Credit Memo","Finance Charge Memo",Reminder,Refund,Receipt;
-        }
-        field(12; "Document Date"; Date)
-        {
-            Editable = false;
-        }
-        field(13; "Posting Date"; Date)
-        {
-        }
-        field(14; "Currency Code"; Code[10])
-        {
-            TableRelation = Currency;
-        }
-        field(15; "Currency Factor"; Decimal)
-        {
-        }
-        field(16; Payee; Text[100])
-        {
-        }
-        field(17; "On Behalf Of"; Text[100])
-        {
-        }
-        field(18; "Payment Mode"; Option)
-        {
-            Editable = false;
-            OptionCaption = ' ,Cash,Cheque,EFT,Letter of Credit,Custom 3,Custom 4,Custom 5';
-            OptionMembers = " ",Cash,Cheque,EFT,"Letter of Credit","Custom 3","Custom 4","Custom 5";
-        }
-        field(19; Amount; Decimal)
-        {
-            CalcFormula = sum("Payment Line".Amount where("Document No" = field("No.")));
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(20; "Amount(LCY)"; Decimal)
-        {
-            CalcFormula = sum("Payment Line"."Amount(LCY)" where("Document No" = field("No.")));
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(21; "VAT Amount"; Decimal)
-        {
-            CalcFormula = sum("Payment Line"."VAT Amount" where("Document No" = field("No.")));
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(22; "VAT Amount(LCY)"; Decimal)
-        {
-            CalcFormula = sum("Payment Line"."VAT Amount(LCY)" where("Document No" = field("No.")));
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(23; "WithHolding Tax Amount"; Decimal)
-        {
-            CalcFormula = sum("Payment Line"."W/TAX Amount" where("Document No" = field("No.")));
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(24; "WithHolding Tax Amount(LCY)"; Decimal)
-        {
-            CalcFormula = sum("Payment Line"."W/TAX Amount(LCY)" where("Document No" = field("No.")));
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(25; "Net Amount"; Decimal)
-        {
-            CalcFormula = sum("Payment Line"."Net Amount" where("Document No" = field("No.")));
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(26; "Net Amount(LCY)"; Decimal)
-        {
-            CalcFormula = sum("Payment Line"."Net Amount(LCY)" where("Document No" = field("No.")));
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(27; "Bank Account"; Code[20])
-        {
-            TableRelation = "Bank Account"."No.";
+
             trigger OnValidate()
             begin
-                BankAccount.Reset;
-                BankAccount.SetRange(BankAccount."No.", "Bank Account");
-                if BankAccount.FindFirst then begin
-                    "Bank Account Name" := BankAccount.Name;
+                if PayLinesExist then begin
+                    Error('You first need to delete the existing Payment lines before changing the Currency Code'
+                    );
+                end else begin
+                    "Paying Bank Account" := '';
+                    Validate("Paying Bank Account");
                 end;
+                if "Currency Code" = xRec."Currency Code" then
+                    UpdateCurrencyFactor;
+
+                if "Currency Code" <> xRec."Currency Code" then begin
+                    UpdateCurrencyFactor;
+                end else
+                    if "Currency Code" <> '' then
+                        UpdateCurrencyFactor;
+
+                //Update Payment Lines
+                UpdateLines();
             end;
         }
-        field(28; "Bank Account Name"; Text[50])
+        field(3; "Currency Factor"; Decimal)
         {
+            Caption = 'Currency Factor';
+            DecimalPlaces = 0 : 15;
+            Editable = false;
+            MinValue = 0;
+        }
+        field(4; "Currency Code"; Code[10])
+        {
+            Caption = 'Currency Code';
+            Enabled = true;
+            TableRelation = Currency;
+
+            trigger OnValidate()
+            begin
+                /*
+                IF PayLinesExist THEN BEGIN
+                ERROR('You first need to delete the existing Payment lines before changing the Currency Code'
+                );
+                END ELSE BEGIN
+                   "Paying Bank Account":='';
+                   VALIDATE("Paying Bank Account");
+                END;
+                IF  "Currency Code" = xRec."Currency Code" THEN
+                  UpdateCurrencyFactor;
+
+                IF "Currency Code" <> xRec."Currency Code" THEN BEGIN
+                    UpdateCurrencyFactor;
+                  END ELSE
+                    IF "Currency Code" <> '' THEN
+                      UpdateCurrencyFactor;
+
+                //Update Payment Lines
+                UpdateLines();
+                */
+
+            end;
+        }
+        field(9; Payee; Text[100])
+        {
+            Description = 'Stores the name of the person who received the money';
+        }
+        field(10; "On Behalf Of"; Text[100])
+        {
+            Description = 'Stores the name of the person on whose behalf the payment voucher was taken';
+        }
+        field(11; Cashier; Code[50])
+        {
+            Description = 'Stores the identifier of the cashier in the database';
+            Editable = false;
+            trigger OnValidate()
+            begin
+                /*
+                 UserDept.RESET;
+                UserDept.SETRANGE(UserDept.UserID,Cashier);
+                IF UserDept.FIND('-') THEN
+                  //"Global Dimension 1 Code":=UserDept.Department;
+                */
+
+            end;
+        }
+        field(16; Posted; Boolean)
+        {
+            Description = 'Stores whether the payment voucher is posted or not';
+        }
+        field(17; "Date Posted"; Date)
+        {
+            Description = 'Stores the date when the payment voucher was posted';
             Editable = false;
         }
-        field(29; "Bank Account Balance"; Decimal)
+        field(18; "Time Posted"; Time)
         {
-            CalcFormula = sum("Bank Account Ledger Entry".Amount where("Bank Account No." = field("Bank Account")));
+            Description = 'Stores the time when the payment voucher was posted';
+            Editable = false;
+        }
+        field(19; "Posted By"; Code[50])
+        {
+            Editable = false;
+            TableRelation = "User Setup"."User ID";
+            Description = 'Stores the name of the person who posted the payment voucher';
+        }
+        field(20; "Total Payment Amount"; Decimal)
+        {
+            CalcFormula = sum("Payment Line".Amount where("Document No" = field("No.")));
+            Description = 'Stores the amount of the payment voucher';
             Editable = false;
             FieldClass = FlowField;
         }
-        field(30; "Cheque Type"; Option)
+        field(28; "Paying Bank Account"; Code[20])
         {
-            OptionCaption = 'Computer Cheque,Manual Cheque';
-            OptionMembers = "Computer Cheque","Manual Cheque";
+            Description = 'Stores the name of the paying bank account in the database';
+            TableRelation = "Bank Account";
+
+            trigger OnValidate()
+            begin
+
+                BankAcc.Reset;
+                "Bank Account Name" := '';
+                if BankAcc.Get("Paying Bank Account") then begin
+                    if "Pay Mode" = "pay mode"::Cash then begin
+                        if BankAcc."Bank Type" <> BankAcc."bank type"::Cash then
+                            Error('This Payment can only be made against Banks Handling Cash');
+                    end;
+                    "Bank Account Name" := BankAcc.Name;
+                    //"Currency Code":=BankAcc."Currency Code";
+                    // VALIDATE("Currency Code");
+                end;
+                PLine.Reset;
+                PLine.SetRange(PLine."Document No", "No.");
+                PLine.SetRange(PLine."Account Type", PLine."account type"::"Bank Account");
+                PLine.SetRange(PLine."Account No.", "Paying Bank Account");
+                if PLine.FindFirst then
+                    Error(Text002);
+            end;
         }
-        field(31; "Cheque No"; Code[6])
-        {
-        }
-        field(32; "Payment Description"; Text[50])
-        {
-        }
-        field(33; "Global Dimension 1 Code"; Code[10])
+        field(30; "Global Dimension 1 Code"; Code[25])
         {
             CaptionClass = '1,1,1';
-            TableRelation = "Dimension Value".Code where("Global Dimension No." = const(1),
-                                                          "Dimension Value Type" = const(Standard));
+            Caption = 'Global Dimension 1 Code';
+            Description = 'Stores the reference to the first global dimension in the database';
+            NotBlank = false;
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = const(1));
+
+            trigger OnValidate()
+            begin
+                DimVal.Reset;
+                DimVal.SetRange(DimVal."Global Dimension No.", 1);
+                DimVal.SetRange(DimVal.Code, "Global Dimension 1 Code");
+                if DimVal.Find('-') then
+                    "Function Name" := DimVal.Name;
+                UpdateLines;
+            end;
         }
-        field(34; "Global Dimension 2 Code"; Code[10])
+        field(35; Status; Option)
         {
-            CaptionClass = '1,2,2';
-            TableRelation = "Dimension Value".Code where("Global Dimension No." = const(2),
-                                                          "Dimension Value Type" = const(Standard));
-        }
-        field(35; "Shortcut Dimension 3 Code"; Code[10])
-        {
-        }
-        field(36; "Shortcut Dimension 4 Code"; Code[10])
-        {
-        }
-        field(37; "Shortcut Dimension 5 Code"; Code[10])
-        {
-        }
-        field(38; "Shortcut Dimension 6 Code"; Code[10])
-        {
-        }
-        field(39; "Shortcut Dimension 7 Code"; Code[10])
-        {
-        }
-        field(40; "Shortcut Dimension 8 Code"; Code[10])
-        {
-        }
-        field(41; Status; Option)
-        {
-            Editable = true;
+            Description = 'Stores the status of the record in the database';
+            // Editable = true;
+            // OptionMembers = Pending,"1st Approval","2nd Approval","Cheque Printing",Posted,Cancelled,Checking,VoteBook,"Pending Approval",Approved;
+            Editable = false;
             OptionCaption = 'New,Pending Approval,Approved,Rejected,Posted,Cancelled';
             OptionMembers = New,"Pending Approval",Approved,Rejected,Posted,Cancelled;
         }
-        field(42; Posted; Boolean)
-        {
-            Editable = false;
-        }
-        field(43; "Posted By"; Code[50])
-        {
-            Editable = false;
-            TableRelation = "User Setup"."User ID";
-        }
-        field(44; "Date Posted"; Date)
-        {
-            Editable = false;
-        }
-        field(45; "Time Posted"; Time)
-        {
-            Editable = false;
-        }
-        field(46; Cashier; Code[100])
-        {
-            Editable = false;
-            TableRelation = "User Setup"."User ID";
-        }
-        field(47; "No. Series"; Code[30])
-        {
-        }
-        field(48; "Responsibility Center"; Code[50])
-        {
-            TableRelation = "Responsibility Center".Code;
-        }
-        field(49; "Retention Amount"; Decimal)
-        {
-            Editable = false;
-        }
-        field(50; "Retention Amount(LCY)"; Decimal)
-        {
-            Editable = false;
-        }
-        field(51; "User ID"; Code[70])
-        {
-        }
-        field(52; "Payment Type"; Option)
+        field(38; "Payment Type"; Option)
         {
             Editable = false;
             OptionCaption = 'Normal,Petty Cash,Express,Cash Purchase,Mobile';
             OptionMembers = Normal,"Petty Cash",Express,"Cash Purchase",Mobile;
         }
-        field(51516430; "Investor Payment"; Boolean)
+        field(56; "Shortcut Dimension 2 Code"; Code[25])
         {
+            CaptionClass = '1,2,2';
+            Caption = 'Shortcut Dimension 2 Code';
+            Description = 'Stores the reference of the second global dimension in the database';
+            NotBlank = false;
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = const(2));
+
+            trigger OnValidate()
+            begin
+                DimVal.Reset;
+                DimVal.SetRange(DimVal."Global Dimension No.", 2);
+                DimVal.SetRange(DimVal.Code, "Shortcut Dimension 2 Code");
+                if DimVal.Find('-') then
+                    "Budget Center Name" := DimVal.Name;
+                UpdateLines
+            end;
         }
-        field(51516431; "Expense Account"; Code[20])
+        field(57; "Function Name"; Text[100])
         {
-            TableRelation = "G/L Account";
+            Description = 'Stores the name of the function in the database';
         }
-        field(51516432; "Total Payment Amount"; Decimal)
+        field(58; "Budget Center Name"; Text[100])
         {
-            CalcFormula = sum("Payment Line".Amount where(No = field("No.")));
-            Description = 'Stores the amount of the payment voucher';
+            Description = 'Stores the name of the budget center in the database';
+        }
+        field(59; "Bank Name"; Text[100])
+        {
+            Description = 'Stores the description of the paying bank account in the database';
+        }
+        field(60; "No. Series"; Code[20])
+        {
+            Description = 'Stores the number series in the database';
+        }
+        field(61; Select; Boolean)
+        {
+            Description = 'Enables the user to select a particular record';
+        }
+        field(62; "Total VAT Amount"; Decimal)
+        {
+            CalcFormula = sum("Payment Line"."Withholding Tax Amount" where("Document No" = field("No.")));
             Editable = false;
             FieldClass = FlowField;
         }
-        field(51516433; "Paying Type"; Option)
+        field(121; "VAT Amount"; Decimal)
         {
-            OptionCaption = ' ,Vendor,Bank';
-            OptionMembers = " ",Vendor,Bank;
+            CalcFormula = sum("Payment Line"."VAT Amount" where("Document No" = field("No.")));
+            Editable = false;
+            FieldClass = FlowField;
         }
-        field(51516434; "Payments Type"; Option)
+        field(122; "VAT Amount(LCY)"; Decimal)
+        {
+            CalcFormula = sum("Payment Line"."VAT Amount(LCY)" where("Document No" = field("No.")));
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(63; "Total Witholding Tax Amount"; Decimal)
+        {
+            CalcFormula = sum("Payment Line"."Withholding Tax Amount" where("Document No" = field("No.")));
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(64; "Total Net Amount"; Decimal)
+        {
+            CalcFormula = sum("Payment Line"."Net Amount" where("Document No" = field("No.")));
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(65; "Current Status"; Code[20])
+        {
+            Description = 'Stores the current status of the payment voucher in the database';
+        }
+        field(66; "Cheque No."; Code[20])
+        {
+
+            trigger OnValidate()
+            begin
+                if StrLen("Cheque No.") < 6 then
+                    Error('Cheque No. Can not be less than 6 Characters');
+            end;
+        }
+        field(67; "Pay Mode"; Option)
+        {
+            OptionMembers = " ",Cash,Cheque,EFT,RTGS,Mpesa;
+        }
+        field(68; "Payment Release Date"; Date)
+        {
+
+            trigger OnValidate()
+            begin
+                //Changed to ensure Release date is not less than the Date entered
+                if "Payment Release Date" < Date then
+                    Error('The Payment Release Date cannot be lesser than the Document Date');
+            end;
+        }
+        field(69; "No. Printed"; Integer)
+        {
+        }
+        field(70; "VAT Base Amount"; Decimal)
+        {
+        }
+        field(71; "Exchange Rate"; Decimal)
+        {
+        }
+        field(72; "Currency Reciprical"; Decimal)
+        {
+        }
+        field(73; "Current Source A/C Bal."; Decimal)
+        {
+        }
+        field(74; "Cancellation Remarks"; Text[250])
+        {
+        }
+        field(75; "Register Number"; Integer)
+        {
+        }
+        field(76; "From Entry No."; Integer)
+        {
+        }
+        field(77; "To Entry No."; Integer)
+        {
+        }
+        field(78; "Invoice Currency Code"; Code[10])
+        {
+            Caption = 'Invoice Currency Code';
+            Editable = true;
+            TableRelation = Currency;
+        }
+        field(79; "Total Payment Amount LCY"; Decimal)
+        {
+            CalcFormula = sum("Payment Line"."NetAmount LCY" where("Document No" = field("No.")));
+            FieldClass = FlowField;
+        }
+        field(80; "Document Type"; Option)
+        {
+            OptionMembers = "Payment Voucher","Petty Cash";
+        }
+        field(81; "Shortcut Dimension 3 Code"; Code[25])
+        {
+            CaptionClass = '1,2,3';
+            Caption = 'Shortcut Dimension 3 Code';
+            Description = 'Stores the reference of the Third global dimension in the database';
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = const(3));
+
+            trigger OnValidate()
+            begin
+                DimVal.Reset;
+                //DimVal.SETRANGE(DimVal."Global Dimension No.",2);
+                DimVal.SetRange(DimVal.Code, "Shortcut Dimension 3 Code");
+                if DimVal.Find('-') then
+                    Dim3 := DimVal.Name
+            end;
+        }
+        field(82; "Shortcut Dimension 4 Code"; Code[25])
+        {
+            CaptionClass = '1,2,4';
+            Caption = 'Shortcut Dimension 4 Code';
+            Description = 'Stores the reference of the Third global dimension in the database';
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = const(4));
+
+            trigger OnValidate()
+            begin
+                DimVal.Reset;
+                //DimVal.SETRANGE(DimVal."Global Dimension No.",2);
+                DimVal.SetRange(DimVal.Code, "Shortcut Dimension 4 Code");
+                if DimVal.Find('-') then
+                    Dim4 := DimVal.Name
+            end;
+        }
+        field(83; Dim3; Text[250])
+        {
+        }
+        field(84; Dim4; Text[250])
+        {
+        }
+        field(85; "Responsibility Center"; Code[10])
+        {
+            Caption = 'Responsibility Center';
+            TableRelation = "Responsibility Center";
+
+            trigger OnValidate()
+            begin
+
+                TestField(Status, Status::"Pending Approval");
+
+                if PayLinesExist then begin
+                    Error('You first need to delete the existing Payment lines before changing the Responsibility Center');
+                end else begin
+                    "Currency Code" := '';
+                    Validate("Currency Code");
+                    "Paying Bank Account" := '';
+                    Validate("Paying Bank Account");
+                end;
+
+
+                if not UserMgt.CheckRespCenter(1, "Responsibility Center") then
+                    Error(
+                      Text001,
+                      RespCenter.TableCaption, UserMgt.GetPurchasesFilter);
+                /*
+               "Location Code" := UserMgt.GetLocation(1,'',"Responsibility Center");
+               IF "Location Code" = '' THEN BEGIN
+                 IF InvtSetup.GET THEN
+                   "Inbound Whse. Handling Time" := InvtSetup."Inbound Whse. Handling Time";
+               END ELSE BEGIN
+                 IF Location.GET("Location Code") THEN;
+                 "Inbound Whse. Handling Time" := Location."Inbound Whse. Handling Time";
+               END;
+
+               UpdateShipToAddress;
+                  */
+                /*
+             CreateDim(
+               DATABASE::"Responsibility Center","Responsibility Center",
+               DATABASE::Vendor,"Pay-to Vendor No.",
+               DATABASE::"Salesperson/Purchaser","Purchaser Code",
+               DATABASE::Campaign,"Campaign No.");
+
+             IF xRec."Responsibility Center" <> "Responsibility Center" THEN BEGIN
+               RecreatePurchLines(FIELDCAPTION("Responsibility Center"));
+               "Assigned User ID" := '';
+             END;
+               */
+
+            end;
+        }
+        field(129; "Bank Account Balance"; Decimal)
+        {
+            CalcFormula = sum("Bank Account Ledger Entry".Amount where("Bank Account No." = field("Paying Bank Account")));
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(86; "Cheque Type"; Option)
+        {
+            OptionCaption = 'Computer Check,Manual Check';
+            OptionMembers = "Computer Check","Manual Check";
+        }
+        field(87; "Total Retention Amount"; Decimal)
+        {
+            CalcFormula = sum("Payment Line"."Retention  Amount" where("Document No" = field("No.")));
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(88; "Payment Narration"; Text[50])
+        {
+        }
+        field(89; "Paying Type"; Option)
+        {
+            OptionCaption = 'Bank';
+            OptionMembers = Bank;
+        }
+        field(90; "Paying Vendor Account"; Code[20])
+        {
+            TableRelation = Vendor."No.";// where("Account Type" = const(SAVINGS));
+
+            trigger OnValidate()
+            begin
+                Vendor.Reset;
+                "Bank Name" := '';
+                if Vendor.Get("Paying Vendor Account") then begin
+                    Payee := Vendor.Name;
+                end;
+            end;
+        }
+        field(91; "Fosa Bank Account"; Code[20])
+        {
+            TableRelation = "Bank Account"."No.";
+        }
+        field(92; "Expense Account"; Code[20])
+        {
+            TableRelation = "G/L Account"."No.";
+        }
+        field(93; "Expense Type"; Option)
+        {
+            OptionCaption = ' ,Normal,Director,Member';
+            OptionMembers = " ",Normal,Director,Member;
+        }
+        field(94; "Refund Charge"; Decimal)
+        {
+            CalcFormula = sum("Payment Line"."Refund Charge" where("Document No" = field("No.")));
+            FieldClass = FlowField;
+        }
+        field(95; "Net Amount"; Decimal)
+        {
+            CalcFormula = sum("Payment Line"."Net Amount" where("Document No" = field("No.")));
+            FieldClass = FlowField;
+        }
+        field(126; "Net Amount(LCY)"; Decimal)
+        {
+            CalcFormula = sum("Payment Line"."Net Amount(LCY)" where("Document No" = field("No.")));
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(96; "WithHolding Tax Amount"; Decimal)
+        {
+            CalcFormula = sum("Payment Line"."Withholding Tax Amount" where("Document No" = field("No.")));
+            FieldClass = FlowField;
+        }
+        field(124; "WithHolding Tax Amount(LCY)"; Decimal)
+        {
+            CalcFormula = sum("Payment Line"."W/TAX Amount(LCY)" where("Document No" = field("No.")));
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(97; "Global Dimension 2 Code"; Code[20])
+        {
+            CaptionClass = '1,2,2';
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = const(2),
+                                                          "Dimension Value Type" = const(Standard));
+        }
+
+        field(98; "Bank Account Name"; Text[50])
+        {
+        }
+        field(99; "Invoice Number"; Code[25])
+        {
+        }
+        field(100; "Board Approval Status"; Option)
+        {
+            OptionCaption = 'Approved,Rejected';
+            OptionMembers = ,Approved,Rejected;
+        }
+        field(101; "Board Approval Comment"; Text[100])
+        {
+        }
+        field(102; "Board Approved By"; Code[30])
+        {
+        }
+        field(103; "TAmonut For Member"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(104; "Payment No."; Code[50])
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(119; Amount; Decimal)
+        {
+            CalcFormula = sum("Payment Line".Amount where("Document No" = field("No.")));
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(120; "Amount(LCY)"; Decimal)
+        {
+            CalcFormula = sum("Payment Line"."Amount(LCY)" where("Document No" = field("No.")));
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(118; "Payment Mode"; Option)
         {
             Editable = false;
-            OptionCaption = 'Normal,Petty Cash,Delegates';
-            OptionMembers = Normal,"Petty Cash",Delegates;
+            OptionCaption = ' ,Cash,Cheque,EFT,Letter of Credit,Mpesa,Custom 4,Custom 5';
+            OptionMembers = " ",Cash,Cheque,EFT,"Letter of Credit","Mpesa","Custom 4","Custom 5";
+        }
+        field(123; "Posting Date"; Date)
+        {
+        }
+        field(137; "Shortcut Dimension 5 Code"; Code[10])
+        {
+        }
+        field(138; "Shortcut Dimension 6 Code"; Code[10])
+        {
+        }
+        field(139; "Shortcut Dimension 7 Code"; Code[10])
+        {
+        }
+        field(140; "Shortcut Dimension 8 Code"; Code[10])
+        {
+        }
+        field(132; "Payment Description"; Text[50])
+        {
+        }
+        field(131; "Cheque No"; Code[25])
+        {
+        }
+        field(133; "Investor Payment"; Boolean)
+        {
+        }
+        field(112; "Document Date"; Date)
+        {
+            Editable = false;
         }
     }
 
@@ -236,46 +573,150 @@ Table 51000 "Payment Header"
         {
             Clustered = true;
         }
+        key(Key2; "Responsibility Center")
+        {
+        }
+        key(Key3; "Cheque No.")
+        {
+        }
     }
 
     fieldgroups
     {
     }
 
+    trigger OnDelete()
+    begin
+        //  IF (Status=Status::Approved) OR (Status=Status::Posted) OR (Status=Status::"Pending Approval")THEN
+        //   ERROR('You Cannot Delete this record');
+    end;
+
     trigger OnInsert()
     begin
-        if "No." = '' then begin
-            if "Payment Type" = "payment type"::Normal then begin   //Cheque Payments
-                Setup.Get;
-                Setup.TestField(Setup."Payment Voucher Nos");
-                NoSeriesMgt.InitSeries(Setup."Payment Voucher Nos", xRec."No. Series", 0D, "No.", "No. Series");
-            end;
-            if "Payment Type" = "payment type"::"Cash Purchase" then begin       //Cash Payments
-                Setup.Get;
-                Setup.TestField(Setup."Cash Voucher Nos");
-                NoSeriesMgt.InitSeries(Setup."Cash Voucher Nos", xRec."No. Series", 0D, "No.", "No. Series");
-            end;
-            if "Payment Type" = "payment type"::"Petty Cash" then begin      //PettyCash Payments
-                Setup.Get;
-                Setup.TestField(Setup."PettyCash Nos");
-                NoSeriesMgt.InitSeries(Setup."PettyCash Nos", xRec."No. Series", 0D, "No.", "No. Series");
-            end;
-            if "Payment Type" = "payment type"::Mobile then begin        //Mobile Payments
-                Setup.Get;
-                Setup.TestField(Setup."Mobile Payment Nos");
-                NoSeriesMgt.InitSeries(Setup."Mobile Payment Nos", xRec."No. Series", 0D, "No.", "No. Series");
-            end;
 
+        if "No." = '' then begin
+            GenLedgerSetup.Get;
+            if "Payment Type" = "payment type"::Normal then begin
+                GenLedgerSetup.TestField(GenLedgerSetup."Payment Voucher Nos");
+                NoSeriesMgt.InitSeries(GenLedgerSetup."Payment Voucher Nos", xRec."No. Series", 0D, "No.", "No. Series");
+            end
         end;
-        "Document Type" := "document type"::Payment;
+
+        UserTemplate.Reset;
+        UserTemplate.SetRange(UserTemplate.UserID, UserId);
+        if UserTemplate.FindFirst then begin
+            if "Payment Type" = "payment type"::"Petty Cash" then begin
+                //UserTemplate.TESTFIELD(UserTemplate."Default Petty Cash Bank");
+                //"Paying Bank Account":=UserTemplate."Default Petty Cash Bank";
+            end else begin
+                "Paying Bank Account" := UserTemplate."Default Payment Bank";
+            end;
+            Validate("Paying Bank Account");
+        end;
+
+        Date := Today;
         "Document Date" := Today;
-        "User ID" := UserId;
+        "Payment Release Date" := Today;
         Cashier := UserId;
+        Validate(Cashier);
+    end;
+
+    trigger OnModify()
+    begin
+        if Status = Status::"Pending Approval" then
+            UpdateLines();
+
+        /*IF (Status=Status::Approved) OR (Status=Status::Posted) THEN
+           ERROR('You Cannot modify an already approved/posted document');*/
+
     end;
 
     var
-        Setup: Record "Funds General Setup";
+        CStatus: Code[20];
+        //PVUsers: Record UnknownRecord51516039;
+        UserTemplate: Record "Funds User Setup";
+        GLAcc: Record "G/L Account";
+        Cust: Record Customer;
+        Vend: Record Vendor;
+        FA: Record "Fixed Asset";
+        BankAcc: Record "Bank Account";
         NoSeriesMgt: Codeunit NoSeriesManagement;
-        BankAccount: Record "Bank Account";
+        GenLedgerSetup: Record "Funds General Setup";
+        //RecPayTypes: Record UnknownRecord51516004;
+        //CashierLinks: Record UnknownRecord51516047;
+        GLAccount: Record "G/L Account";
+        EntryNo: Integer;
+        SingleMonth: Boolean;
+        DateFrom: Date;
+        DateTo: Date;
+        Budget: Decimal;
+        CurrMonth: Code[10];
+        CurrYR: Code[10];
+        BudgDate: Text[30];
+        BudgetDate: Date;
+        YrBudget: Decimal;
+        BudgetDateTo: Date;
+        BudgetAvailable: Decimal;
+        GenLedSetup: Record "General Ledger Setup";
+        "Total Budget": Decimal;
+        CommittedAmount: Decimal;
+        MonthBudget: Decimal;
+        Expenses: Decimal;
+        Header: Text[250];
+        "Date From": Text[30];
+        "Date To": Text[30];
+        LastDay: Date;
+        TotAmt: Decimal;
+        DimVal: Record "Dimension Value";
+        // PVSteps: Record UnknownRecord51516058;
+        PLine: Record "Payment Line";
+        RespCenter: Record "Responsibility Center BR";
+        UserMgt: Codeunit "User Setup Management BR";
+        Text001: label 'Your identification is set up to process from %1 %2 only.';
+        CurrExchRate: Record "Currency Exchange Rate";
+        PayLine: Record "Payment Line";
+        Text002: label 'There is an Account number on the  payment lines the same as Paying Bank Account you are trying to select.';
+        Vendor: Record Vendor;
+    // Gen: Record UnknownRecord51516398;
+
+    local procedure UpdateCurrencyFactor()
+    var
+        CurrencyDate: Date;
+    begin
+        if "Currency Code" <> '' then begin
+            CurrencyDate := Date;
+            "Currency Factor" := CurrExchRate.ExchangeRate(CurrencyDate, "Currency Code");
+        end else
+            "Currency Factor" := 0;
+    end;
+
+
+    procedure UpdateLines()
+    begin
+        PLine.Reset;
+        PLine.SetRange(PLine."Document No", "No.");
+        if PLine.FindFirst then begin
+            repeat
+                PLine."Global Dimension 1 Code" := "Global Dimension 1 Code";
+                PLine."Shortcut Dimension 2 Code" := "Shortcut Dimension 2 Code";
+                PLine."Shortcut Dimension 3 Code" := "Shortcut Dimension 3 Code";
+                PLine."Shortcut Dimension 4 Code" := "Shortcut Dimension 4 Code";
+                PLine."Currency Factor" := "Currency Factor";
+                PLine."Paying Bank Account" := "Paying Bank Account";
+                PayLine."Payment Type" := "Payment Type";
+                PLine.Validate("Currency Factor");
+                PLine.Modify;
+            until PLine.Next = 0;
+        end;
+    end;
+
+
+    procedure PayLinesExist(): Boolean
+    begin
+        PayLine.Reset;
+        PayLine.SetRange("Payment Type", "Payment Type");
+        PayLine.SetRange("Document No", "No.");
+        exit(PayLine.FindFirst);
+    end;
 }
 

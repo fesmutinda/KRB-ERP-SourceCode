@@ -19,7 +19,7 @@ Page 50008 "Cash Payment Line"
                 {
                     ApplicationArea = Basic;
                 }
-                field("Transaction Type Description"; Rec."Transaction Type Description")
+                field("Transaction Name"; Rec."Transaction Name")
                 {
                     ApplicationArea = Basic;
                 }
@@ -63,14 +63,14 @@ Page 50008 "Cash Payment Line"
                 {
                     ApplicationArea = Basic;
                 }
-                field("W/TAX Code"; Rec."W/TAX Code")
+                /* field("W/TAX Code"; Rec."W/TAX Code")
                 {
                     ApplicationArea = Basic;
                 }
                 field("W/TAX Amount"; Rec."W/TAX Amount")
                 {
                     ApplicationArea = Basic;
-                }
+                } */
                 field("W/TAX Amount(LCY)"; Rec."W/TAX Amount(LCY)")
                 {
                     ApplicationArea = Basic;

@@ -32,7 +32,7 @@ Page 56158 "PettyCash Payment Card"
                     ApplicationArea = Basic;
                     Visible = false;
                 }
-                field("Bank Account"; Rec."Bank Account")
+                field("Paying Bank Account"; Rec."Paying Bank Account")
                 {
                     ApplicationArea = Basic;
                 }
@@ -259,7 +259,7 @@ Page 56158 "PettyCash Payment Card"
         // Rec.TestField(Status, Rec.Status::Approved);
         Rec.TestField("Posting Date");
         Rec.TestField(Payee);
-        Rec.TestField("Bank Account");
+        Rec.TestField("Paying Bank Account");
         Rec.TestField("Payment Description");
         Rec.TestField("Global Dimension 1 Code");
         Rec.TestField("Global Dimension 2 Code");

@@ -2514,6 +2514,7 @@ Page 56043 "KRB Sacco Role Center"
                     {
                         Caption = 'cheque Festus trunc';
                         ApplicationArea = Basic, Suite;
+                        Visible = false;
                         RunObject = page "Cheque Truncation details buff";
                     }
 
@@ -2536,6 +2537,7 @@ Page 56043 "KRB Sacco Role Center"
                     {
                         Caption = 'User Workflow Setup';
                         ApplicationArea = Basic, Suite;
+                        Visible = false;
                         Image = Check;
                         RunObject = page "Workflows";
 
@@ -2546,6 +2548,7 @@ Page 56043 "KRB Sacco Role Center"
                         Caption = 'User Workflow Setup';
                         ApplicationArea = Basic, Suite;
                         Image = Check;
+                        Visible = false;
                         RunObject = page "Supervisor Approvals Levels";
 
                     }

@@ -35,7 +35,7 @@ Page 56176 "Posted Payment Card"
                 {
                     ApplicationArea = Basic;
                 }
-                field("Bank Account"; Rec."Bank Account")
+                field("Paying Bank Account"; Rec."Paying Bank Account")
                 {
                     ApplicationArea = Basic;
                 }

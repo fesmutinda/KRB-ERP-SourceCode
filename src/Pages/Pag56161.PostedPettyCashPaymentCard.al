@@ -36,7 +36,7 @@ Page 56161 "Posted PettyCash Payment Card"
                     ApplicationArea = Basic;
                     Visible = false;
                 }
-                field("Bank Account"; Rec."Bank Account")
+                field("Paying Bank Account"; Rec."Paying Bank Account")
                 {
                     ApplicationArea = Basic;
                 }

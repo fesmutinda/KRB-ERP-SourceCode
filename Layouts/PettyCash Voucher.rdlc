@@ -1815,9 +1815,6 @@ End Function
         <Field Name="Payment_Line__Withholding_Tax_Amount_">
           <DataField>Payment_Line__Withholding_Tax_Amount_</DataField>
         </Field>
-        <Field Name="Payment_Line__Withholding_Tax_Amount_Format">
-          <DataField>Payment_Line__Withholding_Tax_Amount_Format</DataField>
-        </Field>
         <Field Name="Payment_Line__VAT_Amount_">
           <DataField>Payment_Line__VAT_Amount_</DataField>
         </Field>

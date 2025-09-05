@@ -191,7 +191,7 @@ Report 50000 "Payment Voucher"
             column(CompanyWebPage; CompanyInfo."Home Page")
             {
             }
-            column(Bank; "Bank Account")
+            column(Paying_Bank_Account; "Paying Bank Account")
             {
                 IncludeCaption = true;
             }
@@ -206,7 +206,8 @@ Report 50000 "Payment Voucher"
             dataitem("Payment Line"; "Payment Line")
             {
                 DataItemLink = "Document No" = field("No.");
-                DataItemTableView = sorting("Line No", "Document No") order(ascending);
+                DataItemTableView = sorting("Line No.", "Document No") order(ascending);
+
                 column(ReportForNavId_3474; 3474)
                 {
                 }
@@ -216,7 +217,7 @@ Report 50000 "Payment Voucher"
                 column(Payment_Line_Amount; Amount)
                 {
                 }
-                column(Transaction_Name_______Account_No________Account_Name_____; "Transaction Type Description")
+                column(Transaction_Name_______Account_No________Account_Name_____; "Transaction Name")
                 {
                 }
                 column(AccountNo_PaymentLine; "Account No.")
@@ -228,7 +229,7 @@ Report 50000 "Payment Voucher"
                 column(Payment_remarks; "Payment Line"."Payment Description")
                 {
                 }
-                column(Payment_Line__Withholding_Tax_Amount_; "W/TAX Amount")
+                column(Payment_Line__Withholding_Tax_Amount_; "Withholding Tax Amount")
                 {
                 }
                 column(Payment_Line__VAT_Amount_; "VAT Amount")
@@ -240,7 +241,7 @@ Report 50000 "Payment Voucher"
                 column(Payment_Line__Shortcut_Dimension_2_Code_; "Global Dimension 2 Code")
                 {
                 }
-                column(Payment_Line_Line_No_; "Line No")
+                column(Payment_Line_Line_No_; "Line No.")
                 {
                 }
                 column(Payment_Line_No; "Document No")
