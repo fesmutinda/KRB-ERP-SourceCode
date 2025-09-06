@@ -16,6 +16,7 @@ codeunit 50041 "Custom Workflow Responses"
 
     procedure OnAddWorkflowResponsePredecessorsToLibrary()
     begin
+
         //Membership Application
         WFResponseHandler.AddResponsePredecessor(WFResponseHandler.SetStatusToPendingApprovalCode,
                                                  SwizzsoftWFEvents.RunWorkflowOnSendMembershipApplicationForApprovalCode);

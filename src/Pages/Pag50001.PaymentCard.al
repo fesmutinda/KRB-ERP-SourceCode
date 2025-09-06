@@ -41,7 +41,7 @@ Page 50001 "Payment Card"
                 {
                     ApplicationArea = Basic;
                 }
-                field("Bank Account Name"; Rec."Bank Name")
+                field("Bank Account Name"; Rec."Bank Account Name")
                 {
                     ApplicationArea = Basic;
                     Editable = false;
@@ -126,6 +126,7 @@ Page 50001 "Payment Card"
                 field(Posted; Rec.Posted)
                 {
                     ApplicationArea = Basic;
+                    Editable = false;
                 }
                 field("Posted By"; Rec."Posted By")
                 {
@@ -234,7 +235,7 @@ Page 50001 "Payment Card"
                     if Confirm('Send Approval Request ?', false) = false then begin
                         exit;
                     end else begin
-                        //Approvals.SendPaymentHeaderForApprovalCode(rec."No.", Rec);
+                        Approvals.SendPaymentVoucherRequestForApproval(Rec."No.", Rec);
                         CurrPage.Close();
                     end;
                 end;
@@ -257,7 +258,7 @@ Page 50001 "Payment Card"
                         if Confirm('Cancel Approval Request ?', false) = false then begin
                             exit;
                         end else begin
-                            // Approvals.CancelPaymentHeaderApprovalCode(rec."No.", Rec);
+                            Approvals.CancelPaymentVoucherRequestForApproval(rec."No.", Rec);
                             CurrPage.Close();
                         end;
                 end;
@@ -295,7 +296,7 @@ Page 50001 "Payment Card"
                     PHeader.Reset;
                     PHeader.SetRange(PHeader."No.", Rec."No.");
                     if PHeader.FindFirst then begin
-                        // Report.RunModal(Report::"Payment Voucher members", true, false, PHeader);
+                        //Report.RunModal(Report::"Payment Voucher members", true, false, PHeader);
                     end;
                 end;
             }

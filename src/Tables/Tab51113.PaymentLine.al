@@ -991,7 +991,7 @@ Table 51113 "Payment Line"//new one from Nav
                 end;
             end;
         }
-        field(90; "Retention Code"; Code[20]) 
+        field(90; "Retention Code"; Code[20])
         {
             TableRelation = "Tariff Codes"."Code" where(Type = const(Retention));
 
@@ -1088,7 +1088,7 @@ Table 51113 "Payment Line"//new one from Nav
         field(39005483; "Member Type"; Code[20])
         {
             DataClassification = ToBeClassified;
-            TableRelation = Customer."No." where("Member Type" = filter(Board));
+            TableRelation = Customer."No." where(Gender3 = filter(Male));
 
             trigger OnValidate()
             begin
