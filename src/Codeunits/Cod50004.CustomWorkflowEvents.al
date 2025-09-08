@@ -3,7 +3,7 @@ codeunit 50004 "Custom Workflow Events"
 
     trigger OnRun()
     begin
-        //AddEventsToLib();
+        OnAddWorkflowEventsToLibrary();
     end;
 
     var
@@ -504,7 +504,7 @@ codeunit 50004 "Custom Workflow Events"
         WorkflowManagement.HandleEvent(RunWorkflowOnCancelPaymentVoucherApprovalRequestCode, PaymentVoucher);
     end;
     //---------------------------------------------------------------------------------
-    //9)Payment Voucher
+    //9) cash pretty
     procedure RunWorkflowOnSendPettyCashReimbersementForApprovalCode(): Code[128]//
     begin
         exit(UpperCase('RunWorkflowOnSendPettyCashReimbersementForApproval'));

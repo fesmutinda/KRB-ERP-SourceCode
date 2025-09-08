@@ -432,7 +432,6 @@ codeunit 51115 SwizzsoftApprovalsCodeUnit
         exit(WorkflowManagement.CanExecuteWorkflow(GuarantorSubstitution, Psalmkitswfevents.RunWorkflowOnSendGuarantorSubForApprovalCode));
     end;
 
-
     [IntegrationEvent(false, false)]
 
     procedure FnOnSendGuarantorSubForApproval(var GuarantorSubstitution: Record "Guarantorship Substitution H")

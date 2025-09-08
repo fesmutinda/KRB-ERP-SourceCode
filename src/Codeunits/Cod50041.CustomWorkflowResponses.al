@@ -16,6 +16,17 @@ codeunit 50041 "Custom Workflow Responses"
 
     procedure OnAddWorkflowResponsePredecessorsToLibrary()
     begin
+        // Payment Header
+        WFResponseHandler.AddResponsePredecessor(WFResponseHandler.SetStatusToPendingApprovalCode,
+                                                 SwizzsoftWFEvents.RunWorkflowOnSendPaymentVoucherForApprovalCode);
+        WFResponseHandler.AddResponsePredecessor(WFResponseHandler.CreateApprovalRequestsCode,
+                                                 SwizzsoftWFEvents.RunWorkflowOnSendPaymentVoucherForApprovalCode);
+        WFResponseHandler.AddResponsePredecessor(WFResponseHandler.SendApprovalRequestForApprovalCode,
+                                                 SwizzsoftWFEvents.RunWorkflowOnSendPaymentVoucherForApprovalCode);
+        WFResponseHandler.AddResponsePredecessor(WFResponseHandler.OpenDocumentCode,
+                                                 SwizzsoftWFEvents.RunWorkflowOnCancelPaymentVoucherApprovalRequestCode);
+        WFResponseHandler.AddResponsePredecessor(WFResponseHandler.CancelAllApprovalRequestsCode,
+                                                 SwizzsoftWFEvents.RunWorkflowOnCancelPaymentVoucherApprovalRequestCode);
 
         //Membership Application
         WFResponseHandler.AddResponsePredecessor(WFResponseHandler.SetStatusToPendingApprovalCode,
@@ -251,6 +262,7 @@ codeunit 50041 "Custom Workflow Responses"
                     PaymentVoucher.Modify(true);
                     Handled := true;
                 end;
+
             //Guarantor Substitution
             DATABASE::"Guarantorship Substitution H":
                 begin
@@ -492,8 +504,6 @@ codeunit 50041 "Custom Workflow Responses"
     end;
 
 
-
-
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Workflow Response Handling", 'OnReleaseDocument', '', false, false)]
     local procedure OnReleaseDocument(RecRef: RecordRef; var Handled: Boolean)
     var
@@ -545,6 +555,7 @@ codeunit 50041 "Custom Workflow Responses"
                     PaymentVoucher.Modify(true);
                     Handled := true;
                 end;
+
             //"Guarantorship Substitution H"
             DATABASE::"Guarantorship Substitution H":
                 begin
