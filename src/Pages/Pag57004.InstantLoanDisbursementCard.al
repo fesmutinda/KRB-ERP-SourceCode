@@ -221,6 +221,11 @@ page 57004 "Instant Loan Disbursement Card"
                     Promoted = true;
                     PromotedCategory = Process;
                     Visible = true;
+
+                    //recover arrears, IF ANY
+
+
+
                     trigger OnAction()
                     var
                         FundsUserSetup: Record "Funds User Setup";
@@ -240,7 +245,28 @@ page 57004 "Instant Loan Disbursement Card"
                         end;
                         // if Confirm('Are you sure you want to POST Loan Net amount of Ksh. ' + Format(Rec."Approved Amount") + ' to member -' + Format(Rec."Client Name") + ' ?', false) = false then begin
                         //     exit;
-                        if Confirm('Are you sure you want to POST Loan Net amount of Ksh. ' + Format(Rec."Approved Amount" - (Rec."Loan Processing Fee" + Rec."Loan Dirbusement Fee" + Rec."Loan Insurance" + REC."Top Up Amount")) + ' to member -' + Format(Rec."Client Name") + ' ?', false) = false then begin
+
+
+                        VarTotalToRecover := 0;
+                        LoansRec.Reset();
+                        LoansRec.SetRange("Client Code", Rec."Client Code");
+                        LoansRec.SetFilter("Outstanding Balance", '>0');
+                        LoansRec.SetFilter("Days In Arrears", '>30');
+                        LoansRec.SetFilter("Amount in Arrears", '>0');
+
+                        if LoansRec.FindSet() then begin
+
+                            repeat
+
+                                VarTotalToRecover += Round(LoansRec."Amount in Arrears", 1, '>');
+
+                            until LoansRec.Next() = 0;
+
+                        end;
+
+
+
+                        if Confirm('Are you sure you want to POST Loan Net amount of Ksh. ' + Format(Rec."Approved Amount" - (Rec."Loan Processing Fee" + Rec."Loan Dirbusement Fee" + Rec."Loan Insurance" + REC."Top Up Amount" + VarTotalToRecover)) + ' to member -' + Format(Rec."Client Name") + ' ?', false) = false then begin
                             exit;
                         end
                         else begin
@@ -574,6 +600,10 @@ page 57004 "Instant Loan Disbursement Card"
         RecordApproved: Boolean;
         SwizzApprovalsCodeUnit: Codeunit SwizzsoftApprovalsCodeUnit;
         CanCancelApprovalForRecord: Boolean;
+        VarTotalToRecover: Decimal;
+
+        LoansRec: Record "Loans Register";
+
 
     procedure UpdateControl()
     begin
@@ -806,9 +836,9 @@ page 57004 "Instant Loan Disbursement Card"
         AmountTop: Decimal;
         NetAmount: Decimal;
         bankTransferCharges: Decimal;
-        LoansRec: Record "Loans Register";
         VarTotalRecovered: Decimal;
     begin
+
         AmountTop := 0;
         NetAmount := 0;
         bankTransferCharges := 0;
@@ -845,28 +875,6 @@ page 57004 "Instant Loan Disbursement Card"
         LineNo := LineNo + 10000;
         SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, Rec."Loan  No.", LineNo, GenJournalLine."Transaction Type"::Loan, GenJournalLine."Account Type"::Customer, LoanApps."Client Code", DirbursementDate, VarAmounttoDisburse, 'BOSA', LoanApps."Loan  No.", 'Loan Disbursement - ' + LoanApps."Loan Product Type", LoanApps."Loan  No.");
 
-        VarTotalRecovered := 0;
-        LoansRec.Reset();
-        LoansRec.SetRange("Client Code", Rec."Client Code");
-        LoansRec.SetFilter("Outstanding Balance", '>0');
-        LoansRec.SetFilter("Amount in Arrears", '>0');
-
-        if LoansRec.FindSet() then begin
-            repeat
-                LineNo := LineNo + 10000;
-                SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, Rec."Loan  No.", LineNo,
-                    GenJournalLine."Transaction Type"::"Loan Repayment",
-                    GenJournalLine."Account Type"::Customer, LoanApps."Client Code", DirbursementDate,
-                    LoansRec."Amount in Arrears" * -1, 'BOSA', LoanApps."Loan  No.",
-                    'Arrears Recovered from - ' + LoanApps."Loan  No.", LoansRec."Loan  No.");
-                VarTotalRecovered += LoansRec."Amount in Arrears";
-            until LoansRec.Next() = 0;
-
-            // Round to whole number at the end
-            VarTotalRecovered := Round(VarTotalRecovered, 1);
-        end;
-
-        VarAmounttoDisburse := VarAmounttoDisburse - VarTotalRecovered;
 
 
         //...................Cater for Loan Offset Now !
@@ -884,6 +892,36 @@ page 57004 "Instant Loan Disbursement Card"
                 UNTIL LoanTopUp.NEXT = 0;
             END;
         end;
+
+
+        //recover arrears, IF ANY
+        VarTotalRecovered := 0;
+        if VarTotalToRecover > 0 then begin
+
+
+            LoansRec.Reset();
+            LoansRec.SetRange("Client Code", Rec."Client Code");
+            LoansRec.SetFilter("Outstanding Balance", '>0');
+            LoansRec.SetFilter("Days In Arrears", '>30');
+            LoansRec.SetFilter("Amount in Arrears", '>0');
+
+            if LoansRec.FindSet() then begin
+
+                repeat
+                    LineNo := LineNo + 10000;
+                    SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, Rec."Loan  No.", LineNo,
+                           GenJournalLine."Transaction Type"::"Loan Repayment",
+                           GenJournalLine."Account Type"::Customer, LoanApps."Client Code", DirbursementDate,
+                           Round(LoansRec."Amount in Arrears", 1, '>') * -1, 'BOSA', LoanApps."Loan  No.",
+                           'Arrears Recovered from - ' + LoanApps."Loan  No.", LoansRec."Loan  No.");
+
+                    VarTotalRecovered += Round(LoansRec."Amount in Arrears", 1, '>');
+                until LoansRec.Next() = 0;
+            end;
+
+            VarAmounttoDisburse := VarAmounttoDisburse - VarTotalRecovered;
+        end;
+
 
         NetAmount := Rec."Approved Amount" - (Rec."Loan Processing Fee" + Rec."Loan Dirbusement Fee" + Rec."Loan Insurance" + AmountTop);
 
