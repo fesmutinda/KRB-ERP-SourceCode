@@ -309,7 +309,6 @@ Codeunit 50009 "Swizzsoft Factory"
                     if ObjLoansII."Repayment Method" = ObjLoansII."repayment method"::Amortised then begin
                         ObjLoansII.TestField(ObjLoansII.Installments);
                         ObjLoansII.TestField(ObjLoansII.Interest);
-                        ObjLoansII.TestField(ObjLoansII.Installments);
 
                         if VarTotalMRepay = 0 then begin
                             VarTotalMRepay := Round(VarLBalance * ((VarMonthlyInterest * Power((1 + VarMonthlyInterest), VarRepayPeriod)) / (Power((1 + VarMonthlyInterest), VarRepayPeriod) - 1)), 1);
@@ -332,6 +331,7 @@ Codeunit 50009 "Swizzsoft Factory"
                         if ObjLoansII."Loan Product Type" = 'LT008' then begin
                             ObjLoansII.TestField(ObjLoansII.Installments);
                             VarLPrincipal := ROUND(VarLoanAmount / VarRepayPeriod, 1, '>');
+                            VarTotalMRepay := VarLPrincipal;
 
                             // Fix 4: Proper record handling for modifications
                             if ObjLoansII.Get(ObjLoansII."Loan  No.") then begin

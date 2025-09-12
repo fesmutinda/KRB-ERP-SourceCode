@@ -399,6 +399,26 @@ Page 56031 "Loans Posted Card"
                     end;
                 }
 
+                action("Print Voucher")
+                {
+                    ApplicationArea = Basic;
+                    Caption = 'Print Voucher';
+                    Image = Print; // More appropriate icon for printing
+                    Promoted = true;
+                    PromotedCategory = Process;
+                    ToolTip = 'Print the loan disbursement voucher for this application';
+
+                    trigger OnAction()
+                    begin
+                        LoanApp.Reset;
+                        LoanApp.SetRange(LoanApp."Loan  No.", Rec."Loan  No.");
+
+                        if LoanApp.FindSet() then begin
+                            Report.Run(Report::"Loan Disbursement Voucher", true, false, LoanApp);
+                        end
+                    end;
+                }
+
 
                 separator(Action1102755012)
                 {

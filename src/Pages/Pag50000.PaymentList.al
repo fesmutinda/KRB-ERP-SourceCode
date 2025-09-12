@@ -34,11 +34,20 @@ Page 50000 "Payment List"
                 {
                     ApplicationArea = Basic;
                 }
-                field(Amount; Rec.Amount)
+                /* field(Amount; Rec.Amount)
                 {
                     ApplicationArea = Basic;
                 }
                 field("Amount(LCY)"; Rec."Amount(LCY)")
+                {
+                    ApplicationArea = Basic;
+                } */
+
+                field(Amount; Rec."Total Payment Amount")
+                {
+                    ApplicationArea = Basic;
+                }
+                field("Amount(LCY)"; Rec."Total Payment Amount LCY")
                 {
                     ApplicationArea = Basic;
                 }

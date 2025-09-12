@@ -199,9 +199,9 @@ Page 50001 "Payment Card"
                         Commit;
                         PHeader.Reset;
                         PHeader.SetRange(PHeader."No.", Rec."No.");
-                        // if PHeader.FindFirst then begin
-                        //     Report.RunModal(Report::"Payment Voucher", true, false, PHeader);
-                        // end;
+                        if PHeader.FindFirst then begin
+                            Report.RunModal(Report::"Payment Voucher", true, false, PHeader);
+                        end;
                     end else begin
                         Error('User Account Not Setup, Contact the System Administrator');
                     end
@@ -296,7 +296,7 @@ Page 50001 "Payment Card"
                     PHeader.Reset;
                     PHeader.SetRange(PHeader."No.", Rec."No.");
                     if PHeader.FindFirst then begin
-                        //Report.RunModal(Report::"Payment Voucher members", true, false, PHeader);
+                        Report.RunModal(Report::"Payment Voucher members", true, false, PHeader);
                     end;
                 end;
             }

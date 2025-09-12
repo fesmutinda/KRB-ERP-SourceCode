@@ -443,7 +443,7 @@ codeunit 51115 SwizzsoftApprovalsCodeUnit
     procedure FnOnCancelGuarantorSubApprovalRequest(var GuarantorSubstitution: Record "Guarantorship Substitution H")
     begin
     end;
-    //=============================================================================Payment Voucher
+    //============================================================================Payment Voucher
     procedure SendPaymentVoucherRequestForApproval(PaymentVoucher: Code[40]; var "Payment Header": Record "Payment Header")
     begin
         if FnCheckIfPaymentVoucherApprovalsWorkflowEnabled("Payment Header") then begin

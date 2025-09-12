@@ -92,7 +92,8 @@ pageextension 50628 "ChartOfAccountsCardExt" extends "G/L Account Card"
             }
             group("Mkopo Setup")
             {
-                Visible = false;
+                Visible = true;
+                Caption = 'Mkopo Setup';
                 field(Assets; Rec.Assets)
                 {
                     ApplicationArea = all;
@@ -120,6 +121,11 @@ pageextension 50628 "ChartOfAccountsCardExt" extends "G/L Account Card"
                 {
                     Caption = 'Other Mkopo Paramters';
                     ApplicationArea = all;
+                }
+                field("Budget Controlled"; Rec."Budget Controlled")
+                {
+                    ApplicationArea = all;
+                    Caption = 'Budget Controlled';
                 }
             }
         }

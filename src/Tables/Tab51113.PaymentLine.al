@@ -1088,7 +1088,7 @@ Table 51113 "Payment Line"//new one from Nav
         field(39005483; "Member Type"; Code[20])
         {
             DataClassification = ToBeClassified;
-            TableRelation = Customer."No." where(Gender3 = filter(Male));
+            TableRelation = Customer."No." where(Gender = filter(Male));
 
             trigger OnValidate()
             begin

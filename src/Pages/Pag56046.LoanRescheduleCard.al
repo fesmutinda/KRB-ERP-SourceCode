@@ -68,7 +68,7 @@ Page 56046 "Loan Reschedule Card"
                 field(Installments; Rec.Installments)
                 {
                     ApplicationArea = Basic;
-                    Editable = InstallmentEditable;
+                    Editable = true;
 
                     // trigger OnValidate()
                     // begin
@@ -365,40 +365,8 @@ Page 56046 "Loan Reschedule Card"
                                 LoanApps.SetRange(LoanApps."Loan  No.", Rec."Loan  No.");
 
                                 if LoanApps.FindSet then begin
-                                    FnInsertBOSALines(LoanApps, LoanApps."Loan  No.");
-                                    //Post
-                                    GenJournalLine.Reset;
-                                    GenJournalLine.SetRange("Journal Template Name", TemplateName);
-                                    GenJournalLine.SetRange("Journal Batch Name", BatchName);
 
-                                    if GenJournalLine.Find('-') then begin
-                                        // Codeunit.Run(Codeunit::"Gen. Jnl.-Post Sacco", GenJournalLine);
-                                        Codeunit.Run(Codeunit::"Gen. Jnl.-Post Batch", GenJournalLine);
-                                        //FnSendNotifications(); //Send Notifications
-                                        Rec.Get(Rec."Loan  No.");
-                                        Rec."Loan Status" := Rec."Loan Status"::Issued;
-                                        Rec.Posted := true;
-                                        Rec."Posted By" := UserId;
-                                        Rec."Posting Date" := Today;
-                                        Rec."Issued Date" := Rec."Loan Disbursement Date";
-                                        Rec."Approval Status" := Rec."Approval Status"::Approved;
-                                        //Rec."Loans Category-SASRA" := Rec."Loans Category-SASRA"::Perfoming;
-
-                                        Rec."Loan Rescheduled Date" := Rec."Loan Disbursement Date";
-                                        Rec."Loan Rescheduled By" := UserId;
-                                        Rec."Loan Reschedule" := true;
-                                        //Rec.Modify(true);
-                                        if not Rec.Modify(true) then begin
-                                            GenJournalLine.Reset();
-                                            GenJournalLine.SetRange("Journal Template Name", TemplateName);
-                                            GenJournalLine.SetRange("Journal Batch Name", BatchName);
-                                            GenJournalLine.DeleteAll();
-                                        end;
-                                        //...................Recover Overdraft Loan On Loan
-                                        // SFactory.FnRecoverOnLoanOverdrafts(Rec."Client Code");
-
-
-                                    end;
+                                    Sfactorycode.FnGenerateRepaymentSchedule(Rec."Loan  No.");
 
                                     Message('Loan Rescheduled successfully.');
 
@@ -712,6 +680,9 @@ Page 56046 "Loan Reschedule Card"
         LoanExtensionAmount: Decimal;
 
         BankTransferCharges: Decimal;
+
+        Sfactorycode: Codeunit "Swizzsoft Factory";
+
 
 
     procedure UpdateControl()

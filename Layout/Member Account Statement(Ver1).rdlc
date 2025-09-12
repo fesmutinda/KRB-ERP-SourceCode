@@ -5544,7 +5544,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>JUNIOR DEPOSITS</Value>
+                    <Value>=Fields!JuniorHeaderText.Value</Value>
                     <Style>
                       <FontStyle>Normal</FontStyle>
                       <FontSize>9pt</FontSize>
@@ -5552,7 +5552,9 @@
                     </Style>
                   </TextRun>
                 </TextRuns>
-                <Style />
+                <Style>
+                  <TextAlign>Left</TextAlign>
+                </Style>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox9</rd:DefaultName>
@@ -5561,6 +5563,9 @@
             <Height>0.18029in</Height>
             <Width>7.85344in</Width>
             <ZIndex>25</ZIndex>
+            <Visibility>
+              <Hidden>=CountRows() = 0</Hidden>
+            </Visibility>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -6077,6 +6082,15 @@ kHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpBvD/AZI2
         </Field>
         <Field Name="Company_Email">
           <DataField>Company_Email</DataField>
+        </Field>
+        <Field Name="ShowJuniorHeader">
+          <DataField>ShowJuniorHeader</DataField>
+        </Field>
+        <Field Name="JuniorHeaderText">
+          <DataField>JuniorHeaderText</DataField>
+        </Field>
+        <Field Name="HasJuniorData">
+          <DataField>HasJuniorData</DataField>
         </Field>
         <Field Name="PostingDate_ShareCapital">
           <DataField>PostingDate_ShareCapital</DataField>
