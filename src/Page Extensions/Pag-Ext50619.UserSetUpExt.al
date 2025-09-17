@@ -47,6 +47,10 @@ pageextension 50619 "UserSetUpExt" extends "User Setup"
             {
 
             }
+            field("Employee No."; Rec."Employee No.")
+            {
+                ApplicationArea = All;
+            }
             field("Exempt Logs"; Rec."Exempt Logs")
             {
 
@@ -57,6 +61,10 @@ pageextension 50619 "UserSetUpExt" extends "User Setup"
             }
             field("Role Centre"; Rec."Role Centre")
             {
+            }
+            field("HOD User"; Rec."HOD User")
+            {
+
             }
         }
 

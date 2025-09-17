@@ -13,6 +13,7 @@ codeunit 51115 SwizzsoftApprovalsCodeUnit
         LoanBatches: Record "Loan Disburesment-Batching";
         GuarantorSubstitution: Record "Guarantorship Substitution H";
         PaymentVoucher: Record "Payment Header";
+        leaveApplication: Record "Leave Application";
         FundsTransferHeader: Record "Funds Transfer Header";
         FOSAProductApplicationTable: Record "Accounts Applications Details";
         LoanRecoveryApplicationTable: Record "Loan Recovery Header";
@@ -20,6 +21,7 @@ codeunit 51115 SwizzsoftApprovalsCodeUnit
         NoWorkflowEnabledErr: Label 'No Approval workflow for this record type is enabled';
         WorkflowManagement: Codeunit "Workflow Management";
 
+    //..................................................................................Leave Applications
 
     //1)--------------------------------------------------------------------Send Membership Applications request For Approval start
     procedure SendMembershipApplicationsRequestForApproval(MemberApplicationNo: Code[40]; var "Membership Applications": Record "Membership Applications")

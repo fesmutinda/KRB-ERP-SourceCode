@@ -2892,6 +2892,139 @@ Page 56043 "KRB Sacco Role Center"
                     Caption = 'Approval Details Rec';
                 }
             }
+            group("Leave Management")
+            {
+                Image = Administration;
+                Caption = 'Leave Management';
+                group("Leave")
+                {
+                    Caption = 'Leave Applications';
+                    action("Leave Applications-Open")
+                    {
+                        RunObject = page "Leave Application List";
+                        RunPageLink = Status = const(Open);
+                        ToolTip = 'Executes the Leave Applications action';
+                        Caption = 'Leave Applications-Open';
+                    }
+                    action("Leave Applications-Pending Approval")
+                    {
+                        RunObject = page "Leave Application List";
+                        RunPageLink = Status = const("Pending Approval");
+                        ToolTip = 'Executes the Leave Applications action';
+                        Caption = 'Leave Applications-Pending';
+                    }
+                    action("Leave Applications-Approved")
+                    {
+                        RunObject = page "Leave Application List";
+                        RunPageLink = Status = const(Released);
+                        ToolTip = 'Executes the Leave Applications action';
+                        Caption = 'Leave Applications-Approved';
+                    }
+                    action("Leave Applications-Rejected")
+                    {
+                        RunObject = page "Leave Application List";
+                        RunPageLink = Status = const(Rejected);
+                        ToolTip = 'Executes the Leave Applications action';
+                        Caption = 'Leave Applications-Rejected';
+                    }
+                }
+                group("Leave Adjustments ")
+                {
+                    action("Leave Adjustments")
+                    {
+                        RunObject = page "Leave Adjustment List";
+                        RunPageLink = Posted = filter(false);
+                        ToolTip = 'Executes the Leave Adjustments action';
+                        Caption = 'Leave Adjustments';
+                    }
+                    action("Posted Leave Adjustments")
+                    {
+                        RunObject = page "Leave Adjustment List";
+                        RunPageLink = Posted = filter(true);
+                        ToolTip = 'Executes the Posted Leave Adjustments action';
+                        Caption = 'Posted Leave Adjustments';
+                    }
+                }
+                group("Leave Recalls")
+                {
+                    action("Leave Recall")
+                    {
+                        RunObject = page "Leave Recall List";
+                        RunPageLink = Completed = filter(false);
+                        ToolTip = 'Executes the Leave Recall action';
+                        Caption = 'Leave Recall';
+                    }
+                    action("Completed Leave Recalls")
+                    {
+                        RunObject = page "Leave Recall List";
+                        RunPageLink = Completed = filter(true);
+                        ToolTip = 'Executes the Completed Leave Recalls action';
+                        Caption = 'Completed Leave Recalls';
+                    }
+                }
+                group("Leave Planner ")
+                {
+                    Caption = 'Leave Planner ';
+                    action("Leave Planner")
+                    {
+                        RunObject = page "Leave Planner List";
+                        ToolTip = 'Executes the Assign Leave Days action';
+                        Caption = 'Leave Planner';
+                    }
+                }
+                group("Leave Reports")
+                {
+                    Caption = 'Leave Reports';
+                    action("Leave Applications Report")
+                    {
+                        RunObject = report "Leave Applications";
+                        ToolTip = 'Executes the Leave Balances action';
+                        Caption = 'Leave Applications';
+                    }
+                    action("Leave Balances")
+                    {
+                        RunObject = report "Leave Balance";
+                        ToolTip = 'Executes the Leave Balances action';
+                        Caption = 'Leave Balances';
+                    }
+                    action("Leave Statement")
+                    {
+                        RunObject = report "HR Staff Leave Statement";
+                        ToolTip = 'Executes the Leave Statement action';
+                        Caption = 'Leave Statement';
+                    }
+                }
+                group("Leave Setups")
+                {
+                    Caption = 'Leave Setups';
+                    action("Leave Types")
+                    {
+                        RunObject = page "Leave Types Setup";
+                        ToolTip = 'Executes the Leave Types action';
+                        Caption = 'Leave Types';
+                    }
+                    action("Leave Period")
+                    {
+                        RunObject = page "Leave Periods";
+                        ToolTip = 'Executes the Leave Period action';
+                        Caption = 'Leave Period';
+                    }
+                    action("Base Calendar")
+                    {
+                        RunObject = page "Base Calendar List";
+                        ToolTip = 'Executes the Base Calendar List action';
+                        Caption = 'Base Calendar';
+                    }
+                }
+                group("Leave Archive")
+                {
+                    action("Leave Ledger")
+                    {
+                        RunObject = page "HR Leave Ledger Entries";
+                        Caption = 'Leave Ledger Entries';
+                    }
+                }
+            }
 
 
             group("Ledger Accounting")

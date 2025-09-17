@@ -72,12 +72,12 @@ codeunit 50004 "Custom Workflow Events"
 
         //-------------------------------------------End Approval Events-------------------------------------------------------------
 
-        //Leave Application
-        // WFHandler.AddEventToLibrary(RunWorkflowOnSendLeaveApplicationForApprovalCode,
-        //                     Database::"HR Leave Application", 'Approval of Leave Application is Requested.', 0, false);
-        // WFHandler.AddEventToLibrary(RunWorkflowOnCancelLeaveApplicationApprovalRequestCode,
-        //                             Database::"HR Leave Application", 'An Approval request for  Leave Application is canceled.', 0, false);
-        //Guarantor Substitution
+        // Leave Application
+        WFHandler.AddEventToLibrary(RunWorkflowOnSendLeaveApplicationForApprovalCode,
+                            Database::"Leave Application", 'Approval of Leave Application is Requested.', 0, false);
+        WFHandler.AddEventToLibrary(RunWorkflowOnCancelLeaveApplicationApprovalRequestCode,
+                                    Database::"Leave Application", 'An Approval request for  Leave Application is canceled.', 0, false);
+        //  Guarantor Substitution
         WFHandler.AddEventToLibrary(RunWorkflowOnSendGuarantorSubForApprovalCode,
                             Database::"Guarantorship Substitution H", 'Approval of Guarantor Substitution is Requested.', 0, false);
         WFHandler.AddEventToLibrary(RunWorkflowOnCancelGuarantorSubApprovalRequestCode,
@@ -439,18 +439,18 @@ codeunit 50004 "Custom Workflow Events"
     end;
 
     // [EventSubscriber(ObjectType::Codeunit, Codeunit::SwizzsoftApprovalsCodeUnit, 'FnOnSendLeaveApplicationForApproval', '', false, false)]
-
-    // procedure RunWorkflowOnSendLeaveApplicationForApproval(var LeaveApplication: Record "HR Leave Application")
+    // procedure RunWorkflowOnSendLeaveApplicationForApproval(var LeaveApplication: Record "Leave Application")
     // begin
     //     WorkflowManagement.HandleEvent(RunWorkflowOnSendLeaveApplicationForApprovalCode, LeaveApplication);
     // end;
 
     // [EventSubscriber(ObjectType::Codeunit, Codeunit::SwizzsoftApprovalsCodeUnit, 'FnOnCancelLeaveApplicationApprovalRequest', '', false, false)]
-
-    // procedure RunWorkflowOnCancelLeaveApplicationApprovalRequest(var LeaveApplication: Record "HR Leave Application")
+    // procedure RunWorkflowOnCancelLeaveApplicationApprovalRequest(var LeaveApplication: Record "Leave Application")
     // begin
     //     WorkflowManagement.HandleEvent(RunWorkflowOnCancelLeaveApplicationApprovalRequestCode, LeaveApplication);
     // end;
+
+
     //...................................................................................................
     //8)Guarantor Substitution
     procedure RunWorkflowOnSendGuarantorSubForApprovalCode(): Code[128]//

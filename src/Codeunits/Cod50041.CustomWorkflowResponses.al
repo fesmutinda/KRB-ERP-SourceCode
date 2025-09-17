@@ -16,6 +16,7 @@ codeunit 50041 "Custom Workflow Responses"
 
     procedure OnAddWorkflowResponsePredecessorsToLibrary()
     begin
+
         // Payment Header
         WFResponseHandler.AddResponsePredecessor(WFResponseHandler.SetStatusToPendingApprovalCode,
                                                  SwizzsoftWFEvents.RunWorkflowOnSendPaymentVoucherForApprovalCode);
@@ -222,6 +223,7 @@ codeunit 50041 "Custom Workflow Responses"
         // LeaveApplication: Record "HR Leave Application";
         GuarantorSubstitution: Record "Guarantorship Substitution H";
         PaymentVoucher: Record "Payment Header";
+        LeaveApplication: Record "Leave Application";
         PettyCashReimbersement: Record "Funds Transfer Header";
         FOSAProductApplication: Record "Accounts Applications Details";
         LoanRecoveryApplication: Record "Loan Recovery Header";
@@ -260,6 +262,15 @@ codeunit 50041 "Custom Workflow Responses"
                     RecRef.SetTable(PaymentVoucher);
                     PaymentVoucher.Status := PaymentVoucher.Status::New;
                     PaymentVoucher.Modify(true);
+                    Handled := true;
+                end;
+
+            //Leave Application
+            DATABASE::"Leave Application":
+                begin
+                    RecRef.SetTable(LeaveApplication);
+                    LeaveApplication.Status := LeaveApplication.Status::Open;
+                    LeaveApplication.Modify(true);
                     Handled := true;
                 end;
 
@@ -366,6 +377,7 @@ codeunit 50041 "Custom Workflow Responses"
         LoanRecoveryApplication: Record "Loan Recovery Header";
         MembershipExist: Record "Membership Exist";
         MemberReapplication: Record "Member Reapplication";
+        LeaveApplication: Record "Leave Application";
     begin
         RecRef.GetTable(Variant);
         case RecRef.Number of
@@ -399,6 +411,14 @@ codeunit 50041 "Custom Workflow Responses"
                     RecRef.SetTable(PaymentVoucher);
                     PaymentVoucher.Validate(Status, PaymentVoucher.Status::"Pending Approval");
                     PaymentVoucher.Modify(true);
+                    IsHandled := true;
+                end;
+            //Leave Application
+            Database::"Leave Application":
+                begin
+                    RecRef.SetTable(LeaveApplication);
+                    LeaveApplication.Validate(Status, LeaveApplication.Status::"Pending Approval");
+                    LeaveApplication.Modify(true);
                     IsHandled := true;
                 end;
             //Guarantor Substitution
@@ -521,6 +541,7 @@ codeunit 50041 "Custom Workflow Responses"
         MembershipExist: Record "Membership Exist";
         MemberReapplication: Record "Member Reapplication";
         instantLoanApplications: Record "Loans Register";
+        LeaveApplication: Record "Leave Application";
     begin
         case RecRef.Number of
             //Membership Reapplication
@@ -553,6 +574,14 @@ codeunit 50041 "Custom Workflow Responses"
                     RecRef.SetTable(PaymentVoucher);
                     PaymentVoucher.Status := PaymentVoucher.Status::Approved;
                     PaymentVoucher.Modify(true);
+                    Handled := true;
+                end;
+            //Leave Application
+            DATABASE::"Leave Application":
+                begin
+                    RecRef.SetTable(LeaveApplication);
+                    LeaveApplication.Status := LeaveApplication.Status::Released;
+                    LeaveApplication.Modify(true);
                     Handled := true;
                 end;
 
