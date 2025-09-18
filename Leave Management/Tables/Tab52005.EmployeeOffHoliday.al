@@ -2,7 +2,7 @@ table 52005 "Employee Off/Holiday"
 {
     DrillDownPageID = "Leave Recall List";
     LookupPageID = "Leave Recall List";
-    DataClassification = CustomerContent;
+    // DataClassification = CustomerContent;
     Caption = 'Leave Recall';
 
     fields
@@ -55,6 +55,10 @@ table 52005 "Employee Off/Holiday"
                 
                   "No. of Off Days":=NoOfDaysOff;
                 */
+
+                // Set flag to prevent recursive validation
+                SkipRecallDateValidation := true;
+
                 LeaveApplication.Reset();
                 LeaveApplication.SetRange(LeaveApplication."Application No", "Leave Application");
                 if LeaveApplication.FindFirst() then begin
@@ -62,8 +66,14 @@ table 52005 "Employee Off/Holiday"
                     "Employee Name" := LeaveApplication."Employee Name";
                     "Leave Start Date" := LeaveApplication."Start Date";
                     "Leave Ending Date" := LeaveApplication."End Date";
+                    // if LeaveApplication."Start Date" <> 0D then
+                    //     "Leave Start Date" := LeaveApplication."Start Date";
+                    // if LeaveApplication."End Date" <> 0D then
+                    //     "Leave Ending Date" := LeaveApplication."End Date";
                 end;
 
+                // Reset flag
+                SkipRecallDateValidation := false;
             end;
         }
         field(6; "Recall Date"; Date)
@@ -72,7 +82,9 @@ table 52005 "Employee Off/Holiday"
 
             trigger OnValidate()
             begin
-                Validate("Leave Application");
+                // Only validate Leave Application if we're not in a recursive call
+                if not SkipRecallDateValidation then
+                    Validate("Leave Application");
             end;
         }
         field(7; "No. of Off Days"; Decimal)
@@ -82,6 +94,7 @@ table 52005 "Employee Off/Holiday"
         field(8; "Leave Ending Date"; Date)
         {
             Caption = 'Leave Ending Date';
+
         }
         field(9; "Maturity Date"; Date)
         {
@@ -139,8 +152,6 @@ table 52005 "Employee Off/Holiday"
 
             trigger OnValidate()
             begin
-
-
                 if "Recalled From" < "Recall Date" then Error(Error000);
                 if "Recalled From" < "Leave Start Date" then Error(Error001);
                 if "Recalled From" > "Leave Ending Date" then Error(Error001);
@@ -251,6 +262,7 @@ table 52005 "Employee Off/Holiday"
         field(24; "Leave Start Date"; Date)
         {
             Caption = 'Leave Start Date';
+
         }
     }
 
@@ -286,19 +298,16 @@ table 52005 "Employee Off/Holiday"
         Emp: Record Employee;
         HRSetup: Record "Human Resources Setup";
         LeaveApplication: Record "Leave Application";
+        LeaveApplicationType: Record "Leave Application Type";
         LeaveTypes: Record "Leave Type";
         HRmgt: Codeunit "HR Management";
         NoSeriesMgt: Codeunit NoSeriesManagement;
         d: Date;
         NonworkingDaysRecall: Decimal;
+        SkipRecallDateValidation: Boolean; // Added flag to prevent recursive validation
         Error000: Label 'You cannot Recall Someone earlier than Today';
         Error001: Label 'Recall start date must be later than leave start date and earlier than leave end date';
         Error002: Label 'Recall end date must be later than leave start date and earlier than leave end date';
         Error003: Label 'Recall end date must be later than recall start date';
         Description: Text[30];
 }
-
-
-
-
-

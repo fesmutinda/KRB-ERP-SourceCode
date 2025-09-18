@@ -52,6 +52,7 @@ page 52021 "Leave Planner Card"
                     if Confirm('Are you sure you want to approve the Leave Plan?', false) then begin
                         Rec.Status := Rec.Status::Approved;
                         Rec.Modify();
+                        CurrPage.Close();
                     end;
                 end;
             }

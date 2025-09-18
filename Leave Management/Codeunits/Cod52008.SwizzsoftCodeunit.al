@@ -198,6 +198,7 @@ codeunit 52005 "Approval Mgt HR Ext"
     begin
         exit(WorkflowManagement.CanExecuteWorkflow(EmpActing, WorkflowEventHandling.RunWorkflowOnSendEmpActingPromotionForApprovalCode()));
     end;
+    //leave adjustment approval
 
     procedure CheckLeaveAdjWorkflowEnabled(var LeaveAdj: Record "Leave Bal Adjustment Header"): Boolean
     begin

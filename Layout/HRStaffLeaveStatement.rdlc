@@ -36,7 +36,7 @@
               </TablixColumns>
               <TablixRows>
                 <TablixRow>
-                  <Height>0.35417in</Height>
+                  <Height>0.25in</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -376,7 +376,7 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Balance">
+                        <Textbox Name="Textbox63">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -395,7 +395,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Balance</rd:DefaultName>
+                          <rd:DefaultName>Textbox63</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -486,14 +486,14 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox2">
+                        <Textbox Name="Textbox16">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>Sub-Total</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -506,7 +506,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox2</rd:DefaultName>
+                          <rd:DefaultName>Textbox16</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -519,7 +519,6 @@
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -677,9 +676,8 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Balance</Value>
+                                  <Value>Grand Total</Value>
                                   <Style>
-                                    <FontFamily>Tahoma</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -794,7 +792,7 @@
               <TablixMembers>
                 <TablixMember>
                   <TablixHeader>
-                    <Size>1.35462in</Size>
+                    <Size>0.88588in</Size>
                     <CellContents>
                       <Textbox Name="Textbox28">
                         <CanGrow>true</CanGrow>
@@ -933,7 +931,7 @@
                     </SortExpression>
                   </SortExpressions>
                   <TablixHeader>
-                    <Size>1.35462in</Size>
+                    <Size>0.88588in</Size>
                     <CellContents>
                       <Textbox Name="StaffName_HRLeaveLedgerEntries1">
                         <CanGrow>true</CanGrow>
@@ -1119,9 +1117,8 @@
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>DataSet_Result</DataSetName>
-            <Top>0.25in</Top>
-            <Height>1.10417in</Height>
-            <Width>6.9028in</Width>
+            <Height>1in</Height>
+            <Width>6.43406in</Width>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1129,13 +1126,13 @@
             </Style>
           </Tablix>
         </ReportItems>
-        <Height>3.43959cm</Height>
+        <Height>2.54cm</Height>
         <Style />
       </Body>
-      <Width>17.53314cm</Width>
+      <Width>17.78122cm</Width>
       <Page>
         <PageHeader>
-          <Height>2.98239cm</Height>
+          <Height>2.98238cm</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
@@ -1465,12 +1462,6 @@ End Function
         </Field>
         <Field Name="PostingDate_HRLeaveLedgerEntries">
           <DataField>PostingDate_HRLeaveLedgerEntries</DataField>
-        </Field>
-        <Field Name="Balance">
-          <DataField>Balance</DataField>
-        </Field>
-        <Field Name="BalanceFormat">
-          <DataField>BalanceFormat</DataField>
         </Field>
         <Field Name="LeaveEntryType_HRLeaveLedgerEntries">
           <DataField>LeaveEntryType_HRLeaveLedgerEntries</DataField>

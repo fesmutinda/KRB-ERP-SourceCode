@@ -77,6 +77,11 @@ page 52005 "Leave Recall"
                     Editable = false;
                     ToolTip = 'Specifies the value of the Status field';
                 }
+                field(Completed; Rec.Completed)
+                {
+                    Editable = false;
+                    ToolTip = 'Specifies the value of the Completed field';
+                }
             }
         }
     }
@@ -95,9 +100,13 @@ page 52005 "Leave Recall"
 
                 trigger OnAction()
                 begin
+                    if Rec.Completed then
+                        Message('The recall %1 has already been completed.', Rec."No.");
+                    CurrPage.Close();
+
                     if Recall.Get(Rec."No.") then begin
                         HRMgnt.LeaveRecall(Rec."No.");
-                        //"No. of Off Days":=EmpLeave."Recalled Days";
+                        // "No. of Off Days":=EmpLeave."Recalled Days";
                         Recall.Completed := true;
                         Recall.Modify();
                         Message(Text0001, Rec."No.");
@@ -121,8 +130,9 @@ page 52005 "Leave Recall"
                     Rec.TestField("Recalled By");
                     Rec.TestField("Reason for Recall");
 
-                    // if ApprovalsMgmt.CheckLeaveRecallWorkflowEnabled(Rec) then
-                    //   ApprovalsMgmt.OnSendLeaveRecallRequestforApproval(Rec);
+                    if ApprovalsMgmt.CheckLeaveRecallWorkflowEnabled(Rec) then
+                        ApprovalsMgmt.OnSendLeaveRecallRequestforApproval(Rec);
+                    CurrPage.Close();
                 end;
             }
             action("Cancel Approval Request")
@@ -137,7 +147,8 @@ page 52005 "Leave Recall"
 
                 trigger OnAction()
                 begin
-                    // ApprovalsMgmt.OnCancelLeaveRecallApprovalRequest(Rec);
+                    ApprovalsMgmt.OnCancelLeaveRecallApprovalRequest(Rec);
+                    CurrPage.Close();
                 end;
             }
             action(ViewApprovals)
@@ -164,7 +175,7 @@ page 52005 "Leave Recall"
 
     var
         Recall: Record "Employee Off/Holiday";
-        // ApprovalsMgmt: Codeunit "Approval Mgt HR Ext";
+        ApprovalsMgmt: Codeunit "Approval Mgt HR Ext";
         HRMgnt: Codeunit "HR Management";
         Text0001: Label 'The recall %1 has been completed';
 }

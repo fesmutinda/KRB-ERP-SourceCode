@@ -2,7 +2,7 @@ table 52015 "Leave Bal Adjustment Header"
 {
     DrillDownPageId = "Leave Adjustment List";
     LookupPageId = "Leave Adjustment List";
-    DataClassification = CustomerContent;
+    //DataClassification = CustomerContent;
     Caption = 'Leave Bal Adjustment Header';
     fields
     {

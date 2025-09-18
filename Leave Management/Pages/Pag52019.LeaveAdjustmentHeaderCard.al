@@ -11,6 +11,7 @@ page 52019 "Leave Adjustment Header"
         {
             group(General)
             {
+                Editable = Rec.Status = Rec.Status::Open;
                 field("Code"; Rec.Code)
                 {
                     ToolTip = 'Specifies the value of the Code field';
@@ -63,6 +64,7 @@ page 52019 "Leave Adjustment Header"
             part(Control11; "Leave Adjustment Lines")
             {
                 SubPageLink = "Header No." = field(Code);
+                Editable = Rec.Status = Rec.Status::Open;
             }
         }
     }
@@ -82,8 +84,19 @@ page 52019 "Leave Adjustment Header"
 
                 trigger OnAction()
                 begin
-                    Rec.TestField(Posted, false);
-                    Rec.TestField(Status, Rec.Status::Released);
+                    //  Rec.TestField(Posted, false);
+                    // Rec.TestField(Status, Rec.Status::Released);
+                    if Rec.Posted then begin
+                        Message('This leave has already been posted and cannot be adjusted.');
+                        exit; // stop further processing
+                    end;
+
+                    if Rec.Status <> Rec.Status::Released then begin
+                        Message('Leave must be in Released status before adjustment.');
+                        exit;
+                    end;
+
+
                     if Confirm(Text001, false) then
                         HRMgnt.LeaveAdjustment(Rec.Code);
 
@@ -140,6 +153,7 @@ page 52019 "Leave Adjustment Header"
                 begin
                     if ApprovalsMgmt.CheckLeaveAdjWorkflowEnabled(Rec) then
                         ApprovalsMgmt.OnSendLeaveAdjApproval(Rec);
+                    CurrPage.Close();
                 end;
             }
             action("Cancel Approval")
@@ -154,6 +168,7 @@ page 52019 "Leave Adjustment Header"
                 trigger OnAction()
                 begin
                     ApprovalsMgmt.OnCancelLeaveAdjApproval(Rec);
+                    CurrPage.Close();
                 end;
             }
             action(Approval)

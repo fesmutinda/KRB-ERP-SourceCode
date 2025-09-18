@@ -1,6 +1,6 @@
 table 52017 "Leave Bal Adjustment Lines"
 {
-    DataClassification = CustomerContent;
+    //DataClassification = CustomerContent;
     Caption = 'Leave Bal Adjustment Lines';
     fields
     {

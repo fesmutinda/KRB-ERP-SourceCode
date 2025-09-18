@@ -32,6 +32,10 @@ pageextension 52001 HumanResSetupExt extends "Human Resources Setup"
                     ApplicationArea = All;
                     //   ToolTip = 'Specifies the value of the Default Base Calendar field';
                 }
+                field("Human Resource Emails"; Rec."Human Resource Emails")
+                {
+                    ApplicationArea = All;
+                }
 
             }
         }

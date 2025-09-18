@@ -302,6 +302,10 @@ codeunit 52001 "HR Management"
                 LeaveLedg."Staff No." := CopyStr(LeaveAdjustLines."Staff No.", 1, MaxStrLen(LeaveLedg."Staff No."));
                 LeaveLedg."Leave Entry Type" := LeaveAdjustLines."Leave Adj Entry Type";
                 LeaveLedg."Leave Period Code" := LeaveAdjustLines."Leave Period";
+                if LeaveLedg."Leave Entry Type" = LeaveLedg."Leave Entry Type"::Negative then
+                    LeaveLedg."No. of days" := -LeaveAdjustLines."New Entitlement"
+                else
+                    LeaveLedg."No. of days" := LeaveAdjustLines."New Entitlement";
                 if Employee.Get(LeaveLedg."Staff No.") then begin
                     LeaveLedg."Job ID" := Employee."Job Position";
                     LeaveLedg."Job Group" := CopyStr(Employee."Salary Scale", 1, MaxStrLen(LeaveLedg."Job Group"));
@@ -453,9 +457,10 @@ codeunit 52001 "HR Management"
             LeaveLedg."No. of days" := EmpOff_Holiday."No. of Off Days";
             LeaveLedg."Transaction Type" := LeaveLedg."Transaction Type"::"Leave Recall";
             LeaveLedg.Insert();
+            // Message('Leave recall processed successfully');
 
-            if Confirm('Do you want to notify the Employee via mail?') then
-                NotifyLeaveRecallee(EmpOff_Holiday);
+            //if Confirm('Do you want to notify the Employee via mail?') then
+            //  NotifyLeaveRecallee(EmpOff_Holiday);
         end;
     end;
 
