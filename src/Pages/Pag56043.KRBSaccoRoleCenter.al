@@ -2933,14 +2933,14 @@ Page 56043 "KRB Sacco Role Center"
                     action("Leave Adjustments")
                     {
                         RunObject = page "Leave Adjustment List";
-                        RunPageLink = Posted = filter(false);
+                        RunPageLink = Posted = const(false);
                         ToolTip = 'Executes the Leave Adjustments action';
                         Caption = 'Leave Adjustments';
                     }
                     action("Posted Leave Adjustments")
                     {
                         RunObject = page "Leave Adjustment List";
-                        RunPageLink = Posted = filter(true);
+                        RunPageLink = Posted = const(true);
                         ToolTip = 'Executes the Posted Leave Adjustments action';
                         Caption = 'Posted Leave Adjustments';
                     }
@@ -2950,14 +2950,14 @@ Page 56043 "KRB Sacco Role Center"
                     action("Leave Recall")
                     {
                         RunObject = page "Leave Recall List";
-                        RunPageLink = Completed = filter(false);
+                        RunPageLink = Completed = const(false);
                         ToolTip = 'Executes the Leave Recall action';
                         Caption = 'Leave Recall';
                     }
                     action("Completed Leave Recalls")
                     {
                         RunObject = page "Leave Recall List";
-                        RunPageLink = Completed = filter(true);
+                        RunPageLink = Completed = const(true);
                         ToolTip = 'Executes the Completed Leave Recalls action';
                         Caption = 'Completed Leave Recalls';
                     }
@@ -2970,6 +2970,7 @@ Page 56043 "KRB Sacco Role Center"
                         RunObject = page "Leave Planner List";
                         ToolTip = 'Executes the Assign Leave Days action';
                         Caption = 'Leave Planner';
+                        Visible = false;
                     }
                 }
                 group("Leave Reports")
@@ -2978,6 +2979,7 @@ Page 56043 "KRB Sacco Role Center"
                     action("Leave Applications Report")
                     {
                         RunObject = report "Leave Applications";
+
                         ToolTip = 'Executes the Leave Balances action';
                         Caption = 'Leave Applications';
                     }
@@ -3014,6 +3016,7 @@ Page 56043 "KRB Sacco Role Center"
                         RunObject = page "Base Calendar List";
                         ToolTip = 'Executes the Base Calendar List action';
                         Caption = 'Base Calendar';
+                        Visible = false;
                     }
                 }
                 group("Leave Archive")

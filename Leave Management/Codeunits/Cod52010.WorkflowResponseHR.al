@@ -18,7 +18,7 @@ codeunit 52004 "Workflow Responses HR"
             LeaveRec.Status := LeaveRec.Status::Released;
             LeaveRec.Modify(true);
             //Recall
-            HRMgnt.LeaveRecall(LeaveRec."No.");
+            // HRMgnt.LeaveRecall(LeaveRec."No.");
         end;
     end;
 
@@ -57,9 +57,9 @@ codeunit 52004 "Workflow Responses HR"
             Leave.Validate(Status, Leave.Status::Released);
             Leave.Modify(true);
             //Message('Leave status is %1', Leave.Status);
-            HRMgnt.LeaveApplication(Leave."Application No");
+            //HRMgnt.LeaveApplication(Leave."Application No");
 
-            HRMgnt.NotifyLeaveReliever(Leave."Application No");
+            // HRMgnt.NotifyLeaveReliever(Leave."Application No");
             // Message('2 Leave status is %1', Leave.Status);
             //if guiAllowed then begin
             //if Confirm('Do you want to notify the leave applicant and their reliever(s)', false) then

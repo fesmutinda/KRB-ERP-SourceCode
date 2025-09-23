@@ -28,7 +28,7 @@ table 52005 "Employee Off/Holiday"
         }
         field(5; "Leave Application"; Code[20])
         {
-            TableRelation = "Leave Application"."Application No" where(Status = const(Released));
+            TableRelation = "Leave Application"."Application No" where(Post = const(true));
             Caption = 'Leave Application';
 
             trigger OnValidate()
@@ -64,12 +64,17 @@ table 52005 "Employee Off/Holiday"
                 if LeaveApplication.FindFirst() then begin
                     "Employee No" := LeaveApplication."Employee No";
                     "Employee Name" := LeaveApplication."Employee Name";
-                    "Leave Start Date" := LeaveApplication."Start Date";
-                    "Leave Ending Date" := LeaveApplication."End Date";
-                    // if LeaveApplication."Start Date" <> 0D then
-                    //     "Leave Start Date" := LeaveApplication."Start Date";
-                    // if LeaveApplication."End Date" <> 0D then
-                    //     "Leave Ending Date" := LeaveApplication."End Date";
+
+                    // Get dates directly from Leave Application Type table
+                    LeaveApplicationType.Reset();
+                    LeaveApplicationType.SetRange("Leave Code", "Leave Application");
+                    if LeaveApplicationType.FindFirst() then begin
+                        //   if LeaveApplicationType."Start Date" <> 0D then
+                        "Leave Start Date" := LeaveApplicationType."Start Date";
+                        //  if LeaveApplicationType."End Date" <> 0D then
+                        "Leave Ending Date" := LeaveApplicationType."End Date";
+                    end;
+
                 end;
 
                 // Reset flag
@@ -144,7 +149,7 @@ table 52005 "Employee Off/Holiday"
         }
         field(18; Completed; Boolean)
         {
-            Caption = 'Completed';
+            Caption = 'Recall Completed';
         }
         field(20; "Recalled From"; Date)
         {
@@ -263,6 +268,16 @@ table 52005 "Employee Off/Holiday"
         {
             Caption = 'Leave Start Date';
 
+        }
+        field(25; "Processed By"; Code[50])
+        {
+            Editable = false;
+            Caption = 'Processed By';
+        }
+        field(26; "Processed Date"; Date)
+        {
+            Editable = false;
+            Caption = 'Processed Date';
         }
     }
 

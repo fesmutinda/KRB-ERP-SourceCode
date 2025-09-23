@@ -2,6 +2,7 @@ page 52012 "Leave Application Type"
 {
     ApplicationArea = All;
     PageType = ListPart;
+    RefreshOnActivate = true;
     SourceTable = "Leave Application Type";
     Caption = 'Current Application Details';
     layout
@@ -44,7 +45,7 @@ page 52012 "Leave Application Type"
                     trigger OnValidate()
                     begin
 
-                        CurrPage.Update();
+                        CurrPage.Update(true);
                     end;
 
                 }
@@ -55,7 +56,7 @@ page 52012 "Leave Application Type"
                     ToolTip = 'Leave Earned to Date';
                     trigger OnValidate()
                     begin
-                        CurrPage.Update();
+                        CurrPage.Update(true);
                     end;
 
                 }
@@ -65,7 +66,7 @@ page 52012 "Leave Application Type"
                     ToolTip = 'Days Applied';
                     trigger OnValidate()
                     begin
-                        CurrPage.Update();
+                        CurrPage.Update(true);
                     end;
                 }
                 field("Start Date"; Rec."Start Date")
@@ -97,7 +98,7 @@ page 52012 "Leave Application Type"
                     // Visible = false;
                     trigger OnValidate()
                     begin
-                        CurrPage.Update();
+                        CurrPage.Update(true);
                     end;
 
                 }

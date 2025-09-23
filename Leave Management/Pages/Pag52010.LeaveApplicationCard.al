@@ -36,11 +36,14 @@ page 52010 "Leave Application Card"
                 field("Apply on behalf"; Rec."Apply on behalf")
                 {
                     ToolTip = 'Specifies the value of the Apply on behalf field';
+                    // Visible = false;
                 }
                 field("Employee No"; Rec."Employee No")
                 {
                     Enabled = Rec."Apply on behalf";
                     ToolTip = 'Specifies the value of the Employee No field';
+
+
                 }
                 field("Employee Name"; Rec."Employee Name")
                 {
@@ -106,8 +109,6 @@ page 52010 "Leave Application Card"
                     ToolTip = 'Specifies the value of the Status field';
                 }
 
-
-
                 field("Duties Taken Over By"; Rec."Duties Taken Over By")
                 {
                     Visible = false;
@@ -125,6 +126,22 @@ page 52010 "Leave Application Card"
                     Visible = false;
                     ToolTip = 'Specifies the value of the Leave Allowance Payable field';
                 }
+                group(History)
+                {
+                    Editable = false;
+                    field(Post; Rec.Post)
+                    {
+
+                    }
+                    field("Posted By"; Rec."Posted By")
+                    {
+
+                    }
+                    field("Posted Date"; Rec."Posted Date")
+                    {
+
+                    }
+                }
             }
             part("Leave Application Type"; "Leave Application Type")
             {
@@ -141,9 +158,11 @@ page 52010 "Leave Application Card"
         }
         area(factboxes)
         {
+
             part(LeaveStatistics; "Leave Statistics Factbox")
             {
                 Caption = 'Leave Statistics';
+                //Visible = false;
                 SubPageLink = "No." = field("Employee No"),
                                             "Leave Period Filter" = field("Leave Period"),
                                                 "Leave Type Filter" = field("Leave Code");
@@ -151,13 +170,15 @@ page 52010 "Leave Application Card"
             part(CommentsFactBox; "Approval Comments FactBox")
             {
                 SubPageLink = "Document No." = field("Application No");
+                Visible = false;
             }
-            part("Attached Documents"; "Document Attachment Factbox")
-            {
-                Caption = 'Attachments';
-                SubPageLink = "Table ID" = CONST(52146523),
-                              "No." = FIELD("Application No");
-            }
+            // part("Attached Documents"; "Document Attachment Factbox")
+            // {
+            //     Caption = 'Attachments';
+
+            //     SubPageLink = "Table ID" = CONST(52146523),
+            //                   "No." = FIELD("Application No");
+            // }
             //   part("Leave Relievers"; "Leave Relievers")
             // {
             //     SubPageLink = "Leave Code" = field("Leave Code");
@@ -173,6 +194,36 @@ page 52010 "Leave Application Card"
         {
             group(Action34)
             {
+                action(Post)
+                {
+                    Enabled = Rec."Status" = Rec."Status"::Released;
+                    Image = Post;
+                    Promoted = true;
+                    PromotedCategory = Process;
+                    PromotedIsBig = true;
+                    ToolTip = 'Executes the Post action';
+
+                    trigger OnAction()
+                    begin
+                        //  Rec.TestField(Posted, false);
+                        // Rec.TestField(Status, Rec.Status::Released);
+                        if Rec.Post then begin
+                            Message('This leave Application has already been posted.');
+                            exit; // stop further processing
+                        end;
+
+                        if Rec.Status <> Rec.Status::Released then begin
+                            Message('Leave must be in Released status before posting.');
+                            exit;
+                        end;
+
+
+                        if Confirm(Text001, false) then
+                            HRManagement.LeaveApplication(Rec."Application No");
+
+                        CurrPage.Close();
+                    end;
+                }
                 action("Send For Approval")
                 {
                     Caption = 'Send Approval Request';
@@ -344,12 +395,16 @@ page 52010 "Leave Application Card"
         LeaveApp: Record "Leave Application";
         ApprovalsMgmt: Codeunit "Approval Mgt HR Ext";
 
+
         HRMgt: Codeunit "HR Management";
+        EmployeeRec: Record Employee;
         HRManagement: Codeunit "HR Management";
         DocumentAttachment: Record "Document Attachment";
         LeaveType: Record "Leave Application Type";
         LeaveRelievers: Record "Leave Relievers";
         LeaveReliverErr: Label 'Please define at least one leave reliever';
+        Text001: Label 'Are you sure you want to post the leave Application?';
+
 
 
 }

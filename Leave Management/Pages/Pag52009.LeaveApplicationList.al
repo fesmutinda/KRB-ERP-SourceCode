@@ -49,6 +49,15 @@ page 52009 "Leave Application List"
                 {
                     ToolTip = 'Specifies the value of the Leave Period field';
                 }
+                field(Post; Rec.Post)
+                {
+
+                }
+                field("Posted By"; Rec."Posted By")
+                { }
+                field("Posted Date"; Rec."Posted Date")
+                { }
+                field("Leave Type"; Rec."Leave Type") { Visible = false; }
             }
         }
     }

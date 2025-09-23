@@ -232,7 +232,8 @@ table 52004 "HR Leave Ledger Entries"
 
     keys
     {
-        key(Key1; "Entry No.", "Document No.", "Staff No.")
+        key(Key1; "Entry No.")
+        // "Document No.", "Staff No.")
         {
             Clustered = true;
         }

@@ -11,23 +11,42 @@ table 52001 "Leave Application"
             NotBlank = false;
             TableRelation = Employee."No.";
             Caption = 'Employee No';
-
             trigger OnValidate()
+            var
+                LeaveAppType: Record "Leave Application Type";
+                ConfirmMsg: Label 'Changing the employee will delete all existing leave application lines. Do you want to continue?';
             begin
+                // Only proceed if the Employee No actually changed
+                if "Employee No" = xRec."Employee No" then
+                    exit;
 
+                // Check if there are existing Leave Application Type records
+                LeaveAppType.Reset();
+                LeaveAppType.SetRange("Leave Code", "Application No");
+                if LeaveAppType.FindSet() then begin
+                    // Ask for user confirmation before deleting existing records
+                    if GuiAllowed then
+                        if not Confirm(ConfirmMsg, false) then begin
+                            "Employee No" := xRec."Employee No"; // Revert the change
+                            exit;
+                        end;
 
+                    // Delete all existing Leave Application Type records for this application
+                    LeaveAppType.DeleteAll(true);
+                end;
+
+                // Continue with your existing employee validation logic
                 if EmployeeRec.Get("Employee No") then begin
                     "Employee Name" := EmployeeRec.FullName();
                     "Date of Joining Company" := EmployeeRec."Date Of Join";
                     "Shortcut Dimension 1 Code" := EmployeeRec."Global Dimension 1 Code";
                     "Shortcut Dimension 2 Code" := EmployeeRec."Global Dimension 2 Code";
                     "Mobile No" := EmployeeRec."Phone No.";
-                    "Email Adress" := LowerCase(employeerec."Company E-Mail");// Convert to lower case
-
+                    "Email Adress" := LowerCase(employeerec."Company E-Mail");
                 end;
 
-
             end;
+
         }
         field(2; "Application No"; Code[20])
         {
@@ -54,8 +73,10 @@ table 52001 "Leave Application"
                 LeaveApplication: Record "Leave Application";
                 OpenPendingLeaveErr: Label 'You have an open/pending %1 leave application %2. Kindly process that one before creating a new one';
                 LeavePeriods: Record "Leave Period";
+                LeaveApptype: Record "Leave Application Type";
             // HRMgt: Codeunit "HR Management";
             begin
+                "Leave Code" := LeaveApptype."Leave Type";
                 "Leave Entitlment" := 0;
 
                 if xRec.Status <> Status::Open then
@@ -410,6 +431,8 @@ table 52001 "Leave Application"
         field(25; "Resumption Date"; Date)
         {
             Caption = 'Resumption Date';
+            CalcFormula = lookup("Leave Application Type"."Resumption Date" where("Leave Code" = field("Application No")));
+            FieldClass = FlowField;
         }
         field(26; "Employee Name"; Text[100])
         {
@@ -559,6 +582,8 @@ table 52001 "Leave Application"
         }
         field(51; "Relieving Name"; Text[60])
         {
+            CalcFormula = lookup("Leave Application Type"."Staff Name" where("Leave Code" = field("Application No")));
+            FieldClass = FlowField;
             Caption = 'Relieving Name';
         }
         field(52; "Shortcut Dimension 1 Code"; Code[20])
@@ -625,8 +650,25 @@ table 52001 "Leave Application"
         {
             Caption = 'Leave Allowance Paid';
         }
+        field(71; "Posted By"; Code[50])
+        {
+            Editable = false;
+            Caption = 'Posted By';
+        }
 
+        field(72; "Posted Date"; Date)
+        {
+            Editable = false;
+            Caption = 'Posted Date';
+        }
+        field(73; "Leave Type"; Text[200])
 
+        {
+            TableRelation = "Leave Type".Description where(Status = const(Active));
+            //CalcFormula = lookup("Leave Type".Description where("Code" = field("Application No")));
+            CalcFormula = lookup("Leave Application Type"."Leave Type" where("Leave Code" = field("Application No")));//////////
+            FieldClass = FlowField;
+        }
     }
 
     keys

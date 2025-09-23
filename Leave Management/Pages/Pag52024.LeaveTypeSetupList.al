@@ -21,13 +21,14 @@ page 52041 "Leave Types Setup"
                 field("Accrue Days"; Rec."Earn Days")
                 {
                     ToolTip = 'Specifies the value of the Accrue Days field.';
+                    Visible = false;
                 }
                 field("Unlimited Days"; Rec."Unlimited Days")
                 {
                     Visible = false;
                     ToolTip = 'Specifies the value of the Unlimited Days field';
                 }
-                field(Gender; Rec.Gender)
+                field(Gender1; Rec.Gender1)
                 {
                     ToolTip = 'Specifies the value of the Gender field';
                 }
@@ -42,6 +43,7 @@ page 52041 "Leave Types Setup"
                 field("Annual Leave"; Rec."Annual Leave")
                 {
                     ToolTip = 'Specifies the value of the Annual Leave field';
+                    Visible = false;
                 }
                 field("Inclusive of Holidays"; Rec."Inclusive of Holidays")
                 {
@@ -58,6 +60,7 @@ page 52041 "Leave Types Setup"
                 field("Off/Holidays Days Leave"; Rec."Off/Holidays Days Leave")
                 {
                     ToolTip = 'Specifies the value of the Off/Holidays Days Leave field';
+                    Visible = false;
                 }
                 field(Status; Rec.Status)
                 {

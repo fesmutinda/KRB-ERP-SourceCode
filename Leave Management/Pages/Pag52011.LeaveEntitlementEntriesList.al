@@ -29,7 +29,7 @@ page 52011 "Leave Entitlement Entries"
                 {
                     ToolTip = 'Specifies the value of the Days Earned per Month field.';
                     Editable = EarnDaysEditable;
-                    ShowMandatory = true;
+                    // ShowMandatory = true;
                 }
             }
         }

@@ -1,6 +1,6 @@
 table 52011 "Leave Application Type"
 {
-    DataClassification = CustomerContent;
+    //  DataClassification = CustomerContent;
     Caption = 'Leave Application Type';
     fields
     {
@@ -44,8 +44,9 @@ table 52011 "Leave Application Type"
 
                     "Date of Joining Company" := EmployeeRec."Date Of Join";
                     "Leave Earned to Date" := HRManagement.GetLeaveDaysEarnedToDate(employeerec, "Leave Type");
-                    Validate("Leave Earned to Date");
-                    Message('leave earned to date %1', "Leave Earned to Date");
+                    CalcFields("Leave Balance");
+                    Validate("Leave Balance");
+                    Message('leave earned to date %1', "Leave Balance");
                     CalcFields("Total Leave Days Taken");
                     "Current Leave Balance" := "Leave Balance" - "Total Leave Days Taken";
 

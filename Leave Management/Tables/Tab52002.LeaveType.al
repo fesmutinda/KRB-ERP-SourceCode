@@ -1,6 +1,6 @@
 table 52002 "Leave Type"
 {
-    DataClassification = CustomerContent;
+    //  DataClassification = CustomerContent;
     Caption = 'Leave Type';
     fields
     {
@@ -28,11 +28,12 @@ table 52002 "Leave Type"
         field(6; Gender; Enum "Employee Gender")
         {
             Caption = 'Gender';
+
         }
         field(7; Balance; Option)
         {
             OptionCaption = 'Ignore,Carry Forward,Convert to Cash';
-            OptionMembers = Ignore,"Carry Forward","Convert to Cash";
+            OptionMembers = Ignomre,"Carry Forward","Convert to Cash";
             Caption = 'Balance';
         }
         field(8; "Inclusive of Holidays"; Boolean)
@@ -74,6 +75,12 @@ table 52002 "Leave Type"
             OptionCaption = 'Active,Inactive';
             OptionMembers = Active,Inactive;
             Caption = 'Status';
+        }
+        field(16; "Gender1"; Enum "Gender")
+        {
+            //  OptionCaption = '  , Female, Male';
+            // OptionMembers = " ",Female,Male;
+            Caption = 'Gender';
         }
     }
 

@@ -82,6 +82,16 @@ page 52005 "Leave Recall"
                     Editable = false;
                     ToolTip = 'Specifies the value of the Completed field';
                 }
+                field("Processed By"; Rec."Processed By")
+                {
+                    Editable = false;
+                    ToolTip = 'Specifies the value of the Processed By field';
+                }
+                field("Processed Date"; Rec."Processed Date")
+                {
+                    Editable = false;
+                    ToolTip = 'Specifies the value of the Processed Date field';
+                }
             }
         }
     }
@@ -98,18 +108,46 @@ page 52005 "Leave Recall"
                 ToolTip = 'Executes the Complete action';
                 Enabled = Rec.Status = Rec.Status::Released;
 
-                trigger OnAction()
-                begin
-                    if Rec.Completed then
-                        Message('The recall %1 has already been completed.', Rec."No.");
-                    CurrPage.Close();
+                // trigger OnAction()
+                // begin
+                //     if Rec.Completed then begin
+                //         Message('The recall %1 has already been completed.', Rec."No.");
+                //         exit; // stop here, don't continue
+                //     end;
 
-                    if Recall.Get(Rec."No.") then begin
-                        HRMgnt.LeaveRecall(Rec."No.");
-                        // "No. of Off Days":=EmpLeave."Recalled Days";
-                        Recall.Completed := true;
-                        Recall.Modify();
-                        Message(Text0001, Rec."No.");
+                //     if Recall.Get(Rec."No.") then begin
+                //         HRMgnt.LeaveRecall(Rec."No.");
+                //         // "No. of Off Days" := EmpLeave."Recalled Days";
+                //         Recall.Completed := true;
+                //         Recall.Modify();
+                //         Message(Text0001, Rec."No.");
+                //     end;
+
+                //     CurrPage.Close();
+                // end;
+
+
+                trigger OnAction()
+                var
+                    LeaveRecallRec: Record "Employee Off/Holiday";
+                    HRMgt: Codeunit "HR Management";
+                begin
+                    if Rec.Completed then begin
+                        Message('The recall %1 has already been completed.', Rec."No.");
+                        exit;
+                    end;
+                    CurrPage.SetSelectionFilter(LeaveRecallRec);
+                    if LeaveRecallRec.FindSet() then begin
+                        repeat
+                            //  LeaveRecallRec.LockTable();
+                            if LeaveRecallRec.Find() then begin
+                                //  LeaveRecallRec.TestField(, false); // Prevent double processing
+                                HRMgt.LeaveRecall(LeaveRecallRec."No.");
+                                LeaveRecallRec.Get(LeaveRecallRec."No."); // Refresh the record
+                            end;
+                        until LeaveRecallRec.Next() = 0;
+                        CurrPage.Update(false);
+                        // Message(Text0001, Rec."No.");
                     end;
                 end;
             }

@@ -33,13 +33,13 @@ table 52018 "Leave Planner Lines"
 
                 LeaveTypes.Get("Leave Type");
 
-                if LeaveTypes.Gender = LeaveTypes.Gender::Female then
+                if LeaveTypes.Gender1 = LeaveTypes.Gender1::Female then
                     if Employee.Gender = Employee.Gender::Male then
-                        Error('%1 can only be assigned to %2 Employeeloyees', LeaveTypes.Description, LeaveTypes.Gender);
+                        Error('%1 can only be assigned to %2 Employeeloyees', LeaveTypes.Description, LeaveTypes.Gender1);
 
-                if LeaveTypes.Gender = LeaveTypes.Gender::Male then
+                if LeaveTypes.Gender1 = LeaveTypes.Gender1::Male then
                     if Employee.Gender = Employee.Gender::Female then
-                        Error('%1 can only be assigned to %2 employees', LeaveTypes.Description, LeaveTypes.Gender);
+                        Error('%1 can only be assigned to %2 employees', LeaveTypes.Description, LeaveTypes.Gender1);
             end;
         }
         field(4; "Employee Name"; Text[100])

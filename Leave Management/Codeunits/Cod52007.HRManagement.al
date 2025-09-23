@@ -51,7 +51,13 @@ codeunit 52001 "HR Management"
                 if LeaveLedg."No. of days" <> 0 then
                     LeaveLedg.Insert();
             until leaveline.Next() = 0;
-        Message('Status is %1', LeaveApp.Status);
+        LeaveApp.Post := true;
+        LeaveApp."Posted By" := CopyStr(UserId(), 1, MaxStrLen(LeaveApp."Posted By"));
+        LeaveApp."Posted Date" := Today();
+        LeaveApp.Modify();
+        Message('Leave Application posted successfully');
+
+        // Message('Status is %1', LeaveApp.Status);
     end;
 
     procedure NotifyLeaveReliever(ApplicationNo: Code[20])
@@ -427,41 +433,132 @@ codeunit 52001 "HR Management"
         EmpOff_Holiday: Record "Employee Off/Holiday";
         LeaveLedg: Record "HR Leave Ledger Entries";
         LeaveApp: Record "Leave Application";
+        OriginalLeaveLedger: Record "HR Leave Ledger Entries";
+        DaysToRecall: Decimal;
+        OriginalDaysTaken: Decimal;
+        RemainingDays: Decimal;
+        LeaveRecallSuccessMsg: Label 'Leave recall processed successfully. %1 days restored to %2', Comment = '%1 = Days Recalled, %2 = Employee Name';
+        LeaveNotFoundErr: Label 'Original leave application %1 not found in leave ledger', Comment = '%1 = Leave Application No';
+        InsufficientDaysErr: Label 'Cannot recall %1 days. Only %2 days were taken for this leave', Comment = '%1 = Days to Recall, %2 = Days Taken';
+        LeaveRecallRec: Record "Employee Off/Holiday";
     begin
-        LeaveLedg.Init();
-        LeaveLedg."Document No." := LeaveRecNo;
-        if EmpOff_Holiday.Get(LeaveRecNo) then begin
-            LeaveLedg."Leave End Date" := EmpOff_Holiday."Recalled To";
-            LeaveLedg."Leave Application No." := EmpOff_Holiday."Leave Application";
-            LeaveLedg."Leave Start Date" := EmpOff_Holiday."Recalled From";
-            LeaveLedg."Leave Return Date" := EmpOff_Holiday."Recalled From";
-            LeaveLedg."Leave Approval Date" := Today;
-            LeaveLedg."Leave Period" := EmpOff_Holiday."Recalled From";
-            LeaveApp.Reset();
-            LeaveApp.SetRange("Application No", EmpOff_Holiday."Leave Application");
-            if LeaveApp.FindFirst() then begin
-                LeaveLedg."Leave Type" := LeaveApp."Leave Code";
-                LeaveLedg."Leave Period Code" := LeaveApp."Leave Period";
-            end;
-            LeaveLedg."Staff No." := EmpOff_Holiday."Employee No";
-            if Employee.Get(LeaveLedg."Staff No.") then begin
-                LeaveLedg."Job ID" := Employee."Job Position";
-                LeaveLedg."Job Group" := CopyStr(Employee."Salary Scale", 1, MaxStrLen(LeaveLedg."Job Group"));
-                LeaveLedg."Contract Type" := CopyStr(Employee."Nature of Employment", 1, MaxStrLen(LeaveLedg."Contract Type"));
-                LeaveLedg."Global Dimension 1 Code" := Employee."Global Dimension 1 Code";
-                LeaveLedg."Global Dimension 2 Code" := Employee."Global Dimension 2 Code";
-            end;
-            LeaveLedg."Staff Name" := CopyStr(EmpOff_Holiday."Employee Name", 1, MaxStrLen(LeaveLedg."Staff Name"));
-            LeaveLedg."User ID" := CopyStr(UserId, 1, MaxStrLen(LeaveLedg."User ID"));
-            LeaveLedg."Leave Entry Type" := LeaveLedg."Leave Entry Type"::Positive;
-            LeaveLedg."No. of days" := EmpOff_Holiday."No. of Off Days";
-            LeaveLedg."Transaction Type" := LeaveLedg."Transaction Type"::"Leave Recall";
-            LeaveLedg.Insert();
-            // Message('Leave recall processed successfully');
+        // Get the recall record
+        if not EmpOff_Holiday.Get(LeaveRecNo) then
+            Error('Leave recall record %1 not found', LeaveRecNo);
 
-            //if Confirm('Do you want to notify the Employee via mail?') then
-            //  NotifyLeaveRecallee(EmpOff_Holiday);
+        // Validate required fields
+        EmpOff_Holiday.TestField("Leave Application");
+        EmpOff_Holiday.TestField("Employee No");
+        EmpOff_Holiday.TestField("No. of Off Days");
+
+        // Get the original leave application
+        if not LeaveApp.Get(EmpOff_Holiday."Leave Application") then
+            Error('Leave application %1 not found', EmpOff_Holiday."Leave Application");
+
+        // Get employee record
+        if not Employee.Get(EmpOff_Holiday."Employee No") then
+            Error('Employee %1 not found', EmpOff_Holiday."Employee No");
+
+        // Find the original leave ledger entry to get correct leave type and period
+        OriginalLeaveLedger.Reset();
+        OriginalLeaveLedger.SetRange("Leave Application No.", EmpOff_Holiday."Leave Application");
+        OriginalLeaveLedger.SetRange("Staff No.", EmpOff_Holiday."Employee No");
+        OriginalLeaveLedger.SetRange("Transaction Type", OriginalLeaveLedger."Transaction Type"::"Leave Application");
+        OriginalLeaveLedger.SetRange("Leave Entry Type", OriginalLeaveLedger."Leave Entry Type"::Negative);
+
+        if not OriginalLeaveLedger.FindFirst() then
+            Error(LeaveNotFoundErr, EmpOff_Holiday."Leave Application");
+
+        // Calculate days to recall
+        DaysToRecall := EmpOff_Holiday."No. of Off Days";
+        OriginalDaysTaken := Abs(OriginalLeaveLedger."No. of days"); // Get absolute value since it's negative
+
+        // Validate that we're not recalling more days than were taken
+        if DaysToRecall > OriginalDaysTaken then
+            Error(InsufficientDaysErr, DaysToRecall, OriginalDaysTaken);
+
+        // Create the recall entry
+        LeaveLedg.Init();
+        LeaveLedg."Entry No." := LeaveLedg.GetNextEntryNo();
+        LeaveLedg."Document No." := LeaveRecNo;
+        LeaveLedg."Staff No." := EmpOff_Holiday."Employee No";
+        LeaveLedg."Staff Name" := CopyStr(EmpOff_Holiday."Employee Name", 1, MaxStrLen(LeaveLedg."Staff Name"));
+
+        // Use the same leave type and period as the original application
+        LeaveLedg."Leave Type" := OriginalLeaveLedger."Leave Type";
+        LeaveLedg."Leave Period Code" := OriginalLeaveLedger."Leave Period Code";
+        LeaveLedg."Leave Period" := OriginalLeaveLedger."Leave Period";
+
+        // Set recall-specific dates
+        LeaveLedg."Leave Start Date" := EmpOff_Holiday."Recalled From";
+        LeaveLedg."Leave End Date" := EmpOff_Holiday."Recalled To";
+        LeaveLedg."Leave Return Date" := EmpOff_Holiday."Recalled From";
+        LeaveLedg."Leave Date" := Today();
+        LeaveLedg."Leave Approval Date" := Today();
+
+        // Reference the original leave application
+        LeaveLedg."Leave Application No." := EmpOff_Holiday."Leave Application";
+
+        // Set as positive entry (restoring days)
+        LeaveLedg."Leave Entry Type" := LeaveLedg."Leave Entry Type"::Positive;
+        LeaveLedg."No. of days" := DaysToRecall; // Positive value to add back days
+
+        // Set transaction type for recall
+        LeaveLedg."Transaction Type" := LeaveLedg."Transaction Type"::"Leave Recall";
+        LeaveLedg."Leave Posting Description" := StrSubstNo('Leave Recall - %1 days restored', DaysToRecall);
+
+        // Copy employee details from original entry
+        LeaveLedg."Job ID" := OriginalLeaveLedger."Job ID";
+        LeaveLedg."Job Group" := OriginalLeaveLedger."Job Group";
+        LeaveLedg."Contract Type" := OriginalLeaveLedger."Contract Type";
+        LeaveLedg."Global Dimension 1 Code" := OriginalLeaveLedger."Global Dimension 1 Code";
+        LeaveLedg."Global Dimension 2 Code" := OriginalLeaveLedger."Global Dimension 2 Code";
+        LeaveLedg."User ID" := CopyStr(UserId(), 1, MaxStrLen(LeaveLedg."User ID"));
+
+        // Insert the recall entry
+        if LeaveLedg."No. of days" <> 0 then
+            LeaveLedg.Insert();
+
+
+        // Update the recall record status
+        EmpOff_Holiday.Completed := true;
+        EmpOff_Holiday."Processed Date" := Today();
+        EmpOff_Holiday."Processed By" := CopyStr(UserId(), 1, MaxStrLen(EmpOff_Holiday."Processed By"));
+        EmpOff_Holiday.Modify();
+
+
+        // Show success message
+        Message(LeaveRecallSuccessMsg, DaysToRecall, Employee.FullName());
+
+        // Ask if user wants to notify employee
+        if Confirm('Do you want to notify the Employee via email?') then
+            NotifyLeaveRecallee(EmpOff_Holiday);
+    end;
+
+    // Helper procedure to validate leave recall before processing
+    procedure ValidateLeaveRecall(LeaveRecNo: Code[20]): Boolean
+    var
+        EmpOff_Holiday: Record "Employee Off/Holiday";
+        LeaveApp: Record "Leave Application";
+        LeaveLedger: Record "HR Leave Ledger Entries";
+        ValidationMsg: Label 'Validation Results:\Employee: %1\Original Leave: %2\Days Taken: %3\Days to Recall: %4\Leave Type: %5\Leave Period: %6', Comment = '%1=Employee, %2=Leave App, %3=Days Taken, %4=Days Recall, %5=Leave Type, %6=Period';
+    begin
+        if EmpOff_Holiday.Get(LeaveRecNo) and LeaveApp.Get(EmpOff_Holiday."Leave Application") then begin
+            LeaveLedger.Reset();
+            LeaveLedger.SetRange("Leave Application No.", EmpOff_Holiday."Leave Application");
+            LeaveLedger.SetRange("Transaction Type", LeaveLedger."Transaction Type"::"Leave Application");
+            if LeaveLedger.FindFirst() then begin
+                Message(ValidationMsg,
+                    EmpOff_Holiday."Employee Name",
+                    EmpOff_Holiday."Leave Application",
+                    Abs(LeaveLedger."No. of days"),
+                    EmpOff_Holiday."No. of Off Days",
+                    LeaveLedger."Leave Type",
+                    LeaveLedger."Leave Period Code");
+                exit(true);
+            end;
         end;
+        exit(false);
     end;
 
     procedure NotifyLeaveRecallee(LeaveRecallRec: Record "Employee Off/Holiday")
@@ -650,7 +747,7 @@ codeunit 52001 "HR Management"
             repeat
                 LeaveTypes.Reset();
                 LeaveTypes.SetRange(Status, LeaveTypes.Status::Active);
-                LeaveTypes.SetFilter(Gender, '%1|%2', LeaveTypes.Gender::" ", Employees.Gender);
+                LeaveTypes.SetFilter(Gender1, '%1|%2', LeaveTypes.Gender1::" ", Employees.Gender1);
                 if LeaveTypes.FindSet() then
                     repeat
                         if not IsLeaveAssigned(LeaveTypes.Code, Employees."No.", CurrentLeavePeriod) then begin
@@ -825,7 +922,7 @@ codeunit 52001 "HR Management"
         if LeaveEntitlementRec.FindFirst() then begin
             LeaveEntitlement := LeaveEntitlementRec.Days;
             if LeaveTypeRec."Earn Days" = true then begin
-                LeaveEntitlementRec.TestField("Days Earned per Month");
+                // LeaveEntitlementRec.TestField("Days Earned per Month");
                 DaysEarnedPerMonth := LeaveEntitlementRec."Days Earned per Month";
                 // Message('days earned is %1', DaysEarnedPerMonth);
 

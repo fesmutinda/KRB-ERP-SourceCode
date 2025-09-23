@@ -40,6 +40,7 @@ report 52004 "Leave Balance"
                 column(Entitlement; Employee."Leave Entitlement")
                 {
                 }
+                column(Leave_Balance; "Leave Balance") { }
                 column(Balance; Employee."Leave Balance")
                 {
                 }

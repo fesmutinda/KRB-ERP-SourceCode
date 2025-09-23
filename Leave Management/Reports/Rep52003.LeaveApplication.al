@@ -9,7 +9,7 @@ report 52003 "Leave Applications"
         dataitem("Leave Application"; "Leave Application")
         {
             DataItemTableView = where(Status = filter(Released));
-            RequestFilterFields = "Employee No", "Leave Code", "Responsibility Center", "Application Date", "Leave Status";
+            RequestFilterFields = "Employee No", "Leave Type", "Responsibility Center", "Application Date", "Leave Status";
 
             column(Company_Name; CompanyInfo.Name)
             {
@@ -41,7 +41,7 @@ report 52003 "Leave Applications"
             column(ApplicationNo_LeaveApplication; "Leave Application"."Application No")
             {
             }
-            column(LeaveCode_LeaveApplication; GetLeaveName("Leave Application"."Leave Code"))
+            column(LeaveCode_LeaveApplication; GetLeaveTypeDescriptionDirect("Leave Application"."Leave Code"))
             {
             }
             column(DaysApplied_LeaveApplication; "Leave Application"."Days Applied")
@@ -51,6 +51,15 @@ report 52003 "Leave Applications"
             {
             }
             column(EndDate_LeaveApplication; "Leave Application"."End Date")
+            {
+            }
+            column(Leave_Code; "Leave Application"."Leave Type")
+            {
+                Caption = 'Leave Type1';
+            }
+            column(leaveDescription; GetLeaveTypeDescriptionDirect("Leave Application"."Leave Type")) { }
+
+            column(Resumption_Date; "Resumption Date")
             {
             }
             column(EmployeeName_LeaveApplication; "Leave Application"."Employee Name")
@@ -135,6 +144,16 @@ report 52003 "Leave Applications"
     begin
         if LeaveTypes.Get(Code) then
             exit(LeaveTypes.Description);
+    end;
+
+    procedure GetLeaveTypeDescriptionDirect(LeaveTypeCode: Code[20]): Text[200]
+    var
+        LeaveTypeRec: Record "Leave Type";
+    begin
+        if LeaveTypeRec.Get(LeaveTypeCode) then
+            exit(LeaveTypeRec.Description)
+        else
+            exit('No Leave type');
     end;
 }
 
