@@ -33,7 +33,7 @@ table 50056 "loans Cuess"
         }
         field(9; "DEVELOPMENT LOAN 1"; Integer)
         {
-            CalcFormula = count("Loans Register" where("Approval Status" = const(Approved), "Outstanding Balance" = filter(> 0), "Loan Status" = const(Issued), "Loan Product Type" = const('LT001')));
+            CalcFormula = count("Loans Register" where("Approval Status" = const(Approved), "Outstanding Balance" = filter(> 0), "Loan Status" = const(Issued), "Loan Product Type" = const('LT002')));
             FieldClass = FlowField;
         }
         field(10; "DEBOOSTER"; Integer)
@@ -97,7 +97,7 @@ table 50056 "loans Cuess"
             CalcFormula = count("Loans Register" where("Approval Status" = const(Approved), "Outstanding Balance" = filter(<= 0), "Loan Status" = const(Issued), Source = const(BOSA)));
             FieldClass = FlowField;
         }
-        
+
     }
 
     keys

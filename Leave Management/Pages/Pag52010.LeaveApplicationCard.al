@@ -36,12 +36,24 @@ page 52010 "Leave Application Card"
                 field("Apply on behalf"; Rec."Apply on behalf")
                 {
                     ToolTip = 'Specifies the value of the Apply on behalf field';
-                    // Visible = false;
+                    //Visible = false;
                 }
                 field("Employee No"; Rec."Employee No")
                 {
                     Enabled = Rec."Apply on behalf";
                     ToolTip = 'Specifies the value of the Employee No field';
+                    trigger OnValidate()
+                    begin
+
+                        CurrPage.Update(true); // true forces a complete refresh
+
+                        // Alternatively, close and reopen the page
+                        // if Rec."Employee No" <> xRec."Employee No" then begin
+                        //  Message('Employee changed. The page will refresh to update all related information.');
+                        //CurrPage.Close();
+                        // end;
+
+                    end;
 
 
                 }
@@ -236,7 +248,6 @@ page 52010 "Leave Application Card"
 
                     trigger OnAction()
                     begin
-
                         LeaveType.Reset();
                         LeaveType.SetRange("Leave Code", Rec."Application No");
                         if not LeaveType.FindFirst() then

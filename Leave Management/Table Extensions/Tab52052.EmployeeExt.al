@@ -134,14 +134,15 @@ tableextension 52052 EmployeeExt extends Employee
             FieldClass = FlowField;
             Editable = false;
             Description = 'With Flowfilters';
-
             CalcFormula = sum("HR Leave Ledger Entries"."No. of days" where("Staff No." = field("No."),
-                                                                            "Leave Period Code" = field("Leave Period Filter"),
-                                                                            "Leave Type" = field("Leave Type Filter"),
+                                                                               //"Leave Period Code" = field("Leave Period Filter"),
+                                                                               "Leave Type" = field("Leave Type Filter"),
                                                                              Closed = const(false)));
 
             Caption = 'Leave Balance';
+
         }
+
         field(52015; "Job Position Title"; Text[250])
         {
             Caption = 'Job Position Title';

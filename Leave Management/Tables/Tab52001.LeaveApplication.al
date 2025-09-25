@@ -33,6 +33,7 @@ table 52001 "Leave Application"
 
                     // Delete all existing Leave Application Type records for this application
                     LeaveAppType.DeleteAll(true);
+
                 end;
 
                 // Continue with your existing employee validation logic
@@ -46,7 +47,6 @@ table 52001 "Leave Application"
                 end;
 
             end;
-
         }
         field(2; "Application No"; Code[20])
         {
