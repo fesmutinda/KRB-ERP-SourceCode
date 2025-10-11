@@ -12,19 +12,11 @@ page 57014 "Portal User Card"
             group(General)
             {
                 Caption = 'General';
-
-                // field("Line No"; Rec."Line No")
-                // {
-                //     Editable = false;
-                // }
                 field("User Name"; Rec."User Name")
                 {
                     Editable = false;
                 }
-                field("User Type"; Rec."User Type")
-                {
-                    Editable = false;
-                }
+                field(Name; Rec.Name) { }
                 field(Email; Rec.Email)
                 {
                 }
@@ -45,11 +37,17 @@ page 57014 "Portal User Card"
                 field("Number Of Logins"; Rec."Number Of Logins")
                 {
                     Editable = false;
+                    Visible = false;
                 }
                 field(Password; Rec.Password)
                 {
                 }
             }
+
         }
+
     }
+
+
+
 }

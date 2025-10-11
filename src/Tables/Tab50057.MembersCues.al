@@ -86,6 +86,19 @@ table 50057 "Members Cues"
             Caption = 'MemberApp Requests to Approve';
             FieldClass = FlowField;
         }
+        field(17; "KRB Employee"; Integer)
+        {
+            CalcFormula = count(Customer where(Status = const("Active"), "Customer Posting Group" = filter('Member'), "Employment Info" = const("KRB Employee")));
+            FieldClass = FlowField;
+
+        }
+        field(18; "Non KRB Employee"; Integer)
+        {
+            CalcFormula = count(Customer where(Status = const("Active"), "Customer Posting Group" = filter('Member'), "Employment Info" = const("Non KRB")));
+            FieldClass = FlowField;
+
+        }
+
     }
 
     keys

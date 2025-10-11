@@ -72,6 +72,24 @@ Page 56042 "BOSA Cue"
                     StyleExpr = true;
                     DrillDownPageId = "Member List";
                 }
+                field("KRB Employee"; Rec."KRB Employee")
+                {
+                    ApplicationArea = Basic;
+                    Caption = 'KRB Employees';
+                    Image = none;
+                    Style = StrongAccent;
+                    StyleExpr = true;
+                    DrillDownPageId = "Member List";
+                }
+                field("Non KRB Employee"; Rec."Non KRB Employee")
+                {
+                    ApplicationArea = Basic;
+                    Caption = 'Non KRB Employees';
+                    Image = none;
+                    Style = favorable;
+                    StyleExpr = true;
+                    DrillDownPageId = "Member List";
+                }
             }
             cuegroup(Gender)
             {

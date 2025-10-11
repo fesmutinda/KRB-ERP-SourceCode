@@ -406,6 +406,7 @@ Page 56029 "Loan Application Card"
             }
             part(Control1000000003; "Loans CheckRisk List")
             {
+
                 Caption = 'Loan Risk Checking';
                 ApplicationArea = Basic;
                 SubPageLink = "Client Code" = field("Client Code");

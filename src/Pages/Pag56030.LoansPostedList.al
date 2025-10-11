@@ -99,6 +99,7 @@ Page 56030 "Loans Posted List"
                     Visible = true;
                     Style = Ambiguous;
                 }
+
                 field("Loan Payments"; Rec."Existing Loan Repayments")
                 {
                     ApplicationArea = all;
@@ -107,6 +108,14 @@ Page 56030 "Loans Posted List"
                 field("Oustanding Interest"; Rec."Oustanding Interest")
                 {
                     ApplicationArea = Basic;
+                    Visible = false;
+                    Style = Ambiguous;
+                }
+                field("Oustanding Interest Display"; GetOutstandingInterestAmount())
+                {
+                    ApplicationArea = Basic;
+                    Caption = 'Oustanding Interest';
+                    Editable = false;
                     Visible = true;
                     Style = Ambiguous;
                 }
@@ -499,5 +508,17 @@ Page 56030 "Loans Posted List"
     begin
         Overdue := Overdue::" ";
     end;
+
+    local procedure GetOutstandingInterestAmount(): Decimal
+    begin
+        Rec.CalcFields("Outstanding Balance", "Oustanding Interest");
+
+        if Rec."Outstanding Balance" <= 0 then
+            exit(0)
+        else
+            exit(Rec."Oustanding Interest");
+    end;
+
+
 }
 

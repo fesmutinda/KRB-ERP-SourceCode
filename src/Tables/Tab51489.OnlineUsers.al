@@ -7,13 +7,15 @@ Table 51489 "Online Users"
     {
         field(1; "User Name"; Code[50])
         {
+            Caption = 'No.';
 
             trigger OnValidate()
             begin
-                /*memb.RESET;
-                memb.SETRANGE(memb."No.","User Name");
-                IF memb.FIND('-') THEN
-                Password:=memb."ID No.";*/
+
+                /*    memb.RESET;
+                   memb.SETRANGE(memb."No.", "User Name");
+                   IF memb.FIND('-') THEN
+                       Password := memb."ID No."; */
 
             end;
         }
@@ -22,6 +24,8 @@ Table 51489 "Online Users"
         }
         field(3; Email; Text[250])
         {
+            CalcFormula = lookup(Customer."E-Mail (Personal)" where("No." = field("User Name")));
+            FieldClass = FlowField;
         }
         field(4; "Date Created"; Date)
         {
@@ -33,6 +37,7 @@ Table 51489 "Online Users"
         {
             CalcFormula = count("Online Sessions" where("User Name" = field("User Name")));
             FieldClass = FlowField;
+
         }
         field(8; "User Type"; Text[30])
         {
@@ -49,6 +54,12 @@ Table 51489 "Online Users"
         }
         field(12; "Last Login"; DateTime) { }
         field(13; "Login OTP"; Code[4]) { }
+        field(14; "Name"; Text[100])
+        {
+            Caption = 'User Name';
+            CalcFormula = lookup(Customer.Name where("No." = field("User Name")));
+            FieldClass = FlowField;
+        }
     }
 
     keys

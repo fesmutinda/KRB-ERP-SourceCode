@@ -305,6 +305,7 @@ page 52010 "Leave Application Card"
                     trigger OnAction()
                     begin
                         ApprovalsMgmt.OnCancelLeaveRequestApproval(Rec);
+                        CurrPage.Close();
                     end;
                 }
                 action(ViewApprovals)

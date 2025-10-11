@@ -32,6 +32,9 @@ Table 51488 "Online Sessions"
         {
             Clustered = true;
         }
+        key("login Time"; "Login Time")
+        {
+        }
     }
 
     fieldgroups

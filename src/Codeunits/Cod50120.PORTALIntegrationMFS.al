@@ -105,7 +105,7 @@ Codeunit 50120 "PORTALIntegration MFS"
     begin
         sms := smsport + NewPassword;
         objMember.Reset;
-        objMember.SetRange(objMember."No.", MemberNo);
+        objMember.SetRange(objMember.Name, MemberNo);
         objMember.SetRange(objMember."ID No.", idNo);
         if objMember.Find('-') then begin
 
@@ -116,18 +116,20 @@ Codeunit 50120 "PORTALIntegration MFS"
             if Online.Find('-') then begin
                 //Online.INIT;
                 Online."User Name" := objMember."No.";
+                Online.Name := objMember.Name;
                 Online.MobileNumber := objMember."Mobile Phone No";
                 Online.IdNumber := idNo;
                 Online.Password := NewPassword;
                 Online."Changed Password" := true;
-                Online.Modify;
+                Online.Modify();
                 FnSMSMessage(FAccNo, phoneNumber, sms);
                 emailAddress := true;
             end else begin
                 Online.Init;
                 Online."User Name" := objMember."No.";
+                Online.Name := objMember.Name;
                 Online.MobileNumber := objMember."Mobile Phone No";
-                Online.Email := objMember."E-Mail";
+                Online.Email := objMember."E-Mail (Personal)";
                 Online."Date Created" := Today;
                 Online.IdNumber := idNo;
                 Online.Password := NewPassword;

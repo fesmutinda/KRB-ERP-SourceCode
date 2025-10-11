@@ -5,6 +5,7 @@ codeunit 52011 "Wkflw Event Response HR Ext"
     var
         WorkflowEventHandling: Codeunit "Wkfl Event Handle HR Ext";
         WorkFlowResponse: Codeunit "Workflow Response Handling";
+
     begin
         case ResponseFunctionName of
             WorkFlowResponse.SetStatusToPendingApprovalCode():
@@ -288,7 +289,7 @@ codeunit 52011 "Wkflw Event Response HR Ext"
                 begin
                     Emp.SetView(RecRef.GetView());
                     Handled := true;
-                    //   WorkflowResponses.ReopenNewEmployeeApplication(VarVariant);
+                    //  WorkflowResponses.ReopenNewEmployeeApplication(VarVariant);
                 end;
         end;
     end;
