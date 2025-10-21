@@ -55,6 +55,7 @@
                                 <TextRun>
                                   <Value>SHARE CAPITAL                      </Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -116,6 +117,7 @@
                                 <TextRun>
                                   <Value>Posting date</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <TextDecoration>None</TextDecoration>
@@ -158,6 +160,7 @@
                                 <TextRun>
                                   <Value>Transaction type</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <TextDecoration>None</TextDecoration>
@@ -200,6 +203,7 @@
                                 <TextRun>
                                   <Value>Document No.</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -241,6 +245,7 @@
                                 <TextRun>
                                   <Value>Description</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -282,6 +287,7 @@
                                 <TextRun>
                                   <Value>Debit Amount</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -323,6 +329,7 @@
                                 <TextRun>
                                   <Value>Credit Amount</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -364,6 +371,7 @@
                                 <TextRun>
                                   <Value>Balance</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -410,6 +418,7 @@
                                 <TextRun>
                                   <Value>=Fields!PostingDate_ShareCapital.Value</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <Format>d</Format>
                                   </Style>
@@ -451,6 +460,7 @@
                                 <TextRun>
                                   <Value>=Fields!TransactionType_ShareCapital.Value</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
@@ -491,6 +501,7 @@
                                 <TextRun>
                                   <Value>=Fields!DocumentNo_ShareCapital.Value</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
@@ -531,6 +542,7 @@
                                 <TextRun>
                                   <Value>=Fields!Description_ShareCapital.Value</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
@@ -571,6 +583,7 @@
                                 <TextRun>
                                   <Value>=Fields!DebitAmount_ShareCapital.Value</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <Format>#,0.00;#,0.00-;''</Format>
                                   </Style>
@@ -612,6 +625,7 @@
                                 <TextRun>
                                   <Value>=Fields!CreditAmount_ShareCapital.Value</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <Format>#,0.00;#,0.00-;''</Format>
                                   </Style>
@@ -653,6 +667,7 @@
                                 <TextRun>
                                   <Value>=Fields!ClosingBalanceShareCap.Value</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <Format>#,0.00;#,0.00-;''</Format>
                                   </Style>
@@ -699,6 +714,7 @@
                                 <TextRun>
                                   <Value>Balance</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -741,6 +757,7 @@
                                 <TextRun>
                                   <Value>=Sum(Fields!DebitAmount_ShareCapital.Value)</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0.00;#,0.00-;'-'</Format>
@@ -782,6 +799,7 @@
                                 <TextRun>
                                   <Value>=Sum(Fields!CreditAmount_ShareCapital.Value)</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0.00;#,0.00-;'-'</Format>
@@ -823,6 +841,7 @@
                                 <TextRun>
                                   <Value>=((Sum(Fields!DebitAmount_ShareCapital.Value))-(Sum(Fields!CreditAmount_ShareCapital.Value))+(First(Fields!ShareCapBF.Value, "DataSet_Result")))*-1</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0.00;- #,0.00;'-'</Format>
@@ -973,6 +992,7 @@
                                 <TextRun>
                                   <Value>WITHDRAWABLE DEPOSITS</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -1014,6 +1034,7 @@
                                 <TextRun>
                                   <Value />
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                   </Style>
@@ -1065,6 +1086,7 @@
                                 <TextRun>
                                   <Value>Posting date</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <TextDecoration>None</TextDecoration>
@@ -1107,6 +1129,7 @@
                                 <TextRun>
                                   <Value>Transaction type</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <TextDecoration>None</TextDecoration>
@@ -1149,6 +1172,7 @@
                                 <TextRun>
                                   <Value>Document No.</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -1190,6 +1214,7 @@
                                 <TextRun>
                                   <Value>Description</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -1231,6 +1256,7 @@
                                 <TextRun>
                                   <Value>Debit Amount</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -1272,6 +1298,7 @@
                                 <TextRun>
                                   <Value>Credit Amount</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -1313,6 +1340,7 @@
                                 <TextRun>
                                   <Value>Balance</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -1869,7 +1897,7 @@
                   <TextRun>
                     <Value>MEMBER ACCOUNT STATEMENT</Value>
                     <Style>
-                      <FontFamily>Segoe UI</FontFamily>
+                      <FontFamily>Book Antiqua</FontFamily>
                       <FontSize>12pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
@@ -1908,7 +1936,7 @@
                   <TextRun>
                     <Value>Member No:</Value>
                     <Style>
-                      <FontFamily>Segoe UI</FontFamily>
+                      <FontFamily>Book Antiqua</FontFamily>
                       <FontSize>9pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
@@ -1942,7 +1970,7 @@
                   <TextRun>
                     <Value>=First(Fields!No_Members.Value, "DataSet_Result")</Value>
                     <Style>
-                      <FontFamily>Segoe UI</FontFamily>
+                      <FontFamily>Book Antiqua</FontFamily>
                       <FontSize>9pt</FontSize>
                       <FontWeight>Normal</FontWeight>
                     </Style>
@@ -1976,7 +2004,7 @@
                   <TextRun>
                     <Value>Member Name:</Value>
                     <Style>
-                      <FontFamily>Segoe UI</FontFamily>
+                      <FontFamily>Book Antiqua</FontFamily>
                       <FontSize>9pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
@@ -2010,7 +2038,7 @@
                   <TextRun>
                     <Value>=First(Fields!Name_Members.Value, "DataSet_Result")</Value>
                     <Style>
-                      <FontFamily>Segoe UI</FontFamily>
+                      <FontFamily>Book Antiqua</FontFamily>
                       <FontSize>9pt</FontSize>
                     </Style>
                   </TextRun>
@@ -2045,7 +2073,7 @@
                   <TextRun>
                     <Value>ID No:</Value>
                     <Style>
-                      <FontFamily>Segoe UI</FontFamily>
+                      <FontFamily>Book Antiqua</FontFamily>
                       <FontSize>9pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
@@ -2080,7 +2108,7 @@
                   <TextRun>
                     <Value>=First(Fields!IDNo_Members.Value, "DataSet_Result")</Value>
                     <Style>
-                      <FontFamily>Segoe UI</FontFamily>
+                      <FontFamily>Book Antiqua</FontFamily>
                       <FontSize>9pt</FontSize>
                       <FontWeight>Normal</FontWeight>
                     </Style>
@@ -2114,7 +2142,7 @@
                   <TextRun>
                     <Value>Payroll No:</Value>
                     <Style>
-                      <FontFamily>Segoe UI</FontFamily>
+                      <FontFamily>Book Antiqua</FontFamily>
                       <FontSize>9pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
@@ -2148,7 +2176,7 @@
                   <TextRun>
                     <Value>=First(Fields!PayrollStaffNo_Members.Value, "DataSet_Result")</Value>
                     <Style>
-                      <FontFamily>Segoe UI</FontFamily>
+                      <FontFamily>Book Antiqua</FontFamily>
                       <FontSize>9pt</FontSize>
                     </Style>
                   </TextRun>
@@ -2183,6 +2211,7 @@
                   <TextRun>
                     <Value>Phone No</Value>
                     <Style>
+                      <FontFamily>Book Antiqua</FontFamily>
                       <FontSize>9pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
@@ -2215,7 +2244,9 @@
                 <TextRuns>
                   <TextRun>
                     <Value>=Fields!Phone_No_.Value</Value>
-                    <Style />
+                    <Style>
+                      <FontFamily>Book Antiqua</FontFamily>
+                    </Style>
                   </TextRun>
                 </TextRuns>
                 <Style>
@@ -2248,6 +2279,7 @@
                   <TextRun>
                     <Value>Registration Date:</Value>
                     <Style>
+                      <FontFamily>Book Antiqua</FontFamily>
                       <FontSize>9pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
@@ -2281,6 +2313,7 @@
                   <TextRun>
                     <Value>=Fields!Registration_Date.Value</Value>
                     <Style>
+                      <FontFamily>Book Antiqua</FontFamily>
                       <FontSize>9pt</FontSize>
                     </Style>
                   </TextRun>
@@ -2315,6 +2348,7 @@
                   <TextRun>
                     <Value>=First(Fields!Company_Address.Value, "DataSet_Result")</Value>
                     <Style>
+                      <FontFamily>Book Antiqua</FontFamily>
                       <FontSize>9pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
@@ -2363,6 +2397,7 @@
                   <TextRun>
                     <Value>=First(Fields!Company_Address_2.Value, "DataSet_Result")</Value>
                     <Style>
+                      <FontFamily>Book Antiqua</FontFamily>
                       <FontSize>9pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
@@ -2411,6 +2446,7 @@
                   <TextRun>
                     <Value>TEL: </Value>
                     <Style>
+                      <FontFamily>Book Antiqua</FontFamily>
                       <FontSize>9pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
@@ -2418,6 +2454,7 @@
                   <TextRun>
                     <Value>=First(Fields!Company_Phone_No.Value, "DataSet_Result")</Value>
                     <Style>
+                      <FontFamily>Book Antiqua</FontFamily>
                       <FontSize>9pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
@@ -2466,6 +2503,7 @@
                   <TextRun>
                     <Value>EMAIL: </Value>
                     <Style>
+                      <FontFamily>Book Antiqua</FontFamily>
                       <FontSize>9pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
@@ -2473,6 +2511,7 @@
                   <TextRun>
                     <Value>=First(Fields!Company_Email.Value, "DataSet_Result")</Value>
                     <Style>
+                      <FontFamily>Book Antiqua</FontFamily>
                       <FontSize>9pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
@@ -2535,6 +2574,7 @@
                   <TextRun>
                     <Value>SAVINGS DETAILS</Value>
                     <Style>
+                      <FontFamily>Book Antiqua</FontFamily>
                       <FontWeight>Bold</FontWeight>
                       <Color>#4d4d4d</Color>
                     </Style>
@@ -2604,6 +2644,7 @@
                                 <TextRun>
                                   <Value>=Fields!ProductType.Value</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -2656,6 +2697,7 @@
                                 <TextRun>
                                   <Value>Loan No: </Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -2663,6 +2705,7 @@
                                 <TextRun>
                                   <Value>=Fields!LoanNumber.Value</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <Format>#,0.00;(#,0.00)</Format>
                                   </Style>
@@ -2711,6 +2754,7 @@
                                 <TextRun>
                                   <Value>Posting date</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <TextDecoration>None</TextDecoration>
@@ -2753,6 +2797,7 @@
                                 <TextRun>
                                   <Value>Transaction type</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <TextDecoration>None</TextDecoration>
@@ -2795,6 +2840,7 @@
                                 <TextRun>
                                   <Value>Document No.</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -2836,6 +2882,7 @@
                                 <TextRun>
                                   <Value>Description</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -2877,6 +2924,7 @@
                                 <TextRun>
                                   <Value>Debit Amount</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -2918,6 +2966,7 @@
                                 <TextRun>
                                   <Value>Credit Amount</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -2959,6 +3008,7 @@
                                 <TextRun>
                                   <Value>Balance</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -3005,6 +3055,7 @@
                                 <TextRun>
                                   <Value>=Fields!PostingDate_loan.Value</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <Format>d</Format>
                                   </Style>
@@ -3041,6 +3092,7 @@
                                 <TextRun>
                                   <Value>=Fields!TransactionType_loan.Value</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
@@ -3074,6 +3126,7 @@
                                 <TextRun>
                                   <Value>=Fields!DocumentNo_loan.Value</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
@@ -3109,6 +3162,7 @@
                                 <TextRun>
                                   <Value>=Fields!Description_loan.Value</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
@@ -3144,6 +3198,7 @@
                                 <TextRun>
                                   <Value>=Fields!DebitAmount_Loan.Value</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <Format>#,0.00;#,0.00-;''</Format>
                                   </Style>
@@ -3180,6 +3235,7 @@
                                 <TextRun>
                                   <Value>=Fields!CreditAmount_Loan.Value</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <Format>#,0.00;#,0.00-;''</Format>
                                   </Style>
@@ -3216,6 +3272,7 @@
                                 <TextRun>
                                   <Value>=Fields!CLosingBalance_loan.Value</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <Format>#,0.00;#,0.00-;''</Format>
                                   </Style>
@@ -3257,6 +3314,7 @@
                                 <TextRun>
                                   <Value>Loan Balance</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -3304,6 +3362,7 @@
                                 <TextRun>
                                   <Value>=Sum(Fields!DebitAmount_Loan.Value)</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0.00;#,0.00-;'-'</Format>
@@ -3350,6 +3409,7 @@
                                 <TextRun>
                                   <Value>=Sum(Fields!CreditAmount_Loan.Value)</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0.00;#,0.00-;'-'</Format>
@@ -3396,6 +3456,7 @@
                                 <TextRun>
                                   <Value>=(Sum(Fields!DebitAmount_Loan.Value) - Sum(Fields!CreditAmount_Loan.Value)) + Fields!PrincipleBF_loans.Value</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0.00;- #,0.00;'-'</Format>
@@ -3603,6 +3664,7 @@
                                 <TextRun>
                                   <Value>DEPOSIT CONTRIBUTION</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <Color>#4d4d4d</Color>
@@ -3645,6 +3707,7 @@
                                 <TextRun>
                                   <Value />
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                   </Style>
@@ -3696,6 +3759,7 @@
                                 <TextRun>
                                   <Value>Posting date</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <TextDecoration>None</TextDecoration>
@@ -3738,6 +3802,7 @@
                                 <TextRun>
                                   <Value>Transaction type</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <TextDecoration>None</TextDecoration>
@@ -3780,6 +3845,7 @@
                                 <TextRun>
                                   <Value>Document No.</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -3821,6 +3887,7 @@
                                 <TextRun>
                                   <Value>Description</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -3862,6 +3929,7 @@
                                 <TextRun>
                                   <Value>Debit Amount</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -3903,6 +3971,7 @@
                                 <TextRun>
                                   <Value>Credit Amount</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -3944,6 +4013,7 @@
                                 <TextRun>
                                   <Value>Balance</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -4499,6 +4569,7 @@
                   <TextRun>
                     <Value>LOAN DETAILS</Value>
                     <Style>
+                      <FontFamily>Book Antiqua</FontFamily>
                       <FontWeight>Bold</FontWeight>
                       <Color>#4d4d4d</Color>
                     </Style>
@@ -4982,6 +5053,7 @@
                                 <TextRun>
                                   <Value>=Fields!JuniorTrans_PostingDate.Value</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <Format>d</Format>
                                   </Style>
@@ -5018,6 +5090,7 @@
                                 <TextRun>
                                   <Value>=Fields!JuniorTrans_TransactionType.Value</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
@@ -5051,6 +5124,7 @@
                                 <TextRun>
                                   <Value>=Fields!JuniorTrans_DocumentNo.Value</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
@@ -5086,6 +5160,7 @@
                                 <TextRun>
                                   <Value>=Fields!JuniorTrans_Description.Value</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
@@ -5121,6 +5196,7 @@
                                 <TextRun>
                                   <Value>=Fields!JuniorTrans_DebitAmount.Value</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <Format>#,0.00;#,0.00-;''</Format>
                                   </Style>
@@ -5157,6 +5233,7 @@
                                 <TextRun>
                                   <Value>=Fields!JuniorTrans_CreditAmount.Value</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <Format>#,0.00;#,0.00-;''</Format>
                                   </Style>
@@ -5193,6 +5270,7 @@
                                 <TextRun>
                                   <Value>=Fields!JuniorTrans_RunningBalance.Value</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <Format>#,0.00;#,0.00-;''</Format>
                                   </Style>
@@ -5234,6 +5312,7 @@
                                 <TextRun>
                                   <Value>Loan Balance</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -5281,6 +5360,7 @@
                                 <TextRun>
                                   <Value>=Sum(Fields!JuniorTrans_DebitAmount.Value)</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0.00;#,0.00-;'-'</Format>
@@ -5327,6 +5407,7 @@
                                 <TextRun>
                                   <Value>=Sum(Fields!JuniorTrans_CreditAmount.Value)</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0.00;#,0.00-;'-'</Format>
@@ -5373,6 +5454,7 @@
                                 <TextRun>
                                   <Value>=(Sum(Fields!JuniorTrans_DebitAmount.Value) - Sum(Fields!JuniorTrans_CreditAmount.Value) + First(Fields!JuniorBF.Value, "DataSet_Result")) * - 1</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0.00;- #,0.00;'-'</Format>
@@ -5577,7 +5659,7 @@
             </Style>
           </Textbox>
         </ReportItems>
-        <Height>9.41667in</Height>
+        <Height>9.09167in</Height>
         <Style />
       </Body>
       <Width>8.3125in</Width>
@@ -5595,6 +5677,7 @@
                     <TextRun>
                       <Value>=Globals!ExecutionTime</Value>
                       <Style>
+                        <FontFamily>Book Antiqua</FontFamily>
                         <FontSize>6pt</FontSize>
                         <Format>g</Format>
                       </Style>
@@ -5621,6 +5704,7 @@
                     <TextRun>
                       <Value>=User!UserID</Value>
                       <Style>
+                        <FontFamily>Book Antiqua</FontFamily>
                         <FontSize>6pt</FontSize>
                       </Style>
                     </TextRun>
@@ -5648,6 +5732,7 @@
                     <TextRun>
                       <Value>Printed Date:</Value>
                       <Style>
+                        <FontFamily>Book Antiqua</FontFamily>
                         <FontSize>6pt</FontSize>
                       </Style>
                     </TextRun>
@@ -5680,6 +5765,7 @@
                     <TextRun>
                       <Value>Printed By:</Value>
                       <Style>
+                        <FontFamily>Book Antiqua</FontFamily>
                         <FontSize>6pt</FontSize>
                       </Style>
                     </TextRun>
@@ -5711,6 +5797,7 @@
                     <TextRun>
                       <Value>=Globals!ExecutionTime</Value>
                       <Style>
+                        <FontFamily>Book Antiqua</FontFamily>
                         <FontSize>6pt</FontSize>
                         <Format>g</Format>
                       </Style>
@@ -5738,6 +5825,7 @@
                     <TextRun>
                       <Value>=User!UserID</Value>
                       <Style>
+                        <FontFamily>Book Antiqua</FontFamily>
                         <FontSize>6pt</FontSize>
                       </Style>
                     </TextRun>
@@ -5765,6 +5853,7 @@
                     <TextRun>
                       <Value>Printed Date:</Value>
                       <Style>
+                        <FontFamily>Book Antiqua</FontFamily>
                         <FontSize>6pt</FontSize>
                       </Style>
                     </TextRun>
@@ -5797,6 +5886,7 @@
                     <TextRun>
                       <Value>Printed By:</Value>
                       <Style>
+                        <FontFamily>Book Antiqua</FontFamily>
                         <FontSize>6pt</FontSize>
                       </Style>
                     </TextRun>
@@ -5840,7 +5930,9 @@
                   <TextRuns>
                     <TextRun>
                       <Value>=Globals!PageNumber</Value>
-                      <Style />
+                      <Style>
+                        <FontFamily>Book Antiqua</FontFamily>
+                      </Style>
                     </TextRun>
                   </TextRuns>
                   <Style />

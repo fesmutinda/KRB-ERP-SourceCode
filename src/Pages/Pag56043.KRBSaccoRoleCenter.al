@@ -3011,6 +3011,12 @@ Page 56043 "KRB Sacco Role Center"
                         ToolTip = 'Executes the Leave Period action';
                         Caption = 'Leave Period';
                     }
+                    action("Request To Approve")
+                    {
+                        RunObject = page "Requests to Approve";
+                        ToolTip = 'Executes the Request To Approve action';
+                        Caption = 'Request To Approve';
+                    }
                     action("Base Calendar")
                     {
                         RunObject = page "Base Calendar List";

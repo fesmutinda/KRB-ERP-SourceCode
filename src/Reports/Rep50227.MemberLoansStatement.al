@@ -5,6 +5,8 @@ Report 50227 "Member Loans Statement"
     UsageCategory = ReportsAndAnalysis;
     RDLCLayout = './Layouts/MemberLoansStatement2.rdl'; //1 is custom to Nav layout
 
+
+
     dataset
     {
         dataitem(Customer; Customer)
@@ -79,6 +81,7 @@ Report 50227 "Member Loans Statement"
             column(Company_Email; Company."E-Mail")
             {
             }
+            column(Company_Address2; Company."Address 2") { }
 
             dataitem(Loans; "Loans Register")
             {

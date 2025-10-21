@@ -878,6 +878,8 @@ Codeunit 50120 "PORTALIntegration MFS"
 
         TempCustomerRec: Record Customer;
 
+
+
     begin
 
         SMSMessages.Reset;
@@ -906,6 +908,8 @@ Codeunit 50120 "PORTALIntegration MFS"
 
         TempCustomerRec.SetRange("No.", accfrom);
 
+
+
         if TempCustomerRec.FindFirst() then begin
 
             EmailCodeunit.SendMail(
@@ -918,6 +922,35 @@ Codeunit 50120 "PORTALIntegration MFS"
 
 
     end;
+
+    procedure NotifyUsers(MessageText: Text[250])
+    var
+        UserRec: Record "User Setup";
+        EmailCodeunit: Codeunit Emailcodeunit;
+    begin
+        if UserRec.Get('KRBADMIN') then begin
+            if UserRec."E-Mail" <> '' then
+                EmailCodeunit.SendMail(
+                    UserRec."E-Mail",
+                    'System Notification',
+                    MessageText
+                );
+        end;
+
+        if UserRec.Get('KRBSC-TREASURER') then begin
+            if UserRec."E-Mail" <> '' then
+                EmailCodeunit.SendMail(
+                    UserRec."E-Mail",
+                    'System Notification',
+                    MessageText
+                );
+
+            if UserRec."Phone No." <> '' then
+                FnSMSMessage(UserRec."User ID", UserRec."Phone No.", MessageText);
+        end;
+    end;
+
+
 
     procedure FnTestSendEmail(RecipientEmail: Text): Text
     var
@@ -2329,6 +2362,7 @@ Codeunit 50120 "PORTALIntegration MFS"
     procedure SubmitLoan(memberNumber: Code[20]; loanNumber: Code[20]): Text
     var
         response: Text;
+        notificationMessage: Text[250];
     begin
         if objMember.Get(memberNumber) then begin
             ObjLoanApplications.Reset;
@@ -2375,6 +2409,16 @@ Codeunit 50120 "PORTALIntegration MFS"
 
                         if (objMember."Phone No." <> '') then
                             FnSMSMessage(objMember."No.", objMember."Phone No.", 'Dear Member, you have submitted Loan,' + 'No,' + Format(ObjLoanApplications."Application No") + 'for loan type' + ObjLoanApplications."Loan Product Type Name" + 'your  loan application for appraisal.');
+
+                        // Notify sacco staff about new loan submission
+                        notificationMessage := 'New loan application submitted: ' +
+                                             'Loan No: ' + Format(ObjLoansregister."Loan  No.") +
+                                             ', Member: ' + ObjLoanApplications."Member Names" +
+                                             ', Type: ' + ObjLoanApplications."Loan Product Type Name" +
+                                             ', Amount: KSh ' + Format(ObjLoanApplications."Loan Amount") +
+                                             '. Requires appraisal.';
+                        NotifyUsers(notificationMessage);
+
                         response := 'Success, your loan has been submitted to Credit for Appraisal';
                     end else begin
                         response := 'Failed, Please contact the office for assistance';
@@ -2587,6 +2631,7 @@ Codeunit 50120 "PORTALIntegration MFS"
         objMember: Record Customer;
         AllApproved: Boolean;
         localSMS: Text;
+        notificationMessage: Text[250];
     begin
 
         if (MemberNo = '') or (LoanNo = '') then begin
@@ -2685,7 +2730,19 @@ Codeunit 50120 "PORTALIntegration MFS"
                         localsms := 'Dear Member, you have submitted Loan,' + 'No,' + Format(ObjLoanApplications."Application No") + 'for loan type' + ObjLoanApplications."Loan Type" + 'your  loan application for appraisal.';
                         if (objMember."Phone No." <> '') then
                             FnSMSMessage(objMember."No.", objMember."Phone No.", localsms);
+                        // Notify sacco staff about loan when guarantors approves
+                        notificationMessage := 'New loan application Approved by guarantors: ' +
+                                            'Loan No: ' + Format(ObjLoanApplications."Application No") +
+                                            ', Member: ' + ObjLoanApplications."Member Names" +
+                                            ', Type: ' + ObjLoanApplications."Loan Product Type Name" +
+                                            ', Amount: KSh ' + Format(ObjLoanApplications."Loan Amount") +
+                                            '. Requires appraisal.';
+                        NotifyUsers(notificationMessage);
+
                         response := 'Success, your loan has been submitted to Credit for Appraisal';
+
+
+
                     end else begin
                         response := 'Failed, Please contact the office for assistance';
                     end;

@@ -59,7 +59,7 @@ codeunit 52004 "Workflow Responses HR"
             //Message('Leave status is %1', Leave.Status);
             //HRMgnt.LeaveApplication(Leave."Application No");
 
-            // HRMgnt.NotifyLeaveReliever(Leave."Application No");
+            //  HRMgnt.NotifyLeaveReliever(Leave."Application No");
             // Message('2 Leave status is %1', Leave.Status);
             //if guiAllowed then begin
             //if Confirm('Do you want to notify the leave applicant and their reliever(s)', false) then

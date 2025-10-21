@@ -242,19 +242,21 @@ Page 56030 "Loans Posted List"
                     ApplicationArea = Basic;
                     Promoted = true;
                     image = report;
+                    caption = 'Member Statement';
                     PromotedCategory = Process;
 
                     trigger OnAction()
                     begin
                         Cust.Reset;
                         Cust.SetRange(Cust."No.", Rec."Client Code");
-                        Report.Run(50223, true, false, Cust);
+                        Report.Run(56886, true, false, Cust);
                     end;
                 }
                 action("Loan Statement")
                 {
                     ApplicationArea = Basic;
                     Image = "Report";
+                    Caption = 'Loan Statement';
                     Promoted = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
@@ -265,7 +267,8 @@ Page 56030 "Loans Posted List"
                         Cust.SetRange(Cust."No.", Rec."Client Code");
                         Cust.SetFilter(Cust."Loan Product Filter", Rec."Loan Product Type");
                         Cust.SetFilter(Cust."Loan No. Filter", Rec."Loan  No.");
-                        Report.Run(50227, true, false, Cust);
+                        //  Report.Run(50227, true, false, Cust);
+                        Report.Run(56531, true, false, Cust);
                     end;
                 }
                 action("View Schedule")

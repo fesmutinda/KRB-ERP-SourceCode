@@ -357,13 +357,15 @@ Page 56031 "Loans Posted Card"
                     begin
                         Cust.Reset;
                         Cust.SetRange(Cust."No.", Rec."Client Code");
-                        Report.Run(50223, true, false, Cust);
+                        Report.Run(56886, true, false, Cust);
+
                     end;
                 }
                 action("Loan Statement")
                 {
                     ApplicationArea = Basic;
                     Image = Report2;
+                    Caption = 'Loan Statement';
                     Promoted = true;
                     PromotedIsBig = true;
                     PromotedCategory = process;
@@ -374,7 +376,7 @@ Page 56031 "Loans Posted Card"
                         Cust.SetRange(Cust."No.", Rec."Client Code");
                         Cust.SetFilter(Cust."Loan Product Filter", Rec."Loan Product Type");
                         Cust.SetFilter(Cust."Loan No. Filter", Rec."Loan  No.");
-                        Report.Run(50227, true, false);
+                        Report.Run(56531, true, false, Cust);
                     end;
                 }
                 action("View Schedule")

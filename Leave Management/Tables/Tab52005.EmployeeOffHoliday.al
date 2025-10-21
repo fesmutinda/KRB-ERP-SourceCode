@@ -167,6 +167,8 @@ table 52005 "Employee Off/Holiday"
             Caption = 'Recalled To';
 
             trigger OnValidate()
+            var
+                test: Decimal;
             begin
                 if "Recalled To" <> 0D then
                     if "Recalled To" < "Recall Date" then
@@ -174,87 +176,111 @@ table 52005 "Employee Off/Holiday"
                 if "Recalled To" > "Leave Ending Date" then
                     Error(Error002);
 
-
                 GeneralOptions.Get();
                 NonworkingDaysRecall := 0;
-                //"No. of Off Days" := ("Recalled To" - "Recalled From");
-                if "Recalled To" <> 0D then
-                    if "Recalled From" <> 0D then begin
-                        d := "Recalled From";
-                        repeat
-                            if HrMgt.CheckNonWorkingDay(GeneralOptions."Base Calendar Code", d, Description) then
-                                NonworkingDaysRecall := NonworkingDaysRecall + 1;
-                            // MESSAGE('%1', NonworkingDaysRecall);
+
+                if ("Recalled To" <> 0D) and ("Recalled From" <> 0D) then begin
+                    d := "Recalled From";
+
+                    repeat
+                        // ✅ Check if day is non-working
+                        if HrMgt.CheckNonWorkingDay(GeneralOptions."Base Calendar Code", d, Description) then begin
+
+                            // Only count if NOT inclusive based on leave type
                             if LeaveTypes.Get() then begin
-                                if not LeaveTypes."Inclusive of Holidays" then begin
-                                    BaseCalendar.Reset();
-                                    BaseCalendar.SetRange(BaseCalendar."Base Calendar Code", GeneralOptions."Base Calendar Code");
-                                    BaseCalendar.SetRange(BaseCalendar.Date, d);
-                                    BaseCalendar.SetRange(BaseCalendar.Nonworking, true);
-                                    BaseCalendar.SetRange(BaseCalendar."Recurring System", BaseCalendar."Recurring System"::"Annual Recurring");
-                                    if BaseCalendar.Find('-') then
-                                        NonworkingDaysRecall := NonworkingDaysRecall + 1;
-                                    //MESSAGE('%1', NonworkingDaysRecall);
-
-                                end;
-
-                                if not LeaveTypes."Inclusive of Saturday" then begin
-                                    BaseCalender.Reset();
-                                    BaseCalender.SetRange(BaseCalender."Period Type", BaseCalender."Period Type"::Date);
-                                    BaseCalender.SetRange(BaseCalender."Period Start", d);
-                                    BaseCalender.SetRange(BaseCalender."Period No.", 6);
-
-                                    if BaseCalender.Find('-') then
-                                        NonworkingDaysRecall := NonworkingDaysRecall + 1;
-                                    //MESSAGE('%1', NonworkingDaysRecall);
-                                end;
-
-
-                                if not LeaveTypes."Inclusive of Sunday" then begin
-                                    BaseCalender.Reset();
-                                    BaseCalender.SetRange(BaseCalender."Period Type", BaseCalender."Period Type"::Date);
-                                    BaseCalender.SetRange(BaseCalender."Period Start", d);
-                                    BaseCalender.SetRange(BaseCalender."Period No.", 7);
-
-                                    if BaseCalender.Find('-') then
-                                        NonworkingDaysRecall := NonworkingDaysRecall + 1;
-                                end;
-
-
-                                // IF LeaveTypes."Off/Holidays Days Leave" THEN
-                                //     ;
-
+                                // Check holidays
+                                if (Description = 'Holiday') and (not LeaveTypes."Inclusive of Holidays") then
+                                    NonworkingDaysRecall += 1
+                                // Check Saturday
+                                else if (Description = 'Saturday') and (not LeaveTypes."Inclusive of Saturday") then
+                                    NonworkingDaysRecall += 1
+                                // Check Sunday
+                                else if (Description = 'Sunday') and (not LeaveTypes."Inclusive of Sunday") then
+                                    NonworkingDaysRecall += 1;
                             end;
+                        end;
 
-                            d := CalcDate('1D', d);
-                        until d = "Recalled To";
-                        "No. of Off Days" := ("Recalled To" - "Recalled From");
-                        "No. of Off Days" := "No. of Off Days" - NonworkingDaysRecall + 1;
+                        // Continue next day
+                        d := CalcDate('1D', d);
+                    until d > "Recalled To";
 
-
-                    end;
-                // if ("Recalled To" = "Recalled From") then
-                //     "No. of Off Days" := 1
-                // else begin
-                //     GeneralOptions.Get;
-                //     //IF  "Recalled To">"Recall Date" THEN
-                //     //ERROR('Recall end date is greater than recall start date');
-                //     if LeaveApplication.Get("Leave Application") then begin
-                //         NoOfDaysOff := 1;
-                //         "Leave Ending Date" := LeaveApplication."End Date";
-                //         if LeaveApplication."End Date" <> 0D then begin
-                //             NextDate := "Recalled From";
-                //             repeat
-                //                 /*    if not CalendarMgmt.CheckDateStatus(GeneralOptions."Base Calendar Code", NextDate, Description) then
-                //                        NoOfDaysOff := NoOfDaysOff + 1; */
-                //                 NextDate := CalcDate('1D', NextDate);
-                //             //  UNTIL NextDate=LeaveApplication."End Date";
-                //             until NextDate = "Recalled To"; //By Isaac
-                //         end;
-                //     end;
-                //     "No. of Off Days" := NoOfDaysOff;
-                // end;
+                    // ✅ Now compute total days
+                    test := ("Recalled To" - "Recalled From");
+                    "No. of Off Days" := test - NonworkingDaysRecall + 1;
+                end;
             end;
+
+            // trigger OnValidate()
+            // var
+            //     test: Decimal;
+            // begin
+            //     if "Recalled To" <> 0D then
+            //         if "Recalled To" < "Recall Date" then
+            //             Error(Error003);
+            //     if "Recalled To" > "Leave Ending Date" then
+            //         Error(Error002);
+
+
+            //     GeneralOptions.Get();
+            //     NonworkingDaysRecall := 0;
+            //     //"No. of Off Days" := ("Recalled To" - "Recalled From");
+            //     if "Recalled To" <> 0D then
+            //         if "Recalled From" <> 0D then begin
+            //             d := "Recalled From";
+            //             repeat
+            //                 if HrMgt.CheckNonWorkingDay(GeneralOptions."Base Calendar Code", d, Description) then
+            //                     NonworkingDaysRecall := NonworkingDaysRecall + 1;
+            //                 // MESSAGE('%1', NonworkingDaysRecall);
+            //                 if LeaveTypes.Get() then begin
+            //                     if not LeaveTypes."Inclusive of Holidays" then begin
+            //                         BaseCalendar.Reset();
+            //                         BaseCalendar.SetRange(BaseCalendar."Base Calendar Code", GeneralOptions."Base Calendar Code");
+            //                         BaseCalendar.SetRange(BaseCalendar.Date, d);
+            //                         BaseCalendar.SetRange(BaseCalendar.Nonworking, true);
+            //                         BaseCalendar.SetRange(BaseCalendar."Recurring System", BaseCalendar."Recurring System"::"Annual Recurring");
+            //                         if BaseCalendar.Find('-') then
+            //                             NonworkingDaysRecall := NonworkingDaysRecall + 1;
+            //                         //MESSAGE('%1', NonworkingDaysRecall);
+
+            //                     end;
+
+            //                     if not LeaveTypes."Inclusive of Saturday" then begin
+            //                         BaseCalender.Reset();
+            //                         BaseCalender.SetRange(BaseCalender."Period Type", BaseCalender."Period Type"::Date);
+            //                         BaseCalender.SetRange(BaseCalender."Period Start", d);
+            //                         BaseCalender.SetRange(BaseCalender."Period No.", 6);
+
+            //                         if BaseCalender.Find('-') then
+            //                             NonworkingDaysRecall := NonworkingDaysRecall + 1;
+            //                         //MESSAGE('%1', NonworkingDaysRecall);
+            //                     end;
+
+
+            //                     if not LeaveTypes."Inclusive of Sunday" then begin
+            //                         BaseCalender.Reset();
+            //                         BaseCalender.SetRange(BaseCalender."Period Type", BaseCalender."Period Type"::Date);
+            //                         BaseCalender.SetRange(BaseCalender."Period Start", d);
+            //                         BaseCalender.SetRange(BaseCalender."Period No.", 7);
+
+            //                         if BaseCalender.Find('-') then
+            //                             NonworkingDaysRecall := NonworkingDaysRecall + 1;
+            //                     end;
+
+
+            //                     // IF LeaveTypes."Off/Holidays Days Leave" THEN
+            //                     //     ;
+
+            //                 end;
+
+            //                 d := CalcDate('1D', d);
+            //             until d = "Recalled To";
+            //             test := ("Recalled To" - "Recalled From");
+            //             "No. of Off Days" := test - NonworkingDaysRecall + 1;
+
+
+            //         end;
+
+            // end;
         }
         field(22; "Department Name"; Text[50])
         {

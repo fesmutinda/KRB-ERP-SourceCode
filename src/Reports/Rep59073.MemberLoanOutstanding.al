@@ -13,47 +13,117 @@ report 59073 "Member Loans Outstanding Rep"
             DataItemTableView = WHERE("Account Category" = CONST("Regular Account"));
             RequestFilterFields = "No.", "Name", "Date Filter";
 
-            // Per member fields
-            column(Member_No; "Member Register"."No.") { }
-            column(Member_Name; "Member Register".Name) { }
-            column(Member_Phone; "Member Register"."Phone No.") { }
-            column(Member_Email; "Member Register"."E-Mail") { }
 
-            column(Development_Loan_2_Balance; DevLoan2Balance) { }
-            column(Development_Loan_1_Balance; DevLoan1Balance) { }
-            column(Investment_Loan_Balance; InvestmentLoanBalance) { }
-            column(School_Fees_Balance; SchoolFeesBalance) { }
-            column(Emergency_Loan_Balance; EmergencyLoanBalance) { }
-            column(Flexi_Loan_Balance; FlexiLoanBalance) { }
-            column(Instant_Loan_Balance; InstantLoanBalance) { }
-            column(Sheria_Loan_Balance; SheriaLoanBalance) { }
-            column(Dev_Loan_2_14_Balance; DevLoan214Balance) { }
-            column(Total_Outstanding; TotalOutstanding) { }
+            dataitem("Loans Register"; "Loans Register")
+            {
+                DataItemLink = "Client Code" = FIELD("No.");
+                DataItemTableView = WHERE("Loan Status" = CONST(Issued));
+
+                // Member columns in child dataitem
+                column(Member_No; "Member Register"."No.") { }
+                column(Member_Name; "Member Register".Name) { }
+                column(Member_Phone; "Member Register"."Phone No.") { }
+                column(Member_Email; "Member Register"."E-Mail") { }
+                column(Current_Shares; CurrentSharesValue) { }
+                column(Shares_Retained; SharesRetainedValue) { }
+                column(Member_Count; LCount) { }
+
+                // Loan columns
+                column(Loan_No; "Loans Register"."Loan  No.") { }
+                column(Loan_Product_Type; "Loans Register"."Loan Product Type") { }
+
+                // Separate columns for each loan type
+                column(Development_Loan_2_Balance; DevLoan2Balance) { }
+                column(Development_Loan_1_Balance; DevLoan1Balance) { }
+                column(Investment_Loan_Balance; InvestmentLoanBalance) { }
+                column(School_Fees_Balance; SchoolFeesBalance) { }
+                column(Emergency_Loan_Balance; EmergencyLoanBalance) { }
+                column(Flexi_Loan_Balance; FlexiLoanBalance) { }
+                column(Instant_Loan_Balance; InstantLoanBalance) { }
+                column(Sheria_Loan_Balance; SheriaLoanBalance) { }
+                column(Dev_Loan_2_14_Balance; DevLoan214Balance) { }
+                column(Loan_Outstanding_Balance; LoanOutstandingBalance) { }
+
+                trigger OnPreDataItem()
+                begin
+                    // Reset member tracking for this member
+                    MemberCounted := false;
+                    MemberHasVisibleLoans := false;
+
+                    // Calculate shares once per member
+                    "Member Register".CalcFields("Current Shares", "Shares Retained");
+                    CurrentSharesValue := "Member Register"."Current Shares";
+                    SharesRetainedValue := "Member Register"."Shares Retained";
+                end;
+
+                trigger OnAfterGetRecord()
+                var
+                    LoanTypeCode: Text;
+                begin
+                    ClearLoanColumns();
+
+                    // Calculate outstanding balance
+                    "Loans Register".CalcFields("Outstanding Balance");
+                    LoanOutstandingBalance := "Loans Register"."Outstanding Balance";
+
+                    // Skip zero-balance loans when ShowZeroBalances = false
+                    if (LoanOutstandingBalance = 0) and (not ShowZeroBalances) then begin
+                        CurrReport.Skip();
+                        exit;
+                    end;
+
+                    // If we reach here, this loan will be visible in the report
+                    MemberHasVisibleLoans := true;
+
+                    // Count member only once when first visible loan is processed
+                    if not MemberCounted then begin
+                        LCount += 1;
+                        MemberCounted := true;
+                    end;
+
+                    // Get loan type and assign to correct column
+                    LoanTypeCode := Format("Loans Register"."Loan Product Type");
+
+                    case LoanTypeCode of
+                        'LT001':
+                            DevLoan2Balance := LoanOutstandingBalance;
+                        'LT002':
+                            DevLoan1Balance := LoanOutstandingBalance;
+                        'LT003':
+                            InvestmentLoanBalance := LoanOutstandingBalance;
+                        'LT004':
+                            SchoolFeesBalance := LoanOutstandingBalance;
+                        'LT005':
+                            EmergencyLoanBalance := LoanOutstandingBalance;
+                        'LT006':
+                            FlexiLoanBalance := LoanOutstandingBalance;
+                        'LT007':
+                            InstantLoanBalance := LoanOutstandingBalance;
+                        'LT008':
+                            SheriaLoanBalance := LoanOutstandingBalance;
+                        'LT009':
+                            DevLoan214Balance := LoanOutstandingBalance;
+                    end;
+                end;
+
+                trigger OnPostDataItem()
+                begin
+                    // After all loans processed, if no visible loans found, skip the entire member
+                    if not MemberHasVisibleLoans then begin
+                        // Decrement count if we counted this member but found no visible loans
+                        if MemberCounted then
+                            LCount -= 1;
+                    end;
+                end;
+            }
 
             trigger OnAfterGetRecord()
             begin
-                // Calculate balances for this member
-                CalculateLoanBalances();
-
-                if (TotalOutstanding = 0) and (not ShowZeroBalances) then
+                // Check if this member should be skipped entirely
+                if ShouldSkipMember() then
                     CurrReport.Skip();
-
-                // Add to grand totals
-                TotalDevLoan2 += DevLoan2Balance;
-                TotalDevLoan1 += DevLoan1Balance;
-                TotalInvestmentLoan += InvestmentLoanBalance;
-                TotalSchoolFees += SchoolFeesBalance;
-                TotalEmergencyLoan += EmergencyLoanBalance;
-                TotalFlexiLoan += FlexiLoanBalance;
-                TotalInstantLoan += InstantLoanBalance;
-                TotalSheriaLoan += SheriaLoanBalance;
-                TotalDevLoan214 += DevLoan214Balance;
-                GrandTotalOutstanding += TotalOutstanding;
             end;
         }
-
-        // ✅ DataItem for one-time totals row
-
     }
 
     requestpage
@@ -68,7 +138,8 @@ report 59073 "Member Loans Outstanding Rep"
                     field(ShowZeroBalances; ShowZeroBalances)
                     {
                         ApplicationArea = All;
-                        Caption = 'Show Members with Zero Outstanding Balance';
+                        Caption = 'Show Zero Balances';
+                        ToolTip = 'When enabled, includes members and loans with zero balances. When disabled, only shows those with outstanding balances >0 and <0 only.';
                     }
                 }
             }
@@ -77,9 +148,8 @@ report 59073 "Member Loans Outstanding Rep"
 
     var
         Company: Record "Company Information";
-        LoansRegister: Record "Loans Register";
 
-        // Per member balances
+        // Loan balances
         DevLoan2Balance: Decimal;
         DevLoan1Balance: Decimal;
         InvestmentLoanBalance: Decimal;
@@ -89,65 +159,19 @@ report 59073 "Member Loans Outstanding Rep"
         InstantLoanBalance: Decimal;
         SheriaLoanBalance: Decimal;
         DevLoan214Balance: Decimal;
-        TotalOutstanding: Decimal;
+        LoanOutstandingBalance: Decimal;
 
-        // Grand totals
-        TotalDevLoan2: Decimal;
-        TotalDevLoan1: Decimal;
-        TotalInvestmentLoan: Decimal;
-        TotalSchoolFees: Decimal;
-        TotalEmergencyLoan: Decimal;
-        TotalFlexiLoan: Decimal;
-        TotalInstantLoan: Decimal;
-        TotalSheriaLoan: Decimal;
-        TotalDevLoan214: Decimal;
-        GrandTotalOutstanding: Decimal;
+        // Member shares
+        CurrentSharesValue: Decimal;
+        SharesRetainedValue: Decimal;
 
+        // Count and options
+        LCount: Integer;
+        MemberCounted: Boolean;
+        MemberHasVisibleLoans: Boolean;
         ShowZeroBalances: Boolean;
 
-    local procedure CalculateLoanBalances()
-    begin
-        ClearBalances();
-
-        LoansRegister.Reset();
-        LoansRegister.SetRange("Client Code", "Member Register"."No.");
-        LoansRegister.SetRange("Loan Status", LoansRegister."Loan Status"::Issued);
-        LoansRegister.SetFilter("Outstanding Balance", '>0');
-
-        if LoansRegister.FindSet() then
-            repeat
-                LoansRegister.CalcFields("Outstanding Balance");
-                if LoansRegister."Outstanding Balance" > 0 then begin
-                    case Format(LoansRegister."Loan Product Type") of
-                        'LT001':
-                            DevLoan2Balance += LoansRegister."Outstanding Balance";
-                        'LT002':
-                            DevLoan1Balance += LoansRegister."Outstanding Balance";
-                        'LT003':
-                            InvestmentLoanBalance += LoansRegister."Outstanding Balance";
-                        'LT004':
-                            SchoolFeesBalance += LoansRegister."Outstanding Balance";
-                        'LT005':
-                            EmergencyLoanBalance += LoansRegister."Outstanding Balance";
-                        'LT006':
-                            FlexiLoanBalance += LoansRegister."Outstanding Balance";
-                        'LT007':
-                            InstantLoanBalance += LoansRegister."Outstanding Balance";
-                        'LT008':
-                            SheriaLoanBalance += LoansRegister."Outstanding Balance";
-                        'LT009':
-                            DevLoan214Balance += LoansRegister."Outstanding Balance";
-                    end;
-                end;
-            until LoansRegister.Next() = 0;
-
-        TotalOutstanding :=
-            DevLoan2Balance + DevLoan1Balance + InvestmentLoanBalance +
-            SchoolFeesBalance + EmergencyLoanBalance + FlexiLoanBalance +
-            InstantLoanBalance + SheriaLoanBalance + DevLoan214Balance;
-    end;
-
-    local procedure ClearBalances()
+    local procedure ClearLoanColumns()
     begin
         DevLoan2Balance := 0;
         DevLoan1Balance := 0;
@@ -158,11 +182,46 @@ report 59073 "Member Loans Outstanding Rep"
         InstantLoanBalance := 0;
         SheriaLoanBalance := 0;
         DevLoan214Balance := 0;
-        TotalOutstanding := 0;
+        LoanOutstandingBalance := 0;
+    end;
+
+    local procedure ShouldSkipMember(): Boolean
+    var
+        TempLoansRegister: Record "Loans Register";
+        HasAnyLoan: Boolean;
+        HasNonZeroLoan: Boolean;
+    begin
+        HasAnyLoan := false;
+        HasNonZeroLoan := false;
+
+        TempLoansRegister.Reset();
+        TempLoansRegister.SetRange("Client Code", "Member Register"."No.");
+        TempLoansRegister.SetRange("Loan Status", TempLoansRegister."Loan Status"::Issued);
+
+        if TempLoansRegister.FindSet() then begin
+            HasAnyLoan := true;
+            repeat
+                TempLoansRegister.CalcFields("Outstanding Balance");
+                if TempLoansRegister."Outstanding Balance" <> 0 then
+                    HasNonZeroLoan := true;
+            until TempLoansRegister.Next() = 0;
+        end;
+
+        // Skip member if:
+        // 1. They have no loans at all, OR
+        // 2. ShowZeroBalances is false AND they have no non-zero loans
+        if not HasAnyLoan then
+            exit(true);
+
+        if (not ShowZeroBalances) and (not HasNonZeroLoan) then
+            exit(true);
+
+        exit(false);
     end;
 
     trigger OnPreReport()
     begin
         Company.Get();
+        LCount := 0;
     end;
 }
