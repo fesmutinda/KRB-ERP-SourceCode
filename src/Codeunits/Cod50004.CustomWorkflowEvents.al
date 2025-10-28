@@ -130,11 +130,11 @@ codeunit 50004 "Custom Workflow Events"
 
         //Membership withdrawal
 
-        WFHandler.AddEventPredecessor(WFHandler.RunWorkflowOnApproveApprovalRequestCode, RunWorkflowOnSendMembershipApplicationForApprovalCode);
+        WFHandler.AddEventPredecessor(WFHandler.RunWorkflowOnApproveApprovalRequestCode, RunWorkflowOnSendMembershipExitApplicationForApprovalCode);
 
-        WFHandler.AddEventPredecessor(WFHandler.RunWorkflowOnRejectApprovalRequestCode, RunWorkflowOnSendMembershipApplicationForApprovalCode);
+        WFHandler.AddEventPredecessor(WFHandler.RunWorkflowOnRejectApprovalRequestCode, RunWorkflowOnSendMembershipExitApplicationForApprovalCode);
 
-        WFHandler.AddEventPredecessor(WFHandler.RunWorkflowOnDelegateApprovalRequestCode, RunWorkflowOnSendMembershipApplicationForApprovalCode);
+        WFHandler.AddEventPredecessor(WFHandler.RunWorkflowOnDelegateApprovalRequestCode, RunWorkflowOnSendMembershipExitApplicationForApprovalCode);
 
         //2. Loan Application
         WFHandler.AddEventPredecessor(WFHandler.RunWorkflowOnApproveApprovalRequestCode, RunWorkflowOnSendLoanApplicationForApprovalCode);
@@ -261,7 +261,7 @@ codeunit 50004 "Custom Workflow Events"
 
     procedure RunWorkflowOnSendMembershipExitApplicationForApproval(var "Membership Exist": Record "Membership Exist")
     begin
-        WorkflowManagement.HandleEvent(RunWorkflowOnSendMembershipApplicationForApprovalCode, "Membership Exist");
+        WorkflowManagement.HandleEvent(RunWorkflowOnSendMembershipExitApplicationForApprovalCode, "Membership Exist");
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::SwizzsoftApprovalsCodeUnit, 'FnOnCancelMembershipExitApplicationApprovalRequest', '', false, false)]

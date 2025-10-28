@@ -918,21 +918,29 @@ Page 56043 "KRB Sacco Role Center"
                     {
                         ApplicationArea = all;
                         RunObject = page "Membership Exit List";
+                        RunPageView = where(Status = const(open));
 
+
+                    }
+                    action("Pending Approval Membership Exit")
+                    {
+                        ApplicationArea = all;
+                        RunObject = page "Membership Exit List";
+                        RunPageView = where(status = const(Pending));
                     }
 
                     action("Approved Membership Exit")
                     {
                         ApplicationArea = all;
-                        RunObject = page "Membership Exit List-Posted";
+                        RunObject = page "Membership Exit List";
                         RunPageView = where(status = const(Approved), posted = const(false));
                     }
 
                     action("Posted Membership Exit")
                     {
                         ApplicationArea = all;
-                        RunObject = page "Membership Exit List-Posted";
-                        RunPageView = where(Posted = const(true));
+                        RunObject = page "Membership Exit List";
+                        RunPageView = where(Status = const(Closed), Posted = const(true));
                     }
 
 

@@ -108,7 +108,7 @@ Page 56030 "Loans Posted List"
                 field("Oustanding Interest"; Rec."Oustanding Interest")
                 {
                     ApplicationArea = Basic;
-                    Visible = false;
+                    //Visible = false;
                     Style = Ambiguous;
                 }
                 field("Oustanding Interest Display"; GetOutstandingInterestAmount())
@@ -116,7 +116,7 @@ Page 56030 "Loans Posted List"
                     ApplicationArea = Basic;
                     Caption = 'Oustanding Interest';
                     Editable = false;
-                    Visible = true;
+                    Visible = false;
                     Style = Ambiguous;
                 }
 

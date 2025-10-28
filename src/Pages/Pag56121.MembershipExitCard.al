@@ -8,7 +8,7 @@ Page 56121 "Membership Exit Card"
     PageType = Card;
     PromotedActionCategories = 'New,Process,Reports,Approval,Budgetary Control,Cancellation,Category7_caption';
     SourceTable = "Membership Exist";
-    SourceTableView = where(Posted = filter(false));
+    //SourceTableView = where(Posted = filter(false));
 
     layout
     {
@@ -81,6 +81,7 @@ Page 56121 "Membership Exit Card"
                     StyleExpr = true;
                 }
 
+
                 field(Payee; Rec.Payee)
                 {
                     ApplicationArea = Basic;
@@ -130,8 +131,12 @@ Page 56121 "Membership Exit Card"
                     ApplicationArea = Basic;
                     Editable = false;
                 }
+                field(Posted; Rec.Posted)
+                {
+                    ApplicationArea = Basic;
+                    Editable = false;
 
-
+                }
             }
         }
         area(factboxes)
@@ -181,57 +186,7 @@ Page 56121 "Membership Exit Card"
                             Report.Run(50225, true, false, Cust);
                     end;
                 }
-                action("Send Approval Request")
-                {
-                    ApplicationArea = Basic;
-                    Caption = 'Send A&pproval Request';
-                    Image = SendApprovalRequest;
-                    Promoted = true;
-                    PromotedCategory = Process;
-                    PromotedIsBig = true;
-                    PromotedOnly = true;
 
-                    trigger OnAction()
-                    var
-                        text001: label 'This batch is already pending approval';
-                        SwizzApprovalsCodeUnit: Codeunit SwizzsoftApprovalsCodeUnit;
-                    begin
-
-                        if Rec."Mode Of Disbursement" = Rec."Mode Of Disbursement"::Cheque then begin
-                            Rec.TestField("Cheque No.");
-                        end;
-                        if Rec.Status <> Rec.Status::Open then
-                            Error(text001);
-                        //.................................
-                        SwizzApprovalsCodeUnit.SendMembershipExitApplicationsRequestForApproval(rec."No.", Rec);
-                        Rec.Status := Rec.Status::Approved;
-                        //.................................
-                        GenSetUp.Get();
-                        //..................Send Withdrawal Approval request
-                        FnSendWithdrawalApplicationSMS();
-                        //...................................................
-
-
-                    end;
-                }
-                action("Cancel Approval Request")
-                {
-                    ApplicationArea = Basic;
-                    Caption = 'Cancel A&pproval Request';
-                    Image = Cancel;
-                    Promoted = true;
-                    PromotedCategory = Process;
-                    PromotedIsBig = true;
-                    PromotedOnly = true;
-
-                    trigger OnAction()
-                    var
-                    begin
-                        if Rec.Status <> Rec.Status::Open then
-                            Error(text001);
-
-                    end;
-                }
                 action("Account closure Slip")
                 {
                     ApplicationArea = Basic;
@@ -260,6 +215,17 @@ Page 56121 "Membership Exit Card"
                     trigger OnAction()
                     var
                     begin
+                        if rec.Posted = true then begin
+                            Message('This Membership Exit Application has already been posted', Rec."No.");
+                            exit;
+                        end;
+                        if Rec.Status <> Rec.Status::Approved then begin
+                            Message('This Membership Exit Application is not Approved. Only Approved Applications can be Posted', Rec."No.");
+                        end;
+                        Rec.TestField("Posting Date");
+                        Rec.TestField("Member No.");
+                        Rec.TestField("Paying Bank");
+
                         TemplateName := 'GENERAL';
                         BatchName := 'CLOSURE';
                         case Rec."Closure Type" of
@@ -271,6 +237,73 @@ Page 56121 "Membership Exit Card"
                         FnSendWithdrawalApplicationSMS
                     end;
                 }
+            }
+
+        }
+        area(Processing)
+        {
+            action("Send Approval Request")
+            {
+                ApplicationArea = All;
+                Caption = 'Send A&pproval Request';
+                Image = SendApprovalRequest;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                PromotedOnly = true;
+
+                trigger OnAction()
+                var
+                    text001: label 'This batch is already pending approval';
+                    SwizzApprovalsCodeUnit: Codeunit SwizzsoftApprovalsCodeUnit;
+                begin
+
+                    if Rec."Mode Of Disbursement" = Rec."Mode Of Disbursement"::Cheque then begin
+                        Rec.TestField("Cheque No.");
+                    end;
+                    if Rec.Status <> Rec.Status::Open then begin
+                        Message('This batch is already %1 approval.', Rec.Status);
+                        exit;
+                    end;
+
+                    //.................................
+                    SwizzApprovalsCodeUnit.SendMembershipExitApplicationsRequestForApproval(rec."No.", Rec);
+                    //   Rec.Status := Rec.Status::Approved;
+                    //.................................
+                    GenSetUp.Get();
+                    //..................Send Withdrawal Approval request
+                    FnSendWithdrawalApplicationSMS();
+                    CurrPage.Close();
+                    //...................................................
+
+
+                end;
+            }
+            action("Cancel Approval Request")
+            {
+                ApplicationArea = Basic;
+                Caption = 'Cancel A&pproval Request';
+                Image = Cancel;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                PromotedOnly = true;
+
+                trigger OnAction()
+                var
+
+
+                    SwizzApprovalsCodeUnit: Codeunit SwizzsoftApprovalsCodeUnit;
+                begin
+                    if Rec.Status <> Rec.Status::Pending then begin
+                        Message('This batch is not pending approval');
+                        exit;
+                    end;
+
+                    SwizzApprovalsCodeUnit.CancelMembershipExitApplicationsRequestForApproval(Rec."No.", Rec);
+                    CurrPage.Close();
+
+                end;
             }
         }
     }
@@ -443,7 +476,8 @@ Page 56121 "Membership Exit Card"
         SMSMessage."Entered By" := UserId;
         SMSMessage."Sent To Server" := SMSMessage."sent to server"::No;
         SMSMessage."SMS Message" := 'Dear Member,Your Membership Withdrawal Application has been received and is being Processed '
-        + compinfo.Name + ' ' + GenSetUp."Customer Care No";
+                                             + compinfo.Name + ' ' + GenSetUp."Customer Care No";
+
         cust.Reset;
         cust.SetRange(cust."No.", Rec."Member No.");
         if cust.Find('-') then begin

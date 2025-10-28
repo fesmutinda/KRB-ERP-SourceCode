@@ -316,9 +316,9 @@ page 57006 "KRB Checkoff Card"
                             if Co_op_Investment_LoanBalance > 0 then begin
                                 dialogBox.Open('Processing Co_op_Investment_Loan for ' + Format(RcptBufLines."Member No") + '...');
 
-                                // Co_op_Investment_LoanBalance := FnRunInterest(RcptBufLines, Co_op_Investment_LoanBalance, Rec."Loan CutOff Date", 'LT003');
-                                // Co_op_Investment_LoanBalance := FnRunPrinciple(RcptBufLines, Co_op_Investment_LoanBalance, Rec."Loan CutOff Date", 'LT003');
-                                Co_op_Investment_LoanBalance := FnRunLoanRepayment(RcptBufLines, Co_op_Investment_LoanBalance, Rec."Loan CutOff Date", 'LT003');
+                                Co_op_Investment_LoanBalance := FnRunInterest(RcptBufLines, Co_op_Investment_LoanBalance, Rec."Loan CutOff Date", 'LT003');
+                                Co_op_Investment_LoanBalance := FnRunPrinciple(RcptBufLines, Co_op_Investment_LoanBalance, Rec."Loan CutOff Date", 'LT003');
+                                //  Co_op_Investment_LoanBalance := FnRunLoanRepayment(RcptBufLines, Co_op_Investment_LoanBalance, Rec."Loan CutOff Date", 'LT003');
                                 FnTransferExcessToUnallocatedFunds(RcptBufLines, Co_op_Investment_LoanBalance, 'Excess Payments for INVESTMENT LOAN');
                                 dialogBox.Close();
                             end;
@@ -951,6 +951,5 @@ page 57006 "KRB Checkoff Card"
             end;
         end;
     end;
-
 
 }

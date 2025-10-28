@@ -11,7 +11,7 @@ page 50408 "Membership Exit List"
     ApplicationArea = All;
     PromotedActionCategories = 'New,Process,Reports,Approval,Budgetary Control,Cancellation,Category7_caption';
     SourceTable = "Membership Exist";
-    SourceTableView = where(Posted = filter(false));
+    //  SourceTableView = where(Posted = filter(false));
 
     layout
     {
@@ -118,6 +118,8 @@ page 50408 "Membership Exit List"
                     var
                         text001: label 'This batch is already pending approval';
                         ApprovalMgt: Codeunit "Approvals Mgmt.";
+                        SwizzApprovalsCodeUnit: Codeunit SwizzsoftApprovalsCodeUnit;
+
                     begin
                         if (Rec."Closure Type" = Rec."closure type"::"Member Exit - Normal") and (Rec."Member Liability" > 0) then
                             Error('Member has Liability of Ksh. %1 for Loans Guaranteed. Member Exit cannot be processed at the moment.', Rec."Member Liability");
@@ -125,6 +127,8 @@ page 50408 "Membership Exit List"
 
                         if Rec.Status <> Rec.Status::Open then
                             Error(text001);
+                        SwizzApprovalsCodeUnit.SendMembershipExitApplicationsRequestForApproval(rec."No.", Rec);
+
 
 
                         GenSetUp.Get();
