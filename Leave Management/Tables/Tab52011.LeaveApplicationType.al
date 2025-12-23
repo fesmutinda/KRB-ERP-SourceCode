@@ -425,7 +425,8 @@ table 52011 "Leave Application Type"
             "Employee No" := LeaveApp."Employee No";
             "Leave Period" := LeaveApp."Leave Period";
             "Employee Name" := LeaveApp."Employee Name";
-
+            "Start Date" := LeaveApp."Start Date";
+            "End Date" := LeaveApp."End Date";
         end;
 
     end;

@@ -25,6 +25,13 @@ Page 56050 "General Cue"
                     Image = appproval;
                     DrillDownPageID = "MemberApp Approval Entries";
                 }
+                field("Leave Approval Requests"; Rec."Leave Approval Requests")
+                {
+                    ApplicationArea = Basic;
+                    Caption = 'Leave Applications Sent for Approval';
+                    Image = appproval;
+                    DrillDownPageID = "Leave Approval Entries";
+                }
                 field("Requests to Approve"; Rec."Requests to Approve")
                 {
                     ApplicationArea = Basic;
@@ -38,6 +45,13 @@ Page 56050 "General Cue"
                     Caption = 'Member Applications to Approve';
                     Image = approved;
                     DrillDownPageID = "MemberApp Requests to Approve";
+                }
+                field("Leave Requests to Approve"; Rec."Leave Requests to Approve")
+                {
+                    ApplicationArea = Basic;
+                    Caption = 'Leave Applications To Approve';
+                    Image = approved;
+                    DrillDownPageID = "Leave Requests to Approve";
                 }
             }
             cuegroup(ApprovalRequestCue2)

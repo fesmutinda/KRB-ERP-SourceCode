@@ -185,35 +185,53 @@ codeunit 52001 "HR Management"
         //MESSAGE(LeaveType.Description);
     end;
 
-    procedure NotifyLeaveApplicantOnRejection(Leave: Record "Leave Application")
+    procedure NotifyLeaveApplicantOnRejection(Leave: Record "Leave Application"; RejectionReason: Text)
     var
         CompanyInfo: Record "Company Information";
         Employee: Record Employee;
+        LeaveType: Record "Leave Application Type";
         Email: Codeunit Email;
         EmailMessage: Codeunit "Email Message";
-        RecallMsg: Label '<p style="font-family:Verdana,Arial;font-size:10pt">Dear %1,<br><br></p><p style="font-family:Verdana,Arial;font-size:10pt"> This is to inform you that your leave that was to run from <Strong>%2</Strong> to <Strong>%3</Strong> has been rejected. <br>Please refer to the rejection comments posted by your approver. <br>  <br><br> Thank you for your cooperation.<br><br>Kind regards,<br>Human Resource Department<br><Strong>%4<Strong></p>', Comment = '%1 = Employee Name, %2 = Start Date, %3 = End Date, %4 = Company Name';
+        RecallMsg: Label '<p style="font-family:Verdana,Arial;font-size:10pt">Dear %1,<br><br> This is to inform you that your leave application <strong>%2</strong>, scheduled from <strong>%3</strong> to <strong>%4</strong>, has been <strong>REJECTED</strong>.<br><br><strong>Reason for rejection:</strong><br>%5<br><br>Please contact HR if you need further clarification.<br><br>Kind regards,<br>Human Resource Department<br><strong>%6</strong></p>';
         Receipient: List of [Text];
         FormattedBody: Text;
         Subject: Text;
         TimeNow: Text;
+        StartDate: Date;
+        EndDate: Date;
     begin
+        LeaveType.SetRange("Leave Code", Leave."Application No");
+        if LeaveType.FindFirst() then begin
+            StartDate := LeaveType."Start Date";
+            EndDate := LeaveType."End Date";
+        end;
+
         Employee.Reset();
         if Employee.Get(Leave."Employee No") then begin
             Employee.TestField("E-Mail");
             Clear(Receipient);
             CompanyInfo.Get();
             CompanyInfo.TestField(Name);
+
             Receipient.Add(Employee."E-Mail");
-            Subject := 'Leave Recall';
+            Subject := 'Leave Application';
             TimeNow := Format(Time);
-            FormattedBody := StrSubstNo(RecallMsg, (Employee."First Name" + ' ' + Employee."Last Name"),
-                                        Format(Leave."Start Date", 0, '<Weekday Text> <Day> <Month Text> <Year4>'),
-                                          Format(Leave."End Date", 0, '<Weekday Text> <Day> <Month Text> <Year4>'),
-                                           CompanyInfo.Name);
+
+            FormattedBody := StrSubstNo(
+                RecallMsg,
+                Employee."First Name" + ' ' + Employee."Last Name",
+                Leave."Application No",
+                Format(StartDate, 0, '<Weekday Text> <Day> <Month Text> <Year4>'),
+                Format(EndDate, 0, '<Weekday Text> <Day> <Month Text> <Year4>'),
+                RejectionReason,
+                CompanyInfo.Name
+            );
+
             EmailMessage.Create(Receipient, Subject, FormattedBody, true);
             Email.Send(EmailMessage);
         end;
     end;
+
 
     procedure GetLeaveLiability(Employee: Record Employee; var LeaveEarnedToDate: Decimal): Decimal
     var

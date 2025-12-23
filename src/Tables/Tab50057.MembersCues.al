@@ -98,6 +98,27 @@ table 50057 "Members Cues"
             FieldClass = FlowField;
 
         }
+        field(19; "Leave Approval Requests"; Integer)
+        {
+            CalcFormula = count("Approval Entry" where("Sender ID" = field("User ID"),
+            "Table ID" = const(DATABASE::"Leave Application"),
+                                                        Status = filter(Open)));
+            Caption = 'Leave Applications Sent for Approval';
+            FieldClass = FlowField;
+        }
+        field(20; "Leave Requests to Approve"; Integer)
+        {
+            CalcFormula =
+        count("Approval Entry"
+            where(
+                "Approver ID" = field("User ID"),
+                "Table ID" = const(Database::"Leave Application"),
+                Status = filter(Open)
+            ));
+            Caption = 'Leave Requests to Approve';
+            FieldClass = FlowField;
+        }
+
 
     }
 

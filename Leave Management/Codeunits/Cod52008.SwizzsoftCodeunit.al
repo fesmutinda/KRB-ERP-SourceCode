@@ -102,32 +102,54 @@ codeunit 52005 "Approval Mgt HR Ext"
         end;
     end;
 
-
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approvals Mgmt.", 'OnRejectApprovalRequest', '', false, false)]
     local procedure PerformActionsOnRejectApprovalRequest(var ApprovalEntry: Record "Approval Entry")
     var
-        EmpActing: Record "Employee Acting Position";
         Leave: Record "Leave Application";
+        LeaveType: Record "Leave Application Type";
+        ApprovalComment: Record "Approval Comment Line";
         HRMgt: Codeunit "HR Management";
-    // Employee: Record Employee;
+        RecRef: RecordRef;
+        RejectionReason: Text;
+        StartDate: Date;
+        EndDate: Date;
     begin
-        //Employee Acting
-        if EmpActing.Get(ApprovalEntry."Document No.") then begin
-            EmpActing.Validate(Status, EmpActing.Status::Rejected);
-            EmpActing.Modify();
+        // Get the actual record being approved
+        if not RecRef.Get(ApprovalEntry."Record ID to Approve") then
+            exit;
+
+        //  Ensure it is Leave Application
+        if RecRef.Number <> Database::"Leave Application" then
+            exit;
+
+        RecRef.SetTable(Leave);
+        Leave.Validate("Leave Status", Leave."Leave Status"::Rejected);
+        Leave.Validate(Status, Leave.Status::Rejected);
+        Leave.Modify(true);
+
+        //  Get rejection comment (latest)
+        ApprovalComment.Reset();
+        ApprovalComment.SetRange("Workflow Step Instance ID", ApprovalEntry."Workflow Step Instance ID");
+        if ApprovalComment.FindLast() then
+            RejectionReason := ApprovalComment.Comment
+        else
+            RejectionReason := 'No rejection reason was provided by the approver.';
+
+        //  Optionally store rejection reason on Leave (recommended)
+        Leave.Comments := CopyStr(RejectionReason, 1, MaxStrLen(Leave.Comments));
+        Leave.Modify(true);
+
+        Message('Leave application %1 has been successfully rejected.', Leave."Application No");
+
+        LeaveType.SetRange("Leave Code", Leave."Application No");
+        if LeaveType.FindFirst() then begin
+            StartDate := LeaveType."Start Date";
+            EndDate := LeaveType."End Date";
         end;
 
-        //Leave
-        if Leave.Get(ApprovalEntry."Document No.") then begin
-            if Confirm('Do you want to notify Leave Applicant that you have rejected their leave?', false) then
-                HRMgt.NotifyLeaveApplicantOnRejection(Leave);
-        end;
-        // New Employee Approval
-        // if Employee.Get(Employee."No.") then begin
-        //     Employee.Validate("Approval Status", Employee."Approval Status"::Rejected);
-        //     Employee.Modify();
-        // end;
+        HRMgt.NotifyLeaveApplicantOnRejection(Leave, RejectionReason);
     end;
+
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approvals Mgmt.", 'OnBeforeApprovalEntryInsert', '', false, false)]
     local procedure InsertCustomApprovalEntryFields(var ApprovalEntry: Record "Approval Entry"; ApprovalEntryArgument: Record "Approval Entry")

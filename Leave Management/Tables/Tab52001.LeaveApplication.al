@@ -45,7 +45,6 @@ table 52001 "Leave Application"
                     "Mobile No" := EmployeeRec."Phone No.";
                     "Email Adress" := LowerCase(employeerec."Company E-Mail");
                 end;
-
             end;
         }
         field(2; "Application No"; Code[20])

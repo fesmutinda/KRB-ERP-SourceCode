@@ -176,8 +176,8 @@ page 52010 "Leave Application Card"
                 Caption = 'Leave Statistics';
                 //Visible = false;
                 SubPageLink = "No." = field("Employee No"),
-                                            "Leave Period Filter" = field("Leave Period"),
-                                                "Leave Type Filter" = field("Leave Code");
+                                            "Leave Period Filter" = field("Leave Period");
+                //  "Leave Type Filter" = field("Leave Type");
             }
             part(CommentsFactBox; "Approval Comments FactBox")
             {
