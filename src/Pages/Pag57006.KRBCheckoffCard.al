@@ -64,6 +64,8 @@ page 57006 "KRB Checkoff Card"
                 {
                     Caption = 'Receiving Bank';
                     ApplicationArea = Basic;
+
+
                 }
                 field("Account Name"; Rec."Account Name")
                 {

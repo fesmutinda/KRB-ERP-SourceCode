@@ -73,5 +73,8 @@ Page 50000 "Payment List"
     begin
         Rec.SetRange(Cashier, UserId);
     end;
+    var
+    CRM: Page "Sales & Relationship Mgr. RC";
+
 }
 

@@ -56,7 +56,7 @@ codeunit 52001 "HR Management"
         LeaveApp."Posted Date" := Today();
         LeaveApp.Modify();
         Message('Leave Application posted successfully');
-
+        
         // Message('Status is %1', LeaveApp.Status);
     end;
 

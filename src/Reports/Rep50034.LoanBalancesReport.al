@@ -1,70 +1,35 @@
 report 50034 "Loan Balances Report"
 {
     ApplicationArea = All;
-    Caption = 'Swizz Sacco Loans Book Report';
+    Caption = 'Kenya Roads Board Sacco - Loans Book Report';
     UsageCategory = ReportsAndAnalysis;
     RDLCLayout = './Layouts/LoanBalancesReport.rdlc';
+
     dataset
     {
         dataitem(LoansRegister; "Loans Register")
         {
             DataItemTableView = sorting("Loan  No.") order(ascending) where(Posted = const(true));
-            RequestFilterFields = Source, "Client Code", "Branch Code", "Outstanding Balance", "Issued Date", "Date filter";
 
-            column(EntryNo; EntryNo)
-            {
-            }
-            column(CompanyName; CompanyInfo.Name)
-            {
-            }
-            column(CompanyAddress; CompanyInfo.Address)
-            {
-            }
-            column(CompanyAddress2; CompanyInfo."Address 2")
-            {
-            }
-            column(CompanyPhone; CompanyInfo."Phone No.")
-            {
-            }
-            column(CompanyPic; CompanyInfo.Picture)
-            {
-            }
-            column(CompanyEmail; CompanyInfo."E-Mail")
-            {
-            }
-            column(ClientCode; MemberNo)
-            {
-            }
-            column(ClientName; MemberName)
-            {
-            }
+            column(EntryNo; EntryNo) { }
+            column(CompanyName; CompanyInfo.Name) { }
+            column(CompanyAddress; CompanyInfo.Address) { }
+            column(CompanyAddress2; CompanyInfo."Address 2") { }
+            column(CompanyPhone; CompanyInfo."Phone No.") { }
+            column(CompanyPic; CompanyInfo.Picture) { }
+            column(CompanyEmail; CompanyInfo."E-Mail") { }
+            column(ClientCode; MemberNo) { }
+            column(ClientName; MemberName) { }
             column(Loan_Product_Type_Name; "Loan Product Type Name") { }
-            column(Loan__No_; LoanNo)
-            {
-            }
-            column(Installments; Installements)
-            {
-            }
-            column(IssuedDate; "Issued Date")
-            {
-            }
-            column(ApprovedAmount; IssuedAmount)
-            {
-            }
-            column(PrincipalPaid; "Principal Paid")
-            {
-            }
-            column(Outstanding_Balance; OutstandingBalance)
-            {
-            }
-            column(InterestPaid; "Interest Paid" * -1)
-            {
-            }
-            column(Oustanding_Interest; OutstandingInterest)
-            {
-            }
-            column(Issued_Date; "Issued Date") { }
+            column(Loan__No_; LoanNo) { }
+            column(Installments; Installements) { }
+            column(ApprovedAmount; IssuedAmount) { }
+            column(PrincipalPaid; "Principal Paid") { }
+            column(Outstanding_Balance; OutstandingBalance) { }
+            column(InterestPaid; "Interest Paid" * -1) { }
+            column(Oustanding_Interest; OutstandingInterest) { }
             column(RemainingRepayment; RemainingRepayment) { }
+            column(DateFilterText; DateFilterText) { } // Show date range
 
             dataitem(Customer; Customer)
             {
@@ -89,20 +54,23 @@ report 50034 "Loan Balances Report"
                 EntryNo := 0;
 
                 // Apply Loan Product Type filter if selected
-                if SelectedLoanProductType <> '' then begin
+                if SelectedLoanProductType <> '' then
                     LoansRegister.SetRange("Loan Product Type", SelectedLoanProductType);
-                end;
+
+                // Apply Customer filter if selected
+                if SelectedCustomer <> '' then
+                    LoansRegister.SetRange("Client Code", SelectedCustomer);
+
+                // Apply date filter if user selected dates
+                if (StartDate <> 0D) and (EndDate <> 0D) then
+                    LoansRegister.SetRange("Issued Date", StartDate, EndDate);
             end;
 
-            trigger OnAfterGetRecord();
+            trigger OnAfterGetRecord()
             begin
-                // Set date filter for calculations
-                LoansTable.SetFilter(LoansTable."Date filter", DateFilterUsed);
-
                 if LoansTable.get(LoansRegister."Loan  No.") then begin
-                    LoansTable.SetAutoCalcFields(LoansTable."Outstanding Balance", LoansTable."Oustanding Interest");
+                    LoansTable.CalcFields(LoansTable."Outstanding Balance", LoansTable."Oustanding Interest");
 
-                    // Process the record (filter already applied in OnPreDataItem)
                     MemberNo := LoansTable."Client Code";
                     MemberName := LoansTable."Client Name";
                     LoanProductType := LoansTable."Loan Product Type";
@@ -119,6 +87,12 @@ report 50034 "Loan Balances Report"
                         LoansTable.Installments,
                         LoansTable.Interest
                     );
+
+                    // Set the date filter text for display
+                    if (StartDate = 0D) and (EndDate = 0D) then
+                        DateFilterText := Format(Today)
+                    else
+                        DateFilterText := Format(StartDate) + ' to ' + Format(EndDate);
                 end;
             end;
         }
@@ -140,14 +114,26 @@ report 50034 "Loan Balances Report"
                         Caption = 'Loan Product Type';
                         TableRelation = "Loan Products Setup";
                     }
-                }
-            }
-        }
 
-        actions
-        {
-            area(processing)
-            {
+                    field(CustomerFilter; SelectedCustomer)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Customer';
+                        TableRelation = Customer;
+                    }
+
+                    field(StartDate; StartDate)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Start Date';
+                    }
+
+                    field(EndDate; EndDate)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'End Date';
+                    }
+                }
             }
         }
     }
@@ -155,41 +141,43 @@ report 50034 "Loan Balances Report"
     trigger OnInitReport()
     begin
         SelectedLoanProductType := '';
+        SelectedCustomer := '';
+        StartDate := 0D;
+        EndDate := 0D;
     end;
 
     trigger OnPreReport()
     begin
         CompanyInfo.Get();
-        DateFilterUsed := LoansRegister.GetFilter(LoansRegister."Date filter");
-
-        // Apply date filter to Loan Disbursement Date
-        if DateFilterUsed <> '' then
-            LoansRegister.SetFilter(LoansRegister."Loan Disbursement Date", DateFilterUsed);
-
-        // Apply Loan Product Type filter only if selected
+        // Apply Loan Product Type filter again in case user selected
         if SelectedLoanProductType <> '' then
             LoansRegister.SetRange("Loan Product Type", SelectedLoanProductType);
+
+        // Apply Customer filter again in case user selected
+        if SelectedCustomer <> '' then
+            LoansRegister.SetRange("Client Code", SelectedCustomer);
     end;
 
     var
         EntryNo: Integer;
         LoansTable: Record "Loans Register";
-        DateFilterUsed: Text;
-        SelectedLoanProductType: Code[20];
         CompanyInfo: Record "Company Information";
-        LoanRegister: Record "Loans Register";
-        OutstandingBal: Decimal;
-        OutstandingInt: Decimal;
-        IssuedDateUsed: Text;
-        MemberNo: code[100];
-        MemberName: text;
+        SelectedLoanProductType: Code[20];
+        SelectedCustomer: Code[20]; // New variable for Customer filter
+        MemberNo: Code[100];
+        MemberName: Text;
         LoanProductType: Code[100];
-        LoanNo: code[100];
+        LoanNo: Code[100];
         Installements: Integer;
         IssuedAmount: Decimal;
         OutstandingBalance: Decimal;
         OutstandingInterest: Decimal;
         RemainingRepayment: Decimal;
+
+        // Variables for date filtering
+        StartDate: Date;
+        EndDate: Date;
+        DateFilterText: Text;
 
     procedure FnCalculateLoanRemainingPeriod(
         LoanOutstandingBalance: Decimal;
@@ -200,8 +188,6 @@ report 50034 "Loan Balances Report"
         RemainingPeriods: Integer;
         MonthlyInterestRate: Decimal;
         MonthlyPayment: Decimal;
-        Numerator: Decimal;
-        Denominator: Decimal;
     begin
         if (LoanOutstandingBalance <= 0) or (OriginalAmount <= 0) or (TotalInstallments <= 0) then
             exit(0);
@@ -209,7 +195,6 @@ report 50034 "Loan Balances Report"
         if LoanOutstandingBalance >= OriginalAmount then
             exit(TotalInstallments);
 
-        // Handle zero interest rate loans
         if InterestRate = 0 then begin
             RemainingPeriods := Round((LoanOutstandingBalance / OriginalAmount) * TotalInstallments, 1, '>');
             exit(RemainingPeriods);
@@ -223,16 +208,10 @@ report 50034 "Loan Balances Report"
 
         if MonthlyPayment > 0 then begin
             RemainingPeriods := Round(LoanOutstandingBalance / MonthlyPayment, 1, '>');
-
-            // Adjust for interest effect (loans with interest need fewer periods than simple division)
-            if MonthlyInterestRate > 0 then begin
-                // Apply a correction factor based on interest rate
-                // Higher interest rates mean more of each payment goes to interest initially
-                RemainingPeriods := Round(RemainingPeriods * 0.95, 1, '>'); // Reduce by ~5%
-            end;
-        end else begin
+            if MonthlyInterestRate > 0 then
+                RemainingPeriods := Round(RemainingPeriods * 0.95, 1, '>');
+        end else
             RemainingPeriods := Round((LoanOutstandingBalance / OriginalAmount) * TotalInstallments, 1, '>');
-        end;
 
         if RemainingPeriods > TotalInstallments then
             RemainingPeriods := TotalInstallments;

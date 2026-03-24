@@ -1258,9 +1258,6 @@ kHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpBvD/AZI2
         <Field Name="Installments">
           <DataField>Installments</DataField>
         </Field>
-        <Field Name="IssuedDate">
-          <DataField>IssuedDate</DataField>
-        </Field>
         <Field Name="ApprovedAmount">
           <DataField>ApprovedAmount</DataField>
         </Field>
@@ -1291,14 +1288,14 @@ kHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpBvD/AZI2
         <Field Name="Oustanding_InterestFormat">
           <DataField>Oustanding_InterestFormat</DataField>
         </Field>
-        <Field Name="Issued_Date">
-          <DataField>Issued_Date</DataField>
-        </Field>
         <Field Name="RemainingRepayment">
           <DataField>RemainingRepayment</DataField>
         </Field>
         <Field Name="RemainingRepaymentFormat">
           <DataField>RemainingRepaymentFormat</DataField>
+        </Field>
+        <Field Name="DateFilterText">
+          <DataField>DateFilterText</DataField>
         </Field>
         <Field Name="ID_No_">
           <DataField>ID_No_</DataField>

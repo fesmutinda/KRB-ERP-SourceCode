@@ -746,6 +746,12 @@ Page 56043 "KRB Sacco Role Center"
                         Caption = 'Member Savings/Loans Report';
                         RunObject = report "Member Savings Report2";
                     }
+                    action("Member Saving Report")
+                    {
+                        ApplicationArea = Basic, Suite;
+                        Caption = 'Member Saving Report';
+                        RunObject = report "Member Savings Report";
+                    }
                 }
                 group("Trial Balance Variance")
                 {
