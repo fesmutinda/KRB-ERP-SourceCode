@@ -58,6 +58,8 @@ Report 50052 MemberReport
             column(Account_Category; "Account Category") { }
             column(Employment_Info; "Employment Info") { }
 
+            column(RegistrationDate; "Registration Date") { }
+
 
             trigger OnPreDataItem()
             var

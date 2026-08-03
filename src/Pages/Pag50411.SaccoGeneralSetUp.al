@@ -56,14 +56,14 @@ page 50411 "Sacco General Set-Up"
                 {
                     ApplicationArea = Basic;
                 }
-                field("Dividend (%)"; Rec."Dividend (%)")
-                {
-                    ApplicationArea = Basic;
-                }
-                field("Interest on Deposits (%)"; Rec."Interest on Deposits (%)")
-                {
-                    ApplicationArea = Basic;
-                }
+                // field("Dividend (%)"; Rec."Dividend (%)")
+                // {
+                //     ApplicationArea = Basic;
+                // }
+                // field("Interest on Deposits (%)"; Rec."Interest on Deposits (%)")
+                // {
+                //     ApplicationArea = Basic;
+                // }
 
                 field("Min. Dividend Proc. Period"; Rec."Min. Dividend Proc. Period")
                 {
@@ -422,82 +422,126 @@ page 50411 "Sacco General Set-Up"
                     Visible = false;
                 }
             }
+            // group("Dividends Processing Setups")
+            // {
+            //     field("Withholding Tax (%)"; Rec."Withholding Tax (%)")
+            //     {
+            //         ApplicationArea = Basic;
+            //     }
+            //     field("Interest On Current Shares"; Rec."Interest On Current Shares")
+            //     {
+            //         ApplicationArea = Basic;
+            //         Caption = 'Interest On Current Shares(%)';
+            //     }
+            //     field("Interest on Share Capital(%)"; Rec."Interest on Share Capital(%)")
+            //     {
+            //         ApplicationArea = Basic;
+            //     }
+            //     field("Dividends Paying Bank Account"; Rec."Dividends Paying Bank Account")
+            //     {
+            //         ApplicationArea = Basic;
+            //     }
+            //     // field("Interest On FOSA Shares"; Rec."Interest On FOSA Shares")
+            //     // {
+            //     //     ApplicationArea = Basic;
+            //     //     Caption = 'Interest On FOSA Shares(%)';
+            //     //     Visible = false;
+            //     // }
+            //     field("Dividend Payable Account"; Rec."Dividend Payable Account")
+            //     {
+            //         ApplicationArea = Basic;
+
+            //     }
+            //     field("Interest On Preferential Shares"; Rec."Interest On PreferentialShares")
+            //     {
+            //         ApplicationArea = Basic;
+            //         Caption = 'Interest On Preferential Shares(%)';
+            //         Visible = false;
+            //     }
+            //     field("Interest On Lift Shares"; Rec."Interest On LiftShares")
+            //     {
+            //         ApplicationArea = Basic;
+            //         Caption = 'Interest On Lift Shares(%)';
+            //         Visible = false;
+            //     }
+            //     field("Interest On PreferentialShares"; Rec."Interest On PreferentialShares")
+            //     {
+            //         ApplicationArea = Basic;
+            //         Caption = 'Interest On Preferential Shares(%)';
+            //         Visible = false;
+            //     }
+            //     field("Interest On TambaaShares"; Rec."Interest On TambaaShares")
+            //     {
+            //         ApplicationArea = Basic;
+            //         Caption = 'Interest On Tambaa Shares(%)';
+            //         Visible = false;
+            //     }
+            //     field("Interest On PepeaShares"; Rec."Interest On PepeaShares")
+            //     {
+            //         ApplicationArea = Basic;
+            //         Caption = 'Interest On Pepea Shares(%)';
+            //         Visible = false;
+            //     }
+            //     field("Interest On HousingShares"; Rec."Interest On HousingShares")
+            //     {
+            //         ApplicationArea = Basic;
+            //         Caption = 'Interest On Housing Shares(%)';
+            //         Visible = false;
+            //     }
+            //     field("Dividends Capitalization Rate"; Rec."Dividends Capitalization Rate")
+            //     {
+            //         ApplicationArea = Basic;
+            //         Caption = 'Dividends Capitalization Rate(%)';
+            //         Visible = false;
+            //     }
+            //     field("Proposed Honoraria"; Rec."Proposed Honoraria")
+            //     {
+            //         ApplicationArea = all;
+            //     }
+            // }
+
             group("Dividends Processing Setups")
             {
                 field("Withholding Tax (%)"; Rec."Withholding Tax (%)")
                 {
                     ApplicationArea = Basic;
                 }
-                field("Interest On Current Shares"; Rec."Interest On Current Shares")
-                {
-                    ApplicationArea = Basic;
-                    Caption = 'Interest On Current Shares(%)';
-                }
-                field("Interest on Share Capital(%)"; Rec."Interest on Share Capital(%)")
+                field("Dividend (%)"; Rec."Dividend (%)")
                 {
                     ApplicationArea = Basic;
                 }
-                field("Dividends Paying Bank Account"; Rec."Dividends Paying Bank Account")
+                field("Interest on Deposits (%)"; Rec."Interest on Deposits (%)")
                 {
                     ApplicationArea = Basic;
                 }
-                // field("Interest On FOSA Shares"; Rec."Interest On FOSA Shares")
-                // {
-                //     ApplicationArea = Basic;
-                //     Caption = 'Interest On FOSA Shares(%)';
-                //     Visible = false;
-                // }
+
+                field("Dividend Processing Fee"; Rec."Dividend Processing Fee")
+                {
+                    ApplicationArea = Basic;
+                }
+                field("Dividend Process Fee Account"; Rec."Dividend Process Fee Account")
+                {
+                    ApplicationArea = Basic;
+                    Caption = 'Dividend Processing Fee Account';
+                }
+
                 field("Dividend Payable Account"; Rec."Dividend Payable Account")
                 {
                     ApplicationArea = Basic;
 
                 }
-                field("Interest On Preferential Shares"; Rec."Interest On PreferentialShares")
-                {
-                    ApplicationArea = Basic;
-                    Caption = 'Interest On Preferential Shares(%)';
-                    Visible = false;
-                }
-                field("Interest On Lift Shares"; Rec."Interest On LiftShares")
-                {
-                    ApplicationArea = Basic;
-                    Caption = 'Interest On Lift Shares(%)';
-                    Visible = false;
-                }
-                field("Interest On PreferentialShares"; Rec."Interest On PreferentialShares")
-                {
-                    ApplicationArea = Basic;
-                    Caption = 'Interest On Preferential Shares(%)';
-                    Visible = false;
-                }
-                field("Interest On TambaaShares"; Rec."Interest On TambaaShares")
-                {
-                    ApplicationArea = Basic;
-                    Caption = 'Interest On Tambaa Shares(%)';
-                    Visible = false;
-                }
-                field("Interest On PepeaShares"; Rec."Interest On PepeaShares")
-                {
-                    ApplicationArea = Basic;
-                    Caption = 'Interest On Pepea Shares(%)';
-                    Visible = false;
-                }
-                field("Interest On HousingShares"; Rec."Interest On HousingShares")
-                {
-                    ApplicationArea = Basic;
-                    Caption = 'Interest On Housing Shares(%)';
-                    Visible = false;
-                }
-                field("Dividends Capitalization Rate"; Rec."Dividends Capitalization Rate")
-                {
-                    ApplicationArea = Basic;
-                    Caption = 'Dividends Capitalization Rate(%)';
-                    Visible = false;
-                }
-                field("Proposed Honoraria"; Rec."Proposed Honoraria")
-                {
-                    ApplicationArea = all;
-                }
+
+                // field("WithHolding Tax Account";Rec."WithHolding Tax Account")
+                // {
+                //                         ApplicationArea = Basic;
+
+                // }
+                //field("HolidaySavings(%)"; Rec."HolidaySavings(%)")
+                //{
+                //   ApplicationArea = Basic;
+                // }
+                // field("HolidaySavings Payout Bank"; Rec."HolidaySavings Payout Bank") { ApplicationArea = Basic; }
+
             }
             group(ATM)
             {

@@ -10,10 +10,13 @@ Page 56127 "Loan Application BOSA-Approved"
     Editable = false;
     InsertAllowed = false;
     ModifyAllowed = false;
+    //SourceTableTemporary = true;
     SourceTableView = where(Posted = const(false),
                             Source = filter(BOSA),
                             "Approval Status" = const(Approved),
-                            "Loan Product Type" = const('<>LT007'));
+                                                        "Loan Product Type" = const('<>LT007&<>LT006'));
+
+
 
     layout
     {
@@ -80,12 +83,12 @@ Page 56127 "Loan Application BOSA-Approved"
     {
     }
 
-    trigger OnOpenPage()
-    begin
-        If FnCanPostLoans(UserId) = false then begin
-            Rec.SetRange("Captured By", UserId);
-        end;
-    end;
+    // trigger OnOpenPage()
+    // begin
+    //     If FnCanPostLoans(UserId) = false then begin
+    //         Rec.SetRange("Captured By", UserId);
+    //     end;
+    // end;
 
     local procedure FnCanPostLoans(UserId: Text): Boolean
     var
@@ -98,6 +101,34 @@ Page 56127 "Loan Application BOSA-Approved"
         end;
         exit(false);
     end;
+
+
+    trigger OnOpenPage()
+    var
+        LoanRec: Record "Loans Register";
+    begin
+        // Rec.Reset();
+        // Rec.DeleteAll(); // clear temp table
+
+        // LoanRec.Reset();
+        // LoanRec.SetRange(Posted, false);
+        // LoanRec.SetFilter("Loan Product Type", '<>LT007');
+        // //LoanRec.SetRange("Captured By", UserId);
+
+        // if LoanRec.FindSet() then
+        //     repeat
+        //         if not LoanRec.IsPendingApproval() then begin
+        //             Rec := LoanRec;
+        //             Rec.Insert();
+        //         end;
+        //     until LoanRec.Next() = 0;
+
+        If FnCanPostLoans(UserId) = false then begin
+            Rec.SetRange("Captured By", UserId);
+        end;
+
+    end;
+
 
 }
 

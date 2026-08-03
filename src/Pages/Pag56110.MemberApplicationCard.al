@@ -1683,6 +1683,8 @@ page 56110 "Member Application Card"
 
 
 
+
+
             EmailSubject := 'KRB Membership Application';
 
             // EMailBody := 'Dear <b>' + Name + '</b>,</br></br>' +
@@ -1690,13 +1692,22 @@ page 56110 "Member Application Card"
             // 'Thank You For Choosing to Save With Us' +'</br>' +
             // 'Kind regards,'+ '<br></br>' +
             // 'KRB Sacco' ;
-            EMailBody := 'Dear <b>' + Rec.Name + '</b>,</br></br>' +
-                        'On behalf of KRB Sacco am pleased to inform you that your application for membership has been accepted.' + '<br></br>' +
-                        'Congratulations' +
-                        Companyinfo.Name + '</br>' + Companyinfo.Address + '</br>' + Companyinfo.City + '</br>' +
-                        Companyinfo."Post Code" + '</br>' + Companyinfo."Country/Region Code" + '</br>' +
-                        Companyinfo."Phone No." + '</br>' + Companyinfo."E-Mail";
+            EmailBody :=
+'Dear <b>' + Rec.Name + '</b>,<br><br>' +
+'On behalf of KRB Sacco, I am pleased to inform you that your application for membership has been accepted.<br><br>' +
+'<b>Congratulations!</b><br><br>' +
+'Kindly visit this link to register on our members portal:<br>' +
+'<a href="https://mss.krbsacco.co.ke:8007/">mss.krb.co.ke</a><br><br>' +
+Companyinfo.Name + '<br>' +
+Companyinfo.Address + '<br>' +
+Companyinfo.City + '<br>' +
+Companyinfo."Post Code" + '<br>' +
+Companyinfo."Country/Region Code" + '<br>' +
+Companyinfo."Phone No." + '<br>' +
+Companyinfo."E-Mail";
+
             EmailCodeunit.SendMail(Emailaddress, EmailSubject, EmailBody);
+
         end;
     end;
 
@@ -1759,6 +1770,7 @@ page 56110 "Member Application Card"
         Cust."Date of Birth" := Rec."Date of Birth";
         Cust."Station/Department" := Rec."Station/Department";
         Cust."E-Mail" := Rec."E-Mail (Personal)";
+        Cust."E-Mail (Personal)" := Rec."E-Mail (Personal)";
         Cust.Location := Rec.Location;
         Cust.Title := Rec.Title;
         Cust."Home Address" := Rec."Home Address";

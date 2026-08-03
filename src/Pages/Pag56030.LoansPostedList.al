@@ -107,6 +107,15 @@ Page 56030 "Loans Posted List"
                 field("Oustanding Interest"; Rec."Oustanding Interest")
                 {
                     ApplicationArea = Basic;
+                    Visible = false;
+                    Style = Ambiguous;
+                }
+
+                field("Oustanding Interest Display"; GetOutstandingInterestAmount())
+                {
+                    ApplicationArea = Basic;
+                    Caption = 'Oustanding Interest';
+                    Editable = false;
                     Visible = true;
                     Style = Ambiguous;
                 }
@@ -239,7 +248,7 @@ Page 56030 "Loans Posted List"
                     begin
                         Cust.Reset;
                         Cust.SetRange(Cust."No.", Rec."Client Code");
-                        Report.Run(50223, true, false, Cust);
+                        Report.Run(56886, true, false, Cust);
                     end;
                 }
                 action("Loan Statement")
@@ -256,7 +265,7 @@ Page 56030 "Loans Posted List"
                         Cust.SetRange(Cust."No.", Rec."Client Code");
                         Cust.SetFilter(Cust."Loan Product Filter", Rec."Loan Product Type");
                         Cust.SetFilter(Cust."Loan No. Filter", Rec."Loan  No.");
-                        Report.Run(50227, true, false, Cust);
+                        Report.Run(56531, true, false, Cust);
                     end;
                 }
                 action("View Schedule")
@@ -274,12 +283,15 @@ Page 56030 "Loans Posted List"
                         LoanApp.SetRange(LoanApp."Loan  No.", Rec."Loan  No.");
                         if LoanApp.Findset then begin
                             repeat
-                                SFactory.FnGenerateRepaymentSchedule(LoanApp."Loan  No.");
+
+
+
+                                Report.Run(50477, true, false, LoanApp);
+
+
                             until LoanApp.Next = 0;
                         end;
 
-
-                        Report.Run(50477, true, false, LoanApp);
 
 
 
@@ -292,6 +304,7 @@ Page 56030 "Loans Posted List"
                 {
                     ApplicationArea = Basic;
                     Caption = 'Loan Guarantorship';
+                    Visible = false;
                     Image = PersonInCharge;
                     Promoted = true;
                     PromotedCategory = Process;
@@ -340,6 +353,20 @@ Page 56030 "Loans Posted List"
                         SwiszzFactory: Codeunit 50009;
                     begin
                         SwiszzFactory.BulkSchedule();
+                    end;
+                }
+
+
+                action("Reset Loan Arrears")
+                {
+                    ApplicationArea = all;
+                    ToolTip = 'Reset Arrears for Cleared Loans';
+
+                    trigger OnAction()
+                    var
+                        SwiszzFactory: Codeunit 50009;
+                    begin
+                        SwiszzFactory.ResetLoanArrears();
                     end;
                 }
                 separator(Action6)
@@ -498,6 +525,17 @@ Page 56030 "Loans Posted List"
     procedure CalledFrom()
     begin
         Overdue := Overdue::" ";
+    end;
+
+
+    local procedure GetOutstandingInterestAmount(): Decimal
+    begin
+        Rec.CalcFields("Outstanding Balance", "Oustanding Interest");
+
+        if Rec."Outstanding Balance" <= 0 then
+            exit(0)
+        else
+            exit(Rec."Oustanding Interest");
     end;
 }
 

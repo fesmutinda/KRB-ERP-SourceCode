@@ -11,7 +11,7 @@
             "authentication": "UserPassword", 
             "startupObjectId": 56043,
             "startupObjectType": "Page",
-            "port": 7049,
+            "port": 5049,
             "breakOnError": "All",
             "launchBrowser": true,
             "enableLongRunningSqlStatements": true,
@@ -39,14 +39,26 @@
             "schemaUpdateMode": "ForceSync",
             "usePublicURLFromServer": true
         },
-        {
-            "name": "snapshotInitialize: Microsoft production cloud",
+
+            {
+            "name": "Swizz server",
+            "request": "launch",
             "type": "al",
-            "request": "snapshotInitialize",
-            "environmentType": "Production",
-            "environmentName": "production",
-            "breakOnNext": "WebClient",
-            "executionContext": "DebugAndProfile"
+            "environmentType": "OnPrem",
+            "server": "http://95.216.225.26:8080/BC250_KRBSC/",
+            "serverInstance": "BC250_KRBSC",
+            "authentication": "UserPassword",
+            "startupObjectId": 56043,
+            "startupObjectType": "Page",
+            "port": 2549,
+            "breakOnError": "All",
+            "launchBrowser": true,
+            "enableLongRunningSqlStatements": true,
+            "enableSqlInformationDebugger": false,
+            "tenant": "default",
+            "schemaUpdateMode": "ForceSync",
+            "usePublicURLFromServer": true
         }
+       
     ]
 }

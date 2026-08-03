@@ -274,6 +274,7 @@ Page 51007 "BOSA Loans Disbursement Card"
                 {
                     ApplicationArea = Basic;
                     Editable = true;
+                    visible = false;
                 }
                 field("Repayment Frequency"; Rec."Repayment Frequency")
                 {
@@ -411,6 +412,9 @@ Page 51007 "BOSA Loans Disbursement Card"
                         CustLed: Record "Cust. Ledger Entry";
                         DisbursementAmount: Decimal;
                         ConfirmMessage: Text;
+                        ObjLoanOffsetsII: Record "Loan Offset Details";
+                        LoansRecII: Record "Loans Register";
+
 
                     begin
                         // Permission check
@@ -422,27 +426,51 @@ Page 51007 "BOSA Loans Disbursement Card"
                             Error('Paying Bank Account Cannot be blank')
                         END;
 
+                        FnCheckForTestFields();
+
                         // Status validations
                         if Rec.Posted = true then begin
                             Error('Prohibited ! The loan is already Posted');
                         end;
 
-                        if Rec."Loan Status" <> Rec."Loan Status"::Approved then begin
-                            Error('Prohibited ! The loan Status MUST be Approved');
-                        end;
+
+                        //Disabled approval status
+
+                        // if Rec."Loan Status" <> Rec."Loan Status"::Approved then begin
+                        //     Error('Prohibited ! The loan Status MUST be Approved');
+                        // end;
+
+
+                        // ObjLoanOffsetsII.Reset;
+                        // ObjLoanOffsetsII.SetRange("Loan No.", Rec."Loan  No.");
+
+
 
                         VarTotalToRecover := 0;
                         LoansRec.Reset();
                         LoansRec.SetRange("Client Code", Rec."Client Code");
+                        LoansRec.SetRange("Mark For Arrear Recovery", true);
                         LoansRec.SetFilter("Outstanding Balance", '>0');
                         LoansRec.SetFilter("Days In Arrears", '>30');
                         LoansRec.SetFilter("Amount in Arrears", '>0');
+
 
                         if LoansRec.FindSet() then begin
 
                             repeat
 
-                                VarTotalToRecover += Round(LoansRec."Amount in Arrears", 1, '>');
+                                if ObjLoanOffsetsII.Get(rEC."Loan  No.", Rec."Client Code", LoansRec."Loan  No.") then begin
+                                    if (ObjLoanOffsetsII."Total Top Up" < LoansRec."Amount in Arrears") then begin
+
+                                        VarTotalToRecover += Round(LoansRec."Amount in Arrears" - ObjLoanOffsetsII."Total Top Up", 1, '>');
+                                    end;
+                                end else begin
+
+
+                                    VarTotalToRecover += Round(LoansRec."Amount in Arrears", 1, '>');
+                                end;
+
+
 
                             until LoansRec.Next() = 0;
 
@@ -460,18 +488,22 @@ Page 51007 "BOSA Loans Disbursement Card"
                                     Error('Please turn on Is Partial Dibursement')
                             end;
 
+
                             DisbursementAmount := Rec."Amount To Disburse";
+                            Rec.CalcFields("Top Up Amount");
+                            Rec.CalcFields("Topup Commission");
                             ConfirmMessage := 'Are you sure you want to PARTIALLY DISBURSE Loan amount of Ksh. ' +
                                              Format(DisbursementAmount - (Rec."Loan Processing Fee" +
                                              Rec."Loan Dirbusement Fee" + Rec."Loan Insurance" +
-                                             REC."Top Up Amount" + Rec."Valuation Cost" + VarTotalToRecover)) + ' to member - ' + Format(Rec."Client Name") + ' ?';
+                                             REC."Top Up Amount" + Rec."Valuation Cost" + Round(Rec."Bank Transfer Charges", 1, '>') + VarTotalToRecover)) + ' to member - ' + Format(Rec."Client Name") + ' ?';
                         end else begin
                             DisbursementAmount := Rec."Approved Amount";
                             Rec.CalcFields("Top Up Amount");
+                            Rec.CalcFields("Topup Commission");
                             ConfirmMessage := 'Are you sure you want to POST Loan Net amount of Ksh. ' +
                                              Format(Rec."Approved Amount" - (Rec."Loan Processing Fee" +
                                              Rec."Loan Dirbusement Fee" + Rec."Loan Insurance" +
-                                             REC."Top Up Amount" + Rec."Valuation Cost" + VarTotalToRecover)) +
+                                             REC."Top Up Amount" + Rec."Topup Commission" + Rec."Valuation Cost" + Round(Rec."Bank Transfer Charges", 1, '>') + VarTotalToRecover)) +
                                              ' to member - ' + Format(Rec."Client Name") + ' ?';
                         end;
 
@@ -514,6 +546,23 @@ Page 51007 "BOSA Loans Disbursement Card"
                                             Rec."Approval Status" := Rec."Approval Status"::Approved;
                                             Rec."Loans Category-SASRA" := Rec."Loans Category-SASRA"::Perfoming;
                                             //Rec.Modify();
+
+
+                                            //UNMARK ALL LOANS MARKED FOR RECOVERT
+
+                                            LoansRecII.SetRange("Client Code", Rec."Client Code");
+
+                                            LoansRecII.SetRange("Mark For Arrear Recovery", true);
+
+                                            iF LoansRecII.FindSet() then begin
+
+                                                repeat
+
+                                                    LoansRec."Mark For Arrear Recovery" := FALSE;
+
+                                                until LoansRecII.Next() = 0
+
+                                            end;
 
 
                                             if Rec.Modify() then begin
@@ -569,6 +618,22 @@ Page 51007 "BOSA Loans Disbursement Card"
                                             Rec."Approval Status" := Rec."Approval Status"::Approved;
                                             Rec."Loans Category-SASRA" := Rec."Loans Category-SASRA"::Perfoming;
                                             //Rec.Modify();
+
+                                            //UNMARK ALL LOANS MARKED FOR RECOVERT
+
+                                            LoansRecII.SetRange("Client Code", Rec."Client Code");
+
+                                            LoansRecII.SetRange("Mark For Arrear Recovery", true);
+
+                                            iF LoansRecII.FindSet() then begin
+
+                                                repeat
+
+                                                    LoansRec."Mark For Arrear Recovery" := FALSE;
+
+                                                until LoansRecII.Next() = 0
+
+                                            end;
 
 
                                             if Rec.Modify() then begin
@@ -703,7 +768,7 @@ Page 51007 "BOSA Loans Disbursement Card"
                 action("View Schedule")
                 {
                     ApplicationArea = Basic;
-                    Caption = 'View Schedule';
+                    Caption = 'Generate Schedule';
                     Image = ViewDetails;
                     Promoted = true;
                     PromotedCategory = Process;
@@ -717,6 +782,11 @@ Page 51007 "BOSA Loans Disbursement Card"
                         if LoanApp.Find('-') then begin
                             Report.Run(50477, true, false, LoanApp);
                         end;
+
+                        Rec.Get(Rec."Loan  No.");
+
+                        Rec.ScheduleGenerated := true;
+                        Rec.Modify();
                     end;
                 }
 
@@ -758,6 +828,15 @@ Page 51007 "BOSA Loans Disbursement Card"
         UpdateControl();
         OpenApprovalEntriesExist := ApprovalsMgmt.HasOpenApprovalEntries(REC.RecordId); //Return No and allow sending of approval request.
         EnabledApprovalWorkflowsExist := true;
+    end;
+
+
+    local procedure FnCheckForTestFields()
+
+    begin
+        //-------------------\------------------Test Fields Validation--------------------------------   
+        if Rec.ScheduleGenerated = false then
+            Error('Please generate the Loan Schedule before posting the loan');
     end;
 
     trigger OnInsertRecord(BelowxRec: Boolean): Boolean
@@ -1086,35 +1165,35 @@ Page 51007 "BOSA Loans Disbursement Card"
         end;
     end;
 
-    local procedure FnCheckForTestFields()
-    var
-        LoanType: Record "Loan Products Setup";
-        LoanGuarantors: Record "Loans Guarantee Details";
-    begin
-        //--------------------
-        if Rec."Approval Status" = Rec."Approval Status"::Approved then begin
-            Error('The loan has already been approved');
-        end;
-        if Rec."Approval Status" <> Rec."Approval Status"::Open then begin
-            Error('Approval status MUST be Open');
-        end;
-        Rec.TestField("Requested Amount");
-        Rec.TestField("Main-Sector");
-        Rec.TestField("Sub-Sector");
-        Rec.TestField("Specific-Sector");
-        Rec.TestField("Loan Product Type");
-        Rec.TestField("Mode of Disbursement");
-        //----------------------
-        if LoanType.get(Rec."Loan Product Type") then begin
-            if LoanType."Appraise Guarantors" = true then begin
-                LoanGuarantors.Reset();
-                LoanGuarantors.SetRange(LoanGuarantors."Loan No", Rec."Loan  No.");
-                if LoanGuarantors.find('-') then begin
-                    Error('Please Insert Loan Applicant Guarantor Details!');
-                end;
-            end;
-        end;
-    end;
+    // local procedure FnCheckForTestFields()
+    // var
+    //     LoanType: Record "Loan Products Setup";
+    //     LoanGuarantors: Record "Loans Guarantee Details";
+    // begin
+    //     //--------------------
+    //     if Rec."Approval Status" = Rec."Approval Status"::Approved then begin
+    //         Error('The loan has already been approved');
+    //     end;
+    //     if Rec."Approval Status" <> Rec."Approval Status"::Open then begin
+    //         Error('Approval status MUST be Open');
+    //     end;
+    //     Rec.TestField("Requested Amount");
+    //     Rec.TestField("Main-Sector");
+    //     Rec.TestField("Sub-Sector");
+    //     Rec.TestField("Specific-Sector");
+    //     Rec.TestField("Loan Product Type");
+    //     Rec.TestField("Mode of Disbursement");
+    //     //----------------------
+    //     if LoanType.get(Rec."Loan Product Type") then begin
+    //         if LoanType."Appraise Guarantors" = true then begin
+    //             LoanGuarantors.Reset();
+    //             LoanGuarantors.SetRange(LoanGuarantors."Loan No", Rec."Loan  No.");
+    //             if LoanGuarantors.find('-') then begin
+    //                 Error('Please Insert Loan Applicant Guarantor Details!');
+    //             end;
+    //         end;
+    //     end;
+    // end;
 
     local procedure FnSendLoanApprovalNotifications()
     var
@@ -1236,6 +1315,7 @@ Page 51007 "BOSA Loans Disbursement Card"
         NetAmount: Decimal;
         LoansRec: Record "Loans Register";
         VarTotalRecovered: Decimal;
+        ObjLoanOffsetsIII: Record "Loan Offset Details";
     begin
         AmountTop := 0;
         NetAmount := 0;
@@ -1305,6 +1385,7 @@ Page 51007 "BOSA Loans Disbursement Card"
 
             LoansRec.Reset();
             LoansRec.SetRange("Client Code", Rec."Client Code");
+            LoansRec.SetRange("Mark For Arrear Recovery", true);
             LoansRec.SetFilter("Outstanding Balance", '>0');
             LoansRec.SetFilter("Days In Arrears", '>30');
             LoansRec.SetFilter("Amount in Arrears", '>0');
@@ -1312,14 +1393,31 @@ Page 51007 "BOSA Loans Disbursement Card"
             if LoansRec.FindSet() then begin
 
                 repeat
-                    LineNo := LineNo + 10000;
-                    SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, Rec."Loan  No.", LineNo,
-                           GenJournalLine."Transaction Type"::"Loan Repayment",
-                           GenJournalLine."Account Type"::Customer, LoanApps."Client Code", DirbursementDate,
-                           Round(LoansRec."Amount in Arrears", 1, '>') * -1, 'BOSA', LoanApps."Loan  No.",
-                           'Arrears Recovered from - ' + LoanApps."Loan  No.", LoansRec."Loan  No.");
 
-                    VarTotalRecovered += Round(LoansRec."Amount in Arrears", 1, '>');
+                    if ObjLoanOffsetsIII.Get(rEC."Loan  No.", Rec."Client Code", LoansRec."Loan  No.") then begin
+                        if (ObjLoanOffsetsIII."Total Top Up" < LoansRec."Amount in Arrears") then begin
+
+                            VarTotalToRecover += Round(LoansRec."Amount in Arrears" - ObjLoanOffsetsIII."Total Top Up", 1, '>');
+
+                            LineNo := LineNo + 10000;
+                            SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, Rec."Loan  No.", LineNo,
+                                   GenJournalLine."Transaction Type"::"Loan Repayment",
+                                   GenJournalLine."Account Type"::Customer, LoanApps."Client Code", DirbursementDate,
+                                   Round(LoansRec."Amount in Arrears" - ObjLoanOffsetsIII."Total Top Up", 1, '>') * -1, 'BOSA', LoanApps."Loan  No.",
+                                   'Arrears Recovered from - ' + LoanApps."Loan  No.", LoansRec."Loan  No.");
+
+                            VarTotalRecovered += Round(LoansRec."Amount in Arrears" - ObjLoanOffsetsIII."Total Top Up", 1, '>');
+                        end;
+                    end else begin
+                        LineNo := LineNo + 10000;
+                        SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, Rec."Loan  No.", LineNo,
+                               GenJournalLine."Transaction Type"::"Loan Repayment",
+                               GenJournalLine."Account Type"::Customer, LoanApps."Client Code", DirbursementDate,
+                               Round(LoansRec."Amount in Arrears", 1, '>') * -1, 'BOSA', LoanApps."Loan  No.",
+                               'Arrears Recovered from - ' + LoanApps."Loan  No.", LoansRec."Loan  No.");
+
+                        VarTotalRecovered += Round(LoansRec."Amount in Arrears", 1, '>');
+                    end;
                 until LoansRec.Next() = 0;
             end;
 
@@ -1370,12 +1468,13 @@ Page 51007 "BOSA Loans Disbursement Card"
         //....Bank Transfer Charges....
 
         bankTransferCharges := Rec."Bank Transfer Charges";
-        //.....credit Bank
+        //.....credit bANK CHARGES ACC
         LineNo := LineNo + 10000;
-        SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, LoanApps."Loan  No.", LineNo, GenJournalLine."Transaction Type"::" ", GenJournalLine."Account Type"::"Bank Account", LoanApps."Paying Bank Account No", DirbursementDate, bankTransferCharges * -1, 'BOSA', Rec."Batch No.", 'Bank transfer charges ' + Format(LoanApps."Loan  No."), '');
+        SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, LoanApps."Loan  No.", LineNo, GenJournalLine."Transaction Type"::" ", GenJournalLine."Account Type"::"G/L Account", '5201', DirbursementDate, Round(bankTransferCharges, 1, '>') * -1, 'BOSA', Rec."Batch No.", 'Bank transfer charges ' + Format(LoanApps."Loan  No."), '');
         //....debit member & Bank trans duty....
-        LineNo := LineNo + 10000;
-        SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, Rec."Loan  No.", LineNo, GenJournalLine."Transaction Type"::"Loan Transfer Charges", GenJournalLine."Account Type"::Customer, LoanApps."Client Code", DirbursementDate, bankTransferCharges, 'BOSA', LoanApps."Loan  No.", 'Bank transfer charges ' + Format(LoanApps."Loan  No."), LoanApps."Loan  No.");
+        //LineNo := LineNo + 10000;
+        //SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, Rec."Loan  No.", LineNo, GenJournalLine."Transaction Type"::"Loan Transfer Charges", GenJournalLine."Account Type"::Customer, LoanApps."Client Code", DirbursementDate, bankTransferCharges, 'BOSA', LoanApps."Loan  No.", 'Bank transfer charges ' + Format(LoanApps."Loan  No."), LoanApps."Loan  No.");
+        VarAmounttoDisburse := VarAmounttoDisburse - Round(bankTransferCharges, 1, '>');
 
         //....Insuarance
         // PREMIUM = LOAN AMOUNT x (5.03 x PERIOD +21.15)/6000 x 0.6
@@ -1425,6 +1524,7 @@ Page 51007 "BOSA Loans Disbursement Card"
         IsFirstDisbursement: Boolean;
         LoansRec: Record "Loans Register";
         VarTotalRecovered: Decimal;
+        ObjLoanOffsetsIII: Record "Loan Offset Details";
     begin
         AmountTop := 0;
         NetAmount := 0;
@@ -1590,34 +1690,14 @@ Page 51007 "BOSA Loans Disbursement Card"
         end;
 
         if bankTransferCharges > 0 then begin
-            // Credit Bank
-            if LoanApps."Paying Bank Account No" <> '' then begin
-                LineNo := LineNo + 10000;
-                SFactory.FnCreateGnlJournalLine(
-                    TemplateName, BatchName, LoanApps."Loan  No.", LineNo,
-                    GenJournalLine."Transaction Type"::" ",
-                    GenJournalLine."Account Type"::"Bank Account",
-                    LoanApps."Paying Bank Account No", DirbursementDate,
-                    bankTransferCharges * -1,
-                    'BOSA', Rec."Batch No.",
-                    'Bank transfer charges ' + GetDisbursementSuffix() + Format(LoanApps."Loan  No."),
-                    ''
-                );
-            end;
+            // Credit Bank charges acc
 
-            // Debit member
             LineNo := LineNo + 10000;
-            SFactory.FnCreateGnlJournalLine(
-                TemplateName, BatchName, Rec."Loan  No.", LineNo,
-                GenJournalLine."Transaction Type"::"Loan Transfer Charges",
-                GenJournalLine."Account Type"::Customer,
-                LoanApps."Client Code", DirbursementDate, bankTransferCharges,
-                'BOSA', LoanApps."Loan  No.",
-                'Bank transfer charges ' + GetDisbursementSuffix() + Format(LoanApps."Loan  No."),
-                LoanApps."Loan  No."
-            );
 
-            //VarAmounttoDisburse := VarAmounttoDisburse - bankTransferCharges;
+            SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, LoanApps."Loan  No.", LineNo, GenJournalLine."Transaction Type"::" ", GenJournalLine."Account Type"::"G/L Account", '5201', DirbursementDate, Round(bankTransferCharges, 1, '>') * -1, 'BOSA', Rec."Batch No.", 'Bank transfer charges ' + Format(LoanApps."Loan  No."), '');
+
+            VarAmounttoDisburse := VarAmounttoDisburse - Round(bankTransferCharges, 1, '>');
+
         end;
 
         //recover arrears, IF ANY
@@ -1628,25 +1708,45 @@ Page 51007 "BOSA Loans Disbursement Card"
             LoansRec.Reset();
             LoansRec.SetRange("Client Code", Rec."Client Code");
             LoansRec.SetFilter("Outstanding Balance", '>0');
+            LoansRec.SetRange("Mark For Arrear Recovery", true);
             LoansRec.SetFilter("Days In Arrears", '>30');
             LoansRec.SetFilter("Amount in Arrears", '>0');
 
             if LoansRec.FindSet() then begin
 
                 repeat
-                    LineNo := LineNo + 10000;
-                    SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, Rec."Loan  No.", LineNo,
-                           GenJournalLine."Transaction Type"::"Loan Repayment",
-                           GenJournalLine."Account Type"::Customer, LoanApps."Client Code", DirbursementDate,
-                           Round(LoansRec."Amount in Arrears", 1, '>') * -1, 'BOSA', LoanApps."Loan  No.",
-                           'Arrears Recovered from - ' + LoanApps."Loan  No.", LoansRec."Loan  No.");
 
-                    VarTotalRecovered += Round(LoansRec."Amount in Arrears", 1, '>');
+                    if ObjLoanOffsetsIII.Get(rEC."Loan  No.", Rec."Client Code", LoansRec."Loan  No.") then begin
+                        if (ObjLoanOffsetsIII."Total Top Up" < LoansRec."Amount in Arrears") then begin
+
+                            VarTotalToRecover += Round(LoansRec."Amount in Arrears" - ObjLoanOffsetsIII."Total Top Up", 1, '>');
+
+                            LineNo := LineNo + 10000;
+                            SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, Rec."Loan  No.", LineNo,
+                                   GenJournalLine."Transaction Type"::"Loan Repayment",
+                                   GenJournalLine."Account Type"::Customer, LoanApps."Client Code", DirbursementDate,
+                                   Round(LoansRec."Amount in Arrears" - ObjLoanOffsetsIII."Total Top Up", 1, '>') * -1, 'BOSA', LoanApps."Loan  No.",
+                                   'Arrears Recovered from - ' + LoanApps."Loan  No.", LoansRec."Loan  No.");
+
+                            VarTotalRecovered += Round(LoansRec."Amount in Arrears" - ObjLoanOffsetsIII."Total Top Up", 1, '>');
+                        end;
+                    end else begin
+                        LineNo := LineNo + 10000;
+                        SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, Rec."Loan  No.", LineNo,
+                               GenJournalLine."Transaction Type"::"Loan Repayment",
+                               GenJournalLine."Account Type"::Customer, LoanApps."Client Code", DirbursementDate,
+                               Round(LoansRec."Amount in Arrears", 1, '>') * -1, 'BOSA', LoanApps."Loan  No.",
+                               'Arrears Recovered from - ' + LoanApps."Loan  No.", LoansRec."Loan  No.");
+
+                        VarTotalRecovered += Round(LoansRec."Amount in Arrears", 1, '>');
+                    end;
                 until LoansRec.Next() = 0;
             end;
 
             VarAmounttoDisburse := VarAmounttoDisburse - VarTotalRecovered;
         end;
+
+
 
         // Insurance (only on first disbursement)
         if Insurance > 0 then begin

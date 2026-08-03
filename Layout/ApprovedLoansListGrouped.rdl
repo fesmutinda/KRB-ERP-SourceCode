@@ -1,13 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:am="http://schemas.microsoft.com/sqlserver/reporting/authoringmetadata">
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <am:AuthoringMetadata>
+    <am:CreatedBy>
+      <am:Name>MSRB</am:Name>
+      <am:Version>15.1.30001.02</am:Version>
+    </am:CreatedBy>
+    <am:UpdatedBy>
+      <am:Name>MSRB</am:Name>
+      <am:Version>15.1.30001.02</am:Version>
+    </am:UpdatedBy>
+    <am:LastModifiedTimestamp>2025-09-23T10:21:00.7661263Z</am:LastModifiedTimestamp>
+  </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="DataSource">
+      <rd:SecurityType>None</rd:SecurityType>
       <ConnectionProperties>
         <DataProvider>SQL</DataProvider>
         <ConnectString />
       </ConnectionProperties>
-      <rd:SecurityType>None</rd:SecurityType>
       <rd:DataSourceID>28b883a3-a840-474f-b3ea-8c986d349821</rd:DataSourceID>
     </DataSource>
   </DataSources>
@@ -53,13 +66,14 @@
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Textbox1">
+                          <rd:DefaultName>Textbox1</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Date</Value>
+                                  <Value>Date Approved</Value>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -68,7 +82,6 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox1</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>White</Color>
@@ -86,6 +99,7 @@
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Textbox3">
+                          <rd:DefaultName>Textbox3</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -101,7 +115,6 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox3</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>White</Color>
@@ -119,6 +132,7 @@
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Textbox5">
+                          <rd:DefaultName>Textbox5</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -134,7 +148,6 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox5</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>White</Color>
@@ -152,6 +165,7 @@
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Textbox9">
+                          <rd:DefaultName>Textbox9</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -169,7 +183,6 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox9</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>White</Color>
@@ -187,6 +200,7 @@
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Textbox11">
+                          <rd:DefaultName>Textbox11</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -204,7 +218,6 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox11</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>White</Color>
@@ -222,6 +235,7 @@
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Textbox13">
+                          <rd:DefaultName>Textbox13</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -239,7 +253,6 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox13</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>White</Color>
@@ -257,6 +270,7 @@
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Textbox15">
+                          <rd:DefaultName>Textbox15</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -274,7 +288,6 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox15</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>White</Color>
@@ -292,6 +305,7 @@
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Textbox26">
+                          <rd:DefaultName>Textbox26</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -309,7 +323,6 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox26</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>White</Color>
@@ -327,6 +340,7 @@
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Textbox7">
+                          <rd:DefaultName>Textbox7</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -344,7 +358,6 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox7</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>White</Color>
@@ -367,6 +380,7 @@
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Date">
+                          <rd:DefaultName>Date</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -384,7 +398,6 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Date</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>White</Color>
@@ -402,6 +415,7 @@
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Member_Name">
+                          <rd:DefaultName>Member_Name</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -417,7 +431,6 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Member_Name</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>White</Color>
@@ -435,6 +448,7 @@
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Loan_Type">
+                          <rd:DefaultName>Loan_Type</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -448,7 +462,6 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Loan_Type</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>White</Color>
@@ -466,6 +479,7 @@
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Amount_Applied">
+                          <rd:DefaultName>Amount_Applied</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -483,7 +497,6 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Amount_Applied</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>White</Color>
@@ -501,6 +514,7 @@
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Amount_Payable">
+                          <rd:DefaultName>Amount_Payable</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -518,7 +532,6 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Amount_Payable</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>White</Color>
@@ -536,6 +549,7 @@
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Amount_Paid">
+                          <rd:DefaultName>Amount_Paid</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -553,7 +567,6 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Amount_Paid</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>White</Color>
@@ -571,6 +584,7 @@
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Amount_Due_For_Payment">
+                          <rd:DefaultName>Amount_Due_For_Payment</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -588,7 +602,6 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Amount_Due_For_Payment</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>White</Color>
@@ -606,6 +619,7 @@
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Repayment_Period">
+                          <rd:DefaultName>Repayment_Period</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -621,7 +635,6 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Repayment_Period</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>White</Color>
@@ -639,6 +652,7 @@
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Status">
+                          <rd:DefaultName>Status</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -654,7 +668,6 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Status</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>White</Color>
@@ -669,6 +682,272 @@
                         </Textbox>
                       </CellContents>
                     </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.25in</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox21">
+                          <rd:DefaultName>Textbox21</rd:DefaultName>
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>TOTALS</Value>
+                                  <Style>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <Style>
+                            <Border>
+                              <Color>White</Color>
+                              <Style>None</Style>
+                            </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                            </BottomBorder>
+                            <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 = 0, "Gainsboro", "White")</BackgroundColor>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                        <ColSpan>3</ColSpan>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Amount_Applied1">
+                          <rd:DefaultName>Amount_Applied1</rd:DefaultName>
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Sum(Fields!Amount_Applied.Value)</Value>
+                                  <Style>
+                                    <Format>=Format("N2")</Format>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <Style>
+                            <Border>
+                              <Color>White</Color>
+                              <Style>None</Style>
+                            </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                            </BottomBorder>
+                            <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 = 0, "Gainsboro", "White")</BackgroundColor>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Amount_Payable1">
+                          <rd:DefaultName>Amount_Payable1</rd:DefaultName>
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Sum(Fields!Amount_Payable.Value)</Value>
+                                  <Style>
+                                    <Format>=Format("N2")</Format>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <Style>
+                            <Border>
+                              <Color>White</Color>
+                              <Style>None</Style>
+                            </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                            </BottomBorder>
+                            <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 = 0, "Gainsboro", "White")</BackgroundColor>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Amount_Paid1">
+                          <rd:DefaultName>Amount_Paid1</rd:DefaultName>
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Sum(Fields!Amount_Paid.Value)</Value>
+                                  <Style>
+                                    <Format>=Format("N2")</Format>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <Style>
+                            <Border>
+                              <Color>White</Color>
+                              <Style>None</Style>
+                            </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                            </BottomBorder>
+                            <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 = 0, "Gainsboro", "White")</BackgroundColor>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Amount_Due_For_Payment1">
+                          <rd:DefaultName>Amount_Due_For_Payment1</rd:DefaultName>
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Sum(Fields!Amount_Due_For_Payment.Value)</Value>
+                                  <Style>
+                                    <Format>=Format("N2")</Format>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <Style>
+                            <Border>
+                              <Color>White</Color>
+                              <Style>None</Style>
+                            </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                            </BottomBorder>
+                            <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 = 0, "Gainsboro", "White")</BackgroundColor>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox29">
+                          <rd:DefaultName>Textbox29</rd:DefaultName>
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value />
+                                  <Style />
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <Style>
+                            <Border>
+                              <Color>White</Color>
+                              <Style>None</Style>
+                            </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                            </BottomBorder>
+                            <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 = 0, "Gainsboro", "White")</BackgroundColor>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                        <ColSpan>2</ColSpan>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell />
                   </TablixCells>
                 </TablixRow>
               </TablixRows>
@@ -693,13 +972,19 @@
                 </TablixMember>
                 <TablixMember>
                   <Group Name="Details" />
+                  <TablixMembers>
+                    <TablixMember />
+                  </TablixMembers>
+                </TablixMember>
+                <TablixMember>
+                  <KeepWithGroup>Before</KeepWithGroup>
                 </TablixMember>
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>DataSet_Result</DataSetName>
-            <Top>2.26042in</Top>
+            <Top>2.57292in</Top>
             <Left>0.14458in</Left>
-            <Height>0.5in</Height>
+            <Height>0.75in</Height>
             <Width>14.40034in</Width>
             <Style>
               <Border>
@@ -708,6 +993,7 @@
             </Style>
           </Tablix>
           <Textbox Name="Company_Address">
+            <rd:DefaultName>Company_Address</rd:DefaultName>
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
             <Paragraphs>
@@ -725,7 +1011,6 @@
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <rd:DefaultName>Company_Address</rd:DefaultName>
             <Top>0.99653in</Top>
             <Left>4.78508in</Left>
             <Height>0.17708in</Height>
@@ -755,6 +1040,7 @@
             </Style>
           </Textbox>
           <Textbox Name="Company_Address_2">
+            <rd:DefaultName>Company_Address_2</rd:DefaultName>
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
             <Paragraphs>
@@ -772,7 +1058,6 @@
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <rd:DefaultName>Company_Address_2</rd:DefaultName>
             <Top>1.18749in</Top>
             <Left>4.78508in</Left>
             <Height>0.25in</Height>
@@ -802,6 +1087,7 @@
             </Style>
           </Textbox>
           <Textbox Name="Company_Fax_No">
+            <rd:DefaultName>Company_Fax_No</rd:DefaultName>
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
             <Paragraphs>
@@ -819,7 +1105,6 @@
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <rd:DefaultName>Company_Fax_No</rd:DefaultName>
             <Top>1.75694in</Top>
             <Left>4.78508in</Left>
             <Height>0.25in</Height>
@@ -849,6 +1134,7 @@
             </Style>
           </Textbox>
           <Textbox Name="Company_Email">
+            <rd:DefaultName>Company_Email</rd:DefaultName>
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
             <Paragraphs>
@@ -866,7 +1152,6 @@
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <rd:DefaultName>Company_Email</rd:DefaultName>
             <Top>1.46527in</Top>
             <Left>4.78508in</Left>
             <Height>0.25in</Height>
@@ -910,20 +1195,40 @@
               </Border>
             </Style>
           </Image>
-          <Line Name="Line1">
-            <Top>2.06795in</Top>
-            <Left>0.14458in</Left>
-            <Height>0in</Height>
-            <Width>14.40034in</Width>
+          <Textbox Name="Textbox31">
+            <rd:DefaultName>Textbox31</rd:DefaultName>
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>APPROVED LOANS LIST</Value>
+                    <Style>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+            </Paragraphs>
+            <Top>2.16865in</Top>
+            <Left>6.71552in</Left>
+            <Height>0.25in</Height>
+            <Width>1.72222in</Width>
             <ZIndex>6</ZIndex>
             <Style>
               <Border>
-                <Style>Solid</Style>
+                <Style>None</Style>
               </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
             </Style>
-          </Line>
+          </Textbox>
         </ReportItems>
-        <Height>3.17709in</Height>
+        <Height>3.79515in</Height>
         <Style />
       </Body>
       <Width>14.54492in</Width>
@@ -960,6 +1265,7 @@
               </Style>
             </Textbox>
             <Textbox Name="Textbox6">
+              <rd:DefaultName>Textbox1</rd:DefaultName>
               <CanGrow>true</CanGrow>
               <KeepTogether>true</KeepTogether>
               <Paragraphs>
@@ -975,7 +1281,6 @@
                   <Style />
                 </Paragraph>
               </Paragraphs>
-              <rd:DefaultName>Textbox1</rd:DefaultName>
               <Top>0.03562cm</Top>
               <Left>0.36724cm</Left>
               <Height>0.45889cm</Height>
@@ -1018,6 +1323,7 @@
               </Style>
             </Textbox>
             <Textbox Name="Textbox8">
+              <rd:DefaultName>Textbox1</rd:DefaultName>
               <CanGrow>true</CanGrow>
               <KeepTogether>true</KeepTogether>
               <Paragraphs>
@@ -1033,7 +1339,6 @@
                   <Style />
                 </Paragraph>
               </Paragraphs>
-              <rd:DefaultName>Textbox1</rd:DefaultName>
               <Top>0.07151cm</Top>
               <Left>33.20491cm</Left>
               <Height>0.45889cm</Height>
@@ -1062,6 +1367,7 @@
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
             <Textbox Name="Textbox18">
+              <rd:DefaultName>Textbox18</rd:DefaultName>
               <CanGrow>true</CanGrow>
               <KeepTogether>true</KeepTogether>
               <Paragraphs>
@@ -1075,7 +1381,6 @@
                   <Style />
                 </Paragraph>
               </Paragraphs>
-              <rd:DefaultName>Textbox18</rd:DefaultName>
               <Top>0.05556in</Top>
               <Left>6.71552in</Left>
               <Height>0.25in</Height>
@@ -1168,8 +1473,6 @@ kHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpBvD/AZI2
   </EmbeddedImages>
   <Language>=User!Language</Language>
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
-  <rd:ReportUnitType>Inch</rd:ReportUnitType>
-  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
   <DataSets>
     <DataSet Name="DataSet_Result">
       <Fields>

@@ -6,6 +6,7 @@ page 57003 "Instant Loan Application Card"
     PromotedActionCategories = 'New,Process,Reports,Approval,Budgetary Control,Cancellation,Category7_caption,Category8_caption,Category9_caption,Category10_caption';
     SourceTable = "Loans Register";
     SourceTableView = where(Source = const(BOSA),
+                            "Loan Product Type" = const('LT007 | LT006'),
                             Posted = const(false));
 
     layout
@@ -28,11 +29,11 @@ page 57003 "Instant Loan Application Card"
                     Editable = MNoEditable;
                     ShowMandatory = true;
                 }
-                field("Loan Product Type"; Rec."Loan Product Type")
+                field("Loan Product Type"; Rec."Loan Product Type Instant")
                 {
                     ApplicationArea = Basic;
                     Style = StrongAccent;
-                    Editable = false;
+                    Editable = true;
                 }
                 field("Loan Product Name"; Rec."Loan Product Type Name")
                 {
@@ -108,6 +109,11 @@ page 57003 "Instant Loan Application Card"
                     trigger OnValidate()
                     begin
                         Rec.TestField(Posted, false);
+
+
+                        Rec."Requested Amount" :=
+                            Round(Rec."Requested Amount", 1, '>');
+
                     end;
                 }
                 field("Approved Amount"; Rec."Approved Amount")
@@ -218,16 +224,20 @@ page 57003 "Instant Loan Application Card"
                     ApplicationArea = Basic;
                     Visible = false;
                 }
-                field("Facilitation Cost"; Rec."Facilitation Cost")
+                field("Faciliation Cost"; Rec."Facilitation Cost")
                 {
-                    Visible = false;
+
+                    ApplicationArea = Basic;
+                    Editable = false;
 
                 }
+
                 field("Bank Transfer Charges"; Rec."Bank Transfer Charges")
                 {
                     ApplicationArea = Basic;
                     Editable = true;
-                    ShowMandatory = true;
+                    ShowMandatory = false;
+                    Visible = false;
                 }
                 field("Loan Status"; Rec."Loan Status")
                 {
@@ -251,11 +261,13 @@ page 57003 "Instant Loan Application Card"
                 {
                     ApplicationArea = Basic;
                     // Editable = MNoEditable;
-                    Visible = false;
+                    Visible = true;
                     Editable = true;
                     Style = StrongAccent;
                     ShowMandatory = true;
                 }
+
+
                 field("Paying Bank Account No"; Rec."Paying Bank Account No")
                 {
                     ApplicationArea = basic;
@@ -276,6 +288,7 @@ page 57003 "Instant Loan Application Card"
                     ApplicationArea = Basic;
                     Editable = false;
                 }
+
             }
             group("Bank Details")
             {
@@ -308,7 +321,6 @@ page 57003 "Instant Loan Application Card"
 
             group("Mobile Money Details")
             {
-
                 field("Mobile Money Service"; Rec."Mobile Money Service")
                 {
                     ApplicationArea = Basic;
@@ -336,7 +348,6 @@ page 57003 "Instant Loan Application Card"
                 SubPageLink = "Loan No" = field("Loan  No.");
                 Editable = MNoEditable;
             }
-
 
         }
         area(factboxes)
@@ -387,10 +398,38 @@ page 57003 "Instant Loan Application Card"
                     trigger OnAction()
                     var
                         SystemGenSet: Codeunit "System General Setup";
+                        ObjLoanOffsets: Record "Instant Offset Details";
                     begin
                         //................Ensure than you cant have two loans same product
                         // SystemGenSet.FnCheckNoOfLoansLimit("Loan  No.", "Loan Product Type", "Client Code");
                         //----------------
+
+                        //PROMPT TO RECOVER ARREARS
+
+                        LoanApp.Reset;
+
+                        LoanApp.CalcFields(LoanApp."Outstanding Balance");
+                        LoanApp.SetRange(LoanApp."Client Code", Rec."Client Code");
+                        LoanApp.SetFilter(LoanApp."Outstanding Balance", '>0');
+                        if LoanApp.Find('-') then begin
+                            repeat
+                                if ObjLoanOffsets.Get(rEC."Loan  No.", Rec."Client Code", LoanApp."Loan  No.") then begin
+                                    if (ObjLoanOffsets."Total Top Up" < LoanApp."Amount in Arrears") and (LoanApp."Amount in Arrears" > 0) and (LoanApp."Days In Arrears" > 30) then begin
+                                        Message(StrSubstNo('%1 has %2 in arrears, you can recover the remaining %3 in the member arrear list',
+                                                LoanApp."Loan Product Type Name",
+                                                LoanApp."Amount in Arrears",
+                                                LoanApp."Amount in Arrears" - ObjLoanOffsets."Total Top Up"));
+                                    end;
+                                end else begin
+                                    if (LoanApp."Amount in Arrears" > 0) and (LoanApp."Days In Arrears" > 30) then begin
+                                        Message(StrSubstNo('%1 has %2 in arrears, you can recover it in the member arrear list',
+                                                LoanApp."Loan Product Type Name",
+                                                LoanApp."Amount in Arrears"));
+                                    end;
+                                end;
+
+                            until LoanApp.Next = 0;
+                        end;
 
                         FnCheckForTestFields();
                         Rec.Appraised := true;
@@ -438,6 +477,8 @@ page 57003 "Instant Loan Application Card"
                         Report.Run(50223, true, false, Cust);
                     end;
                 }
+
+                //writes schedule to db for the first time
                 action("View Schedule")
                 {
                     ApplicationArea = Basic;
@@ -445,6 +486,7 @@ page 57003 "Instant Loan Application Card"
                     Image = ViewDetails;
                     Promoted = true;
                     PromotedCategory = Process;
+
 
                     trigger OnAction()
                     begin
@@ -473,6 +515,37 @@ page 57003 "Instant Loan Application Card"
                     RunObject = Page "Instant Offset Detail List";
                     RunPageLink = "Loan No." = field("Loan  No."),
                                   "Client Code" = field("Client Code");
+                }
+
+
+                action("Transfer Refinancing")
+                {
+                    ApplicationArea = Basic;
+                    Image = AddAction;
+                    Promoted = true;
+                    PromotedCategory = Process;
+
+                    trigger OnAction();
+                    
+                    var
+                    response: TEXT;
+                    begin
+                        rESPONSE := TransferRefinancing();
+                        Message(response);
+                    end;
+                }
+
+
+
+                action("Arrears To Recover")
+                {
+                    ApplicationArea = Basic;
+                    Caption = 'Arrears List';
+                    Image = Allocate;
+                    Promoted = true;
+                    PromotedCategory = Process;
+                    RunObject = Page "Loan Arrears Detail List";
+                    RunPageLink = "Client Code" = field("Client Code");
                 }
                 action("Loan Appraisal Salary Details")
                 {
@@ -699,6 +772,8 @@ page 57003 "Instant Loan Application Card"
         SwizzApprovalsCodeUnit: Codeunit SwizzsoftApprovalsCodeUnit;
         CanCancelApprovalForRecord: Boolean;
         offsetTable: Record "Loan Offset Details";
+
+
 
     procedure updateLoanInfo()
     begin
@@ -989,5 +1064,51 @@ page 57003 "Instant Loan Application Card"
             until LoansReg.Next = 0;
         end;
         exit(Balance);
+    end;
+
+    local procedure TransferRefinancing(): text
+
+    var
+
+        NormalLoanOffsetsRec: Record "Loan Offset Details";
+        InstantLoansToOffset: Record "Instant Offset Details";
+
+        response: Text;
+        Loans: Integer;
+
+    begin
+
+        response := '';
+        Loans := 0;
+
+        NormalLoanOffsetsRec.Reset();
+        NormalLoanOffsetsRec.SetRange("Loan No.", Rec."Loan  No.");
+
+        If NormalLoanOffsetsRec.FindSet() THEN BEGIN
+            repeat
+
+                InstantLoansToOffset.INIT();
+                InstantLoansToOffset."Loan No." := NormalLoanOffsetsRec."Loan No.";
+                InstantLoansToOffset.VALIDATE("Loan Top Up", NormalLoanOffsetsRec."Loan Top Up");
+
+                InstantLoansToOffset."Client Code" := NormalLoanOffsetsRec."Client Code";
+                InstantLoansToOffset."Principle Top Up" := NormalLoanOffsetsRec."Principle Top Up";
+                InstantLoansToOffset.Validate("Loan Type", NormalLoanOffsetsRec."Loan Type");
+
+                if InstantLoansToOffset.Insert(true) then
+                    Loans += 1;
+
+            until NormalLoanOffsetsRec.Next() = 0;
+
+            response := StrSubstNo('%1 loans loans retrieved for instant refinancing', Loans);
+        END
+
+        else begin
+
+            response := StrSubstNo('No loans were found meeting matching Loan No. ', Rec."Loan  No.");
+        end;
+
+
+        exit(response);
     end;
 }

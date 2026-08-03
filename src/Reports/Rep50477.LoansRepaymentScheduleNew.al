@@ -32,9 +32,6 @@ Report 50477 "Loans Repayment Schedule New"
             column(Loans_Loans__Approved_Amount_; "Loans Register"."Approved Amount")
             {
             }
-            column(Loans_Loans__Loan_Product_Type_Name_; "Loans Register"."Loan Product Type Name")
-            {
-            }
             column(Loans_Loans__Loan__No__; "Loans Register"."Loan  No.")
             {
             }
@@ -53,6 +50,11 @@ Report 50477 "Loans Repayment Schedule New"
             column(Disbursment_DateCaption; Disbursment_DateCaptionLbl)
             {
             }
+
+            column(Loans_Loans_Loan_Product_Type_Name; "Loans Register"."Loan Product Type Name")
+            {
+            }
+
             column(Current_InterestCaption; Current_InterestCaptionLbl)
             {
             }
@@ -98,6 +100,7 @@ Report 50477 "Loans Repayment Schedule New"
                 column(ROUND__Monthly_Interest__10_____; ROUND("Loan Repayment Schedule"."Monthly Interest", 1, '>'))
                 {
                 }
+
                 // column(LoanBalance; ROUND(LoanBalance, 1, '>'))
                 // {
                 // }

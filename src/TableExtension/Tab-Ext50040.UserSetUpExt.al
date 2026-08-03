@@ -23,6 +23,12 @@ tableextension 50040 "UserSetUpExt" extends "User Setup"
         field(51516000; "Financial User"; Boolean)
         {
         }
+        field(50001; "Employee No."; Code[20])
+        {
+            DataClassification = CustomerContent;
+            TableRelation = Employee."No.";// where(Status = const(Active), "Employee Type" = filter(<> "Board Member"));
+            Caption = 'Employee No.';
+        }
         field(51516001; "Payroll User"; Boolean)
         {
         }
@@ -34,6 +40,11 @@ tableextension 50040 "UserSetUpExt" extends "User Setup"
         }
         field(51516005; "UnLimited Posting"; Boolean)
         {
+        }
+        field(50005; "HOD User"; Boolean)
+        {
+            DataClassification = CustomerContent;
+            Caption = 'HOD User';
         }
 
         field(51516006; State; Option)
@@ -75,6 +86,12 @@ tableextension 50040 "UserSetUpExt" extends "User Setup"
         }
         field(51516017; "Department Code"; Code[50])
         {
+        }
+        field(50002; "Immediate Supervisor"; Code[20])
+        {
+            DataClassification = CustomerContent;
+            TableRelation = "User Setup"."User ID";
+            Caption = 'Immediate Supervisor';
         }
         field(51516018; "Responsibility Center"; Code[50])
         {

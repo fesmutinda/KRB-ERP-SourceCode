@@ -14,7 +14,7 @@ page 57002 "Instant Loans Applied-Approved"
                             Source = filter(BOSA),
                             "Approval Status" = const(Approved),
                             "Loan Status" = filter('<>Discarded'),
-                            "Loan Product Type" = const('LT007')
+                            "Loan Product Type" = filter('LT007 | LT006')
                             );
 
     layout

@@ -2,7 +2,7 @@ Page 56126 "LoanList-Pending Approval BOSA"
 {
     ApplicationArea = All;
     Caption = 'Loan List-Pending Approval BOSA';
-    CardPageID = "Loans Pending Approval";
+    //CardPageID = "Loans Pending Approval";
     PageType = List;
     SourceTable = "Loans Register";
     UsageCategory = Lists;
@@ -10,11 +10,11 @@ Page 56126 "LoanList-Pending Approval BOSA"
     Editable = false;
     InsertAllowed = false;
     ModifyAllowed = false;
+    //SourceTableTemporary = true;
     SourceTableView = where(Posted = const(false),
                             Source = filter(BOSA),
-                            "Loan Status" = const(Appraisal),
-                            "Approval Status" = const(Pending),
-                            "Loan Product Type" = const('<>LT007'));
+                            "Approval Status" = const(Approved),
+                                                        "Loan Product Type" = const('<>LT007&<>LT006'));
 
     layout
     {
@@ -108,9 +108,42 @@ Page 56126 "LoanList-Pending Approval BOSA"
     actions
     {
     }
+    // trigger OnOpenPage()
+    // begin
+    //     Rec.SetRange("Captured By", UserId);
+    // end;
+
+
+    //     trigger OnAfterGetRecord()
+    // begin
+    //     // Only show if still pending
+    //     if not Rec.IsPendingApproval() then
+    //         CurrPage.Update(false);
+    // end;
+
+
     trigger OnOpenPage()
+    var
+        LoanRec: Record "Loans Register";
     begin
+        //Rec.Reset();
+        //Rec.DeleteAll(); // clear temp table
+
+        //LoanRec.Reset();
+        //LoanRec.SetRange(Posted, false);
+        //LoanRec.SetFilter("Loan Product Type", '<>LT007');
+        // LoanRec.SetRange("Captured By", UserId);
+
+        // if LoanRec.FindSet() then
+        //     repeat
+        //         if LoanRec.IsPendingApproval() then begin
+        //             Rec := LoanRec;
+        //             Rec.Insert();
+        //         end;
+        //     until LoanRec.Next() = 0;
+
         Rec.SetRange("Captured By", UserId);
     end;
+
 }
 

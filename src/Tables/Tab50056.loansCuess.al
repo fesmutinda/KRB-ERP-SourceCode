@@ -15,7 +15,7 @@ table 50056 "loans Cuess"
         }
         field(3; "Active Loans"; Integer)
         {
-            CalcFormula = count("Loans Register" where("Approval Status" = const(Approved), "Outstanding Balance" = filter(> 0), "Loan Status" = const(Issued), Source = const(BOSA)));
+            CalcFormula = count("Loans Register" where("Approval Status" = const(Approved), "Outstanding Balance" = filter(> 0), "Loan Status" = const(Issued)));
             FieldClass = FlowField;
         }
         field(4; "Pending Loans"; Integer)
@@ -33,7 +33,7 @@ table 50056 "loans Cuess"
         }
         field(9; "DEVELOPMENT LOAN 1"; Integer)
         {
-            CalcFormula = count("Loans Register" where("Approval Status" = const(Approved), "Outstanding Balance" = filter(> 0), "Loan Status" = const(Issued), "Loan Product Type" = const('LT001')));
+            CalcFormula = count("Loans Register" where("Approval Status" = const(Approved), "Outstanding Balance" = filter(> 0), "Loan Status" = const(Issued), "Loan Product Type" = const('LT002')));
             FieldClass = FlowField;
         }
         field(10; "DEBOOSTER"; Integer)
@@ -69,27 +69,27 @@ table 50056 "loans Cuess"
         }
         field(16; "INSTANT LOAN"; Integer)
         {
-            CalcFormula = count("Loans Register" where("Approval Status" = const(Approved), "Approved Amount" = filter(> 0), "Outstanding Balance" = filter(> 0), "Loan Product Type" = const('LT007')));
+            CalcFormula = count("Loans Register" where("Approval Status" = const(Approved), "Loan Status" = const(Issued), "Approved Amount" = filter(> 0), "Outstanding Balance" = filter(> 0), "Loan Product Type" = const('LT007')));
             FieldClass = FlowField;
         }
         field(17; "SHERIA COMPLIANT LOANS"; Integer)
         {
-            CalcFormula = count("Loans Register" where("Approval Status" = const(Approved), "Approved Amount" = filter(> 0), "Outstanding Balance" = filter(> 0), "Loan Product Type" = const('LT008')));
+            CalcFormula = count("Loans Register" where("Approval Status" = const(Approved), "Loan Status" = const(Issued), "Approved Amount" = filter(> 0), "Outstanding Balance" = filter(> 0), "Loan Product Type" = const('LT008')));
             FieldClass = FlowField;
         }
         field(18; "DEVELOPMENT LOAN 2 14%"; Integer)
         {
-            CalcFormula = count("Loans Register" where("Approval Status" = const(Approved), "Approved Amount" = filter(> 0), "Outstanding Balance" = filter(> 0), "Loan Product Type" = const('LT009')));
+            CalcFormula = count("Loans Register" where("Approval Status" = const(Approved), "Approved Amount" = filter(> 0), "Loan Status" = const(Issued), "Outstanding Balance" = filter(> 0), "Loan Product Type" = const('LT009')));
             FieldClass = FlowField;
         }
         field(20; "INVESTMENT LOAN"; Integer)
         {
-            CalcFormula = count("Loans Register" where("Approval Status" = const(Approved), "Approved Amount" = filter(> 0), "Outstanding Balance" = filter(> 0), "Loan Product Type" = const('LT003')));
+            CalcFormula = count("Loans Register" where("Approval Status" = const(Approved), "Loan Status" = const(Issued), "Approved Amount" = filter(> 0), "Outstanding Balance" = filter(> 0), "Loan Product Type" = const('LT003')));
             FieldClass = FlowField;
         }
         field(21; "SCHOOL FEES"; Integer)
         {
-            CalcFormula = count("Loans Register" where("Approval Status" = const(Approved), "Approved Amount" = filter(> 0), "Outstanding Balance" = filter(> 0), "Loan Product Type" = const('LT004')));
+            CalcFormula = count("Loans Register" where("Approval Status" = const(Approved), "Loan Status" = const(Issued), "Approved Amount" = filter(> 0), "Outstanding Balance" = filter(> 0), "Loan Product Type" = const('LT004')));
             FieldClass = FlowField;
         }
         field(22; "Cleared Loans"; Integer)
@@ -97,7 +97,7 @@ table 50056 "loans Cuess"
             CalcFormula = count("Loans Register" where("Approval Status" = const(Approved), "Outstanding Balance" = filter(<= 0), "Loan Status" = const(Issued), Source = const(BOSA)));
             FieldClass = FlowField;
         }
-        
+
     }
 
     keys

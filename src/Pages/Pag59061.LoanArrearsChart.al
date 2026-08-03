@@ -300,7 +300,6 @@ page 59062 "Loan Arrears Chart"
                 TotalExpected := LoanRepaymentSchedule."Loan Balance";
             end;
         end else begin
-            Swizzfactory.FnGenerateRepaymentSchedule(LoansRegisterRec."Loan  No.");
 
             LoanRepaymentSchedule.Reset();
             LoanRepaymentSchedule.SetRange("Loan No.", LoansRegisterRec."Loan  No.");

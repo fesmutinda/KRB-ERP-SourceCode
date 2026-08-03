@@ -1,7 +1,7 @@
 report 50034 "Loan Balances Report"
 {
     ApplicationArea = All;
-    Caption = 'Swizz Sacco Loans Book Report';
+    Caption = 'Kenya Roads Board Sacco - Loans Book Report';
     UsageCategory = ReportsAndAnalysis;
     RDLCLayout = './Layouts/LoanBalancesReport.rdlc';
     dataset
@@ -14,6 +14,10 @@ report 50034 "Loan Balances Report"
             column(EntryNo; EntryNo)
             {
             }
+
+            column(DateFilterUsed; DateFilterUsed) { }
+
+            column(LoanProductTypeFilter; LoanProductTypeFilter) { }
             column(CompanyName; CompanyInfo.Name)
             {
             }
@@ -96,13 +100,20 @@ report 50034 "Loan Balances Report"
 
             trigger OnAfterGetRecord();
             begin
-                // Set date filter for calculations
-                LoansTable.SetFilter(LoansTable."Date filter", DateFilterUsed);
-
                 if LoansTable.get(LoansRegister."Loan  No.") then begin
-                    LoansTable.SetAutoCalcFields(LoansTable."Outstanding Balance", LoansTable."Oustanding Interest");
+                    // Apply date range filter for balance calculations
+                    LoansTable.SetRange("Date filter", StartDate, EndDate);
 
-                    // Process the record (filter already applied in OnPreDataItem)
+                    LoansTable.CalcFields(
+                        LoansTable."Outstanding Balance",
+                        LoansTable."Oustanding Interest"
+                    );
+
+
+                    if LoansTable."Outstanding Balance" = 0 then
+                        CurrReport.Skip();
+
+                    // Process the record
                     MemberNo := LoansTable."Client Code";
                     MemberName := LoansTable."Client Name";
                     LoanProductType := LoansTable."Loan Product Type";
@@ -140,6 +151,36 @@ report 50034 "Loan Balances Report"
                         Caption = 'Loan Product Type';
                         TableRelation = "Loan Products Setup";
                     }
+
+
+                    field(StartDate; StartDate)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Start Date';
+                        ToolTip = 'Select the start date for the period';
+
+                        trigger OnValidate()
+                        begin
+                            if (StartDate <> 0D) and (EndDate <> 0D) and (StartDate > EndDate) then
+                                Error('Start Date cannot be later than End Date');
+                        end;
+                    }
+
+                    field(EndDate; EndDate)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'End Date';
+                        ToolTip = 'Select the end date for the period';
+
+                        trigger OnValidate()
+                        begin
+                            if (StartDate <> 0D) and (EndDate <> 0D) and (StartDate > EndDate) then
+                                Error('End Date cannot be earlier than Start Date');
+                        end;
+                    }
+
+
+
                 }
             }
         }
@@ -157,18 +198,49 @@ report 50034 "Loan Balances Report"
         SelectedLoanProductType := '';
     end;
 
+
+
     trigger OnPreReport()
     begin
         CompanyInfo.Get();
-        DateFilterUsed := LoansRegister.GetFilter(LoansRegister."Date filter");
 
-        // Apply date filter to Loan Disbursement Date
-        if DateFilterUsed <> '' then
-            LoansRegister.SetFilter(LoansRegister."Loan Disbursement Date", DateFilterUsed);
+        if (StartDate <> 0D) and (EndDate <> 0D) and (StartDate > EndDate) then
+            Error('Start Date cannot be later than End Date');
 
-        // Apply Loan Product Type filter only if selected
-        if SelectedLoanProductType <> '' then
+        if EndDate = 0D then
+            EndDate := WorkDate();
+
+        if StartDate <> 0D then
+            DateFilterUsed := Format(StartDate) + '..' + Format(EndDate)
+        else
+            DateFilterUsed := '..' + Format(EndDate);
+
+        if SelectedLoanProductType <> '' then begin
             LoansRegister.SetRange("Loan Product Type", SelectedLoanProductType);
+
+            if SelectedLoanProductType = 'LT003' then
+                LoanProductTypeFilter := 'Sacco Investment Loans Report'
+            else if SelectedLoanProductType = 'LT004' then
+                LoanProductTypeFilter := 'Sacco School Fees Loans Report'
+            else if SelectedLoanProductType = 'LT005' then
+                LoanProductTypeFilter := 'Sacco Emergency Loans Report'
+            else if SelectedLoanProductType = 'LT006' then
+                LoanProductTypeFilter := 'Sacco Instant Sharia Loans Report'
+            else if SelectedLoanProductType = 'LT007' then
+                LoanProductTypeFilter := 'Sacco Instant Loans Report'
+            else if SelectedLoanProductType = 'LT001' then
+                LoanProductTypeFilter := 'Sacco Development Loans 2 Report'
+            else if SelectedLoanProductType = 'LT002' then
+                LoanProductTypeFilter := 'Sacco Development Loans 1 Report'
+            else if SelectedLoanProductType = 'LT008' then
+                LoanProductTypeFilter := 'Sacco Sharia Compliant Loans Report'
+            else if SelectedLoanProductType = 'LT009' then
+                LoanProductTypeFilter := 'Sacco Development Loans 3 Report'
+
+        end else
+            LoanProductTypeFilter := 'Loans Register Report';
+
+        LoansRegister.SetFilter("Issued Date", '<=%1', EndDate);
     end;
 
     var
@@ -190,6 +262,11 @@ report 50034 "Loan Balances Report"
         OutstandingBalance: Decimal;
         OutstandingInterest: Decimal;
         RemainingRepayment: Decimal;
+        StartDate: Date;
+        EndDate: Date;
+
+        LoanProductTypeFilter: Text;
+
 
     procedure FnCalculateLoanRemainingPeriod(
         LoanOutstandingBalance: Decimal;

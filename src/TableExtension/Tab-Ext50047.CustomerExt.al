@@ -86,7 +86,7 @@ tableextension 50047 "CustomerExt" extends Customer
         field(68011; "Outstanding Balance"; Decimal)
         {
             CalcFormula = sum("Cust. Ledger Entry"."Amount Posted" where("Customer No." = field("No."),
-                                                                  "Transaction Type" = filter(Loan | "Loan Repayment" | "Interest Paid" | "Interest Due" | "Loan Transfer Charges"), "Posting Date" = field("Date Filter"), Reversed = const(false)));
+                                                                  "Transaction Type" = filter(Loan | "Loan Repayment" | "Interest Paid" | "Interest Due" | "Loan Transfer Charges" | "Facilitation Fee"), "Posting Date" = field("Date Filter"), Reversed = const(false)));
             Editable = false;
             FieldClass = FlowField;
         }
@@ -1843,6 +1843,14 @@ tableextension 50047 "CustomerExt" extends Customer
         {
             DataClassification = ToBeClassified;
         }
+        field(693512; "Qualifying Deposits"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(693521; "Qualifying share Capital"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+        }
         field(69351; "Retirement Date"; Date)
         {
             DataClassification = ToBeClassified;
@@ -2179,6 +2187,19 @@ tableextension 50047 "CustomerExt" extends Customer
         field(69516; "Identification Document Back"; Media) { }
 
         field(69517; "Expected Monthly Deposit Contribution"; Decimal) { }
+
+        field(69518; "Total Loan Repayment"; Decimal)
+        {
+            CalcFormula = sum("Loans Register"."Loan Principle Repayment" where("Client Code" = field("No."),
+                                                                                 "Outstanding Balance" = filter(> 1)));
+            FieldClass = FlowField;
+        }
+
+
+        field(69519; "NotDividendEligible"; Boolean)
+        {
+
+        }
 
 
 

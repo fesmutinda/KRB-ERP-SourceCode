@@ -124,6 +124,33 @@ Table 59047 "Online Loan Application"
                 ///
             end;
         }
+
+        field(69275; "Mobile Money Service"; Option)
+        {
+            Caption = 'Mobile Money Service';
+            OptionMembers = " ",AirtelMoney,MPesa,TKash,MTNMobile,Orange,Equity,KCB,Safaricom;
+            OptionCaption = ' ,Airtel Money,M-Pesa,T-Kash';
+        }
+
+        field(69276; "Mobile Money Receiving Number"; Text[10])
+        {
+            Caption = 'Receiving Number';
+        }
+
+        field(51516225; "Bank Account"; Code[35])
+        {
+            DataClassification = ToBeClassified;
+        }
+
+        field(51516226; "Customer Bank"; Enum "Bank Name")
+        {
+            DataClassification = ToBeClassified;
+        }
+
+        field(51516227; "Min No. Of Guarantors"; Integer)
+        {
+            DataClassification = ToBeClassified;
+        }
     }
 
     keys

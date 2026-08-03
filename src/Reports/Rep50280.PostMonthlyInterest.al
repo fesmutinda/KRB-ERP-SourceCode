@@ -84,7 +84,7 @@ Report 50280 "Post Monthly Interest."
                 loanapp.Reset;
                 loanapp.SetRange(loanapp."Loan  No.", "Loans Register"."Loan  No.");
                 loanapp.SetFilter(loanapp."Date filter", SDATE);
-                loanapp.SetFilter(loanapp."Loan Product Type", '<>LT008');
+                loanapp.SetFilter(loanapp."Loan Product Type", '<>LT008&<>LT006');
                 if loanapp.Find('-') then begin
                     repeat
                         loanapp.CalcFields(loanapp."Outstanding Balance");
@@ -270,7 +270,5 @@ Report 50280 "Post Monthly Interest."
         CurrReport_PAGENOCaptionLbl: label 'Page';
         loanapp: Record "Loans Register";
         SDATE: Text[30];
-
-        LoanClassificationCodeunit: Codeunit LoansClassificationCodeUnit;
 }
 

@@ -57,6 +57,11 @@ page 57010 "Instant Offset Detail List"
                     Style = Attention;
                     StyleExpr = true;
                 }
+
+                field("Refinancing Fee"; Rec.Commision)
+                {
+
+                }
             }
         }
     }

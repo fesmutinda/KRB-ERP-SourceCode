@@ -85,7 +85,8 @@ Report 51036 "Loans Defaulter Aging"
             trigger OnPreDataItem();
             begin
 
-                SwizzsoftFactory.BulkSchedule(); //ensre all loans have proepr schedulin
+                // We should only be scheduling individual loans that are problematic
+                //SwizzsoftFactory.BulkSchedule(); //ensre all loans have proepr schedulin
                 GrandTotal := 0;
                 NoLoans := 0;
                 Company.Get();
@@ -216,6 +217,8 @@ Report 51036 "Loans Defaulter Aging"
 
         SwizzsoftFactory: Codeunit "Swizzsoft Factory";
 
+        LoanRepaymentSchedule: Record "Loan Repayment Schedule";
+
 
 
     local procedure GetTotalDebitForLoan(LoanNo: Code[20]): Decimal
@@ -246,7 +249,7 @@ Report 51036 "Loans Defaulter Aging"
     var
         LoanRepaymentSchedule: Record "Loan Repayment Schedule";
         LoanRepaymentScheduleRec: Record "Loan Repayment Schedule";
-        LoansRegisterRec: Record "Loans Register";
+        // LoansRegisterRec: Record "Loans Register";
         ExpectedOutstandingBalance: Decimal;
         ActualOutstandingBalance: Decimal;
         LastDueDate: Date;
@@ -254,6 +257,7 @@ Report 51036 "Loans Defaulter Aging"
         ArrearsAtRepaymentDate: Decimal;
         LoanLedgerEntry: Record "Cust. Ledger Entry";
         TotalDebitAmount: Decimal;
+
     begin
         ArrearsAtRepaymentDate := 0;
         CalculatedAmountInArrears := 0;
@@ -263,16 +267,9 @@ Report 51036 "Loans Defaulter Aging"
         FirstArrearsDate := 0D;
         CalculatedLoanCategory := CalculatedLoanCategory::Performing;
 
-        if ("Loans Register"."Loan  No." = 'LN1092') or ("Loans Register"."Loan  No." = 'LN1760') then begin
 
-            TotalDebitAmount := GetTotalDebitForLoan("Loans Register"."Loan  No.");
+        ExpectedOutstandingBalance := GetExpectedOutstandingBalance(AsAt);
 
-            ExpectedOutstandingBalance := GetExpectedOutstandingBalance(AsAt, TotalDebitAmount);
-
-        end else begin
-
-            ExpectedOutstandingBalance := GetExpectedOutstandingBalance(AsAt, 0);
-        end;
 
         ActualOutstandingBalance := "Loans Register"."Outstanding Balance";
 
@@ -283,20 +280,10 @@ Report 51036 "Loans Defaulter Aging"
         //LastDueDate := GetLastDueDateBeforeAsAt();
 
 
-
-        if ("Loans Register"."Loan  No." = 'LN1092') or ("Loans Register"."Loan  No." = 'LN1760') then begin
-
-
-            FirstArrearsDate := GetFirstDateWhereInArrears(ActualOutstandingBalance, TotalDebitAmount);
-
-        end else begin
+        FirstArrearsDate := GetFirstDateWhereInArrears(ActualOutstandingBalance);
 
 
-            FirstArrearsDate := GetFirstDateWhereInArrears(ActualOutstandingBalance, 0);
-
-
-        end;
-
+        //LoansRegisterRec.get("Loans Register"."Loan  No.");
 
         // Calculate days in arrears
         if (FirstArrearsDate <> 0D) and (CalculatedAmountInArrears > 0) then begin
@@ -314,6 +301,9 @@ Report 51036 "Loans Defaulter Aging"
                 else
                     CalculatedLoanCategory := CalculatedLoanCategory::Loss;
             end;
+
+
+            //LoansRegisterRec.Get("Loans Register"."Loan  No.");
 
             // Handle LT007 blacklisting when in arrears
             if "Loans Register"."Loan Product Type" = 'LT007' then begin
@@ -418,7 +408,10 @@ Report 51036 "Loans Defaulter Aging"
                 end;
         end;
 
-        "Loans Register".Modify();
+        //"Loans Register".Get("Loans Register"."Loan  No.");
+
+        // "Loans Register".Modify();
+        //LoansRegisterRec.MODIFY();
     end;
 
 
@@ -430,14 +423,7 @@ Report 51036 "Loans Defaulter Aging"
         ExtendedDate: Date;
     begin
 
-        if ("Loans Register"."Loan  No." = 'LN1092') or ("Loans Register"."Loan  No." = 'LN1760') then begin
-
-            ExpectedRepaymentAtDate := GetMonthlyRepayment(SpecificDate, GetTotalDebitForLoan("Loans Register"."Loan  No."));
-        end else begin
-
-            ExpectedRepaymentAtDate := GetMonthlyRepayment(SpecificDate, 0);
-
-        end;
+        ExpectedRepaymentAtDate := GetMonthlyRepayment(SpecificDate);
 
         ActualRepaymentAtDate := GetActualRepaymentAtDate(SpecificDate);
 
@@ -504,412 +490,313 @@ Report 51036 "Loans Defaulter Aging"
     end;
 
 
-    local procedure GetExpectedOutstandingBalance(AsAtDate: Date; OverrideLoanAmount: Decimal): Decimal
+    local procedure GetExpectedOutstandingBalance(AsAtDate: Date): Decimal
     var
         ObjLoans: Record "Loans Register";
         VarRunningDate: Date;
         VarLoanAmount: Decimal;
-        VarInterestRate: Decimal;
-        VarRepayPeriod: Integer;
-        VarLBalance: Decimal;
-        VarInstalNo: Decimal;
-        VarTotalMRepay: Decimal;
-        VarLInterest: Decimal;
-        VarMonthlyInterest: Decimal;
-        VarLPrincipal: Decimal;
-        VarGrPrinciple: Integer;
-        VarGrInterest: Integer;
-        VarRepaymentStartDate: Date;
-        VarMonthIncreament: Text;
-        VarInPeriod: DateFormula;
         ExpectedBalance: Decimal;
+        TotalDebits: Decimal;
     begin
         // Get fresh loan record
         if not ObjLoans.Get("Loans Register"."Loan  No.") then
             exit("Loans Register"."Approved Amount");
 
-        // Initialize variables using same logic as FnGenerateRepaymentSchedule
-        if ObjLoans."Repayment Frequency" = ObjLoans."repayment frequency"::Daily then
-            Evaluate(VarInPeriod, '1D')
-        else if ObjLoans."Repayment Frequency" = ObjLoans."repayment frequency"::Weekly then
-            Evaluate(VarInPeriod, '1W')
-        else if ObjLoans."Repayment Frequency" = ObjLoans."repayment frequency"::Monthly then
-            Evaluate(VarInPeriod, '1M')
-        else if ObjLoans."Repayment Frequency" = ObjLoans."repayment frequency"::Quaterly then
-            Evaluate(VarInPeriod, '1Q');
+        TotalDebits := GetTotalDebitForLoan("Loans Register"."Loan  No.");
 
-        VarGrPrinciple := ObjLoans."Grace Period - Principle (M)";
-        VarGrInterest := ObjLoans."Grace Period - Interest (M)";
+        IF TotalDebits <> "Loans Register"."Approved Amount" THEN BEGIN
+            FnGenerateNewRepaymentSchedule("Loans Register"."Loan  No.", TotalDebits)
+        END;
 
 
-        //VarLoanAmount := ObjLoans."Approved Amount";
-        if OverrideLoanAmount <> 0 then
-            VarLoanAmount := OverrideLoanAmount
-        else
-            VarLoanAmount := ObjLoans."Approved Amount";
+        LoanRepaymentSchedule.Reset();
+        LoanRepaymentSchedule.SetRange("Loan No.", "Loans Register"."Loan  No.");
+        LoanRepaymentSchedule.SetFilter("Repayment Date", '<=%1', AsAtDate);
+        if LoanRepaymentSchedule.FindLast() then begin
+            ExpectedBalance := LoanRepaymentSchedule."Loan Balance";
+        end;
 
 
-        VarInterestRate := ObjLoans.Interest;
-        VarMonthlyInterest := VarInterestRate / 12 / 100;
-        VarRepayPeriod := ObjLoans.Installments;
-        VarLBalance := VarLoanAmount;
-        VarRunningDate := ObjLoans."Repayment Start Date";
-        VarRepaymentStartDate := ObjLoans."Repayment Start Date";
-        VarInstalNo := 0;
+        "Loans Register"."Expected Loan Balance" := ExpectedBalance;
 
-        // Calculate expected balance up to AsAt date using same logic
-        repeat
-            if (VarGrPrinciple > 0) and (VarGrInterest > 0) then begin
-                // Grace period - no principal reduction
-                VarGrPrinciple := VarGrPrinciple - 1;
-                VarGrInterest := VarGrInterest - 1;
-            end else begin
-                VarInstalNo := VarInstalNo + 1;
+        exit(ExpectedBalance);
 
-                // Calculate repayment amounts using same logic as schedule generation
-                if ObjLoans."Repayment Method" = ObjLoans."repayment method"::Amortised then begin
-                    if VarTotalMRepay = 0 then begin
-                        VarTotalMRepay := Round(VarLBalance * ((VarMonthlyInterest * Power((1 + VarMonthlyInterest), VarRepayPeriod)) / (Power((1 + VarMonthlyInterest), VarRepayPeriod) - 1)), 1);
-                    end;
-
-                    VarLInterest := Round(VarLBalance * VarMonthlyInterest, 1);
-                    VarLPrincipal := VarTotalMRepay - VarLInterest;
-                end;
-
-                if ObjLoans."Repayment Method" = ObjLoans."repayment method"::"Straight Line" then begin
-                    if ObjLoans."Loan Product Type" = 'LT008' then begin
-                        VarLPrincipal := Round(VarLoanAmount / VarRepayPeriod, 1, '>');
-                        VarLInterest := 0;
-                    end else begin
-                        VarLPrincipal := Round(VarLoanAmount / VarRepayPeriod, 1, '>');
-                        VarLInterest := Round((VarInterestRate / 1200) * VarLoanAmount, 1, '>');
-                        if VarInstalNo - ObjLoans."Grace Period - Interest (M)" = 1 then
-                            VarLInterest := VarLInterest * VarInstalNo;
-                    end;
-                end;
-
-                if ObjLoans."Repayment Method" = ObjLoans."repayment method"::"Reducing Balance" then begin
-                    VarLPrincipal := Round(VarLoanAmount / VarRepayPeriod, 1, '>');
-                    VarLInterest := Round((VarInterestRate / 12 / 100) * VarLBalance, 1, '>');
-                end;
-
-                if ObjLoans."Repayment Method" = ObjLoans."repayment method"::Constants then begin
-                    if VarLBalance < ObjLoans.Repayment then
-                        VarLPrincipal := VarLBalance
-                    else
-                        VarLPrincipal := ObjLoans.Repayment;
-                    VarLInterest := ObjLoans.Interest;
-                end;
-
-                // Handle final installment
-                if VarInstalNo = VarRepayPeriod then begin
-                    VarLPrincipal := VarLBalance;
-                    VarTotalMRepay := VarLPrincipal + VarLInterest;
-                end;
-
-                // Reduce balance
-                VarLBalance := VarLBalance - VarLPrincipal;
-            end;
-
-            // Get next repayment date using same logic
-            VarMonthIncreament := Format(VarInstalNo) + 'M';
-            if ObjLoans."Repayment Frequency" = ObjLoans."repayment frequency"::Daily then
-                VarRunningDate := CalcDate('1D', VarRunningDate)
-            else if ObjLoans."Repayment Frequency" = ObjLoans."repayment frequency"::Weekly then
-                VarRunningDate := CalcDate('1W', VarRunningDate)
-            else if ObjLoans."Repayment Frequency" = ObjLoans."repayment frequency"::Monthly then
-                VarRunningDate := CalcDate(VarMonthIncreament, VarRepaymentStartDate)
-            else if ObjLoans."Repayment Frequency" = ObjLoans."repayment frequency"::Quaterly then
-                VarRunningDate := CalcDate('1Q', VarRunningDate);
-
-            // Stop when we reach or pass the AsAt date
-            if VarRunningDate > AsAtDate then begin
-                ExpectedBalance := VarLBalance;
-                break;
-            end;
-
-        until VarInstalNo = VarRepayPeriod;
-
-        // If we completed all installments and still haven't reached AsAt, balance should be 0
-        if VarInstalNo = VarRepayPeriod then
-            ExpectedBalance := 0
-        else
-            ExpectedBalance := VarLBalance;
-
-        "Loans Register"."Expected Loan Balance" := Round(ExpectedBalance, 0.01);
-        exit(Round(ExpectedBalance, 0.01));
     end;
 
-
-
-    local procedure GetMonthlyRepayment(AsAtDate: Date; OverrideLoanAmount: Decimal): Decimal
+    // FIX FOR LOAN AMOUNTS GENERATED BY PASSING JOURNAL
+    procedure FnGenerateNewRepaymentSchedule(LoanNumber: Code[50]; NewApprovedAmount: Decimal): Boolean
     var
         ObjLoans: Record "Loans Register";
+        ObjRepaymentschedule: Record "Loan Repayment Schedule";
+        ObjLoansII: Record "Loans Register";
+        VarPeriodDueDate: Date;
         VarRunningDate: Date;
+        VarGracePeiodEndDate: Date;
+        VarInstalmentEnddate: Date;
+        VarGracePerodDays: Integer;
+        VarInstalmentDays: Integer;
+        VarNoOfGracePeriod: Integer;
         VarLoanAmount: Decimal;
         VarInterestRate: Decimal;
         VarRepayPeriod: Integer;
         VarLBalance: Decimal;
+        VarRunDate: Date;
         VarInstalNo: Decimal;
+        VarRepayInterval: DateFormula;
         VarTotalMRepay: Decimal;
         VarLInterest: Decimal;
         VarMonthlyInterest: Decimal;
         VarLPrincipal: Decimal;
+        VarLInsurance: Decimal;
+        VarRepayCode: Code[30];
         VarGrPrinciple: Integer;
         VarGrInterest: Integer;
+        VarQPrinciple: Decimal;
+        VarQCounter: Integer;
+        VarInPeriod: DateFormula;
+        VarInitialInstal: Integer;
+        VarInitialGraceInt: Integer;
+        VarScheduleBal: Decimal;
+        VarLNBalance: Decimal;
+        ObjProductCharge: Record "Loan Product Charges";
+        VarWhichDay: Integer;
         VarRepaymentStartDate: Date;
         VarMonthIncreament: Text;
-        VarInPeriod: DateFormula;
+        ScheduleEntryNo: Integer;
+        saccogen: Record "Sacco General Set-Up";
+        VarRemainingRepayments: Decimal;
+    begin
+
+        ObjLoansII.Reset;
+        ObjLoansII.SetRange(ObjLoansII."Loan  No.", LoanNumber);
+        ObjLoansII.CalcFields(ObjLoansII."Outstanding Balance");
+        if ObjLoansII.FindSet then begin
+            Evaluate(VarInPeriod, '1M');
+
+            VarRunDate := 0D;
+            VarQCounter := 0;
+            VarQCounter := 3;
+            VarScheduleBal := 0;
+
+            VarGrPrinciple := ObjLoansII."Grace Period - Principle (M)";
+            VarGrInterest := ObjLoansII."Grace Period - Interest (M)";
+            VarInitialGraceInt := ObjLoansII."Grace Period - Interest (M)";
+
+            //ObjLoansII.TestField(ObjLoansII."Loan Disbursement Date");
+            ObjLoansII.TestField(ObjLoansII."Repayment Start Date");
+
+            //=================================================================Delete From Tables
+            ObjRepaymentschedule.Reset;
+            ObjRepaymentschedule.SetRange(ObjRepaymentschedule."Loan No.", LoanNumber);
+            if ObjRepaymentschedule.Find('-') then begin
+                ObjRepaymentschedule.DeleteAll;
+            end;
+
+            ObjLoansII.CalcFields(ObjLoansII."Outstanding Balance");
+            //VarLoanAmount := ObjLoansII."Approved Amount";
+            VarLoanAmount := NewApprovedAmount;
+            VarInterestRate := ObjLoansII.Interest;
+            VarMonthlyInterest := VarInterestRate / 12 / 100;
+            VarRepayPeriod := ObjLoansII.Installments;
+            VarInitialInstal := ObjLoansII.Installments + ObjLoansII."Grace Period - Principle (M)";
+            VarLBalance := VarLoanAmount;
+            //VarLNBalance := ObjLoansII."Outstanding Balance";
+            VarRunDate := ObjLoansII."Repayment Start Date";
+            VarRepaymentStartDate := ObjLoansII."Repayment Start Date";
+
+            VarInstalNo := 0;
+            //Evaluate(VarRepayInterval, '1W');
+
+            repeat
+                if (VarGrPrinciple > 0) and (VarGrInterest > 0) then begin
+                    VarLInsurance := 0;
+                    VarGrPrinciple := VarGrPrinciple - 1;
+                    VarGrInterest := VarGrInterest - 1;
+                end else begin
+                    VarInstalNo := VarInstalNo + 1;
+                    VarScheduleBal := VarLBalance;
+                    ScheduleEntryNo := ScheduleEntryNo + 1;
+
+                    //=======================================================================================Amortised
+                    if ObjLoansII."Repayment Method" = ObjLoansII."repayment method"::Amortised then begin
+                        ObjLoansII.TestField(ObjLoansII.Installments);
+                        ObjLoansII.TestField(ObjLoansII.Interest);
+                        ObjLoansII.TestField(ObjLoansII.Installments);
+
+                        if VarTotalMRepay = 0 then begin
+                            VarTotalMRepay := Round(VarLBalance * ((VarMonthlyInterest * Power((1 + VarMonthlyInterest), VarRepayPeriod)) / (Power((1 + VarMonthlyInterest), VarRepayPeriod) - 1)), 1);
+                        end;
+
+                        VarLInterest := Round(VarLBalance * VarMonthlyInterest, 1);
+                        VarLPrincipal := VarTotalMRepay - VarLInterest;
+
+                        // Fix 3: Ensure we have the current record before modifying
+                        if ObjLoansII.Get(ObjLoansII."Loan  No.") then begin
+                            ObjLoansII."Loan Principle Repayment" := VarLPrincipal;
+                            ObjLoansII."Loan Interest Repayment" := VarLInterest;
+                            ObjLoansII.Repayment := VarTotalMRepay;
+                            //  ObjLoansII.Modify(true);
+                        end;
+                    end;
+
+                    //=======================================================================================Straight Line
+                    if ObjLoansII."Repayment Method" = ObjLoansII."repayment method"::"Straight Line" then begin
+                        if (ObjLoansII."Loan Product Type" = 'LT008') or (ObjLoansII."Loan Product Type" = 'LT006') then begin
+                            ObjLoansII.TestField(ObjLoansII.Installments);
+                            VarLPrincipal := ROUND(VarLoanAmount / VarRepayPeriod, 1, '>');
+
+                            // Fix 4: Proper record handling for modifications
+                            if ObjLoansII.Get(ObjLoansII."Loan  No.") then begin
+                                VarTotalMRepay := VarLPrincipal + VarLInterest;
+                                ObjLoansII.Repayment := VarTotalMRepay;
+                                ObjLoansII."Loan Principle Repayment" := VarLPrincipal;
+                                ObjLoansII."Loan Interest Repayment" := 0;
+                                //   ObjLoansII.Modify(TRUE);
+                            end;
+                        end else begin
+                            ObjLoansII.TestField(ObjLoansII.Installments);
+                            VarLPrincipal := ROUND(VarLoanAmount / VarRepayPeriod, 1, '>');
+                            VarLInterest := ROUND((VarInterestRate / 1200) * VarLoanAmount, 1, '>');
+                            if VarInstalNo - ObjLoansII."Grace Period - Interest (M)" = 1 then
+                                VarLInterest := VarLInterest * VarInstalNo;
+
+                            if ObjLoansII.Get(ObjLoansII."Loan  No.") then begin
+                                ObjLoansII.Repayment := VarLPrincipal + VarLInterest;
+                                ObjLoansII."Loan Principle Repayment" := VarLPrincipal;
+                                ObjLoansII."Loan Interest Repayment" := VarLInterest;
+                                // ObjLoansII.Modify(true);
+                            end;
+                        end;
+                    end;
+
+                    //=======================================================================================Reducing Balance
+                    if ObjLoansII."Repayment Method" = ObjLoansII."repayment method"::"Reducing Balance" then begin
+                        ObjLoansII.TestField(ObjLoansII.Interest);
+                        ObjLoansII.TestField(ObjLoansII.Installments);
+                        VarLPrincipal := ROUND(VarLoanAmount / VarRepayPeriod, 1, '>');
+                        VarLInterest := ROUND((VarInterestRate / 12 / 100) * VarLBalance, 1, '>');
+                    end;
+
+                    //=======================================================================================Constant
+                    if ObjLoansII."Repayment Method" = ObjLoansII."repayment method"::Constants then begin
+                        if ObjLoansII.Get(ObjLoansII."Loan  No.") then begin
+                            ObjLoansII.Repayment := ObjLoansII."Approved Amount" / ObjLoansII.Installments;
+                            //ObjLoansII.Modify(true);
+                        end;
+
+                        ObjLoansII.TestField(ObjLoansII.Repayment);
+                        if VarLBalance < ObjLoansII.Repayment then
+                            VarLPrincipal := VarLBalance
+                        else
+                            VarLPrincipal := ObjLoansII.Repayment;
+
+                        VarLInterest := ObjLoansII.Interest;
+                    end;
+
+                    Evaluate(VarRepayCode, Format(VarInstalNo));
+
+                    if (VarInstalNo = VarRepayPeriod) then begin
+
+                        VarLPrincipal := VarLBalance;
+                        VarTotalMRepay := Varlprincipal + VarLInterest;
+                    end;
+
+                    VarLBalance := VarLBalance - VarLPrincipal;
+                    VarScheduleBal := VarScheduleBal - VarLPrincipal;
+
+                    // Insert schedule record
+                    ObjRepaymentschedule.Init;
+                    ObjRepaymentschedule."Repayment Code" := VarRepayCode;
+                    ObjRepaymentschedule."Loan No." := ObjLoansII."Loan  No.";
+                    ObjRepaymentschedule."Loan Amount" := VarLoanAmount;
+                    ObjRepaymentschedule."Interest Rate" := ObjLoansII.Interest;
+                    ObjRepaymentschedule."Instalment No" := VarInstalNo;
+                    ObjRepaymentschedule."Repayment Date" := VarRunDate;
+                    ObjRepaymentschedule."Member No." := ObjLoansII."Client Code";
+                    ObjRepaymentschedule."Loan Category" := ObjLoansII."Loan Product Type";
+                    ObjRepaymentschedule."Monthly Repayment" := VarTotalMRepay;
+                    ObjRepaymentschedule."Monthly Interest" := VarLInterest;
+                    ObjRepaymentschedule."Principal Repayment" := VarLPrincipal;
+                    ObjRepaymentschedule."Loan Balance" := VarLBalance;
+                    ObjRepaymentschedule.Insert;
+
+                    VarWhichDay := Date2dwy(ObjRepaymentschedule."Repayment Date", 1);
+
+                    if VarInstalNo <> 1 then begin
+                        VarLInsurance := 0;
+                    end;
+
+                    //=======================================================================Get Next Repayment Date
+                    VarMonthIncreament := Format(VarInstalNo) + 'M';
+                    VarRunDate := CalcDate(VarMonthIncreament, VarRepaymentStartDate)
+
+                end;
+
+
+                //if ObjLoansII.Get(ObjLoansII."Loan  No.") then begin
+                ObjLoansII."Repay Count" := VarInstalNo;
+            //  ObjLoansII.Modify(TRUE);
+            //end;
+
+            until VarInstalNo = VarRepayPeriod;
+
+            // Commit();
+        end;
+    end;
+
+
+
+
+    local procedure GetMonthlyRepayment(AsAtDate: Date): Decimal
+    var
+        ObjLoans: Record "Loans Register";
+        VarRunningDate: Date;
         MonthlyRepayment: Decimal;
     begin
         // Get fresh loan record
         if not ObjLoans.Get("Loans Register"."Loan  No.") then
             exit(0);
 
-        if ObjLoans."Repayment Frequency" = ObjLoans."repayment frequency"::Daily then
-            Evaluate(VarInPeriod, '1D')
-        else if ObjLoans."Repayment Frequency" = ObjLoans."repayment frequency"::Weekly then
-            Evaluate(VarInPeriod, '1W')
-        else if ObjLoans."Repayment Frequency" = ObjLoans."repayment frequency"::Monthly then
-            Evaluate(VarInPeriod, '1M')
-        else if ObjLoans."Repayment Frequency" = ObjLoans."repayment frequency"::Quaterly then
-            Evaluate(VarInPeriod, '1Q');
-
-        VarGrPrinciple := ObjLoans."Grace Period - Principle (M)";
-        VarGrInterest := ObjLoans."Grace Period - Interest (M)";
-
-        if OverrideLoanAmount <> 0 then
-            VarLoanAmount := OverrideLoanAmount
-        else
-            VarLoanAmount := ObjLoans."Approved Amount";
-
-        VarInterestRate := ObjLoans.Interest;
-        VarMonthlyInterest := VarInterestRate / 12 / 100;
-        VarRepayPeriod := ObjLoans.Installments;
-        VarLBalance := VarLoanAmount;
-        VarRunningDate := ObjLoans."Repayment Start Date";
-        VarRepaymentStartDate := ObjLoans."Repayment Start Date";
-        VarInstalNo := 0;
-
-        // Find the repayment that corresponds to the AsAt date
-        repeat
-            if (VarGrPrinciple > 0) and (VarGrInterest > 0) then begin
-
-                VarGrPrinciple := VarGrPrinciple - 1;
-                VarGrInterest := VarGrInterest - 1;
-
-                // During grace period, there might still be interest payments
-                // if VarGrInterest = 0 then begin
-                //     VarLInterest := Round(VarLBalance * VarMonthlyInterest, 1);
-                //     MonthlyRepayment := VarLInterest;
-                // end else
-                //     MonthlyRepayment := 0;
-            end else begin
-                VarInstalNo := VarInstalNo + 1;
-
-                // Calculate repayment amounts using same logic as schedule generation
-                if ObjLoans."Repayment Method" = ObjLoans."repayment method"::Amortised then begin
-                    if VarTotalMRepay = 0 then begin
-                        VarTotalMRepay := Round(VarLBalance * ((VarMonthlyInterest * Power((1 + VarMonthlyInterest), VarRepayPeriod)) / (Power((1 + VarMonthlyInterest), VarRepayPeriod) - 1)), 1);
-                    end;
-
-                    VarLInterest := Round(VarLBalance * VarMonthlyInterest, 1);
-                    VarLPrincipal := VarTotalMRepay - VarLInterest;
-                    MonthlyRepayment := VarTotalMRepay;
-                end;
-
-                if ObjLoans."Repayment Method" = ObjLoans."repayment method"::"Straight Line" then begin
-                    if ObjLoans."Loan Product Type" = 'LT008' then begin
-                        VarLPrincipal := Round(VarLoanAmount / VarRepayPeriod, 1, '>');
-                        VarLInterest := 0;
-                    end else begin
-                        VarLPrincipal := Round(VarLoanAmount / VarRepayPeriod, 1, '>');
-                        VarLInterest := Round((VarInterestRate / 1200) * VarLoanAmount, 1, '>');
-                        if VarInstalNo - ObjLoans."Grace Period - Interest (M)" = 1 then
-                            VarLInterest := VarLInterest * VarInstalNo;
-                    end;
-                    MonthlyRepayment := VarLPrincipal + VarLInterest;
-                end;
-
-                if ObjLoans."Repayment Method" = ObjLoans."repayment method"::"Reducing Balance" then begin
-                    VarLPrincipal := Round(VarLoanAmount / VarRepayPeriod, 1, '>');
-                    VarLInterest := Round((VarInterestRate / 12 / 100) * VarLBalance, 1, '>');
-                    MonthlyRepayment := VarLPrincipal + VarLInterest;
-                end;
-
-                if ObjLoans."Repayment Method" = ObjLoans."repayment method"::Constants then begin
-                    if VarLBalance < ObjLoans.Repayment then
-                        VarLPrincipal := VarLBalance
-                    else
-                        VarLPrincipal := ObjLoans.Repayment;
-                    VarLInterest := ObjLoans.Interest;
-                    MonthlyRepayment := VarLPrincipal + VarLInterest;
-                end;
-
-                // Handle final installment
-                if VarInstalNo = VarRepayPeriod then begin
-                    VarLPrincipal := VarLBalance;
-                    MonthlyRepayment := VarLPrincipal + VarLInterest;
-                end;
-
-                // Reduce balance
-                VarLBalance := VarLBalance - VarLPrincipal;
-            end;
-
-            // Get next repayment date using same logic
-            VarMonthIncreament := Format(VarInstalNo) + 'M';
-            if ObjLoans."Repayment Frequency" = ObjLoans."repayment frequency"::Daily then
-                VarRunningDate := CalcDate('1D', VarRunningDate)
-            else if ObjLoans."Repayment Frequency" = ObjLoans."repayment frequency"::Weekly then
-                VarRunningDate := CalcDate('1W', VarRunningDate)
-            else if ObjLoans."Repayment Frequency" = ObjLoans."repayment frequency"::Monthly then
-                VarRunningDate := CalcDate(VarMonthIncreament, VarRepaymentStartDate)
-            else if ObjLoans."Repayment Frequency" = ObjLoans."repayment frequency"::Quaterly then
-                VarRunningDate := CalcDate('1Q', VarRunningDate);
-
-            // Stop when we reach or pass the AsAt date - return the repayment for this period
-            if VarRunningDate >= AsAtDate then begin
-                exit(Round(MonthlyRepayment, 0.01));
-            end;
-
-        until VarInstalNo = VarRepayPeriod;
-
-        // If we've gone past all installments, return 0 (loan is fully paid)
+        LoanRepaymentSchedule.Reset();
+        LoanRepaymentSchedule.SetRange("Loan No.", "Loans Register"."Loan  No.");
+        LoanRepaymentSchedule.SetFilter("Repayment Date", '<=%1', AsAtDate);
+        if LoanRepaymentSchedule.FindLast() then begin
+            MonthlyRepayment := LoanRepaymentSchedule."Monthly Repayment";
+            exit(MonthlyRepayment);
+        end;
         exit(0);
     end;
 
 
 
-    local procedure GetFirstDateWhereInArrears(ActualBalance: Decimal; OverrideLoanAmount: Decimal): Date
+    local procedure GetFirstDateWhereInArrears(ActualBalance: Decimal): Date
     var
         ObjLoans: Record "Loans Register";
-        VarRunningDate: Date;
-        VarLoanAmount: Decimal;
-        VarInterestRate: Decimal;
-        VarRepayPeriod: Integer;
-        VarLBalance: Decimal;
-        VarInstalNo: Decimal;
-        VarTotalMRepay: Decimal;
-        VarLInterest: Decimal;
-        VarMonthlyInterest: Decimal;
-        VarLPrincipal: Decimal;
-        VarGrPrinciple: Integer;
-        VarGrInterest: Integer;
-        VarRepaymentStartDate: Date;
-        VarMonthIncreament: Text;
-        VarInPeriod: DateFormula;
         RunningExpectedBalance: Decimal;
     begin
         // Get fresh loan record
         if not ObjLoans.Get("Loans Register"."Loan  No.") then
             exit(0D);
 
-        // Initialize variables using same logic as FnGenerateRepaymentSchedule
-        if ObjLoans."Repayment Frequency" = ObjLoans."repayment frequency"::Daily then
-            Evaluate(VarInPeriod, '1D')
-        else if ObjLoans."Repayment Frequency" = ObjLoans."repayment frequency"::Weekly then
-            Evaluate(VarInPeriod, '1W')
-        else if ObjLoans."Repayment Frequency" = ObjLoans."repayment frequency"::Monthly then
-            Evaluate(VarInPeriod, '1M')
-        else if ObjLoans."Repayment Frequency" = ObjLoans."repayment frequency"::Quaterly then
-            Evaluate(VarInPeriod, '1Q');
+        LoanRepaymentSchedule.Reset();
+        LoanRepaymentSchedule.SetRange("Loan No.", "Loans Register"."Loan  No.");
+        LoanRepaymentSchedule.SetFilter("Repayment Date", '<=%1', AsAt);
+        if LoanRepaymentSchedule.FindSet() then begin
 
-        VarGrPrinciple := ObjLoans."Grace Period - Principle (M)";
-        VarGrInterest := ObjLoans."Grace Period - Interest (M)";
+            repeat
 
-        //VarLoanAmount := ObjLoans."Approved Amount";
+                RunningExpectedBalance := LoanRepaymentSchedule."Loan Balance";
 
-        if OverrideLoanAmount <> 0 then
-            VarLoanAmount := OverrideLoanAmount
-        else
-            VarLoanAmount := ObjLoans."Approved Amount";
+                if ActualBalance > RunningExpectedBalance then begin
 
-        VarInterestRate := ObjLoans.Interest;
-        VarMonthlyInterest := VarInterestRate / 12 / 100;
-        VarRepayPeriod := ObjLoans.Installments;
-        VarLBalance := VarLoanAmount;
-        VarRunningDate := ObjLoans."Repayment Start Date";
-        VarRepaymentStartDate := ObjLoans."Repayment Start Date";
-        VarInstalNo := 0;
+                    exit(LoanRepaymentSchedule."Repayment Date");
 
-        // Simulate the schedule and check for first arrears date
-        repeat
-            if (VarGrPrinciple > 0) and (VarGrInterest > 0) then begin
-                // Grace period - no principal reduction
-                VarGrPrinciple := VarGrPrinciple - 1;
-                VarGrInterest := VarGrInterest - 1;
-            end else begin
-                VarInstalNo := VarInstalNo + 1;
-
-                // Calculate repayment amounts using same logic as schedule generation
-                if ObjLoans."Repayment Method" = ObjLoans."repayment method"::Amortised then begin
-                    if VarTotalMRepay = 0 then begin
-                        VarTotalMRepay := Round(VarLBalance * ((VarMonthlyInterest * Power((1 + VarMonthlyInterest), VarRepayPeriod)) / (Power((1 + VarMonthlyInterest), VarRepayPeriod) - 1)), 1);
-                    end;
-
-                    VarLInterest := Round(VarLBalance * VarMonthlyInterest, 1);
-                    VarLPrincipal := VarTotalMRepay - VarLInterest;
                 end;
 
-                if ObjLoans."Repayment Method" = ObjLoans."repayment method"::"Straight Line" then begin
-                    if ObjLoans."Loan Product Type" = 'LT008' then begin
-                        VarLPrincipal := Round(VarLoanAmount / VarRepayPeriod, 1, '>');
-                        VarLInterest := 0;
-                    end else begin
-                        VarLPrincipal := Round(VarLoanAmount / VarRepayPeriod, 1, '>');
-                        VarLInterest := Round((VarInterestRate / 1200) * VarLoanAmount, 1, '>');
-                        if VarInstalNo - ObjLoans."Grace Period - Interest (M)" = 1 then
-                            VarLInterest := VarLInterest * VarInstalNo;
-                    end;
-                end;
+            until LoanRepaymentSchedule.Next() = 0;
+        end;
 
-                if ObjLoans."Repayment Method" = ObjLoans."repayment method"::"Reducing Balance" then begin
-                    VarLPrincipal := Round(VarLoanAmount / VarRepayPeriod, 1, '>');
-                    VarLInterest := Round((VarInterestRate / 12 / 100) * VarLBalance, 1, '>');
-                end;
-
-                if ObjLoans."Repayment Method" = ObjLoans."repayment method"::Constants then begin
-                    if VarLBalance < ObjLoans.Repayment then
-                        VarLPrincipal := VarLBalance
-                    else
-                        VarLPrincipal := ObjLoans.Repayment;
-                    VarLInterest := ObjLoans.Interest;
-                end;
-
-                // Handle final installment
-                if VarInstalNo = VarRepayPeriod then begin
-                    VarLPrincipal := VarLBalance;
-                    VarTotalMRepay := VarLPrincipal + VarLInterest;
-                end;
-
-                // Reduce balance AFTER checking for arrears
-                VarLBalance := VarLBalance - VarLPrincipal;
-                RunningExpectedBalance := VarLBalance;
-
-                // Check if this is the first date where we're in arrears
-                // Only check dates that have passed (<=AsAt)
-                if (VarRunningDate <= AsAt) and (ActualBalance > RunningExpectedBalance) then
-                    exit(VarRunningDate);
-            end;
-
-            // Get next repayment date using same logic as schedule generation
-            VarMonthIncreament := Format(VarInstalNo) + 'M';
-            if ObjLoans."Repayment Frequency" = ObjLoans."repayment frequency"::Daily then
-                VarRunningDate := CalcDate('1D', VarRunningDate)
-            else if ObjLoans."Repayment Frequency" = ObjLoans."repayment frequency"::Weekly then
-                VarRunningDate := CalcDate('1W', VarRunningDate)
-            else if ObjLoans."Repayment Frequency" = ObjLoans."repayment frequency"::Monthly then
-                VarRunningDate := CalcDate(VarMonthIncreament, VarRepaymentStartDate)
-            else if ObjLoans."Repayment Frequency" = ObjLoans."repayment frequency"::Quaterly then
-                VarRunningDate := CalcDate('1Q', VarRunningDate);
-
-            // Stop if we've gone past AsAt date
-            if VarRunningDate > AsAt then
-                break;
-
-        until VarInstalNo = VarRepayPeriod;
-
-        exit(0D); // Not in arrears
+        exit(0D);
     end;
 
     trigger OnPreReport()

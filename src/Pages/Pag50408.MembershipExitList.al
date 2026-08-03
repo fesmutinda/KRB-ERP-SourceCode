@@ -11,7 +11,7 @@ page 50408 "Membership Exit List"
     ApplicationArea = All;
     PromotedActionCategories = 'New,Process,Reports,Approval,Budgetary Control,Cancellation,Category7_caption';
     SourceTable = "Membership Exist";
-    SourceTableView = where(Posted = filter(false));
+    //SourceTableView = where(Posted = filter(false));
 
     layout
     {

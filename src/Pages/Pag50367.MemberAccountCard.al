@@ -694,6 +694,23 @@ page 50367 "Member Account Card"
                     end;
                 }
 
+
+                action("Arrears History")
+                {
+                    ApplicationArea = Basic;
+                    Image = "Report";
+                    Promoted = true;
+                    PromotedCategory = "Report";
+
+                    trigger OnAction()
+                    begin
+                        Cust.Reset;
+                        Cust.SetRange(Cust."No.", Rec."No.");
+                        if Cust.Find('-') then
+                            Report.Run(59078, true, false, Cust);
+                    end;
+                }
+
                 // action("Excess Statement")
                 // {
                 //     ApplicationArea = Basic;
@@ -725,6 +742,28 @@ page 50367 "Member Account Card"
                             Report.Run(56531, true, false, Cust);
                     end;
                 }
+
+                // action("Dividend Statement")
+                // {
+                //     ApplicationArea = Basic;
+                //     Image = "Report";
+                //     Promoted = true; 
+                //     PromotedCategory = Report;
+
+                //     trigger OnAction()
+                //     begin 
+                //         Cust.Reset;
+                //         Cust.SetRange(Cust."No.", Rec."No.");
+
+                //         if Cust.Find('-') then begin 
+
+                //             Report.Run()
+                //         end
+
+
+                //     end;
+
+                // }
                 // action("Loans Perfomance Statement")
                 // {
                 //     ApplicationArea = Basic;

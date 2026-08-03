@@ -209,4 +209,8 @@ enum 51516010 "TransactionTypesEnum"
     value(58; "Bank Transfer Charges") { Caption = 'Bank Transfer Charges'; }
     value(59; "Loan Transfer Charges") { Caption = 'Loan Transfer Charges'; }
 
+    value(60; "Facilitation Fee") { Caption = 'Facilitation Fee'; }
+
+
+
 }

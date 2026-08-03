@@ -15,40 +15,6 @@
     <ReportSection>
       <Body>
         <ReportItems>
-          <Textbox Name="Textbox2">
-            <CanGrow>true</CanGrow>
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>SACCO LOANS REGISTER REPORT</Value>
-                    <Style>
-                      <FontSize>9pt</FontSize>
-                      <FontWeight>Bold</FontWeight>
-                    </Style>
-                  </TextRun>
-                </TextRuns>
-                <Style>
-                  <TextAlign>Center</TextAlign>
-                </Style>
-              </Paragraph>
-            </Paragraphs>
-            <rd:DefaultName>Textbox2</rd:DefaultName>
-            <Top>3.05985in</Top>
-            <Left>0.89237in</Left>
-            <Height>0.19792in</Height>
-            <Width>6.6784in</Width>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-              <PaddingLeft>2pt</PaddingLeft>
-              <PaddingRight>2pt</PaddingRight>
-              <PaddingTop>2pt</PaddingTop>
-              <PaddingBottom>2pt</PaddingBottom>
-            </Style>
-          </Textbox>
           <Textbox Name="Textbox4">
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
@@ -71,7 +37,6 @@
             <Top>0.01389in</Top>
             <Height>0.17708in</Height>
             <Width>0.82292in</Width>
-            <ZIndex>1</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -105,7 +70,7 @@
             <Left>0.89237in</Left>
             <Height>0.17708in</Height>
             <Width>1.34834in</Width>
-            <ZIndex>2</ZIndex>
+            <ZIndex>1</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -120,22 +85,25 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>1.29749in</Width>
+                  <Width>1.05705in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.85242in</Width>
+                  <Width>0.72742in</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>0.50694in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.5502in</Width>
+                  <Width>1.37312in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>0.75in</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>0.81078in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.85417in</Width>
+                  <Width>0.69992in</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>1.31648in</Width>
@@ -159,6 +127,7 @@
                                 <TextRun>
                                   <Value>Member</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
@@ -196,6 +165,7 @@
                                 <TextRun>
                                   <Value>ID No </Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
@@ -233,6 +203,7 @@
                                 <TextRun>
                                   <Value>Loan No </Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
@@ -270,6 +241,7 @@
                                 <TextRun>
                                   <Value>Loan Product</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
@@ -278,6 +250,44 @@
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox67</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
+                            <TopBorder>
+                              <Style>Solid</Style>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Style>Solid</Style>
+                            </BottomBorder>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox2">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Issued Date</Value>
+                                  <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
+                                    <FontSize>8pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox2</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -307,6 +317,7 @@
                                 <TextRun>
                                   <Value>Original Loan Term (M)</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
@@ -344,6 +355,7 @@
                                 <TextRun>
                                   <Value>Outstanding Repayment Period (M)</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
@@ -381,6 +393,7 @@
                                 <TextRun>
                                   <Value>Issued Amount</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
@@ -420,6 +433,7 @@
                                 <TextRun>
                                   <Value>Outstanding Balance</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
@@ -464,6 +478,7 @@
                                 <TextRun>
                                   <Value>=Fields!ClientName.Value</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
@@ -497,6 +512,7 @@
                                 <TextRun>
                                   <Value>=Fields!ID_No_.Value</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
@@ -530,6 +546,7 @@
                                 <TextRun>
                                   <Value>=Fields!Loan__No_.Value</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
@@ -563,6 +580,7 @@
                                 <TextRun>
                                   <Value>=Fields!Loan_Product_Type_Name.Value</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
@@ -571,6 +589,41 @@
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Loan_Product_Type_Name</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>White</Color>
+                              <Style>None</Style>
+                            </Border>
+                            <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 = 0, "Gainsboro", "White")</BackgroundColor>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="IssuedDate">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!IssuedDate.Value</Value>
+                                  <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
+                                    <FontSize>8pt</FontSize>
+                                    <Format>d</Format>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>IssuedDate</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>White</Color>
@@ -596,6 +649,7 @@
                                 <TextRun>
                                   <Value>=Fields!Installments.Value</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
@@ -629,6 +683,7 @@
                                 <TextRun>
                                   <Value>=Fields!RemainingRepayment.Value</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
@@ -662,6 +717,7 @@
                                 <TextRun>
                                   <Value>=Fields!ApprovedAmount.Value</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <Format>n2</Format>
                                   </Style>
@@ -698,6 +754,7 @@
                                 <TextRun>
                                   <Value>=Fields!Outstanding_Balance.Value</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <Format>#,0.00;(#,0.00);'-'</Format>
                                   </Style>
@@ -739,6 +796,7 @@
                                 <TextRun>
                                   <Value>TOTALS</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -766,9 +824,10 @@
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <ColSpan>6</ColSpan>
+                        <ColSpan>7</ColSpan>
                       </CellContents>
                     </TablixCell>
+                    <TablixCell />
                     <TablixCell />
                     <TablixCell />
                     <TablixCell />
@@ -785,6 +844,7 @@
                                 <TextRun>
                                   <Value>=Sum(Fields!ApprovedAmount.Value)</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0.00;#,0.00-;'-'</Format>
@@ -824,6 +884,7 @@
                                 <TextRun>
                                   <Value>=Sum(Fields!Outstanding_Balance.Value)</Value>
                                   <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0.00;#,0.00-;'-'</Format>
@@ -868,6 +929,7 @@
                 <TablixMember />
                 <TablixMember />
                 <TablixMember />
+                <TablixMember />
               </TablixMembers>
             </TablixColumnHierarchy>
             <TablixRowHierarchy>
@@ -885,10 +947,10 @@
             </TablixRowHierarchy>
             <DataSetName>DataSet_Result</DataSetName>
             <Top>3.45916in</Top>
-            <Left>0.0908in</Left>
+            <Left>0.08449in</Left>
             <Height>0.625in</Height>
-            <Width>8.04612in</Width>
-            <ZIndex>3</ZIndex>
+            <Width>8.09934in</Width>
+            <ZIndex>2</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -904,6 +966,7 @@
                   <TextRun>
                     <Value>=First(Fields!CompanyAddress.Value, "DataSet_Result")</Value>
                     <Style>
+                      <FontFamily>Book Antiqua</FontFamily>
                       <FontSize>9pt</FontSize>
                     </Style>
                   </TextRun>
@@ -915,10 +978,10 @@
             </Paragraphs>
             <rd:DefaultName>Company_Address</rd:DefaultName>
             <Top>1.8116in</Top>
-            <Left>1.49548in</Left>
+            <Left>1.48917in</Left>
             <Height>0.17708in</Height>
             <Width>5.31307in</Width>
-            <ZIndex>4</ZIndex>
+            <ZIndex>3</ZIndex>
             <Style>
               <Border>
                 <Color>Indigo</Color>
@@ -951,6 +1014,7 @@
                   <TextRun>
                     <Value>=First(Fields!CompanyAddress2.Value, "DataSet_Result")</Value>
                     <Style>
+                      <FontFamily>Book Antiqua</FontFamily>
                       <FontSize>9pt</FontSize>
                     </Style>
                   </TextRun>
@@ -962,10 +1026,10 @@
             </Paragraphs>
             <rd:DefaultName>Company_Address_2</rd:DefaultName>
             <Top>2.05812in</Top>
-            <Left>1.49548in</Left>
+            <Left>1.48917in</Left>
             <Height>0.25in</Height>
             <Width>5.31307in</Width>
-            <ZIndex>5</ZIndex>
+            <ZIndex>4</ZIndex>
             <Style>
               <Border>
                 <Color>Indigo</Color>
@@ -998,6 +1062,7 @@
                   <TextRun>
                     <Value>=First(Fields!CompanyPhone.Value, "DataSet_Result")</Value>
                     <Style>
+                      <FontFamily>Book Antiqua</FontFamily>
                       <FontSize>9pt</FontSize>
                     </Style>
                   </TextRun>
@@ -1009,10 +1074,10 @@
             </Paragraphs>
             <rd:DefaultName>Company_Fax_No</rd:DefaultName>
             <Top>2.30812in</Top>
-            <Left>1.49548in</Left>
+            <Left>1.48917in</Left>
             <Height>0.25in</Height>
             <Width>5.31307in</Width>
-            <ZIndex>6</ZIndex>
+            <ZIndex>5</ZIndex>
             <Style>
               <Border>
                 <Color>Indigo</Color>
@@ -1045,6 +1110,7 @@
                   <TextRun>
                     <Value>=First(Fields!CompanyEmail.Value, "DataSet_Result")</Value>
                     <Style>
+                      <FontFamily>Book Antiqua</FontFamily>
                       <FontSize>9pt</FontSize>
                     </Style>
                   </TextRun>
@@ -1056,10 +1122,10 @@
             </Paragraphs>
             <rd:DefaultName>Company_Email</rd:DefaultName>
             <Top>2.55812in</Top>
-            <Left>1.49548in</Left>
+            <Left>1.48917in</Left>
             <Height>0.25in</Height>
             <Width>5.31307in</Width>
-            <ZIndex>7</ZIndex>
+            <ZIndex>6</ZIndex>
             <Style>
               <Border>
                 <Color>Indigo</Color>
@@ -1088,21 +1154,92 @@
             <Value>krbsaccoLogo2</Value>
             <Sizing>FitProportional</Sizing>
             <Top>0.60326in</Top>
-            <Left>3.64074in</Left>
+            <Left>3.63443in</Left>
             <Height>0.92708in</Height>
             <Width>0.99369in</Width>
-            <ZIndex>8</ZIndex>
+            <ZIndex>7</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
               </Border>
             </Style>
           </Image>
+          <Textbox Name="LoanProductTypeFilter">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>=First(Fields!LoanProductTypeFilter.Value, "DataSet_Result")</Value>
+                    <Style>
+                      <FontFamily>Book Antiqua</FontFamily>
+                      <FontSize>9pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Center</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>LoanProductTypeFilter</rd:DefaultName>
+            <Top>3.05985in</Top>
+            <Left>1.48917in</Left>
+            <Height>0.19792in</Height>
+            <Width>5.31307in</Width>
+            <ZIndex>8</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="DateFilterUsed">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>=First(Fields!DateFilterUsed.Value, "DataSet_Result")</Value>
+                    <Style>
+                      <FontFamily>Book Antiqua</FontFamily>
+                      <FontSize>8pt</FontSize>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Left</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>DateFilterUsed</rd:DefaultName>
+            <Top>3.23833in</Top>
+            <Left>0.08449in</Left>
+            <Height>0.17916in</Height>
+            <Width>1.29749in</Width>
+            <ZIndex>9</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
         </ReportItems>
         <Height>11.65992in</Height>
         <Style />
       </Body>
-      <Width>8.26886in</Width>
+      <Width>8.24309in</Width>
       <Page>
         <PageFooter>
           <Height>0.60619in</Height>
@@ -1224,6 +1361,12 @@ kHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpBvD/AZI2
       <Fields>
         <Field Name="EntryNo">
           <DataField>EntryNo</DataField>
+        </Field>
+        <Field Name="DateFilterUsed">
+          <DataField>DateFilterUsed</DataField>
+        </Field>
+        <Field Name="LoanProductTypeFilter">
+          <DataField>LoanProductTypeFilter</DataField>
         </Field>
         <Field Name="CompanyName">
           <DataField>CompanyName</DataField>

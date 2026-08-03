@@ -156,12 +156,30 @@ tableextension 56005 GLAccountExt extends "G/L Account"
             OptionMembers = " ",PriorYearAdjustments,ShortTermLiabilities;
         }
 
+        // to accommodate multiple cash flow categories
+
+        // field(54270; CashFlowCategory; option)
+        // {
+        //     Caption = 'Cash Flow Category';
+        //     OptionMembers = " ",InterestIncomeReceipts,OtherIncomeReceipts,PaymentsToEmployeesAndSuppliers,HonorariaPaid,TaxPaidAdjustment,TradeAndOtherReceivables,PayablesAndAccruals,MembersLoans,PurchaseOfAssets,PurchaseOfInvestments,MembersInterestPaid,RepaymentOfBorrowings,ShareCapitalContribution,MembersDeposit,CashAndEquivalents,TaxPayable;
+        //     OptionCaption = ' ,Interest Income Receipts,Other Income Receipts,Payments to Employees and Suppliers,Honoraria Paid,Tax Paid Adjustment,Trade and Other Receivables,Payables and Accruals,Members Loans,Purchase of Assets,Purchase of Investments,Members Interest Paid,Repayment of Borrowings,Share Capital Contribution,Members Deposit,CashAndEquivalents,TaxPayable';
+        // }
+
+
+        // field(54271; CashFlowCategory2; option)
+        // {
+        //     Caption = 'Additional Cash Flow Category';
+        //     OptionMembers = " ",InterestIncomeReceipts,OtherIncomeReceipts,PaymentsToEmployeesAndSuppliers,HonorariaPaid,TaxPaidAdjustment,TradeAndOtherReceivables,PayablesAndAccruals,MembersLoans,PurchaseOfAssets,PurchaseOfInvestments,MembersInterestPaid,RepaymentOfBorrowings,ShareCapitalContribution,MembersDeposit,CashAndEquivalents,TaxPayable;
+        //     OptionCaption = ' ,Interest Income Receipts,Other Income Receipts,Payments to Employees and Suppliers,Honoraria Paid,Tax Paid Adjustment,Trade and Other Receivables,Payables and Accruals,Members Loans,Purchase of Assets,Purchase of Investments,Members Interest Paid,Repayment of Borrowings,Share Capital Contribution,Members Deposit,CashAndEquivalents,TaxPayable';
+        // }
+
         field(54270; CashFlowCategory; option)
         {
             Caption = 'Cash Flow Category';
-            OptionMembers = " ",InterestIncomeReceipts,OtherIncomeReceipts,PaymentsToEmployeesAndSuppliers,HonorariaPaid,TaxPaidAdjustment,TradeAndOtherReceivables,PayablesAndAccruals,MembersLoans,PurchaseOfAssets,PurchaseOfInvestments,MembersInterestPaid,RepaymentOfBorrowings,ShareCapitalContribution,MembersDeposit,CashAndEquivalents;
-            OptionCaption = ' ,Interest Income Receipts,Other Income Receipts,Payments to Employees and Suppliers,Honoraria Paid,Tax Paid Adjustment,Trade and Other Receivables,Payables and Accruals,Members Loans,Purchase of Assets,Purchase of Investments,Members Interest Paid,Repayment of Borrowings,Share Capital Contribution,Members Deposit,CashAndEquivalents';
+            OptionMembers = " ",IncomeReceipts,PaymentsToEmployeesAndSuppliers,TradeAndOtherReceivables,PayablesAndAccruals,PurchaseOfAssets,MembersInterestPaid,RepaymentOfBorrowings,ShareCapitalContribution,MembersDeposit,CashAndEquivalents,TaxPayable,Honoraria,TaxPaid,OtherIncome,LoanAdvances,PurchaseOfInvestments;
+            OptionCaption = ' ,Income Receipts,Payments to Employees and Suppliers,Trade and Other Receivables,Payables and Accruals,Purchase of Assets,Members Interest Paid,Repayment of Borrowings,Share Capital Contribution,Members Deposit,Cash & Equivalents,Tax Payable,Honoraria, Tax Paid,Other Income, Loan and Advances,Purchase of Investments';
         }
+
 
     }
 

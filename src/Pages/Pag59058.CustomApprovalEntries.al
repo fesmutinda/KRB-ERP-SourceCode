@@ -3,6 +3,7 @@ page 59058 "Custom Approval Entries"
     ApplicationArea = Suite;
     Caption = 'Loan Approval Entries';
     Editable = false;
+    DeleteAllowed = false;
     PageType = List;
     SourceTable = "Approval Entry";
     SourceTableView = sorting("Table ID", "Document Type", "Document No.", "Date-Time Sent for Approval")
@@ -43,6 +44,13 @@ page 59058 "Custom Approval Entries"
                 {
                     ApplicationArea = Suite;
                     Caption = 'Loan Status';
+
+                }
+
+                field(LoanRescheduleDate; LoanRescheduleDate)
+                {
+                    ApplicationArea = Suite;
+                    Caption = 'Reschedule Date';
 
                 }
                 field(ApplicationDate; ApplicationDate)
@@ -409,6 +417,8 @@ page 59058 "Custom Approval Entries"
         LoanStatus: Text[50];
         ApplicationDate: Date;
 
+        LoanRescheduleDate: Date;
+
     procedure SetRecordFilters(TableId: Integer; DocumentType: Enum "Approval Document Type"; DocumentNo: Code[20])
     begin
         if TableId <> 0 then begin
@@ -478,12 +488,17 @@ page 59058 "Custom Approval Entries"
         Clear(LoanType);
         Clear(LoanStatus);
         Clear(ApplicationDate);
+        Clear(LoanRescheduleDate);
 
         if not RecRef.Get(Rec."Record ID to Approve") then
             exit;
 
         if RecRef.Number = Database::"Loans Register" then begin
+
+
             RecRef.SetTable(LoanRegister);
+
+            LoanRegister.SetFilter("Approved Amount", '>0');
 
             // Populate loan fields
             LoanNo := LoanRegister."Loan  No.";
@@ -491,6 +506,7 @@ page 59058 "Custom Approval Entries"
             LoanType := Format(LoanRegister."Loan Product Type Name");
             LoanStatus := Format(LoanRegister."Loan Status");
             ApplicationDate := LoanRegister."Application Date";
+            LoanRescheduleDate := LoanRegister."Loan Rescheduled Date";
 
             if Customer.Get(LoanRegister."Client Code") then
                 CustomerName := Customer.Name;

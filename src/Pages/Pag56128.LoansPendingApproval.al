@@ -303,14 +303,25 @@ Page 56128 "Loans Pending Approval"
                     PromotedCategory = Process;
 
                     trigger OnAction()
+                    var
+                        LoanApp: Record "Loans Register";
                     begin
                         LoanApp.Reset;
-                        LoanApp.SetRange(LoanApp."Loan  No.", Rec."Loan  No.");
-                        if LoanApp.Find('-') then begin
-                            //Report.Run(50244, true, false, LoanApp);
-                            Report.Run(56384, true, false, LoanApp);
+                        LoanApp.SetRange("Loan  No.", Rec."Loan  No.");
+
+                        if LoanApp.FindFirst() then begin
+
+                            if LoanApp."Loan Product Type" in ['LT006', 'LT007'] then begin
+                                // Instant loans
+                                Report.Run(50245, true, false, LoanApp);
+                            end else begin
+                                // Other loans
+                                Report.Run(56384, true, false, LoanApp);
+                            end;
+
                         end;
                     end;
+
                 }
                 action("Send Approvals")
                 {
@@ -363,7 +374,7 @@ Page 56128 "Loans Pending Approval"
                     begin
                         Cust.Reset;
                         Cust.SetRange(Cust."No.", Rec."Client Code");
-                        Report.Run(50223, true, false, Cust);
+                        Report.Run(56886, true, false, Cust);
                     end;
                 }
                 action("View Schedule")
@@ -378,8 +389,6 @@ Page 56128 "Loans Pending Approval"
                     begin
                         if (Rec."Repayment Start Date" = 0D) then
                             Error('Please enter Disbursement Date to continue');
-
-                        SFactory.FnGenerateRepaymentSchedule(Rec."Loan  No.");
 
                         LoanApp.Reset;
                         LoanApp.SetRange(LoanApp."Loan  No.", Rec."Loan  No.");

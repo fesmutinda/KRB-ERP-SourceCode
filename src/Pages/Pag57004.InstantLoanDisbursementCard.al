@@ -224,12 +224,12 @@ page 57004 "Instant Loan Disbursement Card"
 
                     //recover arrears, IF ANY
 
-
-
                     trigger OnAction()
                     var
                         FundsUserSetup: Record "Funds User Setup";
                         CustLed: Record "Cust. Ledger Entry";
+                        ObjLoanOffsetsII: Record "Instant Offset Details";
+                        LoansRecII: Record "Loans Register";
                     begin
                         If FnCanPostLoans(UserId) = false then begin
                             Error('Prohibited ! You are not allowed to POST this Loan');
@@ -246,27 +246,35 @@ page 57004 "Instant Loan Disbursement Card"
                         // if Confirm('Are you sure you want to POST Loan Net amount of Ksh. ' + Format(Rec."Approved Amount") + ' to member -' + Format(Rec."Client Name") + ' ?', false) = false then begin
                         //     exit;
 
+                        FnCheckForTestFields();
+
 
                         VarTotalToRecover := 0;
                         LoansRec.Reset();
                         LoansRec.SetRange("Client Code", Rec."Client Code");
                         LoansRec.SetFilter("Outstanding Balance", '>0');
+                        LoansRec.SetRange("Mark For Arrear Recovery", true);
                         LoansRec.SetFilter("Days In Arrears", '>30');
                         LoansRec.SetFilter("Amount in Arrears", '>0');
 
                         if LoansRec.FindSet() then begin
-
                             repeat
+                                if ObjLoanOffsetsII.Get(rEC."Loan  No.", Rec."Client Code", LoansRec."Loan  No.") then begin
+                                    if (ObjLoanOffsetsII."Total Top Up" < LoansRec."Amount in Arrears") then begin
 
-                                VarTotalToRecover += Round(LoansRec."Amount in Arrears", 1, '>');
+                                        VarTotalToRecover += Round(LoansRec."Amount in Arrears" - ObjLoanOffsetsII."Total Top Up", 1, '>');
+                                    end;
+                                end else begin
 
+                                    VarTotalToRecover += Round(LoansRec."Amount in Arrears", 1, '>');
+                                end;
                             until LoansRec.Next() = 0;
-
                         end;
 
 
+                        Rec.CalcFields("Instant Top Up Amount");
 
-                        if Confirm('Are you sure you want to POST Loan Net amount of Ksh. ' + Format(Rec."Approved Amount" - (Rec."Loan Processing Fee" + Rec."Loan Dirbusement Fee" + Rec."Loan Insurance" + REC."Top Up Amount" + VarTotalToRecover)) + ' to member -' + Format(Rec."Client Name") + ' ?', false) = false then begin
+                        if Confirm('Are you sure you want to POST Loan Net amount of Ksh. ' + Format(Rec."Approved Amount" - (Rec."Loan Processing Fee" + Rec."Loan Dirbusement Fee" + REC."Instant Top Up Amount" + VarTotalToRecover)) + ' to member -' + Format(Rec."Client Name") + ' ?', false) = false then begin
                             exit;
                         end
                         else begin
@@ -300,11 +308,27 @@ page 57004 "Instant Loan Disbursement Card"
                                         Rec."Issued Date" := Rec."Loan Disbursement Date";
                                         Rec."Approval Status" := Rec."Approval Status"::Approved;
                                         Rec."Loans Category-SASRA" := Rec."Loans Category-SASRA"::Perfoming;
+
+
+                                        //UNMARK ALL LOANS MARKED FOR RECOVERT
+
+                                        LoansRecII.SetRange("Client Code", Rec."Client Code");
+
+                                        LoansRecII.SetRange("Mark For Arrear Recovery", true);
+
+                                        iF LoansRecII.FindSet() then begin
+
+                                            repeat
+
+                                                LoansRec."Mark For Arrear Recovery" := FALSE;
+
+                                            until LoansRecII.Next() = 0
+
+                                        end;
+
                                         Rec.Modify(true);
                                         //...................Recover Overdraft Loan On Loan
                                         // SFactory.FnRecoverOnLoanOverdrafts(Rec."Client Code");
-
-
                                     end;
                                 until LoanApps.Next = 0;
                                 //.................................................
@@ -383,7 +407,7 @@ page 57004 "Instant Loan Disbursement Card"
                 action("View Schedule")
                 {
                     ApplicationArea = Basic;
-                    Caption = 'View Schedule';
+                    Caption = 'Generate Schedule';
                     Image = ViewDetails;
                     Promoted = true;
                     PromotedCategory = Process;
@@ -397,6 +421,11 @@ page 57004 "Instant Loan Disbursement Card"
                         if LoanApp.Find('-') then begin
                             Report.Run(50477, true, false, LoanApp);
                         end;
+
+                        Rec.Get(Rec."Loan  No.");
+
+                        Rec.ScheduleGenerated := true;
+                        Rec.Modify();
                     end;
                 }
                 action("Loans to Offset")
@@ -455,6 +484,8 @@ page 57004 "Instant Loan Disbursement Card"
     end;
 
     var
+
+        UserRec: Record User;
         ClientCode: Code[40];
         DirbursementDate: Date;
         VarAmounttoDisburse: Decimal;
@@ -604,6 +635,9 @@ page 57004 "Instant Loan Disbursement Card"
 
         LoansRec: Record "Loans Register";
 
+        TreasurerFullName: Text;
+
+
 
     procedure UpdateControl()
     begin
@@ -732,23 +766,32 @@ page 57004 "Instant Loan Disbursement Card"
         end;
     end;
 
-    local procedure FnCheckForTestFields()
-    var
-        LoanType: Record "Loan Products Setup";
-        LoanGuarantors: Record "Loans Guarantee Details";
-    begin
-        //--------------------
-        if Rec."Approval Status" = Rec."Approval Status"::Approved then begin
-            Error('The loan has already been approved');
-        end;
-        if Rec."Approval Status" <> Rec."Approval Status"::Open then begin
-            Error('Approval status MUST be Open');
-        end;
-        Rec.TestField("Requested Amount");
-        Rec.TestField("Loan Product Type");
-        Rec.TestField("Mode of Disbursement");
 
+    local procedure FnCheckForTestFields()
+
+    begin
+        //-------------------\------------------Test Fields Validation--------------------------------   
+        if Rec.ScheduleGenerated = false then
+            Error('Please generate the Loan Schedule before posting the loan');
     end;
+
+    // local procedure FnCheckForTestFields()
+    // var
+    //     LoanType: Record "Loan Products Setup";
+    //     LoanGuarantors: Record "Loans Guarantee Details";
+    // begin
+    //     //--------------------
+    //     if Rec."Approval Status" = Rec."Approval Status"::Approved then begin
+    //         Error('The loan has already been approved');
+    //     end;
+    //     if Rec."Approval Status" <> Rec."Approval Status"::Open then begin
+    //         Error('Approval status MUST be Open');
+    //     end;
+    //     Rec.TestField("Requested Amount");
+    //     Rec.TestField("Loan Product Type");
+    //     Rec.TestField("Mode of Disbursement");
+
+    // end;
 
     local procedure FnSendLoanApprovalNotifications()
     var
@@ -837,6 +880,8 @@ page 57004 "Instant Loan Disbursement Card"
         NetAmount: Decimal;
         bankTransferCharges: Decimal;
         VarTotalRecovered: Decimal;
+        ObjLoanOffsetsIII: Record "Instant Offset Details";
+        facilitationFee: Integer;
     begin
 
         AmountTop := 0;
@@ -908,14 +953,31 @@ page 57004 "Instant Loan Disbursement Card"
             if LoansRec.FindSet() then begin
 
                 repeat
-                    LineNo := LineNo + 10000;
-                    SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, Rec."Loan  No.", LineNo,
-                           GenJournalLine."Transaction Type"::"Loan Repayment",
-                           GenJournalLine."Account Type"::Customer, LoanApps."Client Code", DirbursementDate,
-                           Round(LoansRec."Amount in Arrears", 1, '>') * -1, 'BOSA', LoanApps."Loan  No.",
-                           'Arrears Recovered from - ' + LoanApps."Loan  No.", LoansRec."Loan  No.");
 
-                    VarTotalRecovered += Round(LoansRec."Amount in Arrears", 1, '>');
+                    if ObjLoanOffsetsIII.Get(rEC."Loan  No.", Rec."Client Code", LoansRec."Loan  No.") then begin
+                        if (ObjLoanOffsetsIII."Total Top Up" < LoansRec."Amount in Arrears") then begin
+
+                            VarTotalToRecover += Round(LoansRec."Amount in Arrears" - ObjLoanOffsetsIII."Total Top Up", 1, '>');
+
+                            LineNo := LineNo + 10000;
+                            SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, Rec."Loan  No.", LineNo,
+                                   GenJournalLine."Transaction Type"::"Loan Repayment",
+                                   GenJournalLine."Account Type"::Customer, LoanApps."Client Code", DirbursementDate,
+                                   Round(LoansRec."Amount in Arrears" - ObjLoanOffsetsIII."Total Top Up", 1, '>') * -1, 'BOSA', LoanApps."Loan  No.",
+                                   'Arrears Recovered from - ' + LoanApps."Loan  No.", LoansRec."Loan  No.");
+
+                            VarTotalRecovered += Round(LoansRec."Amount in Arrears" - ObjLoanOffsetsIII."Total Top Up", 1, '>');
+                        end;
+                    end else begin
+                        LineNo := LineNo + 10000;
+                        SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, Rec."Loan  No.", LineNo,
+                               GenJournalLine."Transaction Type"::"Loan Repayment",
+                               GenJournalLine."Account Type"::Customer, LoanApps."Client Code", DirbursementDate,
+                               Round(LoansRec."Amount in Arrears", 1, '>') * -1, 'BOSA', LoanApps."Loan  No.",
+                               'Arrears Recovered from - ' + LoanApps."Loan  No.", LoansRec."Loan  No.");
+
+                        VarTotalRecovered += Round(LoansRec."Amount in Arrears", 1, '>');
+                    end;
                 until LoansRec.Next() = 0;
             end;
 
@@ -923,17 +985,18 @@ page 57004 "Instant Loan Disbursement Card"
         end;
 
 
-        NetAmount := Rec."Approved Amount" - (Rec."Loan Processing Fee" + Rec."Loan Dirbusement Fee" + Rec."Loan Insurance" + AmountTop);
+
+
+        //NetAmount := Rec."Approved Amount" - (Rec."Loan Processing Fee" + Rec."Loan Dirbusement Fee" + Rec."Loan Insurance" + AmountTop);
 
         //....Bank Transfer Charges....
 
-        bankTransferCharges := Rec."Bank Transfer Charges";
+        //bankTransferCharges := Rec."Bank Transfer Charges";
         //.....credit Bank
-        LineNo := LineNo + 10000;
-        SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, LoanApps."Loan  No.", LineNo, GenJournalLine."Transaction Type"::" ", GenJournalLine."Account Type"::"Bank Account", LoanApps."Paying Bank Account No", DirbursementDate, bankTransferCharges * -1, 'BOSA', Rec."Batch No.", 'Bank transfer charges ' + Format(LoanApps."Loan  No."), '');
-        //....debit member & Bank trans duty....
-        LineNo := LineNo + 10000;
-        SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, Rec."Loan  No.", LineNo, GenJournalLine."Transaction Type"::"Loan Transfer Charges", GenJournalLine."Account Type"::Customer, LoanApps."Client Code", DirbursementDate, bankTransferCharges, 'BOSA', LoanApps."Loan  No.", 'Bank transfer charges ' + Format(LoanApps."Loan  No."), LoanApps."Loan  No.");
+        ///LineNo := LineNo + 10000;
+        //SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, LoanApps."Loan  No.", LineNo, GenJournalLine."Transaction Type"::" ", GenJournalLine."Account Type"::"G/L Account", '5201', DirbursementDate, Round(bankTransferCharges, 1, '>') * -1, 'BOSA', Rec."Batch No.", 'Bank transfer charges ' + Format(LoanApps."Loan  No."), '');
+
+        //VarAmounttoDisburse := VarAmounttoDisburse - Round(bankTransferCharges, 1, '>');
 
         //***************************Loan Product Charges code
         PCharges.Reset();
@@ -971,8 +1034,80 @@ page 57004 "Instant Loan Disbursement Card"
 
             UNTIL PCharges.NEXT = 0;
         END;
+
+
+        //..Faciliation Fee
+        //LineNo := LineNo + 10000;
+        //SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, LoanApps."Loan  No.", LineNo, GenJournalLine."Transaction Type"::" ", GenJournalLine."Account Type"::"G/L Account", GenSetUp."Facilitation Fee", DirbursementDate, LoanApps."Facilitation Cost" * -1, 'BOSA', Rec."Batch No.", 'Loan facilitation fees ' + Format(LoanApps."Loan  No."), '');
+        //VarAmounttoDisburse := VarAmounttoDisburse - LoanApps."Facilitation Cost";
         //end of code
+
+
+        if LoanApps."Loan Product Type" = 'LT006' then begin
+
+            facilitationFee := LoanApps."Facilitation Cost";
+
+            LineNo := LineNo + 10000;
+            GenJournalLine.Init;
+            GenJournalLine."Journal Template Name" := TemplateName;
+            GenJournalLine."Journal Batch Name" := BatchName;
+            GenJournalLine."Line No." := LineNo;
+            GenJournalLine."Account Type" := GenJournalLine."account type"::Customer;
+            GenJournalLine."Account No." := loanapp."Client Code";
+            GenJournalLine."Transaction Type" := GenJournalLine."transaction type"::"Facilitation Fee";
+            GenJournalLine.Validate(GenJournalLine."Account No.");
+            GenJournalLine."Document No." := Rec."Loan  No.";
+            GenJournalLine."Posting Date" := DirbursementDate;
+            GenJournalLine.Description := 'Facilitation Fee Charged' + ' ' + Format(DirbursementDate);
+            if LoanType.Get(loanapp."Loan Product Type") then begin
+                GenJournalLine.Amount := ROUND(facilitationFee, 1, '>');
+                GenJournalLine.Validate(GenJournalLine.Amount);
+
+                GenJournalLine."Bal. Account Type" := GenJournalLine."bal. account type"::"G/L Account";
+                GenJournalLine."Bal. Account No." := '4308'; // facilitation income acc
+                GenJournalLine."Loan Product Type" := LoanType.Code;
+                GenJournalLine.Validate(GenJournalLine."Bal. Account No.");
+            end;
+            if loanapp.Source = loanapp.Source::BOSA then begin
+                GenJournalLine."Shortcut Dimension 1 Code" := Cust."Global Dimension 1 Code";
+                GenJournalLine."Shortcut Dimension 2 Code" := Cust."Global Dimension 2 Code";
+            end;
+            GenJournalLine.Validate(GenJournalLine."Shortcut Dimension 1 Code");
+            GenJournalLine.Validate(GenJournalLine."Shortcut Dimension 2 Code");
+            GenJournalLine."Loan No" := loanapp."Loan  No.";
+
+            if GenJournalLine.Amount <> 0 then
+                GenJournalLine.Insert;
+
+
+
+
+            //.....credit Bank
+            //LineNo := LineNo + 10000;
+            //SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, LoanApps."Loan  No.", LineNo, GenJournalLine."Transaction Type"::" ", GenJournalLine."Account Type"::"Bank Account", LoanApps."Paying Bank Account No", DirbursementDate, facilitationFee * -1, 'BOSA', Rec."Batch No.", 'Facilitation Fee ' + Format(LoanApps."Loan  No."), '');
+
+            // SFactory.FnCreateGnlJournalLineBalanced(
+            //     TemplateName,
+            //     BatchName, Rec."Loan  No.",
+            //     LineNo,
+            //     GenJournalLine."Transaction Type"::" ",
+            //     GenJournalLine."Account Type"::"Bank Account",
+            //     LoanApps."Paying Bank Account No",
+            //     DirbursementDate,
+            //     'Facilitation Fee ' + Format(LoanApps."Loan  No."),
+            //     GenJournalLine."Account Type"::"G/L Account",
+            //     '4308',
+            //     facilitationFee * -1,
+            //     'BOSA',
+            //     LoanApps."Loan  No.");
+            //....debit member & Bank trans duty....
+            //LineNo := LineNo + 10000;
+            //SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, Rec."Loan  No.", LineNo, GenJournalLine."Transaction Type"::"Loan Transfer Charges", GenJournalLine."Account Type"::Customer, LoanApps."Client Code", DirbursementDate, facilitationFee, 'BOSA', LoanApps."Loan  No.", 'Facilitation Fee ' + Format(LoanApps."Loan  No."), LoanApps."Loan  No.");
+        end;
+
+
         //------------------------------------2. CREDIT MEMBER BANK A/C---------------------------------------------------------------------------------------------
+
         LineNo := LineNo + 10000;
         SFactory.FnCreateGnlJournalLine(TemplateName, BatchName, Rec."Loan  No.", LineNo, GenJournalLine."Transaction Type"::" ", GenJournalLine."Account Type"::"Bank Account", LoanApps."Paying Bank Account No", DirbursementDate, VarAmounttoDisburse * -1, 'BOSA', LoanApps."Loan  No.", 'Loan ' + Format(LoanApps."Loan  No.") + ' Amount disbursed to Member Bank Account ' + Format(Rec."Bank Account"), '');
     end;
@@ -1071,4 +1206,41 @@ page 57004 "Instant Loan Disbursement Card"
         end;
         exit(false);
     end;
+
+
+    
+
+
+    // local procedure SetTreauserAuthorizationDetails()
+    // var
+    //     ApproverName: Text[100];
+    //     ApprovalDate: DateTime;
+    //     ApprovalStatus: Text[20];
+    //     UserSetupRecII: Record "User Setup";
+    //     TreasurerSignatureBase64: Text;
+    //     TreasurerSignatureMimeType: Text;
+    // begin
+
+    //     UserRec.Reset();
+    //     UserRec.SetRange("User Name", 'KRBSC-TREASURER');
+
+    //     IF UserRec.FindSet() THEN begin
+
+    //         UserSetupRecII.RESET();
+    //         UserSetupRecII.SetRange("User ID", UserRec."User Name");
+
+
+    //         if UserSetupRecII.FindFirst() THEN BEGIN
+
+    //             //UserSignature := UserSetupRec."Digital Signature";
+
+    //             TreasurerSignatureBase64 := GetMediaAsBase64(UserSetupRecII."Digital Signature".MediaId);
+    //             TreasurerSignatureMimeType := GetMediaMimeType(UserSetupRecII."Digital Signature".MediaId);
+    //         END;
+
+    //         TreasurerFullName := UserRec."Full Name";
+    //         //ApprovalDate := ApprovalEntryRec."Last Date-Time Modified"
+    //     end;
+
+    // end;
 }

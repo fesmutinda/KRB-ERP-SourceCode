@@ -226,8 +226,14 @@ Page 56193 "Member Account Card - Editable"
                 {
                     ApplicationArea = Basic;
                 }
-                field("E-Mail"; Rec."E-Mail")
+                // field("E-Mail"; Rec."E-Mail")
+                // {
+                //     ApplicationArea = Basic;
+                // }
+
+                field("E-Mail"; Rec."E-Mail (Personal)")
                 {
+                    Caption = 'Personal Email';
                     ApplicationArea = Basic;
                 }
                 field("Village/Residence"; Rec."Village/Residence")
@@ -269,6 +275,12 @@ Page 56193 "Member Account Card - Editable"
                 }
                 field("Sms Notification"; Rec."Sms Notification")
                 {
+                    ApplicationArea = Basic;
+                }
+
+                field("Not Eligible For Dividend?"; Rec.NotDividendEligible)
+                {
+                    Caption = 'Mark as Not Eligible for Dividend?';
                     ApplicationArea = Basic;
                 }
             }

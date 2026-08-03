@@ -1,6 +1,6 @@
 Page 56043 "KRB Sacco Role Center"
 {
-    Caption = 'KRB SACCO';
+
     PageType = RoleCenter;
 
 
@@ -14,7 +14,6 @@ Page 56043 "KRB Sacco Role Center"
             {
                 ApplicationArea = All;
                 Visible = false;
-
             }
 
             part(Control99; "Finance Performance")
@@ -26,7 +25,6 @@ Page 56043 "KRB Sacco Role Center"
             {
                 ApplicationArea = Basic, Suite;
                 Visible = true;
-
             }
             part("LoansCue"; "Loans Cue")
             {
@@ -44,12 +42,7 @@ Page 56043 "KRB Sacco Role Center"
             //     ApplicationArea = Suite;
             //     Visible = true;F
             // }
-
-
             part("Emails"; "Email Activities")
-
-
-
             {
                 ApplicationArea = Basic, Suite;
                 Visible = true;
@@ -533,7 +526,7 @@ Page 56043 "KRB Sacco Role Center"
                 }
                 Group(FundsTranfer)
                 {
-                    Caption = 'Funds Tranfer';
+                    Caption = 'Funds Transfer';
 
 
                     action("FundTransList")
@@ -553,7 +546,7 @@ Page 56043 "KRB Sacco Role Center"
                     action("EFT")
                     {
                         ApplicationArea = Basic, Suite;
-                        Caption = 'Electronic Funds Tranfer';
+                        Caption = 'Electronic Funds Transfer';
                         RunObject = Page "EFT list";
                     }
 
@@ -561,6 +554,7 @@ Page 56043 "KRB Sacco Role Center"
                 //............................................................................................
                 group("Other Financials")
                 {
+                    Visible = false;
                     action("Trade Creditors")
                     {
                         ApplicationArea = basic, Suite;
@@ -662,18 +656,29 @@ Page 56043 "KRB Sacco Role Center"
                     action("KRB Trial Balance")
                     {
                         ApplicationArea = Basic, Suite;
-                        Caption = 'Sacco Trial Balance';
+                        Caption = 'Trial Balance';
                         RunObject = report "Trial Balance2025";
                         ToolTip = 'Generate Trial Balance for a given period.';
+                    }
+
+                    action("Detail Trial Balance")
+                    {
+                        ApplicationArea = Basic, Suite;
+                        Caption = 'Detail Trial Balance';
+                        RunObject = report "Detail Trial Balance";
+                        ToolTip = 'Generate Detail Trial Balance for a given period';
                     }
 
                     action("Account Schedules")
                     {
                         ApplicationArea = Basic, Suite;
                         Caption = 'Account Schedules';
+                        Visible = false;
                         RunObject = page "Financial Reports";
 
                     }
+
+
 
                     action("LiquidityReport")
                     {
@@ -695,6 +700,7 @@ Page 56043 "KRB Sacco Role Center"
                     action("KRB Balance Sheet 2")
                     {
                         ApplicationArea = Basic, Suite;
+                        Visible = true;
                         Caption = 'KRB Financial Position 2';
                         RunObject = report KRBFinancialPosition2;
                     }
@@ -710,6 +716,7 @@ Page 56043 "KRB Sacco Role Center"
                     action("KRB Profit & Loss 2")
                     {
                         ApplicationArea = Basic, Suite;
+                        Visible = false;
                         Caption = 'Statement of Comprehensive Income 2';
                         RunObject = report "KRBProfitAndLoss2";
                     }
@@ -740,27 +747,27 @@ Page 56043 "KRB Sacco Role Center"
                     }
 
 
-                    action("Member Savings/Loans Report")
+                    action("Member Savings Report")
                     {
                         ApplicationArea = Basic, Suite;
-                        Caption = 'Member Savings/Loans Report';
-                        RunObject = report "Member Savings Report2";
+                        Caption = 'Member Savings Report';
+                        RunObject = report "Member Savings Report";
                     }
                 }
                 group("Trial Balance Variance")
                 {
-                    Caption = 'Trial Balance Variance';
+                    Caption = 'Transactional Trial Balance';
                     action("Monthly Variance Report")
                     {
                         ApplicationArea = Basic, Suite;
-                        Caption = 'Monthly Variance Report';
+                        Caption = 'Monthly';
                         RunObject = report "Monthly Trial Balance";
                         ToolTip = 'Generate Monthly Variance Report for a given period';
                     }
                     action("Quarterly Variance Report")
                     {
                         ApplicationArea = Basic, Suite;
-                        Caption = 'Quarterly Variance Report';
+                        Caption = 'Quarterly';
                         RunObject = report "Quarter Trial Balance";
                         ToolTip = 'Generate Variance Report on a Quarterly Basis for a Selected Period';
                     }
@@ -918,21 +925,29 @@ Page 56043 "KRB Sacco Role Center"
                     {
                         ApplicationArea = all;
                         RunObject = page "Membership Exit List";
+                        RunPageView = where(Status = const(open));
 
+
+                    }
+                    action("Pending Approval Membership Exit")
+                    {
+                        ApplicationArea = all;
+                        RunObject = page "Membership Exit List";
+                        RunPageView = where(status = const(Pending));
                     }
 
                     action("Approved Membership Exit")
                     {
                         ApplicationArea = all;
-                        RunObject = page "Membership Exit List-Posted";
+                        RunObject = page "Membership Exit List";
                         RunPageView = where(status = const(Approved), posted = const(false));
                     }
 
                     action("Posted Membership Exit")
                     {
                         ApplicationArea = all;
-                        RunObject = page "Membership Exit List-Posted";
-                        RunPageView = where(Posted = const(true));
+                        RunObject = page "Membership Exit List";
+                        RunPageView = where(Status = const(Closed), Posted = const(true));
                     }
 
 
@@ -1052,6 +1067,17 @@ Page 56043 "KRB Sacco Role Center"
                     //     RunObject = report "Member Detailed Statement";
                     // }
 
+
+                    action("Member Loans Outstanding Report")
+                    {
+                        ApplicationArea = all;
+                        RunObject = Report "Member Loans Outstanding Rep";
+                        Caption = 'Member Loans Outstanding Report';
+                        ToolTip = 'Member Loans Outstanding Report';
+                        Visible = true;
+                    }
+
+
                     action("Membership Closure Report")
                     {
                         ApplicationArea = all;
@@ -1091,7 +1117,7 @@ Page 56043 "KRB Sacco Role Center"
                         Image = Loaners;
                         RunObject = Page "Loan List-New Application BOSA";
                         ToolTip = 'Open BOSA Loan Applications List';
-                        RunPageView = where(Posted = const(false), "Loan Status" = const(Application));
+                        // RunPageView = where(Posted = const(false), "Loan Status" = const(Application));
                     }
                     action("Pending BOSA Loan Application")
                     {
@@ -1210,6 +1236,26 @@ Page 56043 "KRB Sacco Role Center"
                     }
                 }
 
+                group("Loan Reschedule")
+                {
+                    Caption = 'Loan Reschedule';
+                    action("Loan Reschedule List")
+                    {
+                        ApplicationArea = Basic, Suite;
+                        RunObject = page "Loans Reschedule  List";
+                        Caption = 'Loan Reschedule List';
+                        Visible = true;
+                    }
+                    action("Approved Loan Reschedule")
+                    {
+                        ApplicationArea = Basic, Suite;
+                        RunObject = page "Loans Reschedule  List";
+                        Caption = 'Approved Loan Reschedule';
+                        Visible = true;
+                        RunPageView = where("Reschedule Approval Status" = const(Approved));
+                    }
+                }
+
                 action("PostedLoans")
                 {
                     ApplicationArea = Basic, Suite;
@@ -1218,13 +1264,15 @@ Page 56043 "KRB Sacco Role Center"
                     ToolTip = 'Open the list of the Loans Posted.';
                 }
 
-                action("LoansRescheduleList")
+                action("All Loans")
                 {
                     ApplicationArea = Basic, Suite;
-                    RunObject = page "Loans Reschedule  List";
-                    Caption = 'Loans Reschedule List';
-                    Visible = false;
+                    Caption = 'All Loans List';
+                    RunObject = page "Loans  List All";
+
                 }
+
+
 
                 action("Loan Calculator")
                 {
@@ -1241,6 +1289,7 @@ Page 56043 "KRB Sacco Role Center"
                         ToolTip = 'Member Loans Book Report';
                         Visible = true;
                     }
+
 
                     action("Loan Collection Targets Report")
                     {
@@ -1581,6 +1630,7 @@ Page 56043 "KRB Sacco Role Center"
 
                 }
 
+
                 //..................................End of Guarantor Management......................................
 
                 //......................................Start of Defaulter Management............................
@@ -1816,33 +1866,63 @@ Page 56043 "KRB Sacco Role Center"
                     {
                         Caption = 'Dividends';
 
+                        // group(Prorated)
+                        // {
+                        //     Caption = 'Prorated';
+                        //     action("Dividends Processing-Prorated")
+                        //     {
+                        //         Caption = 'Dividends Processing-Prorated';
+                        //         Image = Setup;
+                        //         RunObject = report "Dividend Processing-Prorated";
+                        //     }
+                        //     action("Dividends Register")
+                        //     {
+                        //         Caption = 'Dividends Register';
+                        //         Image = Setup;
+                        //         RunObject = report "Dividend Register";
+                        //     }
+                        //     action(DividendProgressionSlip)
+                        //     {
+                        //         Caption = 'Dividend Progression Slip';
+                        //         Image = Setup;
+                        //         RunObject = report "Dividends Progressionslip";
+                        //         Visible = false;
+                        //     }
+                        //     action("Dividends Payments Report")
+                        //     {
+                        //         ApplicationArea = all;
+                        //         RunObject = Report "Dividends Payments";
+
+                        //     }
+                        // }
+
+
                         group(Prorated)
                         {
-                            Caption = 'Prorated';
+                            Caption = 'Dividends Processing';
                             action("Dividends Processing-Prorated")
                             {
                                 Caption = 'Dividends Processing-Prorated';
                                 Image = Setup;
-                                RunObject = report "Dividend Processing-Prorated";
+                                RunObject = Report "Process Dividends for member2";
                             }
-                            action("Dividends Register")
+                            group("Dividend Reports")
                             {
-                                Caption = 'Dividends Register';
-                                Image = Setup;
-                                RunObject = report "Dividend Register";
-                            }
-                            action(DividendProgressionSlip)
-                            {
-                                Caption = 'Dividend Progression Slip';
-                                Image = Setup;
-                                RunObject = report "Dividends Progressionslip";
-                                Visible = false;
-                            }
-                            action("Dividends Payments Report")
-                            {
-                                ApplicationArea = all;
-                                RunObject = Report "Dividends Payments";
+                                action(DividentBreakdown)
+                                {
+                                    Caption = 'Dividends Posting Breakdown';
+                                    RunObject = page "Dividends Posting Breakdown";
+                                }
 
+                                action("Dividends Register-Paid")
+                                {
+                                    RunObject = report "Dividend Register Paid";
+                                }
+
+                            }
+                            action("Dividend SMS")
+                            {
+                                RunObject = report "Dividend SMS";
                             }
                         }
                         group("Share capital Manangement")
@@ -1885,7 +1965,7 @@ Page 56043 "KRB Sacco Role Center"
             group(SwizzKash)
             {
                 Caption = 'Alternative Channels';
-                Visible = false;
+                Visible = TRUE;
                 group(SwizzKashActivities)
                 {
                     Caption = 'Mobile Banking';
@@ -1941,6 +2021,13 @@ Page 56043 "KRB Sacco Role Center"
                         Image = PostedReceipt;
                         RunObject = page "Mobile Loans";
                         ToolTip = 'View Mobile Loans List.';
+                    }
+
+
+                    action("DEBUG PORTAL")
+                    {
+                        RunObject = codeunit "PORTALIntegration MFS";
+
                     }
 
                 }
@@ -2387,6 +2474,144 @@ Page 56043 "KRB Sacco Role Center"
             {
 
             }
+
+            group("Leave Management")
+            {
+                Image = Administration;
+                Caption = 'Leave Management';
+                group("Leave")
+                {
+                    Caption = 'Leave Applications';
+                    action("Leave Applications-Open")
+                    {
+                        RunObject = page "Leave Application List";
+                        RunPageLink = Status = const(Open);
+                        ToolTip = 'Executes the Leave Applications action';
+                        Caption = 'Leave Applications-Open';
+                    }
+                    action("Leave Applications-Pending Approval")
+                    {
+                        RunObject = page "Leave Application List";
+                        RunPageLink = Status = const("Pending Approval");
+                        ToolTip = 'Executes the Leave Applications action';
+                        Caption = 'Leave Applications-Pending';
+                    }
+                    action("Leave Applications-Approved")
+                    {
+                        RunObject = page "Leave Application List";
+                        RunPageLink = Status = const(Released);
+                        ToolTip = 'Executes the Leave Applications action';
+                        Caption = 'Leave Applications-Approved';
+                    }
+                    action("Leave Applications-Rejected")
+                    {
+                        RunObject = page "Leave Application List";
+                        RunPageLink = Status = const(Rejected);
+                        ToolTip = 'Executes the Leave Applications action';
+                        Caption = 'Leave Applications-Rejected';
+                    }
+                }
+                group("Leave Adjustments ")
+                {
+                    action("Leave Adjustments")
+                    {
+                        RunObject = page "Leave Adjustment List";
+                        RunPageLink = Posted = const(false);
+                        ToolTip = 'Executes the Leave Adjustments action';
+                        Caption = 'Leave Adjustments';
+                    }
+                    action("Posted Leave Adjustments")
+                    {
+                        RunObject = page "Leave Adjustment List";
+                        RunPageLink = Posted = const(true);
+                        ToolTip = 'Executes the Posted Leave Adjustments action';
+                        Caption = 'Posted Leave Adjustments';
+                    }
+                }
+                group("Leave Recalls")
+                {
+                    action("Leave Recall")
+                    {
+                        RunObject = page "Leave Recall List";
+                        RunPageLink = Completed = const(false);
+                        ToolTip = 'Executes the Leave Recall action';
+                        Caption = 'Leave Recall';
+                    }
+                    action("Completed Leave Recalls")
+                    {
+                        RunObject = page "Leave Recall List";
+                        RunPageLink = Completed = const(true);
+                        ToolTip = 'Executes the Completed Leave Recalls action';
+                        Caption = 'Completed Leave Recalls';
+                    }
+                }
+                group("Leave Planner ")
+                {
+                    Caption = 'Leave Planner ';
+                    action("Leave Planner")
+                    {
+                        RunObject = page "Leave Planner List";
+                        ToolTip = 'Executes the Assign Leave Days action';
+                        Caption = 'Leave Planner';
+                        Visible = false;
+                    }
+                }
+                group("Leave Reports")
+                {
+                    Caption = 'Leave Reports';
+                    action("Leave Applications Report")
+                    {
+                        RunObject = report "Leave Applications";
+
+                        ToolTip = 'Executes the Leave Balances action';
+                        Caption = 'Leave Applications';
+                    }
+                    action("Leave Balances")
+                    {
+                        RunObject = report "Leave Balance";
+                        ToolTip = 'Executes the Leave Balances action';
+                        Caption = 'Leave Balances';
+                    }
+                    action("Leave Statement")
+                    {
+                        RunObject = report "HR Staff Leave Statement";
+                        ToolTip = 'Executes the Leave Statement action';
+                        Caption = 'Leave Statement';
+                    }
+                }
+                group("Leave Setups")
+                {
+                    Caption = 'Leave Setups';
+                    action("Leave Types")
+                    {
+                        RunObject = page "Leave Types Setup";
+                        ToolTip = 'Executes the Leave Types action';
+                        Caption = 'Leave Types';
+                    }
+                    action("Leave Period")
+                    {
+                        RunObject = page "Leave Periods";
+                        ToolTip = 'Executes the Leave Period action';
+                        Caption = 'Leave Period';
+                    }
+                    action("Base Calendar")
+                    {
+                        RunObject = page "Base Calendar List";
+                        ToolTip = 'Executes the Base Calendar List action';
+                        Caption = 'Base Calendar';
+                        Visible = false;
+                    }
+                }
+                group("Leave Archive")
+                {
+                    action("Leave Ledger")
+                    {
+                        RunObject = page "HR Leave Ledger Entries";
+                        Caption = 'Leave Ledger Entries';
+                    }
+                }
+            }
+
 
             group("System Administration")
             {

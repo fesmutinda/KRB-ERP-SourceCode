@@ -50,6 +50,19 @@ Table 51371 "Loans Register"
                     Error('Application date can not be in the future.');
             end;
         }
+
+        field(69285; "Loan Product Type Instant"; Code[250])
+        {
+            Editable = true;
+            TableRelation = "Loan Products Setup" where(Code = filter('LT007|LT006'));
+
+            trigger onValidate()
+            begin
+
+                "Loan Product Type" := "Loan Product Type Instant";
+                Validate("Loan Product Type");
+            end;
+        }
         field(3; "Loan Product Type"; Code[250])
         {
             Editable = true;
@@ -335,8 +348,6 @@ Table 51371 "Loans Register"
                 //Sacco Deductions
                 //"Total Deductions":=("Monthly Contribution"+ "Loan Principle Repayment"+"Loan Interest Repayment");
                 //MESSAGE('0101 %1',"Total Deductions");
-
-
                 MembReg.Reset;
                 MembReg.SetRange(MembReg."No.", "Client Code");
                 if MembReg.FindFirst() then begin
@@ -356,18 +367,19 @@ Table 51371 "Loans Register"
                             SaccoDedInt := LoanApp."Outstanding Balance" * (LoanType."Interest rate" / 1200);
                             Saccodeduct := Saccodeduct + LoanApp."Loan Principle Repayment" + SaccoDedInt;
                         end;
-                        //end;
+                    //end;
 
-                        if LoanApp.IsBlacklisted() then begin
-                            if not Confirm('Member has blacklisted Instant Loan No. %1 for %2 more days. Do you want to continue?', false, LoanApp."Loan  No.", LoanApp.GetDaysRemainingInBlacklist()) then
-                                Error('Cannot proceed with blacklisted member.');
-                        end;
+                    // if LoanApp.IsBlacklisted() then begin
+                    //     if not Confirm('Member has blacklisted Instant Loan No. %1 for %2 more days. Do you want to continue?', false, LoanApp."Loan  No.", LoanApp.GetDaysRemainingInBlacklist()) then
+                    //         //Error('Cannot proceed with blacklisted member.');
+                    //         exit;
+                    // end;
 
-                        if (LoanApp."Amount in Arrears" > 0) and (LoanApp."Days In Arrears" > 30) then begin
+                    // if (LoanApp."Amount in Arrears" > 0) and (LoanApp."Days In Arrears" > 30) then begin
 
-                            if not Confirm('%1 has %2 in arrears, should we recover it?', false, LoanApp."Loan Product Type Name", LoanApp."Amount in Arrears") then
-                                Error('Cannot proceed due to arrears.');
-                        end;
+                    //     if not Confirm('%1 has %2 in arrears, should we recover it?', false, LoanApp."Loan Product Type Name", LoanApp."Amount in Arrears") then
+                    //         Error('Cannot proceed due to arrears.');
+                    // end;
                     until LoanApp.Next = 0;
                 end;
                 "Sacco Deductions" := Saccodeduct;
@@ -682,6 +694,8 @@ Table 51371 "Loans Register"
             Editable = false;
         }
         field(10101; Appraised; Boolean) { }
+
+        field(10102; ScheduleGenerated; Boolean) { }
         field(8; "Requested Amount"; Decimal)
         {
 
@@ -746,15 +760,10 @@ Table 51371 "Loans Register"
                 //Repayments for amortised method
 
                 if "Repayment Method" = "repayment method"::Amortised then begin
-                    // LBalance := "Requested Amount";
-                    // Message('InterestRate: %1, LBalance: %2, Calculated Interest: %3', InterestRate, LBalance, (InterestRate / 100.0) * LBalance / 12);
+
                     TotalMRepay := ROUND((InterestRate / 12 / 100) / (1 - Power((1 + (InterestRate / 12 / 100)), -Installments)) * "Requested Amount", 1, '=');
-                    // LInterest := ROUND(LBalance / 100 / 12 * InterestRate, 1, '=');
+
                     LInterest := ROUND((InterestRate / 100.0) * LBalance / 12, 1, '=');
-
-                    //IF "Repayment Method"="Repayment Method"::"Reducing Balance" THEN
-                    //  LInterest:=ROUND(("Approved Amount"*InterestRate/1200),1,'=');
-
 
                     LPrincipal := TotalMRepay - LInterest;
                     "Loan Principle Repayment" := LPrincipal;
@@ -895,50 +904,10 @@ Table 51371 "Loans Register"
                     LPrincipal := ROUND(LoanAmount / RepayPeriod, 1, '=');
                     LInterest := ROUND((InterestRate / 1200) * LoanAmount, 1, '=');
 
-
-                    //IF LoanAmount>100000 THEN BEGIN
-                    if LoanType.Get("Loan Product Type") then begin
-                        if ("Loan Product Type" <> 'SUKUMA') and ("Loan Product Type" <> 'KARIBU') and ("Loan Product Type" <> 'INSTANT') then begin
-                            Repayment := LPrincipal + LInterest;
-                            //MESSAGE('evv %1',Repayment);
-                        end;
-                        if ("Loan Product Type" = 'SUKUMA') or ("Loan Product Type" = 'KARIBU') or ("Loan Product Type" = 'INSTANT') then begin
-                            Repayment := "Approved Amount";
-                        end;
-                        //MESSAGE('repayment  is %1',Repayment);
-                        "Loan Principle Repayment" := LPrincipal;
-                        //MESSAGE('repayment  is %1',Repayment);
-                        "Loan Interest Repayment" := LInterest;
-                        if ("Loan Product Type" = 'SUKUMA') or ("Loan Product Type" = 'KARIBU') or ("Loan Product Type" = 'INSTANT') then begin
-                            Repayment := "Approved Amount";
-                            "Loan Principle Repayment" := "Requested Amount";
-                            "Loan Interest Repayment" := LInterest;
-                        end;
-                        Modify;
-                        ///END;
-                        //Repayment:=LPrincipal+LInterest;//+Insuarence
-                    end else
-                        Repayment := LPrincipal + LInterest;
+                    Repayment := LPrincipal + LInterest;
                     "Loan Principle Repayment" := LPrincipal;
-                    //MESSAGE('poata %1',LPrincipal);
                     "Loan Interest Repayment" := LInterest;
                 end;
-                //Monthly Interest Formula PR(T+1)/200T  for kanisa
-                /*IF "Repayment Method"="Repayment Method"::"Reducing Balance" THEN BEGIN
-                  //MESSAGE('karisa %1',"Repayment Method");
-                TESTFIELD(Interest);
-                TESTFIELD(Installments);
-                //pekejeng
-                LPrincipal:=ROUND(LoanAmount/RepayPeriod,1,'='); //ROUND(LoanAmount/RepayPeriod,1,'=');
-                //MESSAGE('Amountr %1 | Period %2',LoanAmount,RepayPeriod);
-                LInterest:=ROUND(LoanAmount*Interest/12*(RepayPeriod+1)/(200*RepayPeriod),1,'=');//ROUND((InterestRate/12/100)*LBalance,1,'=');
-                //MESSAGE('LoanAmount %1| Interest %2 | RepayPeriod %3',LoanAmount,Interest,RepayPeriod);
-                //MESSAGE('Monthly Interest  =%1, Monthly Principal Repayment=%2, ****Total Monthly Repayment=%3***',LInterest,LPrincipal,LPrincipal+LInterest);
-                IF LoanType.GET("Loan Product Type") THEN BEGIN
-                IF  (LoanType.Code<>'SUKUMA') AND (LoanType.Code<>'KARIBU') AND (LoanType.Code<>'INSTANT') THEN
-                 Repayment:=LPrincipal+LInterest;
-                IF ("Loan Product Type"='SUKUMA') OR ("Loan Product Type"='KARIBU') OR ("Loan Product Type"='INSTANT') THEN
-                  Repayment:=LPrincipal;*/
 
                 //Repayments for reducing balance method
                 if "Repayment Method" = "repayment method"::"Reducing Balance" then begin
@@ -968,12 +937,7 @@ Table 51371 "Loans Register"
 
 
                 if "Repayment Method" = "repayment method"::Amortised then begin
-                    // LBalance := "Requested Amount";
-                    //TESTFIELD(Interest);
-                    //TESTFIELD(Installments);
-
                     TotalMRepay := ROUND((InterestRate / 12 / 100) / (1 - Power((1 + (InterestRate / 12 / 100)), -RepayPeriod)) * LoanAmount, 1, '=');
-                    // LInterest := ROUND(LBalance / 100 / 12 * InterestRate, 1, '=');
                     LInterest := ROUND((InterestRate / 100.0) * LBalance / 12, 1, '=');
 
                     LPrincipal := TotalMRepay - LInterest;
@@ -1085,38 +1049,38 @@ Table 51371 "Loans Register"
 
                 GenSetUp.Get(0);
 
-                if Cust.Get("Client Code") then begin
-                    if (Cust."Date of Birth" <> 0D) and ("Application Date" <> 0D) and (Installments > 0) then begin
+                // if Cust.Get("Client Code") then begin
+                //     if (Cust."Date of Birth" <> 0D) and ("Application Date" <> 0D) and (Installments > 0) then begin
 
-                        //dt1:=CALCDATE(FORMAT(Installments)+'M',"Application Date");
-                        //dt2:=CALCDATE(GenSetUp."Retirement Age",Cust."Date of Birth");
-                        if CalcDate(Format(Installments) + 'M', "Application Date") > CalcDate(GenSetUp."Retirement Age", Cust."Date of Birth") then
-                            if Confirm('Member due to retire before loan repayment is complete. Do you wish to continue?') = false then
-                                Installments := 0;
+                //         //dt1:=CALCDATE(FORMAT(Installments)+'M',"Application Date");
+                //         //dt2:=CALCDATE(GenSetUp."Retirement Age",Cust."Date of Birth");
+                //         if CalcDate(Format(Installments) + 'M', "Application Date") > CalcDate(GenSetUp."Retirement Age", Cust."Date of Birth") then
+                //             if Confirm('Member due to retire before loan repayment is complete. Do you wish to continue?') = false then
+                //                 Installments := 0;
 
-                    end;
-                end;
+                //     end;
+                // end;
 
                 //***********************************Graduated Interest********************************//
-                if LoanType.Get("Loan Product Type") then begin
-                    ObjGradInt.Reset;
-                    ObjGradInt.SetRange(ObjGradInt."Loan Code", "Loan Product Type");
-                    if ObjGradInt.FindSet then begin
-                        repeat
-                            if (ObjGradInt."Period From" <= Installments) and (ObjGradInt."Period To" >= Installments) then
-                                Interest := ObjGradInt."Interest Rate";
+                // if LoanType.Get("Loan Product Type") then begin
+                //     ObjGradInt.Reset;
+                //     ObjGradInt.SetRange(ObjGradInt."Loan Code", "Loan Product Type");
+                //     if ObjGradInt.FindSet then begin
+                //         repeat
+                //             if (ObjGradInt."Period From" <= Installments) and (ObjGradInt."Period To" >= Installments) then
+                //                 Interest := ObjGradInt."Interest Rate";
 
-                        until ObjGradInt.Next = 0;
-                    end;
-                end;
+                //         until ObjGradInt.Next = 0;
+                //     end;
+                // end;
                 //***********************************Graduated Interest********************************//
                 //***********************************Check Loan Minimum Period********************************//
-                if LoanType.Get("Loan Product Type") then begin
-                    if LoanType."Min Installments Period" <> 0 then begin
-                        if Installments < LoanType."Min Installments Period" then
-                            Error(Text00001, LoanType."Min Installments Period");
-                    end;
-                end;
+                // if LoanType.Get("Loan Product Type") then begin
+                //     if LoanType."Min Installments Period" <> 0 then begin
+                //         if Installments < LoanType."Min Installments Period" then
+                //             Error(Text00001, LoanType."Min Installments Period");
+                //     end;
+                // end;
                 //***********************************Check Loan Minimum Period********************************//
 
 
@@ -1153,7 +1117,7 @@ Table 51371 "Loans Register"
 
                 EndDate := Dmy2date(1, Month + 1, currYear) - 1;
 
-                if DAY <= 15 then begin
+                if DAY < 10 then begin
                     "Repayment Start Date" := CalcDate('CM', "Loan Disbursement Date");
                 end else begin
                     "Repayment Start Date" := CalcDate('CM', CalcDate('CM+1M', "Loan Disbursement Date"));
@@ -1573,7 +1537,7 @@ Table 51371 "Loans Register"
         {
             CalcFormula = sum("Cust. Ledger Entry"."Amount Posted" where("Customer No." = field("Client Code"),
                                                                   "Loan No" = field("Loan  No."),
-                                                                  "Transaction Type" = filter(Loan | "Loan Repayment" | "Interest Paid" | "Interest Due" | "Loan Transfer Charges" | "Unallocated Funds" | "Penalty Charged" | "Penalty Paid"),
+                                                                  "Transaction Type" = filter(Loan | "Loan Repayment" | "Interest Paid" | "Interest Due" | "Loan Transfer Charges" | "Unallocated Funds" | "Penalty Charged" | "Penalty Paid" | "Facilitation Fee"),
                                                                   "Currency Code" = field("Currency Filter"),
                                                                   "Posting Date" = field("Date filter"),
                                                                   Reversed = const(false)));
@@ -3451,32 +3415,6 @@ Table 51371 "Loans Register"
         field(69148; "Loan Last Pay date 2009Nav"; Date)
         {
         }
-        field(69149; "Loans Referee 1"; Code[5])
-        {
-            Enabled = false;
-        }
-        field(69150; "Loans Referee 1 Name"; Code[5])
-        {
-            Enabled = false;
-        }
-        field(69151; "Loans Referee 2"; Code[5])
-        {
-            Enabled = false;
-        }
-        field(69152; "Loans Referee 2 Name"; Code[5])
-        {
-            Enabled = false;
-        }
-        field(69153; "Loans Referee 1 Relationship"; Code[5])
-        {
-            Enabled = false;
-            TableRelation = "Relationship Types";
-        }
-        field(69154; "Loans Referee 2 Relationship"; Code[5])
-        {
-            Enabled = false;
-            TableRelation = "Relationship Types";
-        }
         field(69155; "Loans Referee 1 Mobile No."; Code[5])
         {
             Enabled = false;
@@ -3567,6 +3505,7 @@ Table 51371 "Loans Register"
                     "Loan Product Type" := LoanApp."Loan Product Type";
                     Interest := LoanApp.Interest;
                     "Application Date" := Today;
+                    "Application Time" := CurrentDateTime;
 
                 end;
 
@@ -3584,6 +3523,44 @@ Table 51371 "Loans Register"
         }
         field(69170; "Loan Rescheduled Date"; Date)
         {
+
+
+            trigger OnValidate()
+
+            begin
+                currYear := Date2dmy(Today, 3);
+                StartDate := 0D;
+                EndDate := 0D;
+                Month := Date2dmy("Loan Rescheduled Date", 2);
+                DAY := Date2dmy("Loan Rescheduled Date", 1);
+
+
+                StartDate := Dmy2date(1, Month, currYear); // StartDate will be the date of the first day of the month
+
+                if Month = 12 then begin
+                    Month := 0;
+                    currYear := currYear + 1;
+
+                end;
+
+                if DAY <= 15 then begin
+                    "Repayment Start Date" := CalcDate('CM', "Loan Rescheduled Date");
+                end else begin
+                    "Repayment Start Date" := CalcDate('CM', CalcDate('CM+1M', "Loan Rescheduled Date"));
+                end;
+
+
+
+                CalcFields("Outstanding Balance");
+                TotalMRepay := ROUND((Interest / 12 / 100) / (1 - Power((1 + (Interest / 12 / 100)), -Installments)) * "Outstanding Balance", 1, '=');
+
+                //"Loan Repayment" := TotalMRepay;
+                Repayment := TotalMRepay;
+
+                Validate(Repayment);
+                Validate("Repayment Start Date");
+
+            end;
         }
         field(69171; "Loan Rescheduled By"; Code[20])
         {
@@ -4656,6 +4633,27 @@ Table 51371 "Loans Register"
         }
 
 
+        field(69283; "Reschedule Approval Status"; Option)
+        {
+            OptionCaption = 'Open,Pending,Approved,Rejected';
+            OptionMembers = Open,Pending,Approved,Rejected;
+        }
+
+
+        field(69284; "Mark For Arrear Recovery"; Boolean)
+        {
+
+        }
+
+        field(69286; "Application Time"; DateTime)
+        {
+
+
+        }
+
+
+
+
     }
 
     keys
@@ -4742,6 +4740,9 @@ Table 51371 "Loans Register"
         }
     }
 
+
+
+
     trigger OnDelete()
     begin
         if ("Loan Status" = "loan status"::Approved) or (Posted = true) then
@@ -4782,6 +4783,7 @@ Table 51371 "Loans Register"
         //Swizzsoft
 
         "Application Date" := Today;
+        "Application Time" := CurrentDateTime;
         Advice := true;
         "Recovery Mode" := "recovery mode"::"Payroll Deduction";
         "Captured By" := UpperCase(UserId);
@@ -4791,6 +4793,7 @@ Table 51371 "Loans Register"
             "Transacting Branch" := UserSetUp.Branch;
 
     end;
+
 
     var
         SalesSetup: Record "Sacco No. Series";
@@ -5083,7 +5086,7 @@ Table 51371 "Loans Register"
         phcfInsurance := 0;
         varInsurance := 0;
         //insurance calculation
-        varInsurance := ((Rec."Requested Amount") * (5.03 * Rec.Installments + 21.15) / 6000) * 0.6;
+        varInsurance := ((Rec."Requested Amount") * (3.03 * Rec.Installments + 21.15) / 6000) * 0.6;
         // varInsurance := ROUND(((Rec."Requested Amount") * (5.03 * Rec.Installments + 21.15) / 6000) * 0.6, 1, '=');
         phcfInsurance := 0.25 / 100 * varInsurance;
         // phcfInsurance := ROUND(0.25 / 100 * varInsurance, 1, '=');
@@ -5697,6 +5700,85 @@ Table 51371 "Loans Register"
         else
             exit(0);
     end;
+
+    procedure IsSequence2Approved(): Boolean
+    var
+        ApprovalEntry: Record "Approval Entry";
+        RecRef: RecordRef;
+    begin
+        RecRef.GetTable(Rec);
+        ApprovalEntry.SetRange("Table ID", Database::"Loans Register");
+        ApprovalEntry.SetRange("Record ID to Approve", RecRef.RecordId);
+        ApprovalEntry.SetRange("Sequence No.", 2);
+        ApprovalEntry.SetRange(Status, ApprovalEntry.Status::Approved);
+        exit(not ApprovalEntry.IsEmpty);
+    end;
+
+
+    // may use later to address the loans pending approval page issue
+    // procedure IsSequence2NotApproved(): Boolean
+    // var
+    //     ApprovalEntry: Record "Approval Entry";
+    //     RecRef: RecordRef;
+    // begin
+    //     RecRef.GetTable(Rec);
+    //     ApprovalEntry.SetRange("Table ID", Database::"Loans Register");
+    //     ApprovalEntry.SetRange("Record ID to Approve", RecRef.RecordId);
+    //     ApprovalEntry.SetRange("Sequence No.", 2);
+
+    //     // Check if sequence 2 exists
+    //     if ApprovalEntry.FindFirst() then
+    //         // Return true if it's NOT approved (i.e., it's pending/rejected/etc)
+    //         exit(ApprovalEntry.Status <> ApprovalEntry.Status::Approved)
+    //     else
+    //         // If no sequence 2 entry exists yet, it's still pending
+    //         exit(true);
+    // end;
+
+    procedure IsPendingApproval(): Boolean
+    var
+        ApprovalEntry: Record "Approval Entry";
+        RecRef: RecordRef;
+        Sequence1ApprovedCount: Integer;
+    begin
+        RecRef.GetTable(Rec);
+
+        // Step 1: Check Sequence 1 entries
+        ApprovalEntry.Reset();
+        ApprovalEntry.SetRange("Table ID", Database::"Loans Register");
+        ApprovalEntry.SetRange("Record ID to Approve", RecRef.RecordId);
+        ApprovalEntry.SetRange("Sequence No.", 1);
+        ApprovalEntry.SetRange(Status, ApprovalEntry.Status::Approved);
+
+        //ApprovalEntry.SetFilter(Status, '%1|%2|%3', ApprovalEntry.Status::Approved, ApprovalEntry.Status::Canceled, ApprovalEntry.Status::Rejected);
+
+        Sequence1ApprovedCount := ApprovalEntry.Count();
+
+        // If we don't have at least 2 approved sequence 1 entries, still pending
+        if Sequence1ApprovedCount < 2 then
+            exit(true);
+
+        // Step 2: We have at least 2 approved sequence 1 entries, now check sequence 2
+        ApprovalEntry.Reset();
+        ApprovalEntry.SetRange("Table ID", Database::"Loans Register");
+        ApprovalEntry.SetRange("Record ID to Approve", RecRef.RecordId);
+        ApprovalEntry.SetRange("Sequence No.", 2);
+
+        // If sequence 2 doesn't exist, still pending
+        if ApprovalEntry.IsEmpty then
+            exit(true);
+
+        // If sequence 2 exists, check if it's approved
+        ApprovalEntry.FindFirst();
+        if ApprovalEntry.Status <> ApprovalEntry.Status::Approved then
+            exit(true); // Sequence 2 exists but not approved, still pending
+
+        // All conditions met: at least 2 sequence 1 approved AND sequence 2 approved
+        exit(false); // Not pending anymore, fully approved
+    end;
+
+
+
 
 }
 

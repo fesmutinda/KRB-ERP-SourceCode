@@ -20,7 +20,7 @@ table 50057 "Members Cues"
         }
         field(4; "NonActive Mbrs"; Integer)
         {
-            CalcFormula = count(Customer where(Status = const(Dormant), "Customer Posting Group" = filter('Member')));
+            CalcFormula = count(Customer where(Status = filter('Dormant|Non-Active|Deceased'), "Customer Posting Group" = filter('Member')));
             FieldClass = FlowField;
         }
 
@@ -86,6 +86,58 @@ table 50057 "Members Cues"
             Caption = 'MemberApp Requests to Approve';
             FieldClass = FlowField;
         }
+
+        field(17; "KRB Employee"; Integer)
+        {
+            CalcFormula = count(Customer where(Status = const("Active"), "Customer Posting Group" = filter('Member'), "Account Category" = conST("regular account"), "Employment Info" = const("KRB Employee")));
+            FieldClass = FlowField;
+
+        }
+        field(18; "Non KRB Employee"; Integer)
+        {
+            CalcFormula = count(Customer where(Status = const("Active"), "Customer Posting Group" = filter('Member'), "Account Category" = conST("regular account"), "Employment Info" = CONST("Non KRB")));
+            FieldClass = FlowField;
+
+        }
+
+        field(19; "Junior Members"; Integer)
+        {
+            CalcFormula = count(Customer where(Status = const("Active"), "Customer Posting Group" = filter('Member'), "Account Category" = const("Junior Account")));
+            FieldClass = FlowField;
+
+        }
+
+        field(20; "Ex KRB Employee"; Integer)
+        {
+            CalcFormula = count(Customer where(Status = const("Active"), "Customer Posting Group" = filter('Member'), "Account Category" = conST("regular account"), "Employment Info" = CONST("Ex KRB Employee")));
+            FieldClass = FlowField;
+
+        }
+
+        field(21; "Leave Approval Requests"; Integer)
+        {
+            CalcFormula = count("Approval Entry" where("Sender ID" = field("User ID"),
+            "Table ID" = const(DATABASE::"Leave Application"),
+                                                        Status = filter(Open)));
+            Caption = 'Leave Applications Sent for Approval';
+            FieldClass = FlowField;
+        }
+
+        field(22; "Leave Requests to Approve"; Integer)
+        {
+            CalcFormula =
+        count("Approval Entry"
+            where(
+                "Approver ID" = field("User ID"),
+                "Table ID" = const(Database::"Leave Application"),
+                Status = filter(Open)
+            ));
+            Caption = 'Leave Requests to Approve';
+            FieldClass = FlowField;
+
+
+        }
+
     }
 
     keys

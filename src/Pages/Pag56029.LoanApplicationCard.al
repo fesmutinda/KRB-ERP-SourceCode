@@ -137,6 +137,9 @@ Page 56029 "Loan Application Card"
                     trigger OnValidate()
                     begin
                         Rec.TestField(Posted, false);
+
+                        Rec."Requested Amount" :=
+                            Round(Rec."Requested Amount", 1, '>');
                     end;
                 }
                 field("Deboost Loan"; Rec."Deboost Loan Applied")
@@ -254,16 +257,24 @@ Page 56029 "Loan Application Card"
                 {
                     ApplicationArea = Basic;
                     Editable = false;
+                    Visible = false;
                 }
                 field("Loan Interest Repayment"; Rec."Loan Interest Repayment")
                 {
                     ApplicationArea = Basic;
                     Editable = false;
+                    Visible = false;
                 }
                 field("Loan Insurance"; Rec."Loan Insurance")
                 {
                     ApplicationArea = Basic;
-                    Editable = false;
+                    Editable = true;
+
+                    trigger OnValidate()
+                    begin
+                        Rec."Loan Insurance" :=
+                            Round(Rec."Loan Insurance", 1, '>');
+                    end;
                 }
                 field(Repayment; Rec.Repayment)
                 {
@@ -281,12 +292,26 @@ Page 56029 "Loan Application Card"
                     Editable = false;
 
                 }
+                // field("Bank Transfer Charges"; Rec."Bank Transfer Charges")
+                // {
+                //     ApplicationArea = Basic;
+                //     Editable = true;
+                //     ShowMandatory = true;
+                // }
+
                 field("Bank Transfer Charges"; Rec."Bank Transfer Charges")
                 {
-                    ApplicationArea = Basic;
+                    ApplicationArea = All;
                     Editable = true;
                     ShowMandatory = true;
+
+                    trigger OnValidate()
+                    begin
+                        Rec."Bank Transfer Charges" :=
+                            Round(Rec."Bank Transfer Charges", 1, '>');
+                    end;
                 }
+
                 field("Loan Status"; Rec."Loan Status")
                 {
                     ApplicationArea = Basic;
@@ -480,15 +505,12 @@ Page 56029 "Loan Application Card"
                         if LoanApp.Find('-') then begin
                             LoanApp."Appraisal Date" := Today;
                             LoanApp.Modify();
-
                         end;
 
                         Commit();
 
                         if LoanApp.Find('-') then begin
-
                             Report.Run(56384, true, false, LoanApp);
-
                         end
 
                     end;
@@ -505,10 +527,43 @@ Page 56029 "Loan Application Card"
                     trigger OnAction()
                     var
                         SystemGenSet: Codeunit "System General Setup";
+                        ObjLoanOffsets: Record "Loan Offset Details";
+                        MyDict: Dictionary of [Text, Integer];
                     begin
                         //................Ensure than you cant have two loans same product
                         // SystemGenSet.FnCheckNoOfLoansLimit("Loan  No.", "Loan Product Type", "Client Code");
                         //----------------
+
+
+
+                        //PROMPT TO RECOVER ARREARS
+
+                        LoanApp.Reset;
+
+                        LoanApp.CalcFields(LoanApp."Outstanding Balance");
+                        LoanApp.SetRange(LoanApp."Client Code", Rec."Client Code");
+                        LoanApp.SetFilter(LoanApp."Outstanding Balance", '>0');
+                        if LoanApp.Find('-') then begin
+                            repeat
+
+                                if ObjLoanOffsets.Get(rEC."Loan  No.", Rec."Client Code", LoanApp."Loan  No.") then begin
+                                    if (ObjLoanOffsets."Total Top Up" < LoanApp."Amount in Arrears") and (LoanApp."Amount in Arrears" > 0) and (LoanApp."Days In Arrears" > 30) then begin
+                                        Message(StrSubstNo('%1 has %2 in arrears, you can recover the remaining %3 in the member arrear list',
+                                                LoanApp."Loan Product Type Name",
+                                                LoanApp."Amount in Arrears",
+                                                LoanApp."Amount in Arrears" - ObjLoanOffsets."Total Top Up"));
+                                    end;
+                                end else begin
+                                    if (LoanApp."Amount in Arrears" > 0) and (LoanApp."Days In Arrears" > 30) then begin
+                                        Message(StrSubstNo('%1 has %2 in arrears, you can recover it in the member arrear list',
+                                                LoanApp."Loan Product Type Name",
+                                                LoanApp."Amount in Arrears"));
+                                    end;
+                                end;
+                            until LoanApp.Next = 0;
+                        end;
+
+
                         Rec.Get(Rec."Loan  No.");
                         FnCheckForTestFields();
                         if Confirm('Send Approval Request For Loan Application of Ksh. ' + Format(Rec."Approved Amount") + ' applied by ' + Format(Rec."Client Name") + ' ?', false) = false then begin
@@ -554,6 +609,8 @@ Page 56029 "Loan Application Card"
                         Report.Run(56886, true, false, Cust);
                     end;
                 }
+
+                //writes schedule to db for the first time
                 action("View Schedule")
                 {
                     ApplicationArea = Basic;
@@ -590,6 +647,19 @@ Page 56029 "Loan Application Card"
                     RunPageLink = "Loan No." = field("Loan  No."),
                                   "Client Code" = field("Client Code");
                 }
+
+                action("Loans In Arrears")
+                {
+                    ApplicationArea = Basic;
+                    Caption = 'Loans in Arrears';
+                    Image = Allocate;
+                    Promoted = true;
+                    PromotedCategory = Process;
+                    RunObject = Page "Loan Arrears Detail List";
+                    RunPageLink = "Client Code" = field("Client Code");
+                }
+
+
                 action("Loan Appraisal Salary Details")
                 {
                     Visible = false;

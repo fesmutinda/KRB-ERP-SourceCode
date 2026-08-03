@@ -21,85 +21,87 @@ Table 51376 "Loan Offset Details"
                 // end;
             end;
         }
+
         field(2; "Loan Top Up"; Code[20])
         {
-            TableRelation = "Loans Register"."Loan  No." where("Client Code" = field("Client Code"),
-                                                                Posted = const(true),
-                                                                "Outstanding Balance" = filter(> 0));
+
+            TableRelation = "Loans Register"."Loan  No.";
 
             trigger OnValidate()
             var
                 Amtt: Decimal;
             begin
-                if Confirm('Are you sure you want to offset this loan?', true) = true then begin
 
-                    "Loan Type" := '';
-                    "Principle Top Up" := 0;
-                    "Interest Top Up" := 0;
-                    "Total Top Up" := 0;
+                if GuiAllowed then begin
 
-                    ObjRepaymentSchedule.Reset;
-                    ObjRepaymentSchedule.SetRange("Loan No.", "Loan Top Up");
-                    ObjRepaymentSchedule.SetFilter("Repayment Date", '>%1', Today);
-                    if ObjRepaymentSchedule.Find('-') then
-                        "Remaining Installments" := ObjRepaymentSchedule.Count;
-
-                    ObjRepaymentSchedule.Reset;
-                    ObjRepaymentSchedule.SetRange("Loan No.", "Loan Top Up");
-                    ObjRepaymentSchedule.SetFilter("Repayment Date", '<=%1', Today);
-                    if ObjRepaymentSchedule.Find('-') then
-                        "Loan Age" := ObjRepaymentSchedule.Count;
-
-                    Loans.Reset;
-                    Loans.SetRange(Loans."Loan  No.", "Loan No.");
-                    if Loans.Find('-') then begin
-                        ApplicationDate := Loans."Application Date";
-                        RequstedAmount := Loans."Requested Amount";
-                        if (Loans."Requested Amount" > 0) then begin
-                            // Message('Calculating commision');
-                            if GenSetUp."Loan Top Up Commision(%)" > 0 then begin
-
-                                Commision := ROUND(((Loans."Requested Amount") * GenSetUp."Loan Top Up Commision(%)" / 100), 1, '=');
-                                // Message('Requested Amount : ' + Format(Loans."Requested Amount"));
-                                // Message('Percentage commision is :' + Format(GenSetUp."Loan Top Up Commision(%)"));
-                                // Message('Commision here is :' + Format(Commision));
-                            end else begin
-                                Commision := ROUND(((Loans."Requested Amount") * 0.5 / 100), 1, '=');
-                                // Message('New Commision here is :' + Format(Commision));
-                            end;
-                        end else begin
-                            Error('Please enter Requested Amount before selecting a Loan to Refinance.');
-                        end;
-                    end;
-                    Loans.Reset;
-                    Loans.SetRange(Loans."Loan  No.", "Loan Top Up");
-                    if Loans.Find('-') then begin
-                        Loans.CalcFields(Loans."Outstanding Balance", Loans."Interest Due", Loans."Oustanding Interest");
-
-                        if Cust.Get(Loans."Client Code") then begin
-                            "ID. NO" := Cust."ID No.";
-                            "Staff No" := Cust."Payroll/Staff No";
-                        end;
-                        "Interest Rate" := Loans.Interest;
-
-                        "Interest Due at Clearance" := ((0.01 * Loans."Approved Amount" + 0.01 * Loans."Outstanding Balance") * Loans.Interest / 12 * ("Loan Age")) / 2 - "Interest Paid";
-                        // "Interest Top Up":=((0.01*Loans."Approved Amount"+0.01*Loans."Outstanding Balance")*Loans.Interest/12*("Loan Age"+1))/2-"Interest Paid"; //Nafaka Formula
-                        if (Date2dmy(ApplicationDate, 1) > 15) then begin
-                            "Interest Due at Clearance" := ((0.01 * Loans."Approved Amount" + 0.01 * Loans."Outstanding Balance") * Loans.Interest / 12 * ("Loan Age" + 1)) / 2 - "Interest Paid";
-                            //"Interest Top Up":=((0.01*Loans."Approved Amount"+0.01*Loans."Outstanding Balance")*Loans.Interest/12*("Loan Age"+1))/2-"Interest Paid"; //Nafaka Formula
-                        end;
-                        "Principle Top Up" := Loans."Outstanding Balance";
-                        "Interest Top Up" := Loans."Oustanding Interest";
-                        //joel//Commision:=Loans."Outstanding Balance"*0.1;
-                        "Total Top Up" := "Principle Top Up" + "Interest Top Up" + Commision;
-                        "Outstanding Balance" := Loans."Outstanding Balance";
-                        "Monthly Repayment" := Loans.Repayment;
-                    end;
-                    Loans.Bridged := true;
-                    Loans.Modify
+                    if not Confirm('Are you sure you want to offset this loan?', false) then
+                        exit;
                 end;
+
+                "Loan Type" := '';
+                "Principle Top Up" := 0;
+                "Interest Top Up" := 0;
+                "Total Top Up" := 0;
+
+                ObjRepaymentSchedule.Reset;
+                ObjRepaymentSchedule.SetRange("Loan No.", "Loan Top Up");
+                ObjRepaymentSchedule.SetFilter("Repayment Date", '>%1', Today);
+                if ObjRepaymentSchedule.Find('-') then
+                    "Remaining Installments" := ObjRepaymentSchedule.Count;
+
+                ObjRepaymentSchedule.Reset;
+                ObjRepaymentSchedule.SetRange("Loan No.", "Loan Top Up");
+                ObjRepaymentSchedule.SetFilter("Repayment Date", '<=%1', Today);
+                if ObjRepaymentSchedule.Find('-') then
+                    "Loan Age" := ObjRepaymentSchedule.Count;
+
+                Loans.Reset;
+                Loans.SetRange(Loans."Loan  No.", "Loan No.");
+                if Loans.Find('-') then begin
+                    ApplicationDate := Loans."Application Date";
+                    RequstedAmount := Loans."Requested Amount";
+                    if (Loans."Requested Amount" > 0) then begin
+            
+                        if GenSetUp."Loan Top Up Commision(%)" > 0 then begin
+
+                            Commision := ROUND(((Loans."Requested Amount") * GenSetUp."Loan Top Up Commision(%)" / 100), 1, '=');
+                
+                        end else begin
+                            Commision := ROUND(((Loans."Requested Amount") * 0.5 / 100), 1, '=');
+                        end;
+                    end else begin
+                        Error('Please enter Requested Amount before selecting a Loan to Refinance.');
+                    end;
+                end;
+                Loans.Reset;
+                Loans.SetRange(Loans."Loan  No.", "Loan Top Up");
+                if Loans.Find('-') then begin
+                    Loans.CalcFields(Loans."Outstanding Balance", Loans."Interest Due", Loans."Oustanding Interest");
+
+                    if Cust.Get(Loans."Client Code") then begin
+                        "ID. NO" := Cust."ID No.";
+                        "Staff No" := Cust."Payroll/Staff No";
+                    end;
+                    "Interest Rate" := Loans.Interest;
+
+                    "Interest Due at Clearance" := ((0.01 * Loans."Approved Amount" + 0.01 * Loans."Outstanding Balance") * Loans.Interest / 12 * ("Loan Age")) / 2 - "Interest Paid";
+                
+                    if (Date2dmy(ApplicationDate, 1) > 15) then begin
+                        "Interest Due at Clearance" := ((0.01 * Loans."Approved Amount" + 0.01 * Loans."Outstanding Balance") * Loans.Interest / 12 * ("Loan Age" + 1)) / 2 - "Interest Paid";
+                    
+                    end;
+                    "Principle Top Up" := Loans."Outstanding Balance";
+                    "Interest Top Up" := Loans."Oustanding Interest";
+                    "Total Top Up" := "Principle Top Up" + "Interest Top Up" + Commision;
+                    "Outstanding Balance" := Loans."Outstanding Balance";
+                    "Monthly Repayment" := Loans.Repayment;
+                end;
+                Loans.Bridged := true;
+                Loans.Modify
             end;
+
         }
+
         field(3; "Client Code"; Code[20])
         {
         }

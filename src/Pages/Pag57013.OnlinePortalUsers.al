@@ -16,12 +16,12 @@ page 57013 "Online Portal Users"
                 // field("Line No"; Rec."Line No")
                 // {
                 // }
-                field("User Type"; Rec."User Type")
-                {
-                }
+
                 field("User Name"; Rec."User Name")
                 {
+
                 }
+                field(Name; Rec.Name) { }
                 field(IdNumber; Rec.IdNumber)
                 {
                 }
@@ -39,6 +39,7 @@ page 57013 "Online Portal Users"
                 }
                 field("Number Of Logins"; Rec."Number Of Logins")
                 {
+                    Visible = false;
                 }
                 field(Password; Rec.Password)
                 {

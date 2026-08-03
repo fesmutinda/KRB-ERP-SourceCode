@@ -142,14 +142,14 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox30">
+                        <Textbox Name="Loans_Loans_Loan_Product_Type_Name">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!Loans_Loans__Loan_Product_Type_Name_.Value</Value>
+                                  <Value>=Fields!Loans_Loans_Loan_Product_Type_Name.Value</Value>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -159,7 +159,7 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox30</rd:DefaultName>
+                          <rd:DefaultName>Loans_Loans_Loan_Product_Type_Name</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -902,6 +902,7 @@
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -2607,9 +2608,6 @@ End Function
         <Field Name="Loans_Loans__Approved_Amount_Format">
           <DataField>Loans_Loans__Approved_Amount_Format</DataField>
         </Field>
-        <Field Name="Loans_Loans__Loan_Product_Type_Name_">
-          <DataField>Loans_Loans__Loan_Product_Type_Name_</DataField>
-        </Field>
         <Field Name="Loans_Loans__Loan__No__">
           <DataField>Loans_Loans__Loan__No__</DataField>
         </Field>
@@ -2627,6 +2625,9 @@ End Function
         </Field>
         <Field Name="Disbursment_DateCaption">
           <DataField>Disbursment_DateCaption</DataField>
+        </Field>
+        <Field Name="Loans_Loans_Loan_Product_Type_Name">
+          <DataField>Loans_Loans_Loan_Product_Type_Name</DataField>
         </Field>
         <Field Name="Current_InterestCaption">
           <DataField>Current_InterestCaption</DataField>

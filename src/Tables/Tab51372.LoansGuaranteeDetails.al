@@ -21,13 +21,13 @@ Table 51372 "Loans Guarantee Details"
                 RefDate: Date;
             begin
                 GenSetUp.Get();
-                if Cust.Get("Member No") then begin
-                    if Cust."Registration Date" <> 0D then
-                        RefDate := CalcDate('<' + GenSetUp."Share Capital Period" + '>', Cust."Registration Date");
-                    if RefDate > Today then begin
-                        Error('Member has not finished 6 Months in the sacco and therefore cannot guarantee any loan!');
-                    end;
-                end;
+                // if Cust.Get("Member No") then begin
+                //     if Cust."Registration Date" <> 0D then
+                //         RefDate := CalcDate('<' + GenSetUp."Share Capital Period" + '>', Cust."Registration Date");
+                //     if RefDate > Today then begin
+                //         Error('Member has not finished 6 Months in the sacco and therefore cannot guarantee any loan!');
+                //     end;
+                // end;
 
                 Cust.SetRange(Cust."No.", "Member No");
                 if Cust.FindSet then begin
@@ -573,6 +573,8 @@ Table 51372 "Loans Guarantee Details"
     trigger OnInsert()
     begin
         "Application Statu" := true;
+        if "Member No" <> '' then
+            Validate("Member No");
     end;
 
     var

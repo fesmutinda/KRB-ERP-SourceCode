@@ -14,7 +14,7 @@ page 57001 "Loans-Pending Approval Instant"
                             Source = filter(BOSA),
                             "Loan Status" = const(Appraisal),
                             "Approval Status" = const(Pending),
-                            "Loan Product Type" = const('LT007'));
+                            "Loan Product Type" = const('LT007|LT006'));
 
     layout
     {

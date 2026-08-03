@@ -1,7 +1,8 @@
 #pragma warning disable AA0005, AA0008, AA0018, AA0021, AA0072, AA0137, AA0201, AA0204, AA0206, AA0218, AA0228, AL0254, AL0424, AS0011, AW0006 // ForNAV settings
 page 50501 "Loans  List All"
 {
-    Editable = false;
+    Editable = true;
+    // DeleteAllowed = true;
     PageType = List;
     SourceTable = "Loans Register";
 
@@ -54,17 +55,27 @@ page 50501 "Loans  List All"
                 field("Approved Amount"; Rec."Approved Amount")
                 {
                     ApplicationArea = Basic;
-                    Editable = false;
+                    Editable = true;
                 }
                 field("Loan Status"; Rec."Loan Status")
                 {
                     ApplicationArea = Basic;
-                    Editable = false;
+                    Editable = true;
+                }
+
+                field("Approval Status"; Rec."Approval Status")
+                {
+
+                }
+
+                field(Posted; Rec.Posted)
+                {
+
                 }
                 field("Issued Date"; Rec."Issued Date")
                 {
                     ApplicationArea = Basic;
-                    Editable = false;
+                    Editable = true;
                 }
                 field("Expected Date of Completion"; Rec."Expected Date of Completion")
                 {
@@ -100,4 +111,6 @@ page 50501 "Loans  List All"
     {
     }
 }
+
+
 

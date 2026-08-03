@@ -9,8 +9,11 @@ Page 56125 "Loan List-New Application BOSA"
     PageType = List;
     SourceTable = "Loans Register";
     SourceTableView = where(Posted = const(false),
+                            "Loan Status" = const(Application),
                             Source = filter(BOSA),
-                            "Loan Product Type" = const('<>LT007'));
+                            "Loan Product Type" = const('<>LT007&<>LT006')
+                            //   "Loan Product Type" = const('<>LT006')
+                            );
     UsageCategory = Lists;
 
     layout

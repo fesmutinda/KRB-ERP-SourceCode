@@ -1,13 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:am="http://schemas.microsoft.com/sqlserver/reporting/authoringmetadata">
+  <rd:ReportUnitType>Cm</rd:ReportUnitType>
+  <rd:ReportID>97c2726a-a59d-4c8b-a9f6-9342c3a58452</rd:ReportID>
+  <am:AuthoringMetadata>
+    <am:CreatedBy>
+      <am:Name>MSRB</am:Name>
+      <am:Version>15.1.30001.02</am:Version>
+    </am:CreatedBy>
+    <am:UpdatedBy>
+      <am:Name>MSRB</am:Name>
+      <am:Version>15.1.30001.02</am:Version>
+    </am:UpdatedBy>
+    <am:LastModifiedTimestamp>2026-01-07T08:31:23.6566969Z</am:LastModifiedTimestamp>
+  </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="DataSource">
+      <rd:SecurityType>None</rd:SecurityType>
       <ConnectionProperties>
         <DataProvider>SQL</DataProvider>
         <ConnectString />
       </ConnectionProperties>
-      <rd:SecurityType>None</rd:SecurityType>
       <rd:DataSourceID>7cb87dba-96b7-47fc-b90f-2d9e1f8764ea</rd:DataSourceID>
     </DataSource>
   </DataSources>
@@ -33,7 +46,7 @@
               </TablixColumns>
               <TablixRows>
                 <TablixRow>
-                  <Height>0.5994cm</Height>
+                  <Height>0.74051cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -46,7 +59,8 @@
                                 <TextRun>
                                   <Value>=First(Fields!G_L_Account___No__Caption.Value)</Value>
                                   <Style>
-                                    <FontSize>7pt</FontSize>
+                                    <FontFamily>Book Antiqua</FontFamily>
+                                    <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -87,7 +101,8 @@
                                 <TextRun>
                                   <Value>=First(Fields!PADSTR_____G_L_Account__Indentation___2___G_L_Account__NameCaption.Value)</Value>
                                   <Style>
-                                    <FontSize>7pt</FontSize>
+                                    <FontFamily>Book Antiqua</FontFamily>
+                                    <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -126,7 +141,8 @@
                                 <TextRun>
                                   <Value>                    Debit</Value>
                                   <Style>
-                                    <FontSize>7pt</FontSize>
+                                    <FontFamily>Book Antiqua</FontFamily>
+                                    <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -167,7 +183,8 @@
                                 <TextRun>
                                   <Value>                   Credit</Value>
                                   <Style>
-                                    <FontSize>7pt</FontSize>
+                                    <FontFamily>Book Antiqua</FontFamily>
+                                    <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -200,7 +217,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.54648cm</Height>
+                  <Height>1.21676cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -212,7 +229,8 @@
                                 <TextRun>
                                   <Value>=Fields!G_L_Account_No_.Value</Value>
                                   <Style>
-                                    <FontSize>7pt</FontSize>
+                                    <FontFamily>Book Antiqua</FontFamily>
+                                    <FontSize>12pt</FontSize>
                                     <FontWeight>=IIF(Fields!G_L_Account___Account_Type_.Value&lt;&gt;"0","Bold","Normal")</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -252,7 +270,8 @@
                                 <TextRun>
                                   <Value>=Fields!PADSTR_____G_L_Account__Indentation___2___G_L_Account__Name.Value</Value>
                                   <Style>
-                                    <FontSize>7pt</FontSize>
+                                    <FontFamily>Book Antiqua</FontFamily>
+                                    <FontSize>12pt</FontSize>
                                     <FontWeight>=IIF(Fields!G_L_Account___Account_Type_.Value&lt;&gt;"0","Bold","Normal")</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -291,7 +310,8 @@
                                 <TextRun>
                                   <Value>=Code.BlankNegAndZero(Fields!G_L_Account___Net_Change_.Value)</Value>
                                   <Style>
-                                    <FontSize>7pt</FontSize>
+                                    <FontFamily>Book Antiqua</FontFamily>
+                                    <FontSize>12pt</FontSize>
                                     <FontWeight>=IIF(Fields!G_L_Account___Account_Type_.Value&lt;&gt;"0","Bold","Normal")</FontWeight>
                                     <Format>#,0.00;(#,0.00)</Format>
                                   </Style>
@@ -333,7 +353,8 @@
                                 <TextRun>
                                   <Value>=Code.BlankNegAndZero(Fields!G_L_Account___Net_Change__Control22.Value)</Value>
                                   <Style>
-                                    <FontSize>7pt</FontSize>
+                                    <FontFamily>Book Antiqua</FontFamily>
+                                    <FontSize>12pt</FontSize>
                                     <FontWeight>=IIF(Fields!G_L_Account___Account_Type_.Value&lt;&gt;"0","Bold","Normal")</FontWeight>
                                     <Format>#,0.00;(#,0.00)</Format>
                                   </Style>
@@ -367,11 +388,12 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.56472cm</Height>
+                  <Height>0.81166cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Textbox68">
+                          <rd:DefaultName>Textbox68</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -380,7 +402,8 @@
                                 <TextRun>
                                   <Value>TOTALS</Value>
                                   <Style>
-                                    <FontSize>8pt</FontSize>
+                                    <FontFamily>Book Antiqua</FontFamily>
+                                    <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -390,7 +413,6 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox68</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -409,6 +431,7 @@
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Textbox70">
+                          <rd:DefaultName>Textbox70</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -417,7 +440,8 @@
                                 <TextRun>
                                   <Value>=sum(Fields!Totaldebit.Value)</Value>
                                   <Style>
-                                    <FontSize>8pt</FontSize>
+                                    <FontFamily>Book Antiqua</FontFamily>
+                                    <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0.00;(#,0.00)</Format>
                                   </Style>
@@ -428,7 +452,6 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox70</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -445,6 +468,7 @@
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Textbox71">
+                          <rd:DefaultName>Textbox71</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -453,7 +477,8 @@
                                 <TextRun>
                                   <Value>=sum(Fields!Totalcredit.Value)</Value>
                                   <Style>
-                                    <FontSize>8pt</FontSize>
+                                    <FontFamily>Book Antiqua</FontFamily>
+                                    <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0.00;(#,0.00)</Format>
                                   </Style>
@@ -464,7 +489,6 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox71</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -553,9 +577,9 @@
                 </FilterValues>
               </Filter>
             </Filters>
-            <Top>6.8579cm</Top>
-            <Left>0.25568in</Left>
-            <Height>1.7106cm</Height>
+            <Top>7.08653cm</Top>
+            <Left>0.25567in</Left>
+            <Height>2.76893cm</Height>
             <Width>26.24407cm</Width>
             <Style>
               <Border>
@@ -594,15 +618,16 @@
                   <TextRun>
                     <Value>=First(Fields!G_L_Account__TABLECAPTION__________GLFilter.Value)</Value>
                     <Style>
-                      <FontSize>7pt</FontSize>
+                      <FontFamily>Book Antiqua</FontFamily>
+                      <FontSize>12pt</FontSize>
                     </Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>2.3921in</Top>
-            <Left>0.25568in</Left>
+            <Top>2.48211in</Top>
+            <Left>0.25567in</Left>
             <Height>0.423cm</Height>
             <Width>11.72cm</Width>
             <ZIndex>1</ZIndex>
@@ -622,7 +647,8 @@
                   <TextRun>
                     <Value>Trial Balance</Value>
                     <Style>
-                      <FontFamily>Cambria</FontFamily>
+                      <FontFamily>Book Antiqua</FontFamily>
+                      <FontSize>12pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
@@ -632,8 +658,8 @@
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>2.00695in</Top>
-            <Left>3.96927in</Left>
+            <Top>2.09696in</Top>
+            <Left>3.96926in</Left>
             <Height>0.59906cm</Height>
             <Width>7.5cm</Width>
             <ZIndex>2</ZIndex>
@@ -642,6 +668,7 @@
             </Style>
           </Textbox>
           <Textbox Name="Company_Address">
+            <rd:DefaultName>Company_Address</rd:DefaultName>
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
             <Paragraphs>
@@ -650,7 +677,8 @@
                   <TextRun>
                     <Value>=First(Fields!Company_Address.Value, "DataSet_Result")</Value>
                     <Style>
-                      <FontSize>9pt</FontSize>
+                      <FontFamily>Book Antiqua</FontFamily>
+                      <FontSize>12pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
@@ -660,9 +688,8 @@
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <rd:DefaultName>Company_Address</rd:DefaultName>
             <Top>1.01042in</Top>
-            <Left>2.60148in</Left>
+            <Left>2.69869in</Left>
             <Height>0.17708in</Height>
             <Width>5.31307in</Width>
             <ZIndex>3</ZIndex>
@@ -690,6 +717,7 @@
             </Style>
           </Textbox>
           <Textbox Name="Company_Address_2">
+            <rd:DefaultName>Company_Address_2</rd:DefaultName>
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
             <Paragraphs>
@@ -698,7 +726,8 @@
                   <TextRun>
                     <Value>=First(Fields!Company_Address_2.Value, "DataSet_Result")</Value>
                     <Style>
-                      <FontSize>9pt</FontSize>
+                      <FontFamily>Book Antiqua</FontFamily>
+                      <FontSize>12pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
@@ -708,9 +737,8 @@
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <rd:DefaultName>Company_Address_2</rd:DefaultName>
             <Top>1.1875in</Top>
-            <Left>2.60148in</Left>
+            <Left>2.69869in</Left>
             <Height>0.25in</Height>
             <Width>5.31307in</Width>
             <ZIndex>4</ZIndex>
@@ -738,6 +766,7 @@
             </Style>
           </Textbox>
           <Textbox Name="Company_Fax_No">
+            <rd:DefaultName>Company_Fax_No</rd:DefaultName>
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
             <Paragraphs>
@@ -746,14 +775,16 @@
                   <TextRun>
                     <Value>TEL: </Value>
                     <Style>
-                      <FontSize>9pt</FontSize>
+                      <FontFamily>Book Antiqua</FontFamily>
+                      <FontSize>12pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
                   <TextRun>
                     <Value>=First(Fields!Company_Phone_No.Value, "DataSet_Result")</Value>
                     <Style>
-                      <FontSize>9pt</FontSize>
+                      <FontFamily>Book Antiqua</FontFamily>
+                      <FontSize>12pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
@@ -763,9 +794,8 @@
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <rd:DefaultName>Company_Fax_No</rd:DefaultName>
-            <Top>1.46528in</Top>
-            <Left>3.26873in</Left>
+            <Top>1.47917in</Top>
+            <Left>4.44983in</Left>
             <Height>0.25in</Height>
             <Width>2.06307in</Width>
             <ZIndex>5</ZIndex>
@@ -793,6 +823,7 @@
             </Style>
           </Textbox>
           <Textbox Name="Company_Email">
+            <rd:DefaultName>Company_Email</rd:DefaultName>
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
             <Paragraphs>
@@ -801,7 +832,8 @@
                   <TextRun>
                     <Value>=First(Fields!Company_Email.Value, "DataSet_Result")</Value>
                     <Style>
-                      <FontSize>9pt</FontSize>
+                      <FontFamily>Book Antiqua</FontFamily>
+                      <FontSize>12pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
@@ -811,9 +843,8 @@
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <rd:DefaultName>Company_Email</rd:DefaultName>
-            <Top>1.46528in</Top>
-            <Left>5.34568in</Left>
+            <Top>1.72917in</Top>
+            <Left>4.44983in</Left>
             <Height>0.25in</Height>
             <Width>2.06307in</Width>
             <ZIndex>6</ZIndex>
@@ -845,7 +876,7 @@
             <Value>krbsaccoLogo2</Value>
             <Sizing>FitProportional</Sizing>
             <Top>0.04167in</Top>
-            <Left>4.76005in</Left>
+            <Left>4.85726in</Left>
             <Height>0.92708in</Height>
             <Width>0.99369in</Width>
             <ZIndex>7</ZIndex>
@@ -855,18 +886,6 @@
               </Border>
             </Style>
           </Image>
-          <Line Name="Line1">
-            <Top>5.76726cm</Top>
-            <Left>0.64943cm</Left>
-            <Height>0cm</Height>
-            <Width>26.24409cm</Width>
-            <ZIndex>8</ZIndex>
-            <Style>
-              <Border>
-                <Style>Solid</Style>
-              </Border>
-            </Style>
-          </Line>
         </ReportItems>
         <Height>4.70506in</Height>
         <Style />
@@ -886,6 +905,7 @@
                     <TextRun>
                       <Value>=Globals!ExecutionTime</Value>
                       <Style>
+                        <FontFamily>Book Antiqua</FontFamily>
                         <FontSize>6pt</FontSize>
                         <Format>g</Format>
                       </Style>
@@ -912,6 +932,7 @@
                     <TextRun>
                       <Value>=User!UserID</Value>
                       <Style>
+                        <FontFamily>Book Antiqua</FontFamily>
                         <FontSize>6pt</FontSize>
                       </Style>
                     </TextRun>
@@ -931,6 +952,7 @@
               </Style>
             </Textbox>
             <Textbox Name="Textbox1">
+              <rd:DefaultName>Textbox1</rd:DefaultName>
               <CanGrow>true</CanGrow>
               <KeepTogether>true</KeepTogether>
               <Paragraphs>
@@ -939,6 +961,7 @@
                     <TextRun>
                       <Value>Printed Date:</Value>
                       <Style>
+                        <FontFamily>Book Antiqua</FontFamily>
                         <FontSize>6pt</FontSize>
                       </Style>
                     </TextRun>
@@ -946,7 +969,6 @@
                   <Style />
                 </Paragraph>
               </Paragraphs>
-              <rd:DefaultName>Textbox1</rd:DefaultName>
               <Top>0.09878cm</Top>
               <Left>0cm</Left>
               <Height>0.45889cm</Height>
@@ -963,6 +985,7 @@
               </Style>
             </Textbox>
             <Textbox Name="Textbox2">
+              <rd:DefaultName>Textbox1</rd:DefaultName>
               <CanGrow>true</CanGrow>
               <KeepTogether>true</KeepTogether>
               <Paragraphs>
@@ -971,6 +994,7 @@
                     <TextRun>
                       <Value>Printed By:</Value>
                       <Style>
+                        <FontFamily>Book Antiqua</FontFamily>
                         <FontSize>6pt</FontSize>
                       </Style>
                     </TextRun>
@@ -978,7 +1002,6 @@
                   <Style />
                 </Paragraph>
               </Paragraphs>
-              <rd:DefaultName>Textbox1</rd:DefaultName>
               <Top>0.13469cm</Top>
               <Left>23.15432cm</Left>
               <Height>0.45889cm</Height>
@@ -1003,6 +1026,7 @@
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
             <Textbox Name="Textbox18">
+              <rd:DefaultName>Textbox18</rd:DefaultName>
               <CanGrow>true</CanGrow>
               <KeepTogether>true</KeepTogether>
               <Paragraphs>
@@ -1016,7 +1040,6 @@
                   <Style />
                 </Paragraph>
               </Paragraphs>
-              <rd:DefaultName>Textbox18</rd:DefaultName>
               <Top>0.17361in</Top>
               <Left>3.72064in</Left>
               <Height>0.25in</Height>
@@ -1113,8 +1136,6 @@ kHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpBvD/AZI2
   </EmbeddedImages>
   <Language>=User!Language</Language>
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
-  <rd:ReportUnitType>Cm</rd:ReportUnitType>
-  <rd:ReportID>97c2726a-a59d-4c8b-a9f6-9342c3a58452</rd:ReportID>
   <DataSets>
     <DataSet Name="DataSet_Result">
       <Fields>

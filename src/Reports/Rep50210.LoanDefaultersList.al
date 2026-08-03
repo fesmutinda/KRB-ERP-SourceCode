@@ -9,7 +9,7 @@ Report 50210 "Loan Defaulters List"
     {
         dataitem(Loans; "Loans Register")
         {
-            DataItemTableView = sorting("Loan  No.") order(ascending) where(Posted = const(true), "Approved Amount" = filter('>0'), "Outstanding Balance" = filter('>0'), Reversed = const(false), "Amount in Arrears" = filter('>0'));
+            DataItemTableView = sorting("Client Code", "Loan  No.") order(ascending) where(Posted = const(true), "Approved Amount" = filter('>0'), "Outstanding Balance" = filter('>0'), Reversed = const(false), "Amount in Arrears" = filter('>0'));
             RequestFilterFields = "Application Date", "Issued Date";
             column(ReportForNavId_4645; 4645)
             {
@@ -238,7 +238,11 @@ Report 50210 "Loan Defaulters List"
                 case ArrearsFilterOption of
                     ArrearsFilterOption::"All Arrears":
                         Loans.SetFilter("Days In Arrears", '>0');
-                    ArrearsFilterOption::"Over 90 Days Only":
+                    ArrearsFilterOption::"Over 30 Days":
+                        Loans.SetFilter("Days In Arrears", '>30');
+                    ArrearsFilterOption::"Over 60 Days":
+                        Loans.SetFilter("Days In Arrears", '>60');
+                    ArrearsFilterOption::"Over 90 Days":
                         Loans.SetFilter("Days In Arrears", '>90');
                 end;
 
@@ -302,7 +306,7 @@ Report 50210 "Loan Defaulters List"
 
     var
 
-        ArrearsFilterOption: Option "All Arrears","Over 90 Days Only";
+        ArrearsFilterOption: Option "All Arrears","Over 30 Days","Over 60 Days","Over 90 Days";
         RPeriod: Decimal;
         BatchL: Code[100];
         Batches: Record "Loan Disburesment-Batching";

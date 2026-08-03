@@ -399,7 +399,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=Fields!EndDateText.Value</Value>
+                    <Value>=IIF(Fields!ShowDateRange.Value, Fields!StartDateText.Value &amp; " to " &amp; Fields!EndDateText.Value, Fields!EndDateText.Value)</Value>
                     <Style>
                       <FontSize>7pt</FontSize>
                       <FontWeight>Bold</FontWeight>
@@ -413,7 +413,7 @@
             <Top>2.8147in</Top>
             <Left>4.67142in</Left>
             <Height>0.1875in</Height>
-            <Width>1in</Width>
+            <Width>1.53661in</Width>
             <ZIndex>5</ZIndex>
             <Style>
               <Border>
@@ -1024,6 +1024,9 @@ kHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpBvD/AZI2
         </Field>
         <Field Name="EndDateText">
           <DataField>EndDateText</DataField>
+        </Field>
+        <Field Name="ShowDateRange">
+          <DataField>ShowDateRange</DataField>
         </Field>
         <Field Name="Company_Name">
           <DataField>Company_Name</DataField>

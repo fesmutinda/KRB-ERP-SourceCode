@@ -44,6 +44,9 @@ Report 50205 "Loans Guarantor Details Report"
             column(Company_Address; Company.Address)
             {
             }
+            column(company_Address2; Company."Address 2")
+            {
+            }
             column(Company_Picture; Company.Picture)
             {
             }
@@ -68,9 +71,18 @@ Report 50205 "Loans Guarantor Details Report"
                 column(Name_LoansGuaranteeDetails; "Loans Guarantee Details".Name)
                 {
                 }
-                column(AmontGuaranteed_LoansGuaranteeDetails; "Loans Guarantee Details"."Amont Guaranteed")
+                column(AmontGuaranteed_LoansGuaranteeDetails; CalculatedGuaranteedAmount)
                 {
                 }
+
+                trigger OnAfterGetRecord()
+                begin
+                    // Calculate guaranteed amount = Approved Amount / Number of Guarantors
+                    if GuarantorCount > 0 then
+                        CalculatedGuaranteedAmount := "Loans Register"."Approved Amount" / GuarantorCount
+                    else
+                        CalculatedGuaranteedAmount := 0;
+                end;
             }
             dataitem("Loan Collateral Details"; "Loan Collateral Details")
             {
@@ -96,6 +108,15 @@ Report 50205 "Loans Guarantor Details Report"
             begin
                 "Loans Register".SetFilter("Loans Register"."Issued Date", datefiltered);
                 Var1 := Var1 + 1;
+
+                // Count the number of guarantors for this loan
+                GuarantorCount := 0;
+                GuaranteeDetailsTemp.Reset();
+                GuaranteeDetailsTemp.SetRange("Loan No", "Loans Register"."Loan  No.");
+                if GuaranteeDetailsTemp.FindSet() then
+                    repeat
+                        GuarantorCount += 1;
+                    until GuaranteeDetailsTemp.Next() = 0;
             end;
         }
     }
@@ -126,9 +147,10 @@ Report 50205 "Loans Guarantor Details Report"
     end;
 
     var
-
         Var1: Integer;
         datefiltered: Text;
         Company: Record "Company Information";
+        GuarantorCount: Integer;
+        CalculatedGuaranteedAmount: Decimal;
+        GuaranteeDetailsTemp: Record "Loans Guarantee Details";
 }
-

@@ -10,7 +10,7 @@ page 57000 "Loan List Application Instant"
     SourceTable = "Loans Register";
     SourceTableView = where(Posted = const(false),
                             Source = filter(BOSA),
-                            "Loan Product Type" = const('LT007'));
+                            "Loan Product Type" = const('LT007|LT006'));
     UsageCategory = Lists;
 
     layout

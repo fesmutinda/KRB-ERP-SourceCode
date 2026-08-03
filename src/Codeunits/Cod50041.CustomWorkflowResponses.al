@@ -55,148 +55,7 @@ codeunit 50041 "Custom Workflow Responses"
         //-----------------------------End AddOn--------------------------------------------------------------------------------------
     end;
 
-    /*
-        [EventSubscriber(ObjectType::Codeunit, Codeunit::"Workflow Response Handling", 'OnExecuteWorkflowResponse', '', true, true)]
-         procedure SetStatusToPendingApproval(var Variant: Variant)
-        var
-            RecRef: RecordRef;
-            IsHandled: Boolean;
-            MembershipApplication: Record "Membership Applications";
-            LoansRegister: Record "Loans Register";
-            BOSATransfers: Record "BOSA Transfers";
-            LoanBatchDisbursements: Record "Loan Disburesment-Batching";
-            LoanTopUp: Record "Loan Top Up.";
-            ChangeRequest: Record "Change Request";
-            // LeaveApplication: Record "HR Leave Application";
-            GuarantorSubstitution: Record "Guarantorship Substitution H";
-            PaymentVoucher: Record "Payment Header";
-            PettyCashReimbersement: Record "Funds Transfer Header";
-            FOSAProductApplication: Record "Accounts Applications Details";
-            LoanRecoveryApplication: Record "Loan Recovery Header";
-            CEEPChangeRequest: Record "CEEP Change Request";
-            MembershipExit: Record "Membership Exist";
-            MemberReapplication: Record "Member Reapplication";
-        begin
-            case RecRef.Number of
-                //Membership Reapplication
-                Database::"Member Reapplication":
-                    begin
-                        RecRef.SetTable(MemberReapplication);
-                        MemberReapplication.Validate(Status, MemberReapplication.Status::Pending);
-                        MemberReapplication.Modify(true);
-                        Variant := MemberReapplication;
-                    end;
-                //Member Exit
-                Database::"Membership Exist":
-                    begin
-                        RecRef.SetTable(MembershipExit);
-                        MembershipExit.Validate(Status, MembershipExit.Status::Pending);
-                        MembershipExit.Modify(true);
-                        Variant := MembershipExit;
-                    end;
-                //PettyCash Reimbursement
-                Database::"Funds Transfer Header":
-                    begin
-                        RecRef.SetTable(PettyCashReimbersement);
-                        PettyCashReimbersement.Validate(Status, PettyCashReimbersement.Status::"Pending Approval");
-                        PettyCashReimbersement.Modify(true);
-                        Variant := PettyCashReimbersement;
-                    end;
-                //Payment Voucher
-                Database::"Payment Header":
-                    begin
-                        RecRef.SetTable(PaymentVoucher);
-                        PaymentVoucher.Validate(Status, PaymentVoucher.Status::"Pending Approval");
-                        PaymentVoucher.Modify(true);
-                        Variant := PaymentVoucher;
-                    end;
-                //Guarantor Substitution
-                Database::"Guarantorship Substitution H":
-                    begin
-                        RecRef.SetTable(GuarantorSubstitution);
-                        GuarantorSubstitution.Validate(Status, GuarantorSubstitution.Status::Pending);
-                        GuarantorSubstitution.Modify(true);
-                        Variant := GuarantorSubstitution;
-                    end;
 
-                //Membership Application
-                Database::"Membership Applications":
-                    begin
-                        RecRef.SetTable(MembershipApplication);
-                        MembershipApplication.Validate(Status, MembershipApplication.Status::"Pending Approval");
-                        MembershipApplication.Modify(true);
-                        Variant := MembershipApplication;
-                    end;
-                //Loan Application
-                Database::"Loans Register":
-                    begin
-                        RecRef.SetTable(LoansRegister);
-                        LoansRegister.Validate("Approval Status", LoansRegister."Approval Status"::Pending);
-                        LoansRegister.Validate("loan status", LoansRegister."loan status"::Appraisal);
-                        LoansRegister.Modify(true);
-                        Variant := LoansRegister;
-                    end;
-                //BOSA Transfers
-                Database::"BOSA Transfers":
-                    begin
-                        RecRef.SetTable(BOSATransfers);
-                        BOSATransfers.Validate(status, BOSATransfers.status::"Pending Approval");
-                        BOSATransfers.Modify(true);
-                        Variant := BOSATransfers;
-                    end;
-                //Loan Batch Disbursements
-                Database::"Loan Disburesment-Batching":
-                    begin
-                        RecRef.SetTable(LoanBatchDisbursements);
-                        LoanBatchDisbursements.Validate(status, LoanBatchDisbursements.status::"Pending Approval");
-                        LoanBatchDisbursements.Modify(true);
-                        Variant := LoanBatchDisbursements;
-                    end;
-                //Loan TopUp
-                Database::"Loan Top Up.":
-                    begin
-                        RecRef.SetTable(LoanTopUp);
-                        LoanTopUp.Validate(status, LoanTopUp.status::Pending);
-                        LoanTopUp.Modify(true);
-                        Variant := LoanTopUp;
-                    end;
-
-                //CEEP Change Request
-                Database::"CEEP Change Request":
-                    begin
-                        RecRef.SetTable(CEEPChangeRequest);
-                        CEEPChangeRequest.Validate(status, CEEPChangeRequest.Status::Pending);
-                        CEEPChangeRequest.Modify(true);
-                        Variant := CEEPChangeRequest;
-                    end;
-                //Change Request
-                Database::"Change Request":
-                    begin
-                        RecRef.SetTable(ChangeRequest);
-                        ChangeRequest.Validate(status, ChangeRequest.Status::Pending);
-                        ChangeRequest.Modify(true);
-                        Variant := ChangeRequest;
-                    end;
-                //FOSA Product Application
-                Database::"Accounts Applications Details":
-                    begin
-                        RecRef.SetTable(FOSAProductApplication);
-                        FOSAProductApplication.Validate(Status, FOSAProductApplication.Status::Pending);
-                        FOSAProductApplication.Modify(true);
-                        Variant := FOSAProductApplication;
-                    end;
-                //Loan Recovery Application
-                Database::"Loan Recovery Header":
-                    begin
-                        RecRef.SetTable(LoanRecoveryApplication);
-                        LoanRecoveryApplication.Validate(Status, LoanRecoveryApplication.Status::Pending);
-                        LoanRecoveryApplication.Modify(true);
-                        Variant := LoanRecoveryApplication;
-                    end;
-
-            end;
-        end;
-        */
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Workflow Response Handling", 'OnOpenDocument', '', true, true)]
     local procedure OnOpenDocument(RecRef: RecordRef; var Handled: Boolean)
@@ -436,6 +295,15 @@ codeunit 50041 "Custom Workflow Responses"
                 begin
                     RecRef.SetTable(LoansRegister);
                     if LoansRegister.Get(LoansRegister."Loan  No.") then begin
+
+                        if (LoansRegister."Reschedule Approval Status" = LoansRegister."Reschedule Approval Status"::Pending) then begin
+
+                            LoansRegister.Validate("Reschedule Approval Status", LoansRegister."Reschedule Approval Status"::Pending);
+                            LoansRegister.Modify(true);
+                            exit;
+                        end;
+
+
                         LoansRegister.Validate("Approval Status", LoansRegister."Approval Status"::Pending);
                         LoansRegister.Validate("loan status", LoansRegister."loan status"::Appraisal);
                         LoansRegister.Modify(true);  // Ensure record is not outdated
@@ -574,6 +442,18 @@ codeunit 50041 "Custom Workflow Responses"
 
                 begin
                     RecRef.SetTable(LoansRegister);
+
+                    if (LoansRegister."Reschedule Approval Status" = LoansRegister."Reschedule Approval Status"::Pending) then begin
+
+                        LoansRegister."Reschedule Approval Status" := LoansRegister."Reschedule Approval Status"::Approved;
+
+                        LoansRegister.Validate("loan status", LoansRegister."Reschedule Approval Status"::Approved);
+                        LoansRegister.Modify(true);
+
+                        exit;
+                    end;
+
+
                     LoansRegister."Approval Status" := LoansRegister."Approval Status"::Approved;
                     LoansRegister.Validate("loan status", LoansRegister."loan status"::Approved);
                     LoansRegister.Modify(true);
@@ -641,32 +521,37 @@ codeunit 50041 "Custom Workflow Responses"
         ApprovalEntry2: Record "Approval Entry";
         RecRef: RecordRef;
     begin
-        if ApprovalEntry."Table ID" = Database::"Loans Register" then begin
-            // Check if ALL approval entries for this document are approved
+        if (ApprovalEntry."Table ID" = Database::"Loans Register") and (ApprovalEntry."Sequence No." = 2) then begin
+
             ApprovalEntry2.SetRange("Table ID", Database::"Loans Register");
             ApprovalEntry2.SetRange("Record ID to Approve", ApprovalEntry."Record ID to Approve");
             ApprovalEntry2.SetFilter(Status, '<>%1', ApprovalEntry2.Status::Approved);
 
 
-            // if ApprovalEntry2.Find() and (ApprovalEntry2."Sequence No." = 1) and (ApprovalEntry2."Pending Approvals" > 0) then begin
-            //     ApprovalEntry2.Reset();
-            //     ApprovalEntry2.SetRange("Document Type", ApprovalEntry2."Document Type");
-            //     ApprovalEntry2.SetRange("Document No.", ApprovalEntry2."Document No.");
-            //     ApprovalEntry2.SetRange("Sequence No.", 1);
-            //     ApprovalEntry2.SetRange(Status, ApprovalEntry2.Status::Open);
 
-            //     if ApprovalEntry2.FindSet() then
-            //         repeat
-            //             ApprovalEntry2.Status := ApprovalEntry2.Status::Approved;
-            //             ApprovalEntry2.Modify();
-            //         until ApprovalEntry2.Next() = 0;
-            // end;
-
-
-            // If no pending approvals remain, update loan status
-            if ApprovalEntry2.IsEmpty then begin
+            // If pending approvals remain, update loan status
+            if not ApprovalEntry2.IsEmpty then begin
                 RecRef.Get(ApprovalEntry."Record ID to Approve");
                 RecRef.SetTable(LoansRegister);
+
+                //approve all remaining approval requests
+
+
+                if ApprovalEntry2.FindSet() then begin
+
+                    repeat
+                        ApprovalEntry2.Status := ApprovalEntry2.Status::Approved;
+                        ApprovalEntry2.Modify(true);
+                    until ApprovalEntry2.Next() = 0;
+
+                end;
+
+                if (LoansRegister."Loan Rescheduled Date" <> 0D) AND (LoansRegister."Reschedule Approval Status" = LoansRegister."Reschedule Approval Status"::Pending) then begin
+
+
+                    LoansRegister."Reschedule Approval Status" := LoansRegister."Reschedule Approval Status"::Approved;
+
+                end;
 
                 LoansRegister."Loan Status" := LoansRegister."Loan Status"::Approved;
                 LoansRegister."Approval Status" := LoansRegister."Approval Status"::Approved;

@@ -37,6 +37,48 @@ Page 56042 "BOSA Cue"
                     DrillDownPageId = "Member List";
                 }
 
+
+                field("KRB Employee"; Rec."KRB Employee")
+                {
+                    ApplicationArea = Basic;
+                    Caption = 'KRB Employees';
+                    Image = none;
+                    Style = StrongAccent;
+                    StyleExpr = true;
+                    DrillDownPageId = "Member List";
+                }
+
+
+                field("Ex KRB Employee"; Rec."Ex KRB Employee")
+                {
+                    ApplicationArea = Basic;
+                    Caption = 'Ex KRB Employees';
+                    Image = none;
+                    Style = favorable;
+                    StyleExpr = true;
+                    DrillDownPageId = "Member List";
+                }
+                field("Non KRB Employee"; Rec."Non KRB Employee")
+                {
+                    ApplicationArea = Basic;
+                    Caption = 'Non KRB Employees';
+                    Image = none;
+                    Style = favorable;
+                    StyleExpr = true;
+                    DrillDownPageId = "Member List";
+                }
+
+
+
+                field("Junior Members"; Rec."Junior Members")
+                {
+                    ApplicationArea = Basic;
+                    Image = none;
+                    Style = Favorable;
+                    StyleExpr = true;
+                    DrillDownPageId = "Member List";
+                }
+
                 field("NonActive Mbrs"; Rec."NonActive Mbrs")
                 {
 
@@ -47,14 +89,15 @@ Page 56042 "BOSA Cue"
                     StyleExpr = true;
                     DrillDownPageId = "Member List";
                 }
-                field(Deceased; Rec.Deceased)
-                {
-                    ApplicationArea = Basic;
-                    Image = none;
-                    Style = Attention;
-                    StyleExpr = true;
-                    DrillDownPageId = "Member List";
-                }
+
+                // field(Deceased; Rec.Deceased)
+                // {
+                //     ApplicationArea = Basic;
+                //     Image = none;
+                //     Style = Attention;
+                //     StyleExpr = true;
+                //     DrillDownPageId = "Member List";
+                // }
                 field("Awaiting Exit"; Rec."Awaiting Exit")
                 {
                     ApplicationArea = Basic;
@@ -64,14 +107,14 @@ Page 56042 "BOSA Cue"
                     DrillDownPageId = "Member List";
                 }
 
-                field(Exited; Rec.Exited)
-                {
-                    ApplicationArea = Basic;
-                    Image = none;
-                    Style = StrongAccent;
-                    StyleExpr = true;
-                    DrillDownPageId = "Member List";
-                }
+                // field(Exited; Rec.Exited)
+                // {
+                //     ApplicationArea = Basic;
+                //     Image = none;
+                //     Style = StrongAccent;
+                //     StyleExpr = true;
+                //     DrillDownPageId = "Member List";
+                // }
             }
             cuegroup(Gender)
             {

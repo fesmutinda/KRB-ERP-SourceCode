@@ -68,6 +68,11 @@ Report 56384 "Loan Appraisal Edit"
 
             }
 
+            column(uSERSignatureBase64; uSERSignatureBase64)
+            {
+
+            }
+
             column(Approver2Name; Approver2Name)
             {
             }
@@ -97,6 +102,11 @@ Report 56384 "Loan Appraisal Edit"
             }
             column(Approver4Status; Approver4Status)
             {
+            }
+
+            column(LoanArrearsToBeDeducted; Round(LoanArrearsToBeDeducted, 1, '>'))
+            {
+
             }
             column(TotalTopUpDeductions; TotalTopUpDeductions)
             {
@@ -168,6 +178,10 @@ Report 56384 "Loan Appraisal Edit"
             {
             }
             column(Loans__Application_Date_; "Application Date")
+            {
+            }
+
+            column(Loans__Application_Time_; "Application Time")
             {
             }
             column(JazaDeposits; "Jaza Deposits")
@@ -242,6 +256,11 @@ Report 56384 "Loan Appraisal Edit"
             column(LoanInsurance; "Loans Register"."Loan Insurance")
             {
             }
+
+            column(BankCharges; BankCharges)
+            {
+
+            }
             column(Cust_Name; Cust.Name)
             {
             }
@@ -300,6 +319,10 @@ Report 56384 "Loan Appraisal Edit"
             {
             }
             column(Loans__Application_Date__Control1102760139; "Application Date")
+            {
+            }
+
+            column(Loans__Application_Time__Control1102760139; "Application Time")
             {
             }
             column(Loans__Loan_Product_Type__Control1102760140; "Loan Product Type")
@@ -1037,12 +1060,31 @@ Report 56384 "Loan Appraisal Edit"
                 LOANBALANCE := 0;
                 TotalTopUp := 0;
                 TotalIntPayable := 0;
+                LoanArrearsToBeDeducted := 0;
                 GTotals := 0;
                 AmountGuaranteed := 0;
                 TotLoans := 0;
+                TotalSec := 0;
+                TShares := 0;
+                TLoans := 0;
+                Earnings := 0;
+                Deductions := 0;
+                NetSalary := 0;
+                LoanPrincipal := 0;
+                loanInterest := 0;
+                TotalLoanBal := 0;
+                TotalBand := 0;
+                TotalRepay := 0;
+                Upfronts := 0;
+                DisbursementFee := 0;
+                LegalFee := 0;
+                total_deductions := 0;
+                ValuationFee := 0;
+                LoanInsurance := 0;
 
-
-
+                TotalTopUpDeductions := 0;
+                Upfronts := 0;
+                total_deductions := 0;
 
 
                 TestField("Loans Register"."Requested Amount");
@@ -1063,23 +1105,7 @@ Report 56384 "Loan Appraisal Edit"
                     until LoanGuarantors.Next = 0;
                 end;
 
-                TotalSec := 0;
-                TShares := 0;
-                TLoans := 0;
-                Earnings := 0;
-                Deductions := 0;
-                NetSalary := 0;
-                LoanPrincipal := 0;
-                loanInterest := 0;
-                TotalLoanBal := 0;
-                TotalBand := 0;
-                TotalRepay := 0;
-                Upfronts := 0;
-                DisbursementFee := 0;
-                LegalFee := 0;
-                total_deductions := 0;
-                ValuationFee := 0;
-                LoanInsurance := 0;
+
                 //**********added************
 
                 //  Deposits analysis
@@ -1118,13 +1144,25 @@ Report 56384 "Loan Appraisal Edit"
                             end;
                         until LoanApp.Next = 0;
                     end;
+
+
+
+                    //aRREARS TO BE rECOVERED
+                    LoanApp.Reset;
+                    LoanApp.SetRange("Client Code", "Loans Register"."Client Code");
+                    LoanApp.SetFilter("Amount in Arrears", '>0');
+                    LoanApp.SetRange("Mark For Arrear Recovery", true);
+
+                    IF LoanApp.Find('-') then begin
+                        repeat
+                            LoanArrearsToBeDeducted += LoanApp."Amount in Arrears";
+                        until LoanApp.Next() = 0;
+                    end;
+
                     //.......................................................................Get Member Total Active Loan Repayments
 
                     //.......................................................................Get Member TopUp Repayments Repayments
                     //----------------TotalTopUpDeductions start
-                    TotalTopUpDeductions := 0;
-                    Upfronts := 0;
-                    total_deductions := 0;
 
                     // Bridged_Amount := 0;
                     LoanTopUp.Reset;
@@ -1281,13 +1319,15 @@ Report 56384 "Loan Appraisal Edit"
                         LegalFee := "Loans Register"."Facilitation Cost";
                         ValuationFee := "Loans Register"."Valuation Cost";
                         LoanInsurance := "Loans Register"."Loan Insurance";
+                        BankCharges := Round("Loans Register"."Bank Transfer Charges", 1, '>');
+
 
                         LoanProcessingFee := SFactory.FnGetChargeFee("Loans Register"."Loan Product Type", "Loans Register"."Approved Amount", 'PROCESSING');
                         DisbursementFee := SFactory.FnGetChargeFee("Loans Register"."Loan Product Type", Netdisbursed, 'DISBURSEMENT');
 
-                        Upfronts := LoanProcessingFee + LegalFee + DisbursementFee + "Deboost Commision" + "Deboost Amount" + ValuationFee;
+                        Upfronts := LoanProcessingFee + LegalFee + DisbursementFee + "Deboost Commision" + "Deboost Amount" + ValuationFee + Round(BankCharges, 1, '>');
 
-                        total_deductions := Upfronts + TotalTopUpDeductions + LoanInsurance;
+                        total_deductions := Upfronts + TotalTopUpDeductions + LoanInsurance + LoanArrearsToBeDeducted;
                         Netdisbursed := ("Approved Amount" - total_deductions);
                         Appraised := true;
                         Modify;
@@ -1447,6 +1487,8 @@ Report 56384 "Loan Appraisal Edit"
         InstallRecom: Decimal;
         TopUpComm: Decimal;
         LegalFee: Decimal;
+
+        BankCharges: Decimal;
         total_deductions: Decimal;
         TotalTopupComm: Decimal;
         LoanTopUp: Record "Loan Offset Details";
@@ -1740,6 +1782,25 @@ Report 56384 "Loan Appraisal Edit"
 
         UserSignatureMimeType: Text;
 
+        LoanArrearsToBeDeducted: Decimal;
+
+    procedure GetMembersMonthlyDeductions()
+
+    var
+
+        CustomerRecord: Record "Customer";
+
+
+        LoansRegister: Record "Loans Register";
+
+
+    begin
+
+
+
+
+    end;
+
 
     procedure GetUserDetails()
     var
@@ -1913,8 +1974,6 @@ Report 56384 "Loan Appraisal Edit"
             exit(TenantMedia."Mime Type");
         end;
         ;
-
-
     end;
 }
 

@@ -264,6 +264,8 @@ Table 51398 "Sacco General Set-Up"
         }
         field(74; "Interest on Deposits (%)"; Decimal)
         {
+            DecimalPlaces = 0 : 3;
+
         }
         field(1605; "Proposed Honoraria"; Decimal)
         {

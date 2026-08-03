@@ -355,8 +355,6 @@ Report 51037 "Loans Aging Presentation"
             end;
         end ELSE begin
 
-            Swizzfactory.FnGenerateRepaymentSchedule("Loans Register"."Loan  No.");
-
             LoanRepaymentSchedule.Reset();
             LoanRepaymentSchedule.Reset();
             LoanRepaymentSchedule.SetRange("Loan No.", "Loans Register"."Loan  No.");

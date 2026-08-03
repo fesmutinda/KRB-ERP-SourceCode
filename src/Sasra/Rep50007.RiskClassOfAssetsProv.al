@@ -152,7 +152,7 @@ Report 50007 "Risk Class Of Assets & Prov"
                 YearBeginDate := CalcDate('-CY', AsAt);
                 if LoansRegister.Find('-') then begin
                     repeat
-                        LoansClassificationCodeUnit.FnClassifyLoan(LoansRegister."Loan  No.", AsAt);
+                    //LoansClassificationCodeUnit.FnClassifyLoan(LoansRegister."Loan  No.", AsAt);
                     until LoansRegister.Next = 0;
                 end;
                 LoanCount := 0;
@@ -405,8 +405,8 @@ Report 50007 "Risk Class Of Assets & Prov"
         GRANDTOTAL: Decimal;
         GRANDTOTALCOUNT: Integer;
         PrevMonthDate: Date;
-        // Classify: Codeunit "Loan Classification-SASRA";
-        LoansClassificationCodeUnit: Codeunit LoansClassificationCodeUnit;
+    // Classify: Codeunit "Loan Classification-SASRA";
+    //LoansClassificationCodeUnit: Codeunit LoansClassificationCodeUnit;
 
 }
 

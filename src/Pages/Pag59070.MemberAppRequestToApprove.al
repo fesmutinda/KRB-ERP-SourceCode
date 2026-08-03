@@ -362,7 +362,7 @@ page 59070 "MemberApp Requests to Approve"
 
 
 
-            if Customer.Get(MemberApp.Name) then
+            if Customer.Get(MemberApp."No.") then
                 Name := MemberApp.Name;
         end;
     end;

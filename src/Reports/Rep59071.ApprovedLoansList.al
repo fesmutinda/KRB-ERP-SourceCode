@@ -10,7 +10,7 @@ report 59071 "Approved Loans List-Grouped"
     {
         dataitem(LoansRegister; "Loans Register")
         {
-            DataItemTableView = where("Approval Status" = const(Approved));
+            DataItemTableView = where("Approval Status" = const(Approved), "Loan Status" = filter('<>Discarded'));
 
             column(Date; DateToShow) { }
             column(Member_Name; MemberNameToShow) { }
@@ -80,10 +80,25 @@ report 59071 "Approved Loans List-Grouped"
                     until LoanTopUp.Next() = 0;
 
                 // Loan deductions
-                totalloandeductions := LoansRegister."Facilitation Cost" + LoansRegister."Valuation Cost" + LoansRegister."Loan Insurance";
+                //totalloandeductions := LoansRegister."Facilitation Cost" + LoansRegister."Valuation Cost" + LoansRegister."Loan Insurance";
+
+                if ("Approved Amount" > 0) and (("Loan Product Type" = 'LT006') or ("Loan Product Type" = 'LT007')) then begin
+                    //Upfronts := "Valuation Cost" + Round("Bank Transfer Charges", 1, '>');
+                    //totalloandeductions := Upfronts + LoanInsurance + TotalTopUpDeductions + LoanArrearsToBeDeducted;
+                    totalloandeductions := LoansRegister."Valuation Cost" + LoansRegister."Loan Insurance" + Round(LoansRegister."Bank Transfer Charges", 1, '>');
+                    totalloandeductions := 0.00;
+                    //Netdisbursed := "Approved Amount" - total_deductions;
+                end else if ("Approved Amount" > 0) then begin
+                    //Upfronts := "Facilitation Cost" + "Valuation Cost" + Round("Bank Transfer Charges", 1, '>');
+                    //totalloandeductions := Upfronts + LoanInsurance + TotalTopUpDeductions + LoanArrearsToBeDeducted;
+                    totalloandeductions := LoansRegister."Facilitation Cost" + LoansRegister."Valuation Cost" + LoansRegister."Loan Insurance";
+
+                end;
 
                 // Net disbursed
-                netdisbursed := LoansRegister."Approved Amount" - totalloandeductions - TotalTopUpDeductions;
+                //netdisbursed := LoansRegister."Approved Amount" - totalloandeductions - TotalTopUpDeductions;
+
+                Netdisbursed := "Approved Amount" - totalloandeductions;
 
                 // Paid vs due
                 if LoansRegister."Loan Status" = LoansRegister."Loan Status"::Issued then begin

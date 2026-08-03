@@ -80,7 +80,7 @@ Report 50207 "SASRA Loans Classification"
                 // LoansReg.SetAutocalcFields(LoansReg."Scheduled Principle Payments", LoansReg."Schedule Loan Amount Issued", LoansReg."Schedule Installments", LoansReg."Outstanding Balance", LoansReg."Oustanding Interest", LoansReg."Scheduled Interest Payments", LoansReg."Interest Paid");
                 if LoansReg.FindSet() then begin
                     repeat
-                        LoansClassificationCodeUnit.FnClassifyLoan(LoansReg."Loan  No.", AsAt);
+                    //  LoansClassificationCodeUnit.FnClassifyLoan(LoansReg."Loan  No.", AsAt);
                     until LoansReg.Next = 0;
                 end else
                     // if not Find('-') then begin
@@ -244,7 +244,7 @@ Report 50207 "SASRA Loans Classification"
 
     var
         LoansReg: Record "Loans Register";
-        LoansClassificationCodeUnit: Codeunit LoansClassificationCodeUnit;
+        // LoansClassificationCodeUnit: Codeunit LoansClassificationCodeUnit;
         DateFilter: Text;
         ExpectedLoanBal: Decimal;
         CurrentLoanBalance: Decimal;
