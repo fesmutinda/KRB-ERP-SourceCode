@@ -91,6 +91,7 @@ Report 59052 "Member Statement Junior"
                 column(ReportForNavId_1000000071; 1000000071)
                 {
                 }
+                column(JuniorEntryNo; JuniorSavings."Entry No.") { }
                 column(PostingDate_Junior; JuniorSavings."Posting Date")
                 {
                 }
@@ -159,6 +160,7 @@ Report 59052 "Member Statement Junior"
 
                 trigger OnPreDataItem()
                 begin
+                    JuniorBF := 0;
                     ClosingBalanceJunior := JuniorBF;
                     OpenBalanceJunior := JuniorBF;
 
@@ -272,7 +274,7 @@ Report 59052 "Member Statement Junior"
                     GuardianJuniorSavings.SetFilter("Customer No.", GuardianJuniorFilter);
 
                     // Calculate brought forward balance
-                    GuardianJuniorBF := CalculateGuardianJuniorBF("Members Register"."No.", DateFilterBF);
+                    GuardianJuniorBF := 0;
                     GuardianJuniorClosing := GuardianJuniorBF;
                 end;
             }
@@ -543,10 +545,21 @@ Report 59052 "Member Statement Junior"
 
             trigger OnPreDataItem()
             begin
-                if "Members Register".GetFilter("Members Register"."Date Filter") <> '' then
-                    DateFilterBF := '..' + Format(CalcDate('-1D', "Members Register".GetRangeMin("Members Register"."Date Filter")));
                 if (StartDate <> 0D) and (EndDate <> 0D) then
-                    "Members Register".SetFilter("Date Filter", Format(StartDate) + '..' + Format(EndDate));
+                    if StartDate > EndDate then
+                        Error('Start Date must be on or before End Date.');
+
+                if (StartDate <> 0D) and (EndDate <> 0D) then
+                    "Members Register".SetRange("Date Filter", StartDate, EndDate)
+                else
+                    if StartDate <> 0D then
+                        "Members Register".SetFilter("Date Filter", '%1..', StartDate)
+                    else
+                        if EndDate <> 0D then
+                            "Members Register".SetFilter("Date Filter", '..%1', EndDate);
+
+                // This statement shows movement within the selected period only.
+                Clear(DateFilterBF);
             end;
         }
     }
@@ -744,26 +757,27 @@ Report 59052 "Member Statement Junior"
         TempMember.SetRange("Guardian No.", GuardianNo);
         if TempMember.FindSet() then
             repeat
-                TotalJuniorAccounts += 1;
-
                 // Calculate current balance for this junior account
                 CurrentBalance := 0;
                 CustLedgerEntry.Reset();
                 CustLedgerEntry.SetRange("Customer No.", TempMember."No.");
                 CustLedgerEntry.SetRange("Transaction Type", CustLedgerEntry."Transaction Type"::"Junior Savings");
                 CustLedgerEntry.SetRange(Reversed, false);
+                CustLedgerEntry.SetFilter("Posting Date", "Members Register".GetFilter("Date Filter"));
 
-                if CustLedgerEntry.FindSet() then
+                if CustLedgerEntry.FindSet() then begin
+                    TotalJuniorAccounts += 1;
                     repeat
                         CurrentBalance := CurrentBalance + (CustLedgerEntry."Amount Posted" * -1);
                     until CustLedgerEntry.Next() = 0;
 
-                TotalJuniorBalance += CurrentBalance;
+                    TotalJuniorBalance += CurrentBalance;
 
-                // Build accounts list
-                if JuniorAccountsList <> '' then
-                    JuniorAccountsList := JuniorAccountsList + ', ';
-                JuniorAccountsList := JuniorAccountsList + TempMember."No." + ' (' + TempMember.Name + ')';
+                    // Build accounts list only for accounts with period activity.
+                    if JuniorAccountsList <> '' then
+                        JuniorAccountsList := JuniorAccountsList + ', ';
+                    JuniorAccountsList := JuniorAccountsList + TempMember."No." + ' (' + TempMember.Name + ')';
+                end;
 
             until TempMember.Next() = 0;
     end;

@@ -422,7 +422,7 @@
                                   <Value>=Fields!PostingDate_Junior.Value</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
-                                    <Format>d</Format>
+                                    <Format>d MMMM yyyy</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -456,7 +456,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!TransactionType_Junior.Value</Value>
+                                  <Value>=Fields!JuniorEntryNo.Value</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                   </Style>
@@ -567,7 +567,7 @@
                                   <Value>=Fields!DebitAmount_Junior.Value</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
-                                    <Format>#,0.00;#,0.00-;''</Format>
+                                    <Format>#,##0.00;(#,##0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -604,7 +604,7 @@
                                   <Value>=Fields!CreditAmount_Junior.Value</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
-                                    <Format>#,0.00;#,0.00-;''</Format>
+                                    <Format>#,##0.00;(#,##0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -641,7 +641,7 @@
                                   <Value>=Fields!ClosingBalanceJunior.Value</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
-                                    <Format>#,0.00;#,0.00-;''</Format>
+                                    <Format>#,##0.00;(#,##0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -680,7 +680,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Balance</Value>
+                                  <Value>Net Change for Period</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
@@ -729,7 +729,7 @@
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>#,0.00;#,0.00-;'-'</Format>
+                                    <Format>#,##0.00;(#,##0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -772,7 +772,7 @@
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>#,0.00;#,0.00-;'-'</Format>
+                                    <Format>#,##0.00;(#,##0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -811,11 +811,11 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=(Sum(Fields!DebitAmount_Junior.Value) - Sum(Fields!CreditAmount_Junior.Value) + First(Fields!JuniorBF.Value, "DataSet_Result")) * - 1</Value>
+                                  <Value>=Sum(Fields!CreditAmount_Junior.Value) - Sum(Fields!DebitAmount_Junior.Value)</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>#,0.00;- #,0.00;'-'</Format>
+                                    <Format>#,##0.00;(#,##0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -914,25 +914,28 @@
             <DataSetName>DataSet_Result</DataSetName>
             <Filters>
               <Filter>
-                <FilterExpression>=Fields!TransactionType_Junior.Value</FilterExpression>
-                <Operator>Equal</Operator>
+                <FilterExpression>=Fields!JuniorEntryNo.Value</FilterExpression>
+                <Operator>GreaterThan</Operator>
                 <FilterValues>
-                  <FilterValue>Junior Savings</FilterValue>
+                  <FilterValue DataType="Integer">0</FilterValue>
                 </FilterValues>
               </Filter>
             </Filters>
             <SortExpressions>
               <SortExpression>
-                <Value>=Fields!LoanNumber.Value</Value>
+                <Value>=Fields!PostingDate_Junior.Value</Value>
               </SortExpression>
               <SortExpression>
-                <Value>=Fields!PostingDate_loan.Value</Value>
+                <Value>=Fields!JuniorEntryNo.Value</Value>
               </SortExpression>
             </SortExpressions>
             <Top>3.31745in</Top>
             <Left>0.06714in</Left>
             <Height>0.84201in</Height>
             <Width>8.14351in</Width>
+            <Visibility>
+              <Hidden>=CountRows("Tablix8") = 0</Hidden>
+            </Visibility>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1582,10 +1585,11 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=First(Fields!Registration_Date.Value, "DataSet_Result")</Value>
+                    <Value>=If(IsNothing(First(Fields!Registration_Date.Value, "DataSet_Result")) OrElse First(Fields!Registration_Date.Value, "DataSet_Result") = DateSerial(1, 1, 1) OrElse First(Fields!Registration_Date.Value, "DataSet_Result") = DateSerial(1753, 1, 1), Nothing, First(Fields!Registration_Date.Value, "DataSet_Result"))</Value>
                     <Style>
                       <FontFamily>Segoe UI</FontFamily>
                       <FontSize>9pt</FontSize>
+                      <Format>d MMMM yyyy</Format>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2061,6 +2065,9 @@ kHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpBvD/AZI2
         </Field>
         <Field Name="ReportForNavId_1000000071">
           <DataField>ReportForNavId_1000000071</DataField>
+        </Field>
+        <Field Name="JuniorEntryNo">
+          <DataField>JuniorEntryNo</DataField>
         </Field>
         <Field Name="PostingDate_Junior">
           <DataField>PostingDate_Junior</DataField>

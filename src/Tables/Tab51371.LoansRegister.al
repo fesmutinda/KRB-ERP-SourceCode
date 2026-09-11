@@ -734,13 +734,13 @@ Table 51371 "Loans Register"
                     end;
                 end;
 
-                if "Recommended Amount" > "Requested Amount" then begin
+                if "Recommended Amount" >= "Requested Amount" then begin
                     "Approved Amount" := "Requested Amount";
                     "Net Payment to FOSA" := "Requested Amount";
-                end else begin
-
-                    Message('Requested Amount is greater than Qualifying Amount');
-                end;
+                end else
+                    Error(
+                        'Application rejected. Based on your deposits and the applicable multiplier, the maximum amount you qualify for is %1. You requested %2.',
+                        "Recommended Amount", "Requested Amount");
 
 
                 Validate("Approved Amount");
@@ -5668,7 +5668,6 @@ Table 51371 "Loans Register"
             Rec."Facilitation Cost" := 0;
         end;
     end;
-
 
     procedure GetInterestPaid(): Decimal
     begin

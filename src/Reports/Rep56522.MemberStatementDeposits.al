@@ -132,8 +132,7 @@ Report 56522 "Member Statement Deposits"
                 begin
                     ClosingBalanceShareCap := ShareCapBF;
                     OpenBalanceShareCap := ShareCapBF;
-                    if (StartDate <> 0D) and (EndDate <> 0D) then
-                        ShareCapital.SetFilter("Posting Date", Format(StartDate) + '..' + Format(EndDate));
+                    ShareCapital.SetFilter("Posting Date", "Members Register".GetFilter("Date Filter"));
                 end;
             }
             dataitem(Deposits; "Cust. Ledger Entry")
@@ -143,6 +142,7 @@ Report 56522 "Member Statement Deposits"
                 column(ReportForNavId_1000000036; 1000000036)
                 {
                 }
+                column(DepositEntryNo; Deposits."Entry No.") { }
                 column(PostingDate_Deposits; Deposits."Posting Date")
                 {
                 }
@@ -192,10 +192,10 @@ Report 56522 "Member Statement Deposits"
 
                 trigger OnPreDataItem()
                 begin
+                    SharesBF := 0;
                     ClosingBalanceDeposits := SharesBF;
                     OpenBalanceDeposits := SharesBF;
-                    if (StartDate <> 0D) and (EndDate <> 0D) then
-                        Deposits.SetFilter("Posting Date", Format(StartDate) + '..' + Format(EndDate));
+                    Deposits.SetFilter("Posting Date", "Members Register".GetFilter("Date Filter"));
                 end;
             }
             dataitem(Dividend; "Cust. Ledger Entry")
@@ -256,8 +256,7 @@ Report 56522 "Member Statement Deposits"
                 begin
                     ClosingBalanceDividend := DividendBF;
                     OpenBalanceDividend := DividendBF;
-                    if (StartDate <> 0D) and (EndDate <> 0D) then
-                        Dividend.SetFilter("Posting Date", Format(StartDate) + '..' + Format(EndDate));
+                    Dividend.SetFilter("Posting Date", "Members Register".GetFilter("Date Filter"));
                 end;
             }
             dataitem(Khoja; "Cust. Ledger Entry")
@@ -318,8 +317,7 @@ Report 56522 "Member Statement Deposits"
                 begin
                     ClosingBalanceKhoja := KhojaBF;
                     OpenBalanceKhoja := KhojaBF;
-                    if (StartDate <> 0D) and (EndDate <> 0D) then
-                        Khoja.SetFilter("Posting Date", Format(StartDate) + '..' + Format(EndDate));
+                    Khoja.SetFilter("Posting Date", "Members Register".GetFilter("Date Filter"));
                 end;
             }
             dataitem(Loans; "Loans Register")
@@ -443,8 +441,7 @@ Report 56522 "Member Statement Deposits"
                     begin
                         CLosingBalance := PrincipleBF;
                         OpeningBal := PrincipleBF;
-                        if (StartDate <> 0D) and (EndDate <> 0D) then
-                            loan.SetFilter("Posting Date", Format(StartDate) + '..' + Format(EndDate));
+                        loan.SetFilter("Posting Date", "Members Register".GetFilter("Date Filter"));
                     end;
                 }
 
@@ -466,8 +463,6 @@ Report 56522 "Member Statement Deposits"
                 trigger OnPreDataItem()
                 begin
                     Loans.SetFilter(Loans."Date filter", "Members Register".GetFilter("Members Register"."Date Filter"));
-                    if (StartDate <> 0D) and (EndDate <> 0D) then
-                        Loans.SetFilter("Date filter", Format(StartDate) + '..' + Format(EndDate));
                 end;
             }
             trigger OnAfterGetRecord()
@@ -499,10 +494,23 @@ Report 56522 "Member Statement Deposits"
 
             trigger OnPreDataItem()
             begin
-                if "Members Register".GetFilter("Members Register"."Date Filter") <> '' then
-                    DateFilterBF := '..' + Format(CalcDate('-1D', "Members Register".GetRangeMin("Members Register"."Date Filter")));
                 if (StartDate <> 0D) and (EndDate <> 0D) then
-                    "Members Register".SetFilter("Date Filter", Format(StartDate) + '..' + Format(EndDate));
+                    if StartDate > EndDate then
+                        Error('Start Date must be on or before End Date.');
+
+                if (StartDate <> 0D) and (EndDate <> 0D) then
+                    "Members Register".SetRange("Date Filter", StartDate, EndDate)
+                else
+                    if StartDate <> 0D then
+                        "Members Register".SetFilter("Date Filter", '%1..', StartDate)
+                    else
+                        if EndDate <> 0D then
+                            "Members Register".SetFilter("Date Filter", '..%1', EndDate);
+
+                Clear(DateFilterBF);
+                if "Members Register".GetFilter("Date Filter") <> '' then
+                    if "Members Register".GetRangeMin("Date Filter") <> 0D then
+                        DateFilterBF := '..' + Format("Members Register".GetRangeMin("Date Filter") - 1);
             end;
         }
     }

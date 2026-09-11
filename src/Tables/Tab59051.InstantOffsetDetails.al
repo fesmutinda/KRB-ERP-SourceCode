@@ -83,7 +83,8 @@ Table 59051 "Instant Offset Details"
                     "Outstanding Balance" := Loans."Outstanding Balance";
                     "Monthly Repayment" := Loans.Repayment;
 
-                    "Total Top Up" := ROUND("Principle Top Up", 1, '=');
+                    // The offset amount already includes outstanding interest.
+                    "Total Top Up" := "Principle Top Up" + Commision;
                 end;
                 Loans.Bridged := true;
                 Loans.Modify
@@ -113,7 +114,7 @@ Table 59051 "Instant Offset Details"
                     "Loan Product Type Name" := Loans."Loan Product Type Name";
                 end;
 
-                "Total Top Up" := ROUND("Principle Top Up", 1, '=');
+                "Total Top Up" := "Principle Top Up" + Commision;
             end;
         }
         // field(6; "Interest Top Up"; Decimal)
@@ -152,7 +153,10 @@ Table 59051 "Instant Offset Details"
         }
         field(13; Commision; Decimal)
         {
-
+            trigger OnValidate()
+            begin
+                "Total Top Up" := "Principle Top Up" + Commision;
+            end;
         }
         field(14; "Partial Bridged"; Boolean)
         {

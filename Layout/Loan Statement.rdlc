@@ -1,13 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:am="http://schemas.microsoft.com/sqlserver/reporting/authoringmetadata">
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <am:AuthoringMetadata>
+    <am:CreatedBy>
+      <am:Name>MSRB</am:Name>
+      <am:Version>15.1.30001.02</am:Version>
+    </am:CreatedBy>
+    <am:UpdatedBy>
+      <am:Name>MSRB</am:Name>
+      <am:Version>15.1.30001.02</am:Version>
+    </am:UpdatedBy>
+    <am:LastModifiedTimestamp>2026-09-11T09:00:50.3344063Z</am:LastModifiedTimestamp>
+  </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="DataSource">
+      <rd:SecurityType>None</rd:SecurityType>
       <ConnectionProperties>
         <DataProvider>SQL</DataProvider>
         <ConnectString />
       </ConnectionProperties>
-      <rd:SecurityType>None</rd:SecurityType>
       <rd:DataSourceID>3450a53f-2ed8-4362-a1e8-a40b23695f5e</rd:DataSourceID>
     </DataSource>
   </DataSources>
@@ -47,6 +60,7 @@
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Textbox152">
+                          <rd:DefaultName>Textbox116</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <Paragraphs>
                             <Paragraph>
@@ -64,7 +78,6 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox116</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -96,6 +109,7 @@
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Textbox131">
+                          <rd:DefaultName>Textbox131</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -113,14 +127,13 @@
                                   <Value>=Fields!LoanNumber.Value</Value>
                                   <Style>
                                     <FontFamily>Book Antiqua</FontFamily>
-                                    <Format>#,0.00;(#,0.00)</Format>
+                                    <Format>#,##0.00;(#,##0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox131</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>White</Color>
@@ -151,6 +164,7 @@
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Textbox114">
+                          <rd:DefaultName>Textbox1</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -171,7 +185,6 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox1</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -194,6 +207,7 @@
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Textbox166">
+                          <rd:DefaultName>Textbox165</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -214,7 +228,6 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox165</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -237,6 +250,7 @@
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Textbox117">
+                          <rd:DefaultName>Textbox2</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -256,7 +270,6 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox2</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -279,6 +292,7 @@
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Textbox118">
+                          <rd:DefaultName>Textbox3</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -298,7 +312,6 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox3</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -321,6 +334,7 @@
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Textbox123">
+                          <rd:DefaultName>Textbox4</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -340,7 +354,6 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox4</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -363,6 +376,7 @@
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Textbox124">
+                          <rd:DefaultName>Textbox5</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -382,7 +396,6 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox5</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -405,6 +418,7 @@
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Textbox153">
+                          <rd:DefaultName>Textbox6</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -424,7 +438,6 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox6</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -452,6 +465,7 @@
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="PostingDate_Deposits4">
+                          <rd:DefaultName>PostingDate_Deposits</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -462,7 +476,7 @@
                                   <Style>
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
-                                    <Format>d</Format>
+                                    <Format>d MMMM yyyy</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -471,7 +485,6 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>PostingDate_Deposits</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>White</Color>
@@ -490,6 +503,7 @@
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="TransactionType_loan">
+                          <rd:DefaultName>TransactionType_loan</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -508,7 +522,6 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>TransactionType_loan</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>White</Color>
@@ -527,6 +540,7 @@
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="DocumentNo_Deposits4">
+                          <rd:DefaultName>DocumentNo_Deposits</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -545,7 +559,6 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>DocumentNo_Deposits</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>White</Color>
@@ -564,6 +577,7 @@
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Description_Deposits4">
+                          <rd:DefaultName>Description_Deposits</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -582,7 +596,6 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Description_Deposits</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>White</Color>
@@ -601,6 +614,7 @@
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="DebitAmount_Deposits5">
+                          <rd:DefaultName>DebitAmount_Deposits</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -611,7 +625,7 @@
                                   <Style>
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
-                                    <Format>#,0.00;#,0.00-;''</Format>
+                                    <Format>#,##0.00;(#,##0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -620,7 +634,6 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>DebitAmount_Deposits</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>White</Color>
@@ -639,6 +652,7 @@
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="CreditAmount_Deposits5">
+                          <rd:DefaultName>CreditAmount_Deposits</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -649,7 +663,7 @@
                                   <Style>
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
-                                    <Format>#,0.00;#,0.00-;''</Format>
+                                    <Format>#,##0.00;(#,##0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -658,7 +672,6 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>CreditAmount_Deposits</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>White</Color>
@@ -677,6 +690,7 @@
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="ClosingBal3">
+                          <rd:DefaultName>ClosingBal</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -687,7 +701,7 @@
                                   <Style>
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
-                                    <Format>#,0.00;#,0.00-;''</Format>
+                                    <Format>#,##0.00;(#,##0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -696,7 +710,6 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>ClosingBal</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>White</Color>
@@ -720,6 +733,7 @@
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Textbox43">
+                          <rd:DefaultName>Textbox38</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -738,7 +752,6 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox38</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -765,6 +778,7 @@
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Textbox89">
+                          <rd:DefaultName>Textbox87</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -776,7 +790,7 @@
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>#,0.00;#,0.00-;'-'</Format>
+                                    <Format>#,##0.00;(#,##0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -786,7 +800,6 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox87</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -809,6 +822,7 @@
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Textbox90">
+                          <rd:DefaultName>Textbox88</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -820,7 +834,7 @@
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>#,0.00;#,0.00-;'-'</Format>
+                                    <Format>#,##0.00;(#,##0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -830,7 +844,6 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox88</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -853,6 +866,7 @@
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Textbox245">
+                          <rd:DefaultName>Textbox89</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -864,7 +878,7 @@
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>#,0.00;- #,0.00;'-'</Format>
+                                    <Format>#,##0.00;(#,##0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -874,7 +888,6 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox89</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -902,6 +915,7 @@
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Textbox5">
+                          <rd:DefaultName>Textbox5</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -918,7 +932,6 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox5</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -1006,10 +1019,10 @@
             <DataSetName>DataSet_Result</DataSetName>
             <Filters>
               <Filter>
-                <FilterExpression>=Fields!LoanNumber.Value</FilterExpression>
+                <FilterExpression>=Fields!LoanEntryNo.Value</FilterExpression>
                 <Operator>GreaterThan</Operator>
                 <FilterValues>
-                  <FilterValue>0</FilterValue>
+                  <FilterValue DataType="Integer">0</FilterValue>
                 </FilterValues>
               </Filter>
             </Filters>
@@ -1025,6 +1038,9 @@
             <Left>0.07098in</Left>
             <Height>1.27951in</Height>
             <Width>8.04004in</Width>
+            <Visibility>
+              <Hidden>=CountRows("Tablix4") = 0</Hidden>
+            </Visibility>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1032,6 +1048,7 @@
             </Style>
           </Tablix>
           <Textbox Name="Company_Address">
+            <rd:DefaultName>Company_Address</rd:DefaultName>
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
             <Paragraphs>
@@ -1050,7 +1067,6 @@
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <rd:DefaultName>Company_Address</rd:DefaultName>
             <Top>0.92708in</Top>
             <Left>1.38552in</Left>
             <Height>0.17708in</Height>
@@ -1080,6 +1096,7 @@
             </Style>
           </Textbox>
           <Textbox Name="Company_Address_2">
+            <rd:DefaultName>Company_Address_2</rd:DefaultName>
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
             <Paragraphs>
@@ -1098,7 +1115,6 @@
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <rd:DefaultName>Company_Address_2</rd:DefaultName>
             <Top>1.10416in</Top>
             <Left>1.38552in</Left>
             <Height>0.25in</Height>
@@ -1128,6 +1144,7 @@
             </Style>
           </Textbox>
           <Textbox Name="Company_Email">
+            <rd:DefaultName>Company_Email</rd:DefaultName>
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
             <Paragraphs>
@@ -1153,7 +1170,6 @@
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <rd:DefaultName>Company_Email</rd:DefaultName>
             <Top>1.60416in</Top>
             <Left>1.38552in</Left>
             <Height>0.25in</Height>
@@ -1183,6 +1199,7 @@
             </Style>
           </Textbox>
           <Textbox Name="Textbox28">
+            <rd:DefaultName>Textbox16</rd:DefaultName>
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
             <Paragraphs>
@@ -1202,7 +1219,6 @@
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <rd:DefaultName>Textbox16</rd:DefaultName>
             <Top>1.98644in</Top>
             <Left>0.18029cm</Left>
             <Height>0.65408cm</Height>
@@ -1225,6 +1241,7 @@
             </Style>
           </Textbox>
           <Textbox Name="Textbox161">
+            <rd:DefaultName>Textbox95</rd:DefaultName>
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
             <Paragraphs>
@@ -1241,7 +1258,6 @@
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <rd:DefaultName>Textbox95</rd:DefaultName>
             <Top>2.33413in</Top>
             <Left>0.07098in</Left>
             <Height>0.19054in</Height>
@@ -1258,6 +1274,7 @@
             </Style>
           </Textbox>
           <Textbox Name="LoanNumber">
+            <rd:DefaultName>LoanNumber</rd:DefaultName>
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
             <Paragraphs>
@@ -1275,7 +1292,6 @@
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <rd:DefaultName>LoanNumber</rd:DefaultName>
             <Top>2.33413in</Top>
             <Left>1.38552in</Left>
             <Height>0.19054in</Height>
@@ -1292,6 +1308,7 @@
             </Style>
           </Textbox>
           <Textbox Name="ProductType">
+            <rd:DefaultName>ProductType</rd:DefaultName>
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
             <Paragraphs>
@@ -1308,7 +1325,6 @@
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <rd:DefaultName>ProductType</rd:DefaultName>
             <Top>2.52467in</Top>
             <Left>0.07098in</Left>
             <Height>0.22179in</Height>
@@ -1325,6 +1341,7 @@
             </Style>
           </Textbox>
           <Textbox Name="ProductType1">
+            <rd:DefaultName>ProductType1</rd:DefaultName>
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
             <Paragraphs>
@@ -1343,7 +1360,6 @@
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <rd:DefaultName>ProductType1</rd:DefaultName>
             <Top>2.51078in</Top>
             <Left>1.35774in</Left>
             <Height>0.194in</Height>
@@ -1360,6 +1376,7 @@
             </Style>
           </Textbox>
           <Textbox Name="Textbox162">
+            <rd:DefaultName>Textbox95</rd:DefaultName>
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
             <Paragraphs>
@@ -1376,7 +1393,6 @@
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <rd:DefaultName>Textbox95</rd:DefaultName>
             <Top>2.74645in</Top>
             <Left>0.07098in</Left>
             <Height>0.17662in</Height>
@@ -1394,6 +1410,7 @@
             </Style>
           </Textbox>
           <Textbox Name="LoanNumber2">
+            <rd:DefaultName>LoanNumber</rd:DefaultName>
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
             <Paragraphs>
@@ -1411,7 +1428,6 @@
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <rd:DefaultName>LoanNumber</rd:DefaultName>
             <Top>2.74645in</Top>
             <Left>1.38552in</Left>
             <Height>0.17662in</Height>
@@ -1428,6 +1444,7 @@
             </Style>
           </Textbox>
           <Textbox Name="ProductType2">
+            <rd:DefaultName>ProductType</rd:DefaultName>
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
             <Paragraphs>
@@ -1444,7 +1461,6 @@
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <rd:DefaultName>ProductType</rd:DefaultName>
             <Top>2.52467in</Top>
             <Left>5.09232in</Left>
             <Height>0.22179in</Height>
@@ -1461,6 +1477,7 @@
             </Style>
           </Textbox>
           <Textbox Name="ProductType4">
+            <rd:DefaultName>ProductType1</rd:DefaultName>
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
             <Paragraphs>
@@ -1479,7 +1496,6 @@
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <rd:DefaultName>ProductType1</rd:DefaultName>
             <Top>2.52467in</Top>
             <Left>6.42027in</Left>
             <Height>0.22179in</Height>
@@ -1496,6 +1512,7 @@
             </Style>
           </Textbox>
           <Textbox Name="Textbox2">
+            <rd:DefaultName>Textbox1</rd:DefaultName>
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
             <Paragraphs>
@@ -1512,7 +1529,6 @@
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <rd:DefaultName>Textbox1</rd:DefaultName>
             <Top>2.33413in</Top>
             <Left>5.10621in</Left>
             <Height>0.18706in</Height>
@@ -1529,6 +1545,7 @@
             </Style>
           </Textbox>
           <Textbox Name="PhoneNo_MemberRegister">
+            <rd:DefaultName>PhoneNo_MemberRegister</rd:DefaultName>
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
             <Paragraphs>
@@ -1547,7 +1564,6 @@
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <rd:DefaultName>PhoneNo_MemberRegister</rd:DefaultName>
             <Top>2.33413in</Top>
             <Left>6.42027in</Left>
             <Height>0.18706in</Height>
@@ -1564,6 +1580,7 @@
             </Style>
           </Textbox>
           <Textbox Name="Textbox3">
+            <rd:DefaultName>Textbox3</rd:DefaultName>
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
             <Paragraphs>
@@ -1580,7 +1597,6 @@
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <rd:DefaultName>Textbox3</rd:DefaultName>
             <Top>2.74645in</Top>
             <Left>5.09232in</Left>
             <Height>0.17662in</Height>
@@ -1597,6 +1613,7 @@
             </Style>
           </Textbox>
           <Textbox Name="Textbox151">
+            <rd:DefaultName>Textbox151</rd:DefaultName>
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
             <Paragraphs>
@@ -1616,12 +1633,14 @@
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <rd:DefaultName>Textbox151</rd:DefaultName>
             <Top>3.15481in</Top>
             <Left>0.07098in</Left>
             <Height>0.25in</Height>
             <Width>8.04002in</Width>
             <ZIndex>16</ZIndex>
+            <Visibility>
+              <Hidden>=Sum(IIF(Fields!LoanEntryNo.Value &gt; 0, 1, 0), "DataSet_Result") = 0</Hidden>
+            </Visibility>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1654,16 +1673,18 @@
             </Style>
           </Image>
           <Textbox Name="ProductType5">
+            <rd:DefaultName>ProductType1</rd:DefaultName>
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
             <Paragraphs>
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=First(Fields!Registration_Date.Value, "DataSet_Result")</Value>
+                    <Value>=If(IsNothing(First(Fields!Registration_Date.Value, "DataSet_Result")) OrElse First(Fields!Registration_Date.Value, "DataSet_Result") = DateSerial(1, 1, 1) OrElse First(Fields!Registration_Date.Value, "DataSet_Result") = DateSerial(1753, 1, 1), Nothing, First(Fields!Registration_Date.Value, "DataSet_Result"))</Value>
                     <Style>
                       <FontFamily>Book Antiqua</FontFamily>
                       <FontSize>9pt</FontSize>
+                      <Format>d MMMM yyyy</Format>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1672,7 +1693,6 @@
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <rd:DefaultName>ProductType1</rd:DefaultName>
             <Top>2.74646in</Top>
             <Left>6.42027in</Left>
             <Height>0.17661in</Height>
@@ -1713,6 +1733,7 @@
             </Style>
           </Line>
           <Textbox Name="Company_Fax_No">
+            <rd:DefaultName>Company_Fax_No</rd:DefaultName>
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
             <Paragraphs>
@@ -1746,7 +1767,6 @@
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <rd:DefaultName>Company_Fax_No</rd:DefaultName>
             <Top>1.38194in</Top>
             <Left>1.38552in</Left>
             <Height>0.21667in</Height>
@@ -1841,6 +1861,7 @@
               </Style>
             </Textbox>
             <Textbox Name="Textbox7">
+              <rd:DefaultName>Textbox1</rd:DefaultName>
               <CanGrow>true</CanGrow>
               <KeepTogether>true</KeepTogether>
               <Paragraphs>
@@ -1857,7 +1878,6 @@
                   <Style />
                 </Paragraph>
               </Paragraphs>
-              <rd:DefaultName>Textbox1</rd:DefaultName>
               <Top>0.03589cm</Top>
               <Left>0.18029cm</Left>
               <Height>0.45889cm</Height>
@@ -1874,6 +1894,7 @@
               </Style>
             </Textbox>
             <Textbox Name="Textbox8">
+              <rd:DefaultName>Textbox1</rd:DefaultName>
               <CanGrow>true</CanGrow>
               <KeepTogether>true</KeepTogether>
               <Paragraphs>
@@ -1890,7 +1911,6 @@
                   <Style />
                 </Paragraph>
               </Paragraphs>
-              <rd:DefaultName>Textbox1</rd:DefaultName>
               <Top>0.10768cm</Top>
               <Left>17.06001cm</Left>
               <Height>0.38711cm</Height>
@@ -1919,6 +1939,7 @@
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
             <Textbox Name="Textbox1">
+              <rd:DefaultName>Textbox1</rd:DefaultName>
               <CanGrow>true</CanGrow>
               <KeepTogether>true</KeepTogether>
               <Paragraphs>
@@ -1934,7 +1955,6 @@
                   <Style />
                 </Paragraph>
               </Paragraphs>
-              <rd:DefaultName>Textbox1</rd:DefaultName>
               <Top>0.05556in</Top>
               <Left>3.60135in</Left>
               <Height>0.25in</Height>
@@ -2028,8 +2048,6 @@ kHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpBvD/AZI2
   </EmbeddedImages>
   <Language>=User!Language</Language>
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
-  <rd:ReportUnitType>Inch</rd:ReportUnitType>
-  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
   <DataSets>
     <DataSet Name="DataSet_Result">
       <Fields>
@@ -2188,6 +2206,9 @@ kHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpBvD/AZI2
         </Field>
         <Field Name="ReportForNavId_1102755031">
           <DataField>ReportForNavId_1102755031</DataField>
+        </Field>
+        <Field Name="LoanEntryNo">
+          <DataField>LoanEntryNo</DataField>
         </Field>
         <Field Name="PostingDate_loan">
           <DataField>PostingDate_loan</DataField>

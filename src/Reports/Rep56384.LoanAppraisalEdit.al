@@ -312,7 +312,7 @@ Report 56384 "Loan Appraisal Edit"
             column(Loans__Employer_Code_; "Employer Code")
             {
             }
-            column(Loans__Loan_Product_Type_Name_; "Loan Product Type Name")
+            column(Loans__Loan_Product_Type_Name_; GetLoanProductName())
             {
             }
             column(Loans__Loan__No___Control1102760138; "Loan  No.")
@@ -841,7 +841,7 @@ Report 56384 "Loan Appraisal Edit"
                 column(Loans_Top_up__Principle_Top_Up_; "Principle Top Up")
                 {
                 }
-                column(Loans_Top_up__Loan_Type_; "Loan Type")
+                column(Loans_Top_up__Loan_Type_; GetOffsetLoanProductName())
                 {
                 }
                 column(Loans_Top_up__Client_Code_; "Client Code")
@@ -856,7 +856,7 @@ Report 56384 "Loan Appraisal Edit"
                 column(Loans_Top_up__Interest_Top_Up_; "Interest Top Up")
                 {
                 }
-                column(Loan_Type; "Loan Offset Details"."Loan Type")
+                column(Loan_Type; GetOffsetLoanProductName())
                 {
                 }
                 column(Loans_Top_up_Commision; Commision)
@@ -1783,6 +1783,38 @@ Report 56384 "Loan Appraisal Edit"
         UserSignatureMimeType: Text;
 
         LoanArrearsToBeDeducted: Decimal;
+
+    local procedure GetOffsetLoanProductName(): Text[100]
+    var
+        OffsetLoan: Record "Loans Register";
+        OffsetProduct: Record "Loan Products Setup";
+    begin
+        if OffsetLoan.Get("Loan Offset Details"."Loan Top Up") then begin
+            if OffsetProduct.Get(OffsetLoan."Loan Product Type") then
+                if OffsetProduct."Product Description" <> '' then
+                    exit(OffsetProduct."Product Description");
+
+            if OffsetLoan."Loan Product Type Name" <> '' then
+                exit(OffsetLoan."Loan Product Type Name");
+        end;
+
+        if OffsetProduct.Get("Loan Offset Details"."Loan Type") then
+            if OffsetProduct."Product Description" <> '' then
+                exit(OffsetProduct."Product Description");
+
+        exit("Loan Offset Details"."Loan Product Type Name");
+    end;
+
+    local procedure GetLoanProductName(): Text[100]
+    var
+        LoanProduct: Record "Loan Products Setup";
+    begin
+        if LoanProduct.Get("Loans Register"."Loan Product Type") then
+            if LoanProduct."Product Description" <> '' then
+                exit(LoanProduct."Product Description");
+
+        exit("Loans Register"."Loan Product Type Name");
+    end;
 
     procedure GetMembersMonthlyDeductions()
 

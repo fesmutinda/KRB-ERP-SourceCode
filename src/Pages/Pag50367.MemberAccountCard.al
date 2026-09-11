@@ -645,6 +645,8 @@ page 50367 "Member Account Card"
 
                 action("Withdrawable Statement")
                 {
+                    Visible = false;
+                    Enabled = false;
                     ApplicationArea = Basic;
                     Caption = 'Withdrawable Statement';
                     Image = "Report";

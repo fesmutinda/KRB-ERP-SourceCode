@@ -110,16 +110,17 @@ Report 50225 "Member Share Capital Statement"
                 column(DocumentNo_Shares; Share."Document No.")
                 {
                 }
+                column(ShareCapitalEntryNo; Share."Entry No.") { }
                 column(PostingDate_Shares; Share."Posting Date")
                 {
                 }
-                column(CreditAmount_Shares; Share."Credit Amount")
+                column(CreditAmount_Shares; ShareCreditAmount)
                 {
                 }
-                column(DebitAmount_Shares; Share."Debit Amount")
+                column(DebitAmount_Shares; ShareDebitAmount)
                 {
                 }
-                column(Amount_Shares; Share.Amount) //"Amount Posted"
+                column(Amount_Shares; Share."Amount Posted")
                 {
                 }
                 column(TransactionType_Shares; Share."Transaction Type")
@@ -140,19 +141,23 @@ Report 50225 "Member Share Capital Statement"
 
                 trigger OnAfterGetRecord()
                 begin
-                    CLosingBalance := CLosingBalance - Share.Amount;
+                    ShareCreditAmount := 0;
+                    ShareDebitAmount := 0;
+                    CLosingBalance := CLosingBalance - Share."Amount Posted";
                     BankCodeShares := GetBankCode(Share);
                     //...................................
-                    if Share.Amount < 0 then begin
-                        Share."Credit Amount" := (Share.Amount * -1);
+                    if Share."Amount Posted" < 0 then begin
+                        ShareCreditAmount := -Share."Amount Posted";
                     end else
-                        if Share.Amount > 0 then begin
-                            Share."Debit Amount" := (Share.Amount);
+                        if Share."Amount Posted" > 0 then begin
+                            ShareDebitAmount := Share."Amount Posted";
                         end;
                 end;
 
                 trigger OnPreDataItem()
                 begin
+                    Share.SetFilter("Posting Date", Customer.GetFilter("Date Filter"));
+                    ShareCapBF := 0;
                     CLosingBalance := ShareCapBF;
                     OpenBalance := ShareCapBF;
                 end;
@@ -186,11 +191,23 @@ Report 50225 "Member Share Capital Statement"
 
             trigger OnPreDataItem()
             begin
-                if Customer.GetFilter("Date Filter") <> '' then
-                    DateFilterBF := '..' + Format(CalcDate('-1D', Customer.GetRangeMin("Date Filter")));
+                if (StartDate <> 0D) and (EndDate <> 0D) then
+                    if StartDate > EndDate then
+                        Error('Start Date must be on or before End Date.');
 
                 if (StartDate <> 0D) and (EndDate <> 0D) then
-                    Customer.SetFilter("Date Filter", Format(StartDate) + '..' + Format(EndDate));
+                    Customer.SetRange("Date Filter", StartDate, EndDate)
+                else
+                    if StartDate <> 0D then
+                        Customer.SetFilter("Date Filter", '%1..', StartDate)
+                    else
+                        if EndDate <> 0D then
+                            Customer.SetFilter("Date Filter", '..%1', EndDate);
+
+                Clear(DateFilterBF);
+                if Customer.GetFilter("Date Filter") <> '' then
+                    if Customer.GetRangeMin("Date Filter") <> 0D then
+                        DateFilterBF := '..' + Format(Customer.GetRangeMin("Date Filter") - 1);
             end;
         }
     }
@@ -232,6 +249,8 @@ Report 50225 "Member Share Capital Statement"
     end;
 
     var
+        ShareCreditAmount: Decimal;
+        ShareDebitAmount: Decimal;
         OpenBalance: Decimal;
         CLosingBalance: Decimal;
         OpenBalanceXmas: Decimal;

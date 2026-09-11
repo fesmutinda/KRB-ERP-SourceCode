@@ -46,6 +46,7 @@ Report 56886 "Member Account Statement(Ver1)"
                 DataItemLink = "Customer No." = field("No."), "Posting Date" = field("Date Filter");
                 DataItemTableView = sorting("Posting Date") where("Transaction Type" = filter("Share Capital"), Reversed = const(false));
 
+                column(ShareCapitalEntryNo; ShareCapital."Entry No.") { }
                 column(PostingDate_ShareCapital; ShareCapital."Posting Date") { }
                 column(DocumentNo_ShareCapital; ShareCapital."Document No.") { }
                 column(Description_ShareCapital; ShareCapital.Description) { }
@@ -73,6 +74,8 @@ Report 56886 "Member Account Statement(Ver1)"
 
                 trigger OnPreDataItem()
                 begin
+                    ApplyStatementDateFilter(ShareCapital);
+                    ShareCapBF := 0;
                     ClosingBalanceShareCap := ShareCapBF;
                     OpenBalanceShareCap := ShareCapBF;
                 end;
@@ -84,6 +87,7 @@ Report 56886 "Member Account Statement(Ver1)"
                 DataItemLink = "Customer No." = field("No."), "Posting Date" = field("Date Filter");
                 DataItemTableView = sorting("Posting Date") where("Transaction Type" = filter("Deposit Contribution"), Reversed = const(false));
 
+                column(DepositEntryNo; Deposits."Entry No.") { }
                 column(PostingDate_Deposits; Deposits."Posting Date") { }
                 column(DocumentNo_Deposits; Deposits."Document No.") { }
                 column(Description_Deposits; Deposits.Description) { }
@@ -111,6 +115,8 @@ Report 56886 "Member Account Statement(Ver1)"
 
                 trigger OnPreDataItem()
                 begin
+                    ApplyStatementDateFilter(Deposits);
+                    SharesBF := 0;
                     ClosingBalanceDeposits := SharesBF;
                     OpenBalanceDeposits := SharesBF;
                 end;
@@ -122,6 +128,7 @@ Report 56886 "Member Account Statement(Ver1)"
                 DataItemLink = "Customer No." = field("No."), "Posting Date" = field("Date Filter");
                 DataItemTableView = sorting("Posting Date") where("Transaction Type" = filter("Withdrawable Savings"), Reversed = const(false));
 
+                column(WithdrawableEntryNo; WithdrawableSavings."Entry No.") { }
                 column(PostingDate_Withdrawable; WithdrawableSavings."Posting Date") { }
                 column(DocumentNo_Withdrawable; WithdrawableSavings."Document No.") { }
                 column(Description_Withdrawable; WithdrawableSavings.Description) { }
@@ -149,6 +156,7 @@ Report 56886 "Member Account Statement(Ver1)"
 
                 trigger OnPreDataItem()
                 begin
+                    ApplyStatementDateFilter(WithdrawableSavings);
                     ClosingBalanceWithdrawable := WithdrawableBF;
                     OpenBalanceWithdrawable := WithdrawableBF;
                 end;
@@ -186,6 +194,7 @@ Report 56886 "Member Account Statement(Ver1)"
                     DataItemTableView = sorting("Posting Date") where("Transaction Type" = filter("Junior Savings"), Reversed = const(false));
 
                     // === TRANSACTION DETAILS (unchanged) ===
+                    column(JuniorEntryNo; JuniorSavingsTransactions."Entry No.") { }
                     column(JuniorTrans_PostingDate; JuniorSavingsTransactions."Posting Date") { }
                     column(JuniorTrans_DocumentNo; JuniorSavingsTransactions."Document No.") { }
                     column(JuniorTrans_Description; JuniorSavingsTransactions.Description) { }
@@ -238,9 +247,7 @@ Report 56886 "Member Account Statement(Ver1)"
                         JuniorTransRunningBalance := JuniorOpeningBalance;
                         JuniorTransSequenceNo := 0;
 
-                        // Apply date filter from main member if exists
-                        if "Members Register".GetFilter("Date Filter") <> '' then
-                            JuniorSavingsTransactions.SetFilter("Posting Date", "Members Register".GetFilter("Date Filter"));
+                        ApplyStatementDateFilter(JuniorSavingsTransactions);
 
                         // Ensure only valid transactions
                         JuniorSavingsTransactions.SetRange(Reversed, false);
@@ -256,7 +263,7 @@ Report 56886 "Member Account Statement(Ver1)"
                 trigger OnAfterGetRecord()
                 begin
                     // Calculate opening balance for this specific junior account
-                    JuniorOpeningBalance := CalculateJuniorAccountOpeningBalance(JuniorAccounts."No.", DateFilterBF);
+                    JuniorOpeningBalance := 0;
 
                     // Initialize closing balance
                     JuniorClosingBalance := JuniorOpeningBalance;
@@ -336,6 +343,7 @@ Report 56886 "Member Account Statement(Ver1)"
                     DataItemLink = "Customer No." = field("Client Code"), "Loan No" = field("Loan  No."), "Posting Date" = field("Date filter");
                     DataItemTableView = sorting("Posting Date") where("Transaction Type" = filter(Loan | "Loan Repayment" | "Interest Due" | "Interest Paid" | "Loan Transfer Charges" | "Unallocated Funds" | "Facilitation Fee"), Reversed = const(false));
 
+                    column(LoanEntryNo; loan."Entry No.") { }
                     column(PostingDate_loan; loan."Posting Date") { }
                     column(DocumentNo_loan; loan."Document No.") { }
                     column(Description_loan; loan.Description) { }
@@ -376,6 +384,7 @@ Report 56886 "Member Account Statement(Ver1)"
 
                     trigger OnPreDataItem()
                     begin
+                        ApplyStatementDateFilter(loan);
                         Loan_ClosingBalance := PrincipleBF;
                         Loan_OpenBalance := PrincipleBF;
                     end;
@@ -383,18 +392,11 @@ Report 56886 "Member Account Statement(Ver1)"
 
                 trigger OnAfterGetRecord()
                 begin
+                    Clear(PrincipleBF);
                     if LoanSetup.Get(Loans."Loan Product Type") then
                         LoanName := LoanSetup."Product Description";
 
-                    if DateFilterBF <> '' then begin
-                        LoansR.Reset;
-                        LoansR.SetRange(LoansR."Loan  No.", "Loan  No.");
-                        LoansR.SetFilter(LoansR."Date filter", DateFilterBF);
-                        if LoansR.Find('-') then begin
-                            LoansR.CalcFields(LoansR."Outstanding Balance");
-                            PrincipleBF := LoansR."Outstanding Balance";
-                        end;
-                    end;
+                    // Loan balances show movement within the selected period only.
                 end;
 
                 trigger OnPreDataItem()
@@ -428,15 +430,18 @@ Report 56886 "Member Account Statement(Ver1)"
                 // Calculate BF values if date filter exists (unchanged)
                 if DateFilterBF <> '' then begin
                     CalculateMainMemberBFValues();
-                    JuniorBF := CalculateJuniorSavingsBF("No.", DateFilterBF);
+                    JuniorBF := 0;
                     WithdrawableBF := CalculateWithdrawableSavingsBF("No.", DateFilterBF);
                 end;
             end;
 
             trigger OnPreDataItem()
             begin
-                if "Members Register".GetFilter("Members Register"."Date Filter") <> '' then
-                    DateFilterBF := '..' + Format(CalcDate('-1D', "Members Register".GetRangeMin("Members Register"."Date Filter")));
+                ApplyMemberDateFilter();
+                Clear(DateFilterBF);
+                if "Members Register".GetFilter("Date Filter") <> '' then
+                    if "Members Register".GetRangeMin("Date Filter") <> 0D then
+                        DateFilterBF := '..' + Format("Members Register".GetRangeMin("Date Filter") - 1);
             end;
         }
     }
@@ -450,6 +455,18 @@ Report 56886 "Member Account Statement(Ver1)"
                 group(Options)
                 {
                     Caption = 'Options';
+                    field(StatementStartDate; StartDate)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Start Date';
+                        ToolTip = 'Specifies the first transaction date to include. Earlier transactions form the opening balance. The selected dates replace the Date Filter.';
+                    }
+                    field(StatementEndDate; EndDate)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'End Date';
+                        ToolTip = 'Specifies the last transaction date to include. Leave blank to include all transactions from the start date. Leave both dates blank to use the Date Filter.';
+                    }
                     field(ShowZeroBalances; ShowZeroBal)
                     {
                         ApplicationArea = All;
@@ -475,10 +492,41 @@ Report 56886 "Member Account Statement(Ver1)"
         Company.Get();
         Company.CalcFields(Company.Picture);
 
-        // Initialize global variables
         Clear(JuniorAccountsCount);
         Clear(TotalJuniorOpeningBalance);
         Clear(TotalJuniorClosingBalance);
+    end;
+
+    local procedure ApplyMemberDateFilter()
+    begin
+        if (StartDate <> 0D) and (EndDate <> 0D) then
+            if StartDate > EndDate then
+                Error('Start Date must be on or before End Date.');
+
+        if (StartDate <> 0D) and (EndDate <> 0D) then
+            "Members Register".SetRange("Date Filter", StartDate, EndDate)
+        else
+            if StartDate <> 0D then
+                "Members Register".SetFilter("Date Filter", '%1..', StartDate)
+            else
+                if EndDate <> 0D then
+                    "Members Register".SetFilter("Date Filter", '..%1', EndDate);
+
+    end;
+
+    local procedure ApplyStatementDateFilter(var LedgerEntry: Record "Cust. Ledger Entry")
+    begin
+        if (StartDate <> 0D) and (EndDate <> 0D) then
+            LedgerEntry.SetRange("Posting Date", StartDate, EndDate)
+        else
+            if StartDate <> 0D then
+                LedgerEntry.SetFilter("Posting Date", '%1..', StartDate)
+            else
+                if EndDate <> 0D then
+                    LedgerEntry.SetFilter("Posting Date", '..%1', EndDate)
+                else
+                    if "Members Register".GetFilter("Date Filter") <> '' then
+                        LedgerEntry.SetFilter("Posting Date", "Members Register".GetFilter("Date Filter"));
     end;
 
     // === ALL YOUR ORIGINAL FUNCTIONS (unchanged) ===

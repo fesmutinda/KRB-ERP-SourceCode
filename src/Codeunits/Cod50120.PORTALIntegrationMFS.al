@@ -2345,6 +2345,7 @@ Codeunit 50120 "PORTALIntegration MFS"
         ValidationMessage: Text;
         existingloanamount: decimal;
         loansregister: record "Loans Register";
+        RequestedGuarantorsCount: Integer;
     begin
         if objMember.Get(memberNumber) then begin
             ObjLoanApplications.Reset;
@@ -2355,6 +2356,29 @@ Codeunit 50120 "PORTALIntegration MFS"
                 if ObjLoanApplications."Application Status" <> ObjLoanApplications."Application Status"::Application then begin
                     response := 'Failed, This loan has already been submitted';
                     exit(response);
+                end;
+
+                ClearLastError();
+                if not TryValidateLoanApplication(ObjLoanApplications) then begin
+                    ValidationMessage := GetLastErrorText();
+                    if ValidationMessage = '' then
+                        ValidationMessage := 'The loan application did not pass validation.';
+                    exit('Failed, ' + ValidationMessage);
+                end;
+
+                if ObjLoanApplications."Guarantorship Requested" and (ObjLoanApplications."Min No. Of Guarantors" > 0) then begin
+                    OnlineLoanGuarantors.Reset();
+                    OnlineLoanGuarantors.SetRange("Loan Application No", loanNumber);
+                    OnlineLoanGuarantors.SetFilter(Approved, '<>%1', OnlineLoanGuarantors.Approved::Rejected);
+                    RequestedGuarantorsCount := OnlineLoanGuarantors.Count();
+
+                    if RequestedGuarantorsCount < ObjLoanApplications."Min No. Of Guarantors" then begin
+                        response :=
+                            StrSubstNo(
+                                'Failed. This loan requires at least %1 guarantor(s). Only %2 have been requested so far. Please request %3 more guarantor(s) before submitting.',
+                                ObjLoanApplications."Min No. Of Guarantors", RequestedGuarantorsCount, ObjLoanApplications."Min No. Of Guarantors" - RequestedGuarantorsCount);
+                        exit(response);
+                    end;
                 end;
 
                 ObjLoanApplications.submitted := true;
@@ -2586,6 +2610,25 @@ Codeunit 50120 "PORTALIntegration MFS"
         exit(response);
     end;
 
+    [TryFunction]
+    local procedure TryValidateLoanApplication(OnlineLoanApplication: Record "Online Loan Application")
+    var
+        TempLoansRegister: Record "Loans Register" temporary;
+    begin
+        TempLoansRegister.Init();
+        TempLoansRegister."Loan  No." := CopyStr(OnlineLoanApplication."Application No", 1, MaxStrLen(TempLoansRegister."Loan  No."));
+        TempLoansRegister.Source := TempLoansRegister.Source::BOSA;
+        TempLoansRegister."Loan Status" := TempLoansRegister."Loan Status"::Application;
+        TempLoansRegister.Insert();
+
+        TempLoansRegister.Validate("Application Date", OnlineLoanApplication."Application Date");
+        TempLoansRegister.Validate("Client Code", OnlineLoanApplication."Membership No");
+        TempLoansRegister.Validate("BOSA No", OnlineLoanApplication."Membership No");
+        TempLoansRegister.Validate("Loan Product Type", OnlineLoanApplication."Loan Type");
+        TempLoansRegister.Validate(Installments, OnlineLoanApplication."Repayment Period");
+        TempLoansRegister.Validate("Requested Amount", OnlineLoanApplication."Loan Amount");
+    end;
+
 
 
     local procedure ValidateLoansWithArrears(MemberNumber: Code[20]): Text
@@ -2624,11 +2667,8 @@ Codeunit 50120 "PORTALIntegration MFS"
                     );
                 end else begin
 
-
                     OnlineOffsetRec.Validated := true;
                     OnlineOffsetRec.Modify(true);
-
-
                 end;
             until LoansRec.Next() = 0;
         end;
@@ -2689,6 +2729,7 @@ Codeunit 50120 "PORTALIntegration MFS"
 ): Boolean
     var
         ValidationMessage: Text;
+        RemainingGuarantors: Integer;
     begin
         Response := '';
         ObjLoanApplications.Reset;
@@ -2707,6 +2748,19 @@ Codeunit 50120 "PORTALIntegration MFS"
                     'Failed. You have existing loans with arrears. Please clear the arrears before applying for a new loan.\nDetails:\n%1',
                     ValidationMessage
                 );
+            exit(false);
+        end;
+
+        if BosaNo = ObjLoanApplications."BOSA No" then begin
+            Response := 'Failed. Applicant cannot be a guarantor for their own loan.';
+            exit(false);
+        end;
+
+        OnlineLoanGuarantors.Reset;
+        OnlineLoanGuarantors.SetRange("Loan Application No", LoanNumber);
+        OnlineLoanGuarantors.SetRange("Member No", BosaNo);
+        if OnlineLoanGuarantors.FindFirst() then begin
+            Response := 'Failed. This member has already been requested as a guarantor for this loan.';
             exit(false);
         end;
 
@@ -2744,7 +2798,16 @@ Codeunit 50120 "PORTALIntegration MFS"
         ObjLoanApplications."Guarantorship Requested" := true;
         ObjLoanApplications.Modify(true);
 
-        Response := 'Success. Guarantorship request submitted successfully.';
+        OnlineLoanGuarantors.Reset();
+        OnlineLoanGuarantors.SetRange("Loan Application No", LoanNumber);
+        OnlineLoanGuarantors.SetFilter(Approved, '<>%1', OnlineLoanGuarantors.Approved::Rejected);
+        RemainingGuarantors := ObjLoanApplications."Min No. Of Guarantors" - OnlineLoanGuarantors.Count();
+
+        if RemainingGuarantors > 0 then
+            Response := StrSubstNo('Success. Guarantorship request submitted successfully. %1 more guarantor(s) needed to meet the minimum of %2.', RemainingGuarantors, ObjLoanApplications."Min No. Of Guarantors")
+        else
+            Response := 'Success. Guarantorship request submitted successfully. Minimum guarantors reached.';
+
         exit(true);
     end;
 

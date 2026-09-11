@@ -34,10 +34,13 @@ page 50389 "Loan Offset Detail List"
 
                 field("Loan Product Type Name"; Rec."Loan Product Type Name")
                 {
+                    ApplicationArea = Basic;
+                    Editable = false;
                 }
                 field("Principle Top Up"; Rec."Principle Top Up")
                 {
                     ApplicationArea = Basic;
+                    Caption = 'Loan Offset Amount';
                 }
                 field("Loan Age"; Rec."Loan Age")
                 {
@@ -52,6 +55,7 @@ page 50389 "Loan Offset Detail List"
                 field("Interest Top Up"; Rec."Interest Top Up")
                 {
                     ApplicationArea = Basic;
+                    Visible = false;
                 }
                 field("Monthly Repayment"; Rec."Monthly Repayment")
                 {
@@ -62,6 +66,7 @@ page 50389 "Loan Offset Detail List"
                 {
                     ApplicationArea = Basic;
                     Editable = false;
+                    Visible = false;
                 }
                 field("Outstanding Balance"; Rec."Outstanding Balance")
                 {

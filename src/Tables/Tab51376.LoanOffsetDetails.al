@@ -34,14 +34,31 @@ Table 51376 "Loan Offset Details"
 
                 if GuiAllowed then begin
 
-                    if not Confirm('Are you sure you want to offset this loan?', false) then
+                    if not Confirm('Are you sure you want to offset this loan?', false) then begin
+                        "Loan Top Up" := xRec."Loan Top Up";
                         exit;
+                    end;
                 end;
 
                 "Loan Type" := '';
+                "Loan Product Type Name" := '';
                 "Principle Top Up" := 0;
                 "Interest Top Up" := 0;
                 "Total Top Up" := 0;
+                "Remaining Installments" := 0;
+                "Loan Age" := 0;
+                "Outstanding Balance" := 0;
+                "Monthly Repayment" := 0;
+                "Interest Due at Clearance" := 0;
+                "ID. NO" := '';
+                "Staff No" := '';
+                Commision := 0;
+                Clear(ApplicationDate);
+
+                if "Loan Top Up" = '' then begin
+                    CalcFields("Interest Paid", "Interest Rate");
+                    exit;
+                end;
 
                 ObjRepaymentSchedule.Reset;
                 ObjRepaymentSchedule.SetRange("Loan No.", "Loan Top Up");
@@ -78,6 +95,14 @@ Table 51376 "Loan Offset Details"
                 if Loans.Find('-') then begin
                     Loans.CalcFields(Loans."Outstanding Balance", Loans."Interest Due", Loans."Oustanding Interest");
 
+                    "Loan Type" := Loans."Loan Product Type";
+                    "Loan Product Type Name" := Loans."Loan Product Type Name";
+                    if ("Loan Product Type Name" = '') and Loantypes.Get("Loan Type") then
+                        "Loan Product Type Name" := Loantypes."Product Description";
+                    if "Client Code" = '' then
+                        "Client Code" := Loans."Client Code";
+                    CalcFields("Interest Paid", "Interest Rate");
+
                     if Cust.Get(Loans."Client Code") then begin
                         "ID. NO" := Cust."ID No.";
                         "Staff No" := Cust."Payroll/Staff No";
@@ -86,18 +111,19 @@ Table 51376 "Loan Offset Details"
 
                     "Interest Due at Clearance" := ((0.01 * Loans."Approved Amount" + 0.01 * Loans."Outstanding Balance") * Loans.Interest / 12 * ("Loan Age")) / 2 - "Interest Paid";
                 
-                    if (Date2dmy(ApplicationDate, 1) > 15) then begin
-                        "Interest Due at Clearance" := ((0.01 * Loans."Approved Amount" + 0.01 * Loans."Outstanding Balance") * Loans.Interest / 12 * ("Loan Age" + 1)) / 2 - "Interest Paid";
-                    
-                    end;
+                    if ApplicationDate <> 0D then
+                        if (Date2dmy(ApplicationDate, 1) > 15) then begin
+                            "Interest Due at Clearance" := ((0.01 * Loans."Approved Amount" + 0.01 * Loans."Outstanding Balance") * Loans.Interest / 12 * ("Loan Age" + 1)) / 2 - "Interest Paid";
+                        end;
                     "Principle Top Up" := Loans."Outstanding Balance";
                     "Interest Top Up" := Loans."Oustanding Interest";
-                    "Total Top Up" := "Principle Top Up" + "Interest Top Up" + Commision;
+                    // The offset amount already includes outstanding interest.
+                    "Total Top Up" := "Principle Top Up" + Commision;
                     "Outstanding Balance" := Loans."Outstanding Balance";
                     "Monthly Repayment" := Loans.Repayment;
+                    Loans.Bridged := true;
+                    Loans.Modify;
                 end;
-                Loans.Bridged := true;
-                Loans.Modify
             end;
 
         }
@@ -174,7 +200,7 @@ Table 51376 "Loan Offset Details"
                       END;*/
                 end;
                 //END;
-                "Total Top Up" := "Principle Top Up" + "Interest Top Up";
+                "Total Top Up" := "Principle Top Up" + Commision;
 
             end;
         }
@@ -196,7 +222,7 @@ Table 51376 "Loan Offset Details"
                 */
                 GenSetUp.Get();
                 //Commision:=ROUND(("Principle Top Up"+"Interest Top Up")*(GenSetUp."Top up Commission"/100),1,'>');
-                "Total Top Up" := ROUND(("Principle Top Up" + "Interest Top Up"), 1, '=');
+                "Total Top Up" := "Principle Top Up" + Commision;
                 ;
                 //Commision:=ROUND(("Principle Top Up"+"Interest Top Up")*(GenSetUp."Top up Commission"/100),1,'>');
 
@@ -244,7 +270,7 @@ Table 51376 "Loan Offset Details"
                 // "Total Top Up":="Principle Top Up" +"Interest Top Up";
                 // Commision := 0;
                 GenSetUp.Get;
-                "Total Top Up" := "Principle Top Up" + "Interest Top Up" + Commision;
+                "Total Top Up" := "Principle Top Up" + Commision;
                 // Commision := ROUND(((Loans."Requested Amount") * GenSetUp."Loan Top Up Commision(%)" / 100), 1, '=');
             end;
         }

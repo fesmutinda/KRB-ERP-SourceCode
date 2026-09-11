@@ -360,6 +360,8 @@ Page 56193 "Member Account Card - Editable"
                 }
                 action("Detailed Statement")
                 {
+                    Enabled = false;
+                    Visible = false;
                     ApplicationArea = Basic;
                     Caption = 'Detailed Statement';
                     Image = "Report";
@@ -376,6 +378,8 @@ Page 56193 "Member Account Card - Editable"
                 }
                 action("Detailed Interest Statement")
                 {
+                    Enabled = false;
+                    Visible = false;
                     ApplicationArea = Basic;
                     Caption = 'Detailed Interest Statement';
                     Image = "Report";
@@ -390,6 +394,8 @@ Page 56193 "Member Account Card - Editable"
                 }
                 action("Account Closure Slip")
                 {
+                    Enabled = false;
+                    Visible = false;
                     ApplicationArea = Basic;
                     Caption = 'Account Closure Slip';
                     Image = "Report";
@@ -857,6 +863,8 @@ Page 56193 "Member Account Card - Editable"
                 }
                 action("FOSA Statement")
                 {
+                    Enabled = false;
+                    Visible = false;
                     ApplicationArea = Basic;
                     Promoted = true;
                     PromotedCategory = "Report";
@@ -873,6 +881,8 @@ Page 56193 "Member Account Card - Editable"
                 }
                 action("Member is  a Guarantor")
                 {
+                    Enabled = false;
+                    Visible = false;
                     ApplicationArea = Basic;
                     Caption = 'Member is  a Guarantor';
                     Image = "Report";
@@ -888,6 +898,8 @@ Page 56193 "Member Account Card - Editable"
                 }
                 action("Member is  Guaranteed")
                 {
+                    Enabled = false;
+                    Visible = false;
                     ApplicationArea = Basic;
                     Caption = 'Member is  Guaranteed';
                     Image = "Report";

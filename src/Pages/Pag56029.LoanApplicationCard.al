@@ -375,6 +375,7 @@ Page 56029 "Loan Application Card"
                 field("Total TopUp Commission"; Rec."Total TopUp Commission")
                 {
                     ApplicationArea = Basic;
+                    Caption = 'Total Refinancing Fees';
                     Editable = MNoEditable;
                     Visible = false;
 

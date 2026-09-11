@@ -11,7 +11,7 @@
       <am:Name>MSRB</am:Name>
       <am:Version>15.1.30001.02</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2025-11-17T06:25:50.2340823Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2026-09-11T08:45:35.9505713Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -434,7 +434,7 @@
                                   <Style>
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
-                                    <Format>d</Format>
+                                    <Format>d MMMM yyyy</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -599,7 +599,7 @@
                                   <Style>
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
-                                    <Format>#,0.00;#,0.00-;''</Format>
+                                    <Format>#,##0.00;(#,##0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -641,7 +641,7 @@
                                   <Style>
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
-                                    <Format>#,0.00;#,0.00-;''</Format>
+                                    <Format>#,##0.00;(#,##0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -683,7 +683,7 @@
                                   <Style>
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
-                                    <Format>#,0.00;#,0.00-;''</Format>
+                                    <Format>#,##0.00;(#,##0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -774,7 +774,7 @@
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>#,0.00;#,0.00-;'-'</Format>
+                                    <Format>#,##0.00;(#,##0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -816,7 +816,7 @@
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>#,0.00;#,0.00-;'-'</Format>
+                                    <Format>#,##0.00;(#,##0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -858,7 +858,7 @@
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>#,0.00;- #,0.00;'-'</Format>
+                                    <Format>#,##0.00;(#,##0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -940,10 +940,10 @@
             <DataSetName>DataSet_Result</DataSetName>
             <Filters>
               <Filter>
-                <FilterExpression>=Fields!TransactionType_ShareCapital.Value</FilterExpression>
-                <Operator>Equal</Operator>
+                <FilterExpression>=Fields!ShareCapitalEntryNo.Value</FilterExpression>
+                <Operator>GreaterThan</Operator>
                 <FilterValues>
-                  <FilterValue>Shares Capital</FilterValue>
+                  <FilterValue DataType="Integer">0</FilterValue>
                 </FilterValues>
               </Filter>
             </Filters>
@@ -959,6 +959,9 @@
             <Left>0.22491in</Left>
             <Height>0.73784in</Height>
             <Width>7.88008in</Width>
+            <Visibility>
+              <Hidden>=CountRows("Tablix5") = 0</Hidden>
+            </Visibility>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1402,7 +1405,7 @@
                                   <Value>=Fields!PostingDate_Withdrawable.Value</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
-                                    <Format>d</Format>
+                                    <Format>d MMMM yyyy</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1547,7 +1550,7 @@
                                   <Value>=Fields!DebitAmount_Withdrawable.Value</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
-                                    <Format>#,0.00;#,0.00-;''</Format>
+                                    <Format>#,##0.00;(#,##0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1584,7 +1587,7 @@
                                   <Value>=Fields!CreditAmount_Withdrawable.Value</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
-                                    <Format>#,0.00;#,0.00-;''</Format>
+                                    <Format>#,##0.00;(#,##0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1621,7 +1624,7 @@
                                   <Value>=Fields!ClosingBalanceWithdrawable.Value</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
-                                    <Format>#,0.00;#,0.00-;''</Format>
+                                    <Format>#,##0.00;(#,##0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1708,7 +1711,7 @@
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>#,0.00;#,0.00-;'-'</Format>
+                                    <Format>#,##0.00;(#,##0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1750,7 +1753,7 @@
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>#,0.00;#,0.00-;'-'</Format>
+                                    <Format>#,##0.00;(#,##0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1792,7 +1795,7 @@
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>#,0.00;- #,0.00;'-'</Format>
+                                    <Format>#,##0.00;(#,##0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1875,10 +1878,10 @@
             <DataSetName>DataSet_Result</DataSetName>
             <Filters>
               <Filter>
-                <FilterExpression>=Fields!TransactionType_Withdrawable.Value</FilterExpression>
-                <Operator>Equal</Operator>
+                <FilterExpression>=Fields!WithdrawableEntryNo.Value</FilterExpression>
+                <Operator>GreaterThan</Operator>
                 <FilterValues>
-                  <FilterValue>Withdrawable Savings</FilterValue>
+                  <FilterValue DataType="Integer">0</FilterValue>
                 </FilterValues>
               </Filter>
             </Filters>
@@ -1895,6 +1898,9 @@
             <Height>0.80034in</Height>
             <Width>7.87982in</Width>
             <ZIndex>1</ZIndex>
+            <Visibility>
+              <Hidden>=CountRows("Tablix8") = 0</Hidden>
+            </Visibility>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -2325,10 +2331,11 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=Fields!Registration_Date.Value</Value>
+                    <Value>=If(IsNothing(Fields!Registration_Date.Value) OrElse Fields!Registration_Date.Value = DateSerial(1, 1, 1) OrElse Fields!Registration_Date.Value = DateSerial(1753, 1, 1), Nothing, Fields!Registration_Date.Value)</Value>
                     <Style>
                       <FontFamily>Book Antiqua</FontFamily>
                       <FontSize>9pt</FontSize>
+                      <Format>d MMMM yyyy</Format>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2604,6 +2611,9 @@
             <Height>0.25in</Height>
             <Width>7.9801in</Width>
             <ZIndex>20</ZIndex>
+            <Visibility>
+              <Hidden>=Sum(IIF(Fields!ShareCapitalEntryNo.Value &gt; 0, 1, 0), "DataSet_Result") + Sum(IIF(Fields!WithdrawableEntryNo.Value &gt; 0, 1, 0), "DataSet_Result") + Sum(IIF(Fields!DepositEntryNo.Value &gt; 0, 1, 0), "DataSet_Result") = 0</Hidden>
+            </Visibility>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -2721,7 +2731,7 @@
                                   <Style>
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>9pt</FontSize>
-                                    <Format>#,0.00;(#,0.00)</Format>
+                                    <Format>#,##0.00;(#,##0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -3071,7 +3081,7 @@
                                   <Style>
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
-                                    <Format>d</Format>
+                                    <Format>d MMMM yyyy</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -3214,7 +3224,7 @@
                                   <Style>
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
-                                    <Format>#,0.00;#,0.00-;''</Format>
+                                    <Format>#,##0.00;(#,##0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -3251,7 +3261,7 @@
                                   <Style>
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
-                                    <Format>#,0.00;#,0.00-;''</Format>
+                                    <Format>#,##0.00;(#,##0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -3288,7 +3298,7 @@
                                   <Style>
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
-                                    <Format>#,0.00;#,0.00-;''</Format>
+                                    <Format>#,##0.00;(#,##0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -3379,7 +3389,7 @@
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>#,0.00;#,0.00-;'-'</Format>
+                                    <Format>#,##0.00;(#,##0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -3426,7 +3436,7 @@
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>#,0.00;#,0.00-;'-'</Format>
+                                    <Format>#,##0.00;(#,##0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -3473,7 +3483,7 @@
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>#,0.00;- #,0.00;'-'</Format>
+                                    <Format>#,##0.00;(#,##0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -3611,10 +3621,10 @@
             <DataSetName>DataSet_Result</DataSetName>
             <Filters>
               <Filter>
-                <FilterExpression>=Fields!LoanNumber.Value</FilterExpression>
+                <FilterExpression>=Fields!LoanEntryNo.Value</FilterExpression>
                 <Operator>GreaterThan</Operator>
                 <FilterValues>
-                  <FilterValue>0</FilterValue>
+                  <FilterValue DataType="Integer">0</FilterValue>
                 </FilterValues>
               </Filter>
             </Filters>
@@ -3631,6 +3641,9 @@
             <Height>1.17186in</Height>
             <Width>7.93175in</Width>
             <ZIndex>21</ZIndex>
+            <Visibility>
+              <Hidden>=CountRows("Tablix4") = 0</Hidden>
+            </Visibility>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -4075,7 +4088,7 @@
                                   <Value>=Fields!PostingDate_Deposits.Value</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
-                                    <Format>d</Format>
+                                    <Format>d MMMM yyyy</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4220,7 +4233,7 @@
                                   <Value>=Fields!DebitAmount_Deposits.Value</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
-                                    <Format>#,0.00;#,0.00-;''</Format>
+                                    <Format>#,##0.00;(#,##0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4257,7 +4270,7 @@
                                   <Value>=Fields!CreditAmount_Deposits.Value</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
-                                    <Format>#,0.00;#,0.00-;''</Format>
+                                    <Format>#,##0.00;(#,##0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4294,7 +4307,7 @@
                                   <Value>=Fields!ClosingBalanceDeposits.Value</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
-                                    <Format>#,0.00;#,0.00-;''</Format>
+                                    <Format>#,##0.00;(#,##0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4380,7 +4393,7 @@
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>#,0.00;#,0.00-;'-'</Format>
+                                    <Format>#,##0.00;(#,##0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4422,7 +4435,7 @@
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>#,0.00;#,0.00-;'-'</Format>
+                                    <Format>#,##0.00;(#,##0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4464,7 +4477,7 @@
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>#,0.00;- #,0.00;'-'</Format>
+                                    <Format>#,##0.00;(#,##0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4547,10 +4560,10 @@
             <DataSetName>DataSet_Result</DataSetName>
             <Filters>
               <Filter>
-                <FilterExpression>=Fields!TransactionType_Deposits.Value</FilterExpression>
-                <Operator>Equal</Operator>
+                <FilterExpression>=Fields!DepositEntryNo.Value</FilterExpression>
+                <Operator>GreaterThan</Operator>
                 <FilterValues>
-                  <FilterValue>Deposit Contribution</FilterValue>
+                  <FilterValue DataType="Integer">0</FilterValue>
                 </FilterValues>
               </Filter>
             </Filters>
@@ -4567,6 +4580,9 @@
             <Height>0.79687in</Height>
             <Width>7.91656in</Width>
             <ZIndex>22</ZIndex>
+            <Visibility>
+              <Hidden>=CountRows("Tablix6") = 0</Hidden>
+            </Visibility>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -4599,6 +4615,9 @@
             <Height>0.25in</Height>
             <Width>8.00396in</Width>
             <ZIndex>23</ZIndex>
+            <Visibility>
+              <Hidden>=Sum(IIF(Fields!LoanEntryNo.Value &gt; 0, 1, 0), "DataSet_Result") = 0</Hidden>
+            </Visibility>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -5069,7 +5088,7 @@
                                   <Style>
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
-                                    <Format>d</Format>
+                                    <Format>d MMMM yyyy</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -5212,7 +5231,7 @@
                                   <Style>
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
-                                    <Format>#,0.00;#,0.00-;''</Format>
+                                    <Format>#,##0.00;(#,##0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -5249,7 +5268,7 @@
                                   <Style>
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
-                                    <Format>#,0.00;#,0.00-;''</Format>
+                                    <Format>#,##0.00;(#,##0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -5286,7 +5305,7 @@
                                   <Style>
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
-                                    <Format>#,0.00;#,0.00-;''</Format>
+                                    <Format>#,##0.00;(#,##0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -5377,7 +5396,7 @@
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>#,0.00;#,0.00-;'-'</Format>
+                                    <Format>#,##0.00;(#,##0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -5424,7 +5443,7 @@
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>#,0.00;#,0.00-;'-'</Format>
+                                    <Format>#,##0.00;(#,##0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -5471,7 +5490,7 @@
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>#,0.00;- #,0.00;'-'</Format>
+                                    <Format>#,##0.00;(#,##0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -5606,10 +5625,10 @@
             <DataSetName>DataSet_Result</DataSetName>
             <Filters>
               <Filter>
-                <FilterExpression>=Fields!Junior_AccountNo.Value</FilterExpression>
+                <FilterExpression>=Fields!JuniorEntryNo.Value</FilterExpression>
                 <Operator>GreaterThan</Operator>
                 <FilterValues>
-                  <FilterValue>0</FilterValue>
+                  <FilterValue DataType="Integer">0</FilterValue>
                 </FilterValues>
               </Filter>
             </Filters>
@@ -5626,6 +5645,9 @@
             <Height>0.96049in</Height>
             <Width>7.91737in</Width>
             <ZIndex>24</ZIndex>
+            <Visibility>
+              <Hidden>=CountRows("Tablix7") = 0</Hidden>
+            </Visibility>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -5659,7 +5681,7 @@
             <Width>7.85344in</Width>
             <ZIndex>25</ZIndex>
             <Visibility>
-              <Hidden>=CountRows() = 0</Hidden>
+              <Hidden>=Sum(IIF(Fields!JuniorEntryNo.Value &gt; 0, 1, 0), "DataSet_Result") = 0</Hidden>
             </Visibility>
             <Style>
               <Border>
@@ -6195,6 +6217,9 @@ kHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpBvD/AZI2
         <Field Name="HasJuniorData">
           <DataField>HasJuniorData</DataField>
         </Field>
+        <Field Name="ShareCapitalEntryNo">
+          <DataField>ShareCapitalEntryNo</DataField>
+        </Field>
         <Field Name="PostingDate_ShareCapital">
           <DataField>PostingDate_ShareCapital</DataField>
         </Field>
@@ -6246,6 +6271,9 @@ kHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpBvD/AZI2
         <Field Name="ShareCapBFFormat">
           <DataField>ShareCapBFFormat</DataField>
         </Field>
+        <Field Name="DepositEntryNo">
+          <DataField>DepositEntryNo</DataField>
+        </Field>
         <Field Name="PostingDate_Deposits">
           <DataField>PostingDate_Deposits</DataField>
         </Field>
@@ -6296,6 +6324,9 @@ kHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpBvD/AZI2
         </Field>
         <Field Name="SharesBFFormat">
           <DataField>SharesBFFormat</DataField>
+        </Field>
+        <Field Name="WithdrawableEntryNo">
+          <DataField>WithdrawableEntryNo</DataField>
         </Field>
         <Field Name="PostingDate_Withdrawable">
           <DataField>PostingDate_Withdrawable</DataField>
@@ -6401,6 +6432,9 @@ kHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpBvD/AZI2
         </Field>
         <Field Name="Junior_TotalClosingBalanceFormat">
           <DataField>Junior_TotalClosingBalanceFormat</DataField>
+        </Field>
+        <Field Name="JuniorEntryNo">
+          <DataField>JuniorEntryNo</DataField>
         </Field>
         <Field Name="JuniorTrans_PostingDate">
           <DataField>JuniorTrans_PostingDate</DataField>
@@ -6524,6 +6558,9 @@ kHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpR4aEGaQdGRJmkHZkSJhB2pEhYQZpBvD/AZI2
         </Field>
         <Field Name="OustandingInterest_LoansFormat">
           <DataField>OustandingInterest_LoansFormat</DataField>
+        </Field>
+        <Field Name="LoanEntryNo">
+          <DataField>LoanEntryNo</DataField>
         </Field>
         <Field Name="PostingDate_loan">
           <DataField>PostingDate_loan</DataField>

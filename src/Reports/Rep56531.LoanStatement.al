@@ -72,7 +72,7 @@ Report 56531 "Loan Statement"
             dataitem(Loans; "Loans Register")
             {
                 DataItemLink = "Client Code" = field("No."), "Date filter" = field("Date Filter"), "Loan Product Type" = field("Loan Product Filter");
-                DataItemTableView = sorting("Loan  No.") where(Posted = const(true), "Outstanding Balance" = filter('>0'), Reversed = const(false));
+                DataItemTableView = sorting("Loan  No.") where(Posted = const(true), Reversed = const(false));
                 column(ReportForNavId_1102755024; 1102755024)
                 {
                 }
@@ -127,10 +127,11 @@ Report 56531 "Loan Statement"
                 dataitem(loan; "Cust. Ledger Entry")
                 {
                     DataItemLink = "Customer No." = field("Client Code"), "Loan No" = field("Loan  No."), "Posting Date" = field("Date filter");
-                    DataItemTableView = sorting("Posting Date") where("Transaction Type" = filter(Loan | "Loan Repayment" | "Interest Due" | "Interest Paid" | "Loan Transfer Charges" | "Facilitation Fee"), Reversed = const(false));
+                    DataItemTableView = sorting("Posting Date") where("Transaction Type" = filter(Loan | "Loan Repayment" | "Interest Due" | "Interest Paid" | "Loan Transfer Charges" | "Unallocated Funds" | "Facilitation Fee"), Reversed = const(false));
                     column(ReportForNavId_1102755031; 1102755031)
                     {
                     }
+                    column(LoanEntryNo; loan."Entry No.") { }
                     column(PostingDate_loan; loan."Posting Date")
                     {
                     }
@@ -140,10 +141,10 @@ Report 56531 "Loan Statement"
                     column(Description_loan; loan.Description)
                     {
                     }
-                    column(DebitAmount_Loan; loan."Debit Amount")
+                    column(DebitAmount_Loan; LoanDebitAmount)
                     {
                     }
-                    column(CreditAmount_Loan; loan."Credit Amount")
+                    column(CreditAmount_Loan; LoanCreditAmount)
                     {
                     }
                     column(Amount_Loan; loan.Amount)
@@ -173,23 +174,18 @@ Report 56531 "Loan Statement"
 
                     trigger OnAfterGetRecord()
                     begin
-                        if (loan."Loan No" = 'BLN_19847') AND (loan.Reversed = true) then CurrReport.Skip();
+                        LoanDebitAmount := 0;
+                        LoanCreditAmount := 0;
                         CLosingBalance := CLosingBalance + loan."Amount Posted";
-                        if loan."Amount Posted" < 0 then begin
-                            loan."Credit Amount" := (loan."Amount Posted" * -1);
-                        end else
-                            if loan."Amount Posted" > 0 then begin
-                                loan."Debit Amount" := (loan."Amount Posted");
-                            end;
+                        if loan."Amount Posted" < 0 then
+                            LoanCreditAmount := -loan."Amount Posted"
+                        else
+                            if loan."Amount Posted" > 0 then
+                                LoanDebitAmount := loan."Amount Posted";
                         if loan."Transaction Type" = loan."transaction type"::"Interest Paid" then begin
                             if loan."Amount Posted" < 0 then begin
                                 InterestPaid := loan."Amount Posted";
                                 SumInterestPaid := InterestPaid + SumInterestPaid;
-                            end;
-                        end;
-                        if loan."Transaction Type" = loan."transaction type"::"Loan Repayment" then begin
-                            if loan."Amount Posted" < 0 then begin
-                                loan."Amount Posted" := loan."Amount Posted";
                             end;
                         end;
 
@@ -197,14 +193,15 @@ Report 56531 "Loan Statement"
 
                     trigger OnPreDataItem()
                     begin
+                        loan.SetFilter("Posting Date", "Members Register".GetFilter("Date Filter"));
                         CLosingBalance := PrincipleBF;
-                        OpeningBal := PrincipleBF;
+                        OpenBalance := PrincipleBF;
                     end;
                 }
 
                 trigger OnAfterGetRecord()
                 begin
-
+                    Clear(PrincipleBF);
                     OutstandingI := 0;
                     OutstandingP := 0;
 
@@ -217,15 +214,7 @@ Report 56531 "Loan Statement"
 
                     if LoanSetup.Get(Loans."Loan Product Type") then
                         LoanName := LoanSetup."Product Description";
-                    if DateFilterBF <> '' then begin
-                        LoansR.Reset;
-                        LoansR.SetRange(LoansR."Loan  No.", "Loan  No.");
-                        LoansR.SetFilter(LoansR."Date filter", DateFilterBF);
-                        if LoansR.Find('-') then begin
-                            LoansR.CalcFields(LoansR."Outstanding Balance");
-                            PrincipleBF := LoansR."Outstanding Balance";
-                        end;
-                    end;
+                    // Loan balances show movement within the selected period only.
 
 
                     Rshedule.Reset;
@@ -269,11 +258,23 @@ Report 56531 "Loan Statement"
 
             trigger OnPreDataItem()
             begin
-                if "Members Register".GetFilter("Members Register"."Date Filter") <> '' then
-                    DateFilterBF := '..' + Format(CalcDate('-1D', "Members Register".GetRangeMin("Members Register"."Date Filter")));
+                if (StartDate <> 0D) and (EndDate <> 0D) then
+                    if StartDate > EndDate then
+                        Error('Start Date must be on or before End Date.');
 
                 if (StartDate <> 0D) and (EndDate <> 0D) then
-                    "Members Register".SetFilter("Date Filter", Format(StartDate) + '..' + Format(EndDate));
+                    "Members Register".SetRange("Date Filter", StartDate, EndDate)
+                else
+                    if StartDate <> 0D then
+                        "Members Register".SetFilter("Date Filter", '%1..', StartDate)
+                    else
+                        if EndDate <> 0D then
+                            "Members Register".SetFilter("Date Filter", '..%1', EndDate);
+
+                Clear(DateFilterBF);
+                if "Members Register".GetFilter("Date Filter") <> '' then
+                    if "Members Register".GetRangeMin("Date Filter") <> 0D then
+                        DateFilterBF := '..' + Format("Members Register".GetRangeMin("Date Filter") - 1);
             end;
         }
     }
@@ -315,6 +316,8 @@ Report 56531 "Loan Statement"
     end;
 
     var
+        LoanDebitAmount: Decimal;
+        LoanCreditAmount: Decimal;
         OpenBalance: Decimal;
         CLosingBalance: Decimal;
         OpenBalanceXmas: Decimal;

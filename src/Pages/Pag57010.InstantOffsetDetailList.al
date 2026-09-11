@@ -32,6 +32,7 @@ page 57010 "Instant Offset Detail List"
                 field("Principle Top Up"; Rec."Principle Top Up")
                 {
                     ApplicationArea = Basic;
+                    Caption = 'Loan Offset Amount';
                 }
                 field("Remaining Installments"; Rec."Remaining Installments")
                 {
@@ -60,7 +61,8 @@ page 57010 "Instant Offset Detail List"
 
                 field("Refinancing Fee"; Rec.Commision)
                 {
-
+                    ApplicationArea = Basic;
+                    Caption = 'Refinancing Fee';
                 }
             }
         }
