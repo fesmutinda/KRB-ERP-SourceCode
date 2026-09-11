@@ -214,7 +214,14 @@ Report 56531 "Loan Statement"
 
                     if LoanSetup.Get(Loans."Loan Product Type") then
                         LoanName := LoanSetup."Product Description";
-                    // Loan balances show movement within the selected period only.
+                    if DateFilterBF <> '' then begin
+                        LoansR.Reset();
+                        if LoansR.Get(Loans."Loan  No.") then begin
+                            LoansR.SetFilter("Date filter", DateFilterBF);
+                            LoansR.CalcFields("Outstanding Balance");
+                            PrincipleBF := LoansR."Outstanding Balance";
+                        end;
+                    end;
 
 
                     Rshedule.Reset;

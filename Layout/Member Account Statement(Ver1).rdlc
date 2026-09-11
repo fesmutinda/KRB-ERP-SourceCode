@@ -853,7 +853,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=((Sum(Fields!DebitAmount_ShareCapital.Value))-(Sum(Fields!CreditAmount_ShareCapital.Value))+(First(Fields!ShareCapBF.Value, "DataSet_Result")))*-1</Value>
+                                  <Value>=Last(Fields!ClosingBalanceShareCap.Value)</Value>
                                   <Style>
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -1791,7 +1791,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=(Sum(Fields!DebitAmount_Withdrawable.Value) - Sum(Fields!CreditAmount_Withdrawable.Value) + First(Fields!WithdrawableBF.Value, "DataSet_Result")) * - 1</Value>
+                                  <Value>=Last(Fields!ClosingBalanceWithdrawable.Value)</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
@@ -3478,7 +3478,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=(Sum(Fields!DebitAmount_Loan.Value) - Sum(Fields!CreditAmount_Loan.Value)) + Fields!PrincipleBF_loans.Value</Value>
+                                  <Value>=Last(Fields!CLosingBalance_loan.Value)</Value>
                                   <Style>
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -4473,7 +4473,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=(Sum(Fields!DebitAmount_Deposits.Value) - Sum(Fields!CreditAmount_Deposits.Value) + First(Fields!SharesBF.Value, "DataSet_Result"))*-1</Value>
+                                  <Value>=Last(Fields!ClosingBalanceDeposits.Value)</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
@@ -5485,7 +5485,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=(Sum(Fields!JuniorTrans_DebitAmount.Value) - Sum(Fields!JuniorTrans_CreditAmount.Value) + First(Fields!JuniorBF.Value, "DataSet_Result")) * - 1</Value>
+                                  <Value>=Last(Fields!JuniorTrans_RunningBalance.Value)</Value>
                                   <Style>
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>

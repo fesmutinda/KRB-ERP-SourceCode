@@ -160,7 +160,6 @@ Report 59052 "Member Statement Junior"
 
                 trigger OnPreDataItem()
                 begin
-                    JuniorBF := 0;
                     ClosingBalanceJunior := JuniorBF;
                     OpenBalanceJunior := JuniorBF;
 
@@ -274,7 +273,8 @@ Report 59052 "Member Statement Junior"
                     GuardianJuniorSavings.SetFilter("Customer No.", GuardianJuniorFilter);
 
                     // Calculate brought forward balance
-                    GuardianJuniorBF := 0;
+                    if DateFilterBF <> '' then
+                        GuardianJuniorBF := CalculateGuardianJuniorBF("Members Register"."No.", DateFilterBF);
                     GuardianJuniorClosing := GuardianJuniorBF;
                 end;
             }
@@ -536,10 +536,9 @@ Report 59052 "Member Statement Junior"
                     end;
 
                     // Calculate Junior Savings BF with enhanced guardian handling
+                    JuniorBF := CalculateOwnJuniorSavingsBF("No.", DateFilterBF);
                     if IsGuardian then
-                        JuniorBF := CalculateGuardianJuniorBF("No.", DateFilterBF)
-                    else
-                        JuniorBF := CalculateOwnJuniorSavingsBF("No.", DateFilterBF);
+                        JuniorBF += CalculateGuardianJuniorBF("No.", DateFilterBF);
                 end;
             end;
 
@@ -558,8 +557,10 @@ Report 59052 "Member Statement Junior"
                         if EndDate <> 0D then
                             "Members Register".SetFilter("Date Filter", '..%1', EndDate);
 
-                // This statement shows movement within the selected period only.
                 Clear(DateFilterBF);
+                if "Members Register".GetFilter("Date Filter") <> '' then
+                    if "Members Register".GetRangeMin("Date Filter") <> 0D then
+                        DateFilterBF := '..' + Format("Members Register".GetRangeMin("Date Filter") - 1);
             end;
         }
     }
@@ -767,6 +768,8 @@ Report 59052 "Member Statement Junior"
 
                 if CustLedgerEntry.FindSet() then begin
                     TotalJuniorAccounts += 1;
+                    if DateFilterBF <> '' then
+                        CurrentBalance := CalculateOwnJuniorSavingsBF(TempMember."No.", DateFilterBF);
                     repeat
                         CurrentBalance := CurrentBalance + (CustLedgerEntry."Amount Posted" * -1);
                     until CustLedgerEntry.Next() = 0;

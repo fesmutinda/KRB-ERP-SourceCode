@@ -30,7 +30,7 @@ report 50039 cashFlows
             column(Dividends; Dividends) { }
             column(LDividends; LDividends) { }
 
-            column(IncreaseDecreaseInCashatbank; endCashatbank - EndLCashatbank)
+            column(IncreaseDecreaseInCashatbank; endCashatbank - Cashatbank)
             {
 
             }
@@ -209,842 +209,63 @@ report 50039 cashFlows
             {
             }
             trigger OnAfterGetRecord()
-            var
-
-
-
             begin
-
-
                 LStartDate := CalcDate('<-1Y>', StartDate);
                 LEndDate := CalcDate('<-1Y>', EndDate);
-
-
-
-
-
                 CurrentYear := Date2DMY(StartDate, 3);
                 PreviousYear := Date2DMY(LStartDate, 3);
 
-                //adjust for opening baalnce figures entred on 31.12.2024
+                Honoraria := CalculateCategoryMovement(GLAccount.CashFlowCategory::Honoraria, StartDate, EndDate);
+                LHonoraria := CalculateCategoryMovement(GLAccount.CashFlowCategory::Honoraria, LStartDate, LEndDate);
 
-                if StartDate = DMY2Date(1, 1, 2025) then
-                    ModStartDate := CalcDate('<-1D>', StartDate)
-                else
-                    ModStartDate := StartDate;
+                IncomeReceipts := CalculateCategoryMovement(GLAccount.CashFlowCategory::IncomeReceipts, StartDate, EndDate);
+                LIncomeReceipts := CalculateCategoryMovement(GLAccount.CashFlowCategory::IncomeReceipts, LStartDate, LEndDate);
 
+                OtherIncome := CalculateCategoryMovement(GLAccount.CashFlowCategory::OtherIncome, StartDate, EndDate);
+                LOtherIncome := CalculateCategoryMovement(GLAccount.CashFlowCategory::OtherIncome, LStartDate, LEndDate);
 
-                if LStartDate = DMY2Date(1, 1, 2025) then
-                    ModLStartDate := CalcDate('<-1D>', LStartDate)
-                else
-                    ModLStartDate := LStartDate;
+                InterestonMemberdeposits := CalculateCategoryMovement(GLAccount.CashFlowCategory::MembersInterestPaid, StartDate, EndDate);
+                LInterestonMemberdeposits := CalculateCategoryMovement(GLAccount.CashFlowCategory::MembersInterestPaid, LStartDate, LEndDate);
 
+                PersonnelExpenses := CalculateCategoryMovement(GLAccount.CashFlowCategory::PaymentsToEmployeesAndSuppliers, StartDate, EndDate);
+                LPersonnelExpenses := CalculateCategoryMovement(GLAccount.CashFlowCategory::PaymentsToEmployeesAndSuppliers, LStartDate, LEndDate);
 
-                // Start of Honoraria 
+                TradeAndOtherReceivables := CalculateCategoryMovement(GLAccount.CashFlowCategory::TradeAndOtherReceivables, StartDate, EndDate);
+                LTradeAndOtherReceivables := CalculateCategoryMovement(GLAccount.CashFlowCategory::TradeAndOtherReceivables, LStartDate, LEndDate);
 
-                Honoraria := 0;
-                GLAccount.Reset;
-                GLAccount.SetFilter(CashFlowCategory, '%1', GLAccount.CashFlowCategory::Honoraria);
+                MemberDeposits := CalculateCategoryMovement(GLAccount.CashFlowCategory::MembersDeposit, StartDate, EndDate);
+                LMemberDeposits := CalculateCategoryMovement(GLAccount.CashFlowCategory::MembersDeposit, LStartDate, LEndDate);
 
+                PayablesAndAccruals := CalculateCategoryMovement(GLAccount.CashFlowCategory::PayablesAndAccruals, StartDate, EndDate);
+                LPayablesAndAccruals := CalculateCategoryMovement(GLAccount.CashFlowCategory::PayablesAndAccruals, LStartDate, LEndDate);
 
-                if (StartDate < DMY2DATE(1, 1, 2025)) then begin
-                    Honoraria := 132000 * -1;
-                end
+                RepaymentOfBorrowings := CalculateCategoryMovement(GLAccount.CashFlowCategory::RepaymentOfBorrowings, StartDate, EndDate);
+                LRepaymentOfBorrowings := CalculateCategoryMovement(GLAccount.CashFlowCategory::RepaymentOfBorrowings, LStartDate, LEndDate);
 
-                else if GLAccount.FindSet then begin
+                TaxPayable := CalculateCategoryMovement(GLAccount.CashFlowCategory::TaxPayable, StartDate, EndDate);
+                LTaxPayable := CalculateCategoryMovement(GLAccount.CashFlowCategory::TaxPayable, LStartDate, LEndDate);
 
-                    repeat
+                TaxPaid := CalculateCategoryMovement(GLAccount.CashFlowCategory::TaxPaid, StartDate, EndDate);
+                LTaxPaid := CalculateCategoryMovement(GLAccount.CashFlowCategory::TaxPaid, LStartDate, LEndDate);
 
-                        GLAccount.SetFilter("Date Filter", '%1..%2', ModStartDate, EndDate);
-                        GLAccount.CalcFields("Net Change");
+                LoanAdvances := CalculateCategoryMovement(GLAccount.CashFlowCategory::LoanAdvances, StartDate, EndDate);
+                LLoanAdvances := CalculateCategoryMovement(GLAccount.CashFlowCategory::LoanAdvances, LStartDate, LEndDate);
 
-                        Honoraria += GLAccount."Net Change" * -1;
+                PurchaseOfAssets := CalculateCategoryMovement(GLAccount.CashFlowCategory::PurchaseOfAssets, StartDate, EndDate);
+                LPurchaseOfAssets := CalculateCategoryMovement(GLAccount.CashFlowCategory::PurchaseOfAssets, LStartDate, LEndDate);
 
-                    until GLAccount.Next = 0;
-                end;
+                PurchaseOfInvestments := CalculateCategoryMovement(GLAccount.CashFlowCategory::PurchaseOfInvestments, StartDate, EndDate);
+                LPurchaseOfInvestments := CalculateCategoryMovement(GLAccount.CashFlowCategory::PurchaseOfInvestments, LStartDate, LEndDate);
 
-                LHonoraria := 0;
-                GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::Honoraria);
+                ShareCapital := CalculateCategoryMovement(GLAccount.CashFlowCategory::ShareCapitalContribution, StartDate, EndDate);
+                LShareCapital := CalculateCategoryMovement(GLAccount.CashFlowCategory::ShareCapitalContribution, LStartDate, LEndDate);
 
-                if (LStartDate < DMY2DATE(1, 1, 2024)) then
-                    LHonoraria := 132000 * -1
-                else if LStartDate < DMY2DATE(1, 1, 2025) then
-                    LHonoraria := 132000 * -1
-
-                else if GLAccount.FindSet then begin
-                    repeat
-
-                        GLAccount.SetFilter("Date Filter", '%1..%2', ModLStartDate, LEndDate);
-                        GLAccount.CalcFields("Net Change");
-
-                        LHonoraria += GLAccount."Net Change" * -1;
-
-                    until GLAccount.Next = 0;
-                end;
-
-                //End of Honoraria
-
-
-                // Start of IncomeReceipts
-
-                IncomeReceipts := 0;
-                GLAccount.Reset;
-                GLAccount.SetFilter(CashFlowCategory, '%1', GLAccount.CashFlowCategory::IncomeReceipts);
-
-
-                if (StartDate < DMY2DATE(1, 1, 2025)) then
-                    IncomeReceipts := 13954025
-
-                else if GLAccount.FindSet then begin
-                    repeat
-
-                        GLAccount.SetFilter("Date Filter", '%1..%2', ModStartDate, EndDate);
-                        GLAccount.CalcFields("Net Change");
-
-                        IncomeReceipts += GLAccount."Net Change" * -1;
-
-                    until GLAccount.Next = 0;
-                end;
-
-
-                LIncomeReceipts := 0;
-                GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::IncomeReceipts);
-
-                if (LStartDate < DMY2DATE(1, 1, 2024)) then
-                    LIncomeReceipts := 13288510
-                else if (LStartDate < DMY2DATE(1, 1, 2025)) then
-                    LIncomeReceipts := 13954025
-
-                else if GLAccount.FindSet then begin
-                    repeat
-                        GLAccount.SetFilter("Date Filter", '%1..%2', ModLStartDate, LEndDate);
-                        GLAccount.CalcFields("Net Change");
-
-                        LIncomeReceipts += GLAccount."Net Change" * -1;
-                    until GLAccount.Next = 0;
-                end;
-
-                //End of Income
-
-
-                //Start of Other Income
-
-                OtherIncome := 0;
-                GLAccount.Reset;
-                GLAccount.SetFilter(CashFlowCategory, '%1', GLAccount.CashFlowCategory::OtherIncome);
-
-                if (StartDate < DMY2DATE(1, 1, 2025)) then begin
-                    OtherIncome := 484673;
-                end
-
-                else if GLAccount.FindSet then begin
-                    repeat
-
-                        GLAccount.SetFilter("Date Filter", '%1..%2', ModStartDate, EndDate);
-                        GLAccount.CalcFields("Net Change");
-
-                        OtherIncome += GLAccount."Net Change" * -1;
-
-                    until GLAccount.Next = 0;
-                end;
-
-
-                LOtherIncome := 0;
-                GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::OtherIncome);
-
-                if (LStartDate < DMY2DATE(1, 1, 2024)) then
-                    LOtherIncome := 479758
-                else if (LStartDate < DMY2DATE(1, 1, 2025)) then
-                    LOtherIncome := 484673
-                else if GLAccount.FindSet then begin
-                    repeat
-
-                        GLAccount.SetFilter("Date Filter", '%1..%2', ModLStartDate, LEndDate);
-
-                        GLAccount.CalcFields("Net Change");
-
-                        LOtherIncome += GLAccount."Net Change" * -1;
-
-                    until GLAccount.Next = 0;
-                end;
-
-
-
-                //End of Other Income
-
-
-                //INTERESTONMEBERDEPOSITS
-                InterestonMemberdeposits := 0;
-                GLAccount.Reset;
-                GLAccount.SetFilter(CashFlowCategory, '%1', GLAccount.CashFlowCategory::MembersInterestPaid);
-
-
-                if (StartDate < DMY2DATE(1, 1, 2025)) then begin
-                    InterestonMemberdeposits := 9600000 * -1;
-                end
-
-                else if GLAccount.FindSet then begin
-                    repeat
-
-                        GLAccount.SetFilter("Date Filter", '%1..%2', ModStartDate, EndDate);
-                        GLAccount.CalcFields("Net Change");
-
-                        InterestonMemberdeposits += GLAccount."Net Change" * -1;
-
-                    until GLAccount.Next = 0;
-                end;
-
-
-
-                LInterestonMemberDeposits := 0;
-                GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::MembersInterestPaid);
-
-                //override
-
-                if (LStartDate < DMY2DATE(1, 1, 2024)) then
-                    LInterestonMemberDeposits := 9890000 * -1
-                else if (LStartDate < DMY2DATE(1, 1, 2024)) then
-                    LInterestonMemberDeposits := 9600000 * -1
-
-                else if GLAccount.FindSet then begin
-                    repeat
-
-
-                        GLAccount.SetFilter("Date Filter", '%1..%2', ModLStartDate, LEndDate);
-                        GLAccount.CalcFields("Net Change");
-
-                        LInterestonMemberdeposits += GLAccount."Net Change" * -1;
-
-
-                    until GLAccount.Next = 0;
-
-                end;
-
-                //payments to employees and suppliers
-
-                PersonnelExpenses := 0;
-                GLAccount.Reset;
-                GLAccount.SetFilter(CashFlowCategory, '%1', GLAccount.CashFlowCategory::PaymentsToEmployeesAndSuppliers);
-
-
-                if (StartDate < DMY2DATE(1, 1, 2025)) then begin
-                    PersonnelExpenses := 4736592 * -1;
-                end
-
-                else if GLAccount.FindSet then begin
-                    repeat
-
-                        GLAccount.SetFilter("Date Filter", '%1..%2', ModStartDate, EndDate);
-                        GLAccount.CalcFields("Net Change");
-
-                        PersonnelExpenses += GLAccount."Net Change" * -1;
-                    until GLAccount.Next = 0;
-                end;
-
-
-                LPersonnelExpenses := 0;
-                GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::PaymentsToEmployeesAndSuppliers);
-
-                if (LStartDate < DMY2DATE(1, 1, 2024)) then
-                    LPersonnelExpenses := 3812802 * -1
-                else if (LStartDate < DMY2DATE(1, 1, 2025)) then
-                    LPersonnelExpenses := 4736592 * -1
-
-                else if GLAccount.FindSet then begin
-                    repeat
-
-                        GLAccount.SetFilter("Date Filter", '%1..%2', ModLStartDate, LEndDate);
-                        GLAccount.CalcFields("Net Change");
-
-                        LPersonnelExpenses += GLAccount."Net Change" * -1;
-
-                    until GLAccount.Next = 0;
-                end;
-
-
-
-
-
-                //trade and other recievables
-
-                TradeAndOtherReceivables := 0;
-                GLAccount.Reset;
-                GLAccount.SetFilter(CashFlowCategory, '%1', GLAccount.CashFlowCategory::TradeAndOtherReceivables);
-
-
-                if (StartDate < DMY2DATE(1, 1, 2025)) then begin
-                    TradeAndOtherReceivables := 414376 * -1;
-                end
-
-                else if GLAccount.FindSet then begin
-                    repeat
-
-                        GLAccount.SetFilter("Date Filter", '%1..%2', ModStartDate, EndDate);
-                        GLAccount.CalcFields("Net Change");
-
-                        TradeAndOtherReceivables += GLAccount."Net Change" * -1;
-
-
-                    until GLAccount.Next = 0;
-                end;
-
-
-                LTradeAndOtherReceivables := 0;
-                GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::TradeAndOtherReceivables);
-
-                if (LStartDate < DMY2DATE(1, 1, 2024)) then
-                    LTradeAndOtherReceivables := 64393
-                else if (LStartDate < DMY2DATE(1, 1, 2025)) then
-                    LTradeAndOtherReceivables := 414376 * -1
-
-                else if GLAccount.FindSet then begin
-                    repeat
-
-                        GLAccount.SetFilter("Date Filter", '%1..%2', ModLStartDate, LEndDate);
-                        GLAccount.CalcFields("Net Change");
-
-                        LTradeAndOtherReceivables += GLAccount."Net Change" * -1;
-
-                    until GLAccount.Next = 0;
-                end;
-
-
-                //MembersDeposits
-
-                MemberDeposits := 0;
-                GLAccount.Reset;
-                GLAccount.SetFilter(CashFlowCategory, '%1', GLAccount.CashFlowCategory::MembersDeposit);
-
-
-                if (StartDate < DMY2DATE(1, 1, 2025)) then begin
-                    MemberDeposits := 14928450;
-                end
-
-                else if GLAccount.FindSet then begin
-                    repeat
-
-
-                        GLAccount.SetFilter("Date Filter", '%1..%2', ModStartDate, EndDate);
-                        GLAccount.CalcFields("Net Change");
-
-                        MemberDeposits += GLAccount."Net Change" * -1;
-
-                    until GLAccount.Next = 0;
-                end;
-
-
-
-                LMemberDeposits := 0;
-                GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::MembersDeposit);
-
-
-                if (LStartDate < DMY2DATE(1, 1, 2024)) then
-                    LMemberDeposits := 7546756
-                else if (LStartDate < DMY2DATE(1, 1, 2025)) then
-                    LMemberDeposits := 14928450
-
-                else if GLAccount.FindSet then begin
-                    repeat
-
-                        GLAccount.SetFilter("Date Filter", '%1..%2', ModLStartDate, EndDate);
-                        GLAccount.CalcFields("Net Change");
-
-                        LMemberDeposits += GLAccount."Net Change" * -1;
-
-                    until GLAccount.Next = 0;
-                end;
-
-                // End Member deposits
-
-                //payable and accruals
-                PayablesAndAccruals := 0;
-                GLAccount.Reset;
-                GLAccount.SetFilter(CashFlowCategory, '%1', GLAccount.CashFlowCategory::PayablesAndAccruals);
-
-                if (StartDate < DMY2DATE(1, 1, 2025)) then begin
-                    PayablesAndAccruals := 6466 * -1;
-                end
-
-                else if GLAccount.FindSet then begin
-                    repeat
-
-                        GLAccount.SetFilter("Date Filter", '%1..%2', ModStartDate, EndDate);
-                        GLAccount.CalcFields("Net Change");
-
-                        PayablesAndAccruals += GLAccount."Net Change" * -1;
-
-                    until GLAccount.Next = 0;
-                end;
-
-
-                LPayablesAndAccruals := 0;
-                GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::PayablesAndAccruals);
-
-
-                if (LStartDate < DMY2DATE(1, 1, 2024)) then
-                    LPayablesAndAccruals := 315846
-                else if (LStartDate < DMY2DATE(1, 1, 2025)) then
-                    LPayablesAndAccruals := 6466 * -1
-
-                else if GLAccount.FindSet then begin
-                    repeat
-
-                        GLAccount.SetFilter("Date Filter", '%1..%2', ModLStartDate, LEndDate);
-                        GLAccount.CalcFields("Net Change");
-
-                        LPayablesAndAccruals += GLAccount."Net Change" * -1;
-                    until GLAccount.Next = 0;
-
-                end;
-
-
-                //end of payable and accruals
-
-
-                //repayments of borrowings 
-                RepaymentOfBorrowings := 0;
-                GLAccount.Reset;
-                GLAccount.SetFilter(CashFlowCategory, '%1', GLAccount.CashFlowCategory::RepaymentOfBorrowings);
-
-
-                if (StartDate < DMY2DATE(1, 1, 2025)) then begin
-                    RepaymentOfBorrowings := 1776435 * -1;
-                end
-
-                else if GLAccount.FindSet then begin
-                    repeat
-
-                        GLAccount.SetFilter("Date Filter", '%1..%2', ModStartDate, EndDate);
-                        GLAccount.CalcFields("Net Change");
-
-                        RepaymentOfBorrowings += GLAccount."Net Change" * -1;
-
-                    until GLAccount.Next = 0;
-                end;
-
-
-                LRepaymentOfBorrowings := 0;
-                GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::RepaymentOfBorrowings);
-
-
-
-                if (LStartDate < DMY2DATE(1, 1, 2024)) then
-                    LRepaymentOfBorrowings := 438767 * -1
-                else if (LStartDate < DMY2DATE(1, 1, 2025)) then
-                    LRepaymentOfBorrowings := 1776435 * -1
-
-                else if GLAccount.FindSet then begin
-                    repeat
-
-                        GLAccount.SetFilter("Date Filter", '%1..%2', ModLStartDate, LEndDate);
-                        GLAccount.CalcFields("Net Change");
-
-                        LRepaymentOfBorrowings += GLAccount."Net Change" * -1;
-
-                    until GLAccount.Next = 0;
-
-                end;
-
-
-                //end of repayments of borrowings
-                //Start of TaxPayable
-
-                TaxPayable := 0;
-                GLAccount.Reset;
-                GLAccount.SetFilter(CashFlowCategory, '%1', GLAccount.CashFlowCategory::TaxPayable);
-
-
-                if (StartDate < DMY2DATE(1, 1, 2025)) then begin
-                    TaxPayable := 6885;
-                end
-
-                else if GLAccount.FindSet then begin
-                    repeat
-
-                        GLAccount.SetFilter("Date Filter", '%1..%2', ModStartDate, EndDate);
-                        GLAccount.CalcFields("Net Change");
-
-                        TaxPayable += GLAccount."Net Change" * -1;
-
-                    until GLAccount.Next = 0;
-                end;
-
-
-
-                LTaxPayable := 0;
-                GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::TaxPayable);
-
-                if (LStartDate < DMY2DATE(1, 1, 2024)) then
-                    LTaxPayable := 4038
-                else if (LStartDate < DMY2DATE(1, 1, 2025)) then
-                    LTaxPayable := 6885
-
-                else if GLAccount.FindSet then begin
-                    repeat
-
-                        GLAccount.SetFilter("Date Filter", '%1..%2', ModLStartDate, LEndDate);
-                        GLAccount.CalcFields("Net Change");
-
-                        LTaxPayable += GLAccount."Net Change" * -1;
-
-                    until GLAccount.Next = 0;
-                end;
-
-                //END OF TAXPAYABLE
-
-
-                TaxPaid := 0;
-                GLAccount.Reset;
-                GLAccount.SetFilter(CashFlowCategory, '%1', GLAccount.CashFlowCategory::TaxPaid);
-
-
-                if (StartDate < DMY2DATE(1, 1, 2025)) then begin
-                    TaxPaid := 0;
-                end
-
-                else if GLAccount.FindSet then begin
-                    repeat
-                        GLAccount.SetFilter("Date Filter", '%1..%2', ModStartDate, EndDate);
-                        GLAccount.CalcFields("Net Change");
-
-                        TaxPaid += GLAccount."Net Change" * -1;
-
-                    until GLAccount.Next = 0;
-                end;
-
-
-
-                LTaxPaid := 0;
-                GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::TaxPaid);
-
-                if ((LStartDate < DMY2DATE(1, 1, 2024)) and (LStartDate > DMY2DATE(31, 12, 2023))) then
-                    LTaxPaid := 0
-                else if (LStartDate < DMY2DATE(1, 1, 2025)) then
-                    LTaxPaid := 0
-                else if GLAccount.FindSet then begin
-                    repeat
-                        GLAccount.SetFilter("Date Filter", '%1..%2', ModLStartDate, LEndDate);
-                        GLAccount.CalcFields("Net Change");
-
-                        LTaxPaid += GLAccount."Net Change" * -1;
-
-                    until GLAccount.Next = 0;
-
-                end;
-
-                //END OF TAXPAID
-
-                LoanAdvances := 0;
-                GLAccount.Reset;
-                GLAccount.SetFilter(CashFlowCategory, '%1', GLAccount.CashFlowCategory::LoanAdvances);
-
-
-                if (StartDate < DMY2DATE(1, 1, 2025)) then begin
-                    LoanAdvances := 14452231 * -1;
-                end
-
-                else if GLAccount.FindSet then begin
-                    repeat
-
-                        GLAccount.SetFilter("Date Filter", '%1..%2', ModStartDate, EndDate);
-                        GLAccount.CalcFields("Net Change");
-
-                        LoanAdvances += GLAccount."Net Change" * -1;
-
-                    until GLAccount.Next = 0;
-                end;
-
-
-
-                LLoanAdvances := 0;
-                GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::LoanAdvances);
-
-
-                if (LStartDate < DMY2DATE(1, 1, 2024)) then
-                    LLoanAdvances := 11874947 * -1
-                else if (LEndDate < DMY2DATE(1, 1, 2025)) then
-                    LLoanAdvances := 14452231 * -1
-
-                else if GLAccount.FindSet then begin
-                    repeat
-
-                        GLAccount.SetFilter("Date Filter", '%1..%2', ModLStartDate, LEndDate);
-                        GLAccount.CalcFields("Net Change");
-
-                        LLoanAdvances += GLAccount."Net Change" * -1;
-                    until GLAccount.Next = 0;
-
-                end;
-
-
-                // end of loan advances
-
-
-                // Purchase of Assets
-
-                PurchaseOfAssets := 0;
-                GLAccount.Reset;
-                GLAccount.SetFilter(CashFlowCategory, '%1', GLAccount.CashFlowCategory::PurchaseOfAssets);
-
-
-                if (StartDate < DMY2DATE(1, 1, 2025)) then begin
-                    PurchaseOfAssets := 187920 * -1;
-                end
-
-                else if GLAccount.FindSet then begin
-                    repeat
-                        GLAccount.SetFilter("Date Filter", '%1..%2', ModStartDate, EndDate);
-                        GLAccount.CalcFields("Net Change");
-
-                        PurchaseOfAssets += GLAccount."Net Change" * -1;
-                    until GLAccount.Next = 0;
-                end;
-
-
-                LPurchaseOfAssets := 0;
-                GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::PurchaseOfAssets);
-
-                if (LStartDate < DMY2DATE(1, 1, 2024)) then
-                    LPurchaseOfAssets := 13500 * -1
-                else if (LStartDate < DMY2DATE(1, 1, 2025)) then
-                    LPurchaseOfAssets := 187920 * -1
-
-                else if GLAccount.FindSet then begin
-                    repeat
-
-                        GLAccount.SetFilter("Date Filter", '%1..%2', ModLStartDate, LEndDate);
-                        GLAccount.CalcFields("Net Change");
-
-                        LPurchaseOfAssets += GLAccount."Net Change" * -1;
-                    until GLAccount.Next = 0;
-                end;
-
-                // end of purchase of assets
-
-
-                // Purchase of Investments
-
-                PurchaseOfInvestments := 0;
-                GLAccount.Reset;
-                GLAccount.SetFilter(CashFlowCategory, '%1', GLAccount.CashFlowCategory::PurchaseOfInvestments);
-
-
-                if (StartDate < DMY2DATE(1, 1, 2025)) then begin
-                    PurchaseOfInvestments := 320032 * -1;
-                end
-
-                else if GLAccount.FindSet then begin
-                    repeat
-
-                        GLAccount.SetFilter("Date Filter", '%1..%2', ModStartDate, EndDate);
-                        GLAccount.CalcFields("Net Change");
-
-                        PurchaseOfInvestments += GLAccount."Net Change" * -1;
-
-                    until GLAccount.Next = 0;
-                end;
-
-
-
-                LPurchaseOfInvestments := 0;
-                GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::PurchaseOfInvestments);
-
-                if (LStartDate < DMY2DATE(1, 1, 2024)) then
-                    LPurchaseOfInvestments := 199929 * -1
-                else if (LStartDate < DMY2DATE(1, 1, 2025)) then
-                    LPurchaseOfInvestments := 320032 * -1
-                else if GLAccount.FindSet then begin
-                    repeat
-
-                        GLAccount.SetFilter("Date Filter", '%1..%2', ModLStartDate, LEndDate);
-                        GLAccount.CalcFields("Net Change");
-
-                        LPurchaseOfInvestments += GLAccount."Net Change" * -1;
-
-                    until GLAccount.Next = 0;
-                end;
-
-
-
-                // start of sharecap 
-                ShareCapital := 0;
-                GLAccount.Reset;
-                GLAccount.SetFilter(CashFlowCategory, '%1', GLAccount.CashFlowCategory::ShareCapitalContribution);
-
-
-                if (StartDate < DMY2DATE(1, 1, 2025)) then begin
-                    ShareCapital := 669000;
-                end
-
-                else if GLAccount.FindSet then begin
-                    repeat
-                        GLAccount.SetFilter("Date Filter", '%1..%2', ModStartDate, EndDate);
-                        GLAccount.CalcFields("Net Change");
-
-                        ShareCapital += GLAccount."Net Change" * -1;
-
-                    until GLAccount.Next = 0;
-                end;
-
-
-
-                LShareCapital := 0;
-                GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::ShareCapitalContribution);
-
-                if (LStartDate < DMY2DATE(1, 1, 2024)) then
-                    LShareCapital := 105000
-                else if (LStartDate < DMY2DATE(1, 1, 2025)) then
-                    LShareCapital := 669000
-                else if GLAccount.FindSet then begin
-                    repeat
-
-                        GLAccount.SetFilter("Date Filter", '%1..%2', ModLStartDate, LEndDate);
-                        GLAccount.CalcFields("Net Change");
-
-                        LShareCapital += GLAccount."Net Change" * -1;
-
-                    until GLAccount.Next = 0;
-                end;
-
-
-
-
-
-
-                //start of year cash equivalents
-
-                Cashatbank := 0;
-                GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::CashAndEquivalents);
-
-                // if (StartDate = DMY2Date(1, 1, 2025)) then
-                //     Cashatbank := 1645189
-
-                if ((StartDate > DMY2DATE(31, 12, 2023)) and (EndDate < DMY2Date(1, 1, 2025))) then
-                    Cashatbank := 3228208
-
-
-
-                else if GLAccount.FindSet then begin
-                    repeat
-
-                        GLAccount.SetFilter("Date Filter", '..%1', StartDate);
-
-                        GLAccount.CalcFields("Balance at Date");
-
-                        Cashatbank += GLAccount."Balance at Date";
-                    //GLEntry.Reset;
-                    //GLEntry.SetRange(GLEntry."G/L Account No.", GLAccount."No.");
-
-                    //GLEntry.SetFilter(GLEntry."Posting Date", '..%1', StartDate);
-
-                    // GLEntry.CalcSums(Amount);
-                    //GLEntry.CalcSums("Credit Amount", "Debit Amount");
-
-                    //Cashatbank += (GLEntry."Debit Amount" - GLEntry."Credit Amount");
-
-                    until GLAccount.Next = 0;
-
-                end;
-
-                LCashatbank := 0;
-                GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::CashAndEquivalents);
-
-                if (LStartDate < DMY2DATE(1, 1, 2024)) then
-                    LCashatbank := 7785852
-                else
-
-                    if ((LStartDate < DMY2Date(1, 1, 2025)) and (LstartDate > DMY2Date(31, 12, 2023))) then
-                        LCashatbank := 3228208
-
-                    else if GLAccount.FindSet then begin
-                        repeat
-
-                            GLAccount.SetFilter("Date Filter", '..%1', LStartDate);
-                            GLAccount.CalcFields("Balance at Date");
-                            LCashatbank += GLAccount."Balance at Date";
-                        // GLEntry.Reset;
-                        // GLEntry.SetRange(GLEntry."G/L Account No.", GLAccount."No.");
-                        // GLEntry.SetFilter(GLEntry."Posting Date", '..%1', LStartDate);
-
-                        // // GLEntry.CalcSums(Amount);
-                        // GLEntry.CalcSums("Credit Amount", "Debit Amount");
-
-                        // LCashatbank += (GLEntry."Debit Amount" - GLEntry."Credit Amount");
-
-                        until GLAccount.Next = 0;
-                    end;
-
-
-                //End of year cash and Equivalents
-
-                EndCashatbank := 0;
-                GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::CashAndEquivalents);
-
-                if ((EndDate < DMY2DATE(1, 1, 2025)) AND (EndDate > DMY2Date(31, 12, 2023))) then
-                    endCashatbank := 1645189
-
-                else if (EndDate < DMY2Date(1, 1, 2024)) then
-                    endCashatbank := 3228208
-
-                else if GLAccount.FindSet then begin
-                    repeat
-                        // GLEntry.Reset;
-                        // GLEntry.SetRange(GLEntry."G/L Account No.", GLAccount."No.");
-                        // GLEntry.SetFilter(GLEntry."Posting Date", '..%1', EndDate);
-
-                        // //GLEntry.CalcSums(Amount);
-                        // GLEntry.CalcSums("Credit Amount", "Debit Amount");
-
-                        // endCashatbank += (GLEntry."Debit Amount" - GLEntry."Credit Amount");
-
-                        GLAccount.SetFilter("Date Filter", '..%1', EndDate);
-                        GLAccount.CalcFields("Balance at Date");
-                        endCashatbank += GLAccount."Balance at Date";
-
-                    until GLAccount.Next = 0;
-                end;
-
-                EndLCashatbank := 0;
-                GLAccount.Reset;
-                GLAccount.SetFilter(GLAccount.CashFlowCategory, '%1', GLAccount.CashFlowCategory::CashAndEquivalents);
-
-                if (LEndDate < DMY2DATE(1, 1, 2024)) then begin
-                    EndLCashatbank := 3228208;
-                end
-
-                else if GLAccount.FindSet then begin
-                    repeat
-                        // GLEntry.Reset;
-                        // GLEntry.SetRange(GLEntry."G/L Account No.", GLAccount."No.");
-                        // GLEntry.SetFilter(GLEntry."Posting Date", '..%1', LEndDate);
-
-                        // GLEntry.CalcSums("Credit Amount", "Debit Amount");
-                        // EndLCashatbank += (GLEntry."Debit Amount" - GLEntry."Credit Amount");
-                        GLAccount.SetFilter("Date Filter", '..%1', LEndDate);
-                        GLAccount.CalcFields("Balance at Date");
-                        EndLCashatbank += GLAccount."Balance at Date";
-                    until GLAccount.Next = 0;
-                end;
-
-            END;
+                // Opening cash excludes the first day; closing cash includes the last day.
+                Cashatbank := CalculateCashBalance(StartDate - 1);
+                LCashatbank := CalculateCashBalance(LStartDate - 1);
+                endCashatbank := CalculateCashBalance(EndDate);
+                EndLCashatbank := CalculateCashBalance(LEndDate);
+            end;
         }
 
 
@@ -1116,6 +337,39 @@ report 50039 cashFlows
     end;
 
 
+
+
+    local procedure CalculateCategoryMovement(Category: Integer; PeriodStart: Date; PeriodEnd: Date): Decimal
+    var
+        CashFlowAccount: Record "G/L Account";
+        Movement: Decimal;
+    begin
+        CashFlowAccount.SetRange(CashFlowCategory, Category);
+        CashFlowAccount.SetRange("Date Filter", PeriodStart, PeriodEnd);
+        if CashFlowAccount.FindSet() then
+            repeat
+                CashFlowAccount.CalcFields("Net Change");
+                Movement -= CashFlowAccount."Net Change";
+            until CashFlowAccount.Next() = 0;
+
+        exit(Movement);
+    end;
+
+    local procedure CalculateCashBalance(AsOfDate: Date): Decimal
+    var
+        CashFlowAccount: Record "G/L Account";
+        CashBalance: Decimal;
+    begin
+        CashFlowAccount.SetRange(CashFlowCategory, CashFlowAccount.CashFlowCategory::CashAndEquivalents);
+        CashFlowAccount.SetFilter("Date Filter", '..%1', AsOfDate);
+        if CashFlowAccount.FindSet() then
+            repeat
+                CashFlowAccount.CalcFields("Balance at Date");
+                CashBalance += CashFlowAccount."Balance at Date";
+            until CashFlowAccount.Next() = 0;
+
+        exit(CashBalance);
+    end;
 
 
     var
@@ -1235,9 +489,6 @@ report 50039 cashFlows
 
         LPurchaseOfInvestments: Decimal;
 
-        ModStartDate: Date;
-
-        ModLStartDate: Date;
 
 
 }

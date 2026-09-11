@@ -75,7 +75,6 @@ Report 56886 "Member Account Statement(Ver1)"
                 trigger OnPreDataItem()
                 begin
                     ApplyStatementDateFilter(ShareCapital);
-                    ShareCapBF := 0;
                     ClosingBalanceShareCap := ShareCapBF;
                     OpenBalanceShareCap := ShareCapBF;
                 end;
@@ -116,7 +115,6 @@ Report 56886 "Member Account Statement(Ver1)"
                 trigger OnPreDataItem()
                 begin
                     ApplyStatementDateFilter(Deposits);
-                    SharesBF := 0;
                     ClosingBalanceDeposits := SharesBF;
                     OpenBalanceDeposits := SharesBF;
                 end;
@@ -263,7 +261,7 @@ Report 56886 "Member Account Statement(Ver1)"
                 trigger OnAfterGetRecord()
                 begin
                     // Calculate opening balance for this specific junior account
-                    JuniorOpeningBalance := 0;
+                    JuniorOpeningBalance := CalculateJuniorAccountOpeningBalance(JuniorAccounts."No.", DateFilterBF);
 
                     // Initialize closing balance
                     JuniorClosingBalance := JuniorOpeningBalance;
@@ -396,7 +394,14 @@ Report 56886 "Member Account Statement(Ver1)"
                     if LoanSetup.Get(Loans."Loan Product Type") then
                         LoanName := LoanSetup."Product Description";
 
-                    // Loan balances show movement within the selected period only.
+                    if DateFilterBF <> '' then begin
+                        LoansR.Reset();
+                        if LoansR.Get(Loans."Loan  No.") then begin
+                            LoansR.SetFilter("Date filter", DateFilterBF);
+                            LoansR.CalcFields("Outstanding Balance");
+                            PrincipleBF := LoansR."Outstanding Balance";
+                        end;
+                    end;
                 end;
 
                 trigger OnPreDataItem()
@@ -430,7 +435,7 @@ Report 56886 "Member Account Statement(Ver1)"
                 // Calculate BF values if date filter exists (unchanged)
                 if DateFilterBF <> '' then begin
                     CalculateMainMemberBFValues();
-                    JuniorBF := 0;
+                    JuniorBF := CalculateJuniorSavingsBF("No.", DateFilterBF);
                     WithdrawableBF := CalculateWithdrawableSavingsBF("No.", DateFilterBF);
                 end;
             end;
@@ -650,8 +655,8 @@ Report 56886 "Member Account Statement(Ver1)"
         Cust.SetFilter(Cust."Date Filter", DateFilterBF);
         if Cust.Find('-') then begin
             Cust.CalcFields(Cust."Shares Retained", Cust."Current Shares", Cust."Insurance Fund", Cust."Dividend Amount");
-            SharesBF := (Cust."Current Shares" * -1);
-            ShareCapBF := (Cust."Shares Retained" * -1);
+            SharesBF := Cust."Current Shares";
+            ShareCapBF := Cust."Shares Retained";
             RiskBF := Cust."Insurance Fund";
             DividendBF := Cust."Dividend Amount";
         end;

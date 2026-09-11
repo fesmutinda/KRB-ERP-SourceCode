@@ -157,7 +157,6 @@ Report 50225 "Member Share Capital Statement"
                 trigger OnPreDataItem()
                 begin
                     Share.SetFilter("Posting Date", Customer.GetFilter("Date Filter"));
-                    ShareCapBF := 0;
                     CLosingBalance := ShareCapBF;
                     OpenBalance := ShareCapBF;
                 end;

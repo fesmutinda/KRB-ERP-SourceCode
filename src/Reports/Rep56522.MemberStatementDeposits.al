@@ -192,7 +192,6 @@ Report 56522 "Member Statement Deposits"
 
                 trigger OnPreDataItem()
                 begin
-                    SharesBF := 0;
                     ClosingBalanceDeposits := SharesBF;
                     OpenBalanceDeposits := SharesBF;
                     Deposits.SetFilter("Posting Date", "Members Register".GetFilter("Date Filter"));
@@ -485,7 +484,7 @@ Report 56522 "Member Statement Deposits"
                     Cust.SetFilter(Cust."Date Filter", DateFilterBF);
                     if Cust.Find('-') then begin
                         Cust.CalcFields(Cust."Current Shares");
-                        SharesBF := (Cust."Current Shares" * -1);
+                        SharesBF := Cust."Current Shares";
                         RiskBF := Cust."Insurance Fund";
                         DividendBF := Cust."Dividend Amount";
                     end;

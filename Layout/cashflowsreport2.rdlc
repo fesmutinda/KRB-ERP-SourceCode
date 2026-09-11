@@ -2065,7 +2065,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=(Fields!InterestonLoans.Value+Fields!OtherOperatingincome.Value+Fields!PersonnelExpenses.Value+Fields!Honoraria.Value)+(Fields!TradeAndOtherReceivables.Value +Fields!PayablesAndAccruals.Value+Fields!TaxPayable.Value)</Value>
+                                  <Value>=(Fields!InterestonLoans.Value+Fields!OtherOperatingincome.Value+Fields!PersonnelExpenses.Value+Fields!Honoraria.Value)+(Fields!TradeAndOtherReceivables.Value +Fields!PayablesAndAccruals.Value+Fields!TaxPayable.Value) + Fields!TaxPaid.Value</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Times New Roman</FontFamily>
@@ -2145,7 +2145,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=(Fields!LInterestonLoans.Value+Fields!LOtherOperatingincome.Value+Fields!LPersonnelExpenses.Value+Fields!LHonoraria.Value) + (Fields!LTradeAndOtherReceivables.Value+Fields!LPayablesAndAccruals.Value+Fields!LTaxPayable.Value)</Value>
+                                  <Value>=(Fields!LInterestonLoans.Value+Fields!LOtherOperatingincome.Value+Fields!LPersonnelExpenses.Value+Fields!LHonoraria.Value) + (Fields!LTradeAndOtherReceivables.Value+Fields!LPayablesAndAccruals.Value+Fields!LTaxPayable.Value) + Fields!LTaxPaid.Value</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Times New Roman</FontFamily>
@@ -4411,7 +4411,7 @@
  + (Fields!InterestonMemberdeposits.Value 
    + Fields!RepaymentOfBorrowings.Value  
    + Fields!ShareCapital.Value 
-   + Fields!MemberDeposits.Value)</Value>
+   + Fields!MemberDeposits.Value) + Fields!TaxPaid.Value</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Book Antiqua</FontFamily>
@@ -4505,7 +4505,7 @@
     + Fields!LRepaymentOfBorrowings.Value
   + Fields!LShareCapital.Value
   + Fields!LMemberDeposits.Value
-  )</Value>
+  ) + Fields!LTaxPaid.Value</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Book Antiqua</FontFamily>

@@ -680,7 +680,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Net Change for Period</Value>
+                                  <Value>Balance</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
@@ -811,7 +811,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Sum(Fields!CreditAmount_Junior.Value) - Sum(Fields!DebitAmount_Junior.Value)</Value>
+                                  <Value>=Last(Fields!ClosingBalanceJunior.Value)</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
