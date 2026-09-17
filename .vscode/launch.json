@@ -39,7 +39,6 @@
             "schemaUpdateMode": "ForceSync",
             "usePublicURLFromServer": true
         },
-
             {
             "name": "Swizz server",
             "request": "launch",

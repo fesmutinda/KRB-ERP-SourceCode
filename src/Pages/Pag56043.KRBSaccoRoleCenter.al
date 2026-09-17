@@ -1226,6 +1226,15 @@ Page 56043 "KRB Sacco Role Center"
                         ToolTip = 'View loan performance analytics';
                     }
 
+                    action("View Loans Applied Chart")
+                    {
+                        ApplicationArea = Basic, Suite;
+                        Caption = 'Loans Applied (Count)';
+                        Image = Chart;
+                        RunObject = Page "Loans Applied Chart";
+                        ToolTip = 'View monthly loan application counts for the last 12 months, including the current month to date.';
+                    }
+
                     action("View Loan Arrears Chart")
                     {
                         ApplicationArea = Basic, Suite;
@@ -1262,6 +1271,15 @@ Page 56043 "KRB Sacco Role Center"
                     Caption = 'Posted BOSA Loans';
                     RunObject = Page "Loans Posted List";
                     ToolTip = 'Open the list of the Loans Posted.';
+                }
+
+                action("Overpaid Loans")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Overpaid Loans';
+                    Image = List;
+                    RunObject = page "Overpaid Loans";
+                    ToolTip = 'View posted, non-reversed loans with a negative outstanding balance and the amount overpaid.';
                 }
 
                 action("All Loans")

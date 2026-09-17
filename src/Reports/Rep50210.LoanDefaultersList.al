@@ -231,23 +231,33 @@ Report 50210 "Loan Defaulters List"
             trigger OnPreDataItem()
             begin
 
-                if LoanProductTypeCode <> '' then
-                    Loans.SetRange("Loan Product Type", LoanProductTypeCode);
+                if LoanProductFilter <> '' then
+                    Loans.SetFilter("Loan Product Type", LoanProductFilter);
 
 
                 case ArrearsFilterOption of
                     ArrearsFilterOption::"All Arrears":
-                        Loans.SetFilter("Days In Arrears", '>0');
-                    ArrearsFilterOption::"Over 30 Days":
-                        Loans.SetFilter("Days In Arrears", '>30');
-                    ArrearsFilterOption::"Over 60 Days":
-                        Loans.SetFilter("Days In Arrears", '>60');
-                    ArrearsFilterOption::"Over 90 Days":
-                        Loans.SetFilter("Days In Arrears", '>90');
+                        Loans.SetFilter("No of Days in Arrears", '>0');
+                    ArrearsFilterOption::"1 - 30 Days":
+                        Loans.SetRange("No of Days in Arrears", 1, 30);
+                    ArrearsFilterOption::"31 - 60 Days":
+                        Loans.SetRange("No of Days in Arrears", 31, 60);
+                    ArrearsFilterOption::"61 - 90 Days":
+                        Loans.SetRange("No of Days in Arrears", 61, 90);
+                    ArrearsFilterOption::"Above 90 Days":
+                        Loans.SetFilter("No of Days in Arrears", '>90');
                 end;
 
-                if LoanProdType.Get(Loans.GetFilter(Loans."Loan Product Type")) then
-                    LoanType := LoanProdType."Product Description";
+                Clear(LoanType);
+                LoanProdType.Reset();
+                if LoanProductFilter <> '' then begin
+                    LoanProdType.SetFilter(Code, LoanProductFilter);
+                    if LoanProdType.Count() = 1 then begin
+                        LoanProdType.FindFirst();
+                        LoanType := LoanProdType."Product Description";
+                    end else
+                        LoanType := 'Selected loan products';
+                end;
                 LCount := 0;
 
                 if Loans.GetFilter(Loans."Branch Code") <> '' then begin
@@ -284,14 +294,40 @@ Report 50210 "Loan Defaulters List"
                     {
                         Caption = 'Filter Arrears';
                         ApplicationArea = All;
+                        ToolTip = 'Select all arrears or filter loans by days in arrears: 1 - 30, 31 - 60, 61 - 90, or above 90 days.';
                     }
 
 
-                    field(LoanProductTypeFilter; LoanProductTypeCode)
+                    field(LoanProductTypeFilter; LoanProductFilter)
                     {
-                        Caption = 'Loan Product Type';
+                        Caption = 'Loan Products';
                         ApplicationArea = All;
-                        TableRelation = "Loan Products Setup".Code;
+                        Lookup = true;
+                        ToolTip = 'Open the lookup to check the loan products to include and uncheck those to exclude. Leave blank to include all products.';
+
+                        trigger OnLookup(var Text: Text): Boolean
+                        var
+                            ProductSelection: Page "Loan Product Selection";
+                        begin
+                            ProductSelection.SetProductFilter(LoanProductFilter);
+                            ProductSelection.LookupMode(true);
+                            if ProductSelection.RunModal() = Action::LookupOK then begin
+                                Text := ProductSelection.GetProductFilter();
+                                exit(true);
+                            end;
+                            exit(false);
+                        end;
+
+                        trigger OnValidate()
+                        var
+                            Product: Record "Loan Products Setup";
+                        begin
+                            if LoanProductFilter <> '' then begin
+                                Product.SetFilter(Code, LoanProductFilter);
+                                if Product.IsEmpty() then
+                                    Error('The loan product filter does not match any products.');
+                            end;
+                        end;
                     }
 
                 }
@@ -306,7 +342,7 @@ Report 50210 "Loan Defaulters List"
 
     var
 
-        ArrearsFilterOption: Option "All Arrears","Over 30 Days","Over 60 Days","Over 90 Days";
+        ArrearsFilterOption: Option "All Arrears","1 - 30 Days","31 - 60 Days","61 - 90 Days","Above 90 Days";
         RPeriod: Decimal;
         BatchL: Code[100];
         Batches: Record "Loan Disburesment-Batching";
@@ -346,7 +382,7 @@ Report 50210 "Loan Defaulters List"
         Company: Record "Company Information";
 
 
-        LoanProductTypeCode: Code[20];
+        LoanProductFilter: Text;
 
 
 

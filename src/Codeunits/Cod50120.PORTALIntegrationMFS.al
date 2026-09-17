@@ -10,6 +10,7 @@ Codeunit 50120 "PORTALIntegration MFS"
 
     var
 
+        InstantLoanBlockMgt: Codeunit "Instant Loan Block Mgt.";
         NoSeries2: Codeunit "No. Series";
         i: Integer;
         Rschedule: Record "Loan Repayment Schedule";
@@ -940,6 +941,7 @@ Codeunit 50120 "PORTALIntegration MFS"
 
     procedure FnLoanApplication(Member: Code[30]; LoanProductType: Code[10]; AmountApplied: Decimal; LoanPurpose: Code[30]; RepaymentFrequency: Integer) Result: Boolean
     begin
+        InstantLoanBlockMgt.CheckAvailable(Member, LoanProductType);
         objMember.Reset;
         objMember.SetRange(objMember."No.", Member);
         if objMember.Find('-') then begin
@@ -1554,7 +1556,11 @@ Codeunit 50120 "PORTALIntegration MFS"
 
 
     procedure fnGuarantorsPortal(Member: Code[40]; Number: Code[40]; LoanNo: Code[40]; Message: Text[100])
+    var
+        GuaranteedLoan: Record "Loans Register";
     begin
+        if GuaranteedLoan.Get(LoanNo) then
+            InstantLoanBlockMgt.CheckAvailable(GuaranteedLoan."Client Code", GuaranteedLoan."Loan Product Type");
         objMember.Reset;
         objMember.SetRange("No.", Member);
         if objMember.Find('-') then begin
@@ -1581,6 +1587,8 @@ Codeunit 50120 "PORTALIntegration MFS"
 
 
     procedure FnApproveGurarantors(Approval: Integer; Number: Code[40]; LoanNo: Integer; reply: Text; Amount: Decimal)
+    var
+        GuaranteedLoan: Record "Loans Register";
     begin
         feedback.Init;
         if (Approval = 0) then begin
@@ -1604,6 +1612,8 @@ Codeunit 50120 "PORTALIntegration MFS"
                 if feedback.Find('-') then begin
 
 
+                    if GuaranteedLoan.Get(feedback.LoanNo) then
+                        InstantLoanBlockMgt.CheckAvailable(GuaranteedLoan."Client Code", GuaranteedLoan."Loan Product Type");
                     feedback.Accepted := 1;
                     feedback.Rejected := 0;
                     feedback.Amount := Amount;
@@ -1688,6 +1698,8 @@ Codeunit 50120 "PORTALIntegration MFS"
         //objLoanRegister.SETRANGE("Client Code", Member);
         objLoanRegister.SetRange("Loan  No.", Loan);
         if objLoanRegister.Find('-') then begin
+            InstantLoanBlockMgt.CheckAvailable(objLoanRegister."Client Code", objLoanRegister."Loan Product Type");
+            InstantLoanBlockMgt.CheckAvailable(objLoanRegister."Client Code", LoanType);
             objLoanRegister.Init;
             objLoanRegister."Requested Amount" := Amount;
             objLoanRegister.Validate("Requested Amount");
@@ -1782,6 +1794,7 @@ Codeunit 50120 "PORTALIntegration MFS"
         objLoanRegister.Reset;
         objLoanRegister.SetRange("Loan  No.", LoanNo);
         if objLoanRegister.Find('-') then begin
+            InstantLoanBlockMgt.CheckAvailable(objLoanRegister."Client Code", objLoanRegister."Loan Product Type");
             // objLoanRegister.INIT;
             objLoanRegister."Loan Status" := objLoanRegister."loan status"::Appraisal;
             objLoanRegister.Modify;
@@ -2189,7 +2202,12 @@ Codeunit 50120 "PORTALIntegration MFS"
 
         TrueOrFalse: Boolean;
         OnlineLoanOffsetDetails: Record "Online Loan Offset Details";
+        RefinancingApplication: Record "Online Loan Application";
     BEGIN
+        // LoanType describes the offset loan; check the new application's product.
+        RefinancingApplication.SetRange("Application No", LoanNo);
+        if RefinancingApplication.FindFirst() then
+            InstantLoanBlockMgt.CheckAvailable(RefinancingApplication."BOSA No", RefinancingApplication."Loan Type");
 
         TrueOrFalse := False;
 
@@ -2251,6 +2269,8 @@ Codeunit 50120 "PORTALIntegration MFS"
         ObjLoansToOffset: Record "Loan Offset Details";
         ObjOnlineLoandToOffset: Record "Online Loan Offset Details";
     begin
+        if InstantLoanBlockMgt.IsBlocked(BosaNo, LoanType) then
+            exit(InstantLoanBlockMgt.UnavailableMessage());
         ObjLoanApplications.Reset;
 
         //LoanProductType.Get(LoanType);
@@ -2353,6 +2373,8 @@ Codeunit 50120 "PORTALIntegration MFS"
             ObjLoanApplications.SetRange("BOSA No", memberNumber);
 
             if ObjLoanApplications.FindFirst() then begin
+                if InstantLoanBlockMgt.IsBlocked(ObjLoanApplications."BOSA No", ObjLoanApplications."Loan Type") then
+                    exit(InstantLoanBlockMgt.UnavailableMessage());
                 if ObjLoanApplications."Application Status" <> ObjLoanApplications."Application Status"::Application then begin
                     response := 'Failed, This loan has already been submitted';
                     exit(response);
@@ -2615,6 +2637,7 @@ Codeunit 50120 "PORTALIntegration MFS"
     var
         TempLoansRegister: Record "Loans Register" temporary;
     begin
+        InstantLoanBlockMgt.CheckAvailable(OnlineLoanApplication."BOSA No", OnlineLoanApplication."Loan Type");
         TempLoansRegister.Init();
         TempLoansRegister."Loan  No." := CopyStr(OnlineLoanApplication."Application No", 1, MaxStrLen(TempLoansRegister."Loan  No."));
         TempLoansRegister.Source := TempLoansRegister.Source::BOSA;
@@ -2740,6 +2763,11 @@ Codeunit 50120 "PORTALIntegration MFS"
             exit(false);
         end;
 
+        if InstantLoanBlockMgt.IsBlocked(ObjLoanApplications."BOSA No", ObjLoanApplications."Loan Type") then begin
+            Response := InstantLoanBlockMgt.UnavailableMessage();
+            exit(false);
+        end;
+
         // ValidationMessage := ValidateLoansWithArrears(ObjLoanApplications."BOSA No");
 
         if ValidationMessage <> '' then begin
@@ -2839,6 +2867,9 @@ Codeunit 50120 "PORTALIntegration MFS"
             response := 'Failed, Loan application not found';
             exit;
         end;
+
+        if InstantLoanBlockMgt.IsBlocked(ObjLoanApplications."BOSA No", ObjLoanApplications."Loan Type") then
+            exit(InstantLoanBlockMgt.UnavailableMessage());
 
         OnlineLoanGuarantors.Reset;
         OnlineLoanGuarantors.SetRange("Loan Application No", LoanNo);
@@ -3020,6 +3051,7 @@ Codeunit 50120 "PORTALIntegration MFS"
         TotalLoans: Decimal;
         Multiplier: Decimal;
     begin
+        InstantLoanBlockMgt.CheckAvailable(BosaNo, LoanProdType);
         ReturnDecimal := 0;
         objMember.Reset;
         objMember.SetRange(objMember."No.", BosaNo);
@@ -3230,6 +3262,9 @@ Codeunit 50120 "PORTALIntegration MFS"
         onlineLoanTable.SetRange(onlineLoanTable."Application No", loanNumber);
         onlineLoanTable.SetRange(onlineLoanTable."BOSA No", memberNumber);
         if onlineLoanTable.Find('-') then begin
+            if InstantLoanBlockMgt.IsBlocked(onlineLoanTable."BOSA No", onlineLoanTable."Loan Type") or
+               InstantLoanBlockMgt.IsBlocked(onlineLoanTable."BOSA No", loanType) then
+                exit(InstantLoanBlockMgt.UnavailableMessage());
             if onlineLoanTable.submitted = true then begin
                 response := 'You cannot edit this loan, Already submitted';
                 exit;
@@ -3484,7 +3519,14 @@ Codeunit 50120 "PORTALIntegration MFS"
     var
         loanGuarantors: Record "Loans Guarantee Details";
         member: Record Customer;
+        ApplicationToSubmit: Record "Online Loan Application";
+        RegisterToSubmit: Record "Loans Register";
     begin
+        ApplicationToSubmit.SetRange("Application No", onlineLoanApplicationNumber);
+        if ApplicationToSubmit.FindFirst() then
+            InstantLoanBlockMgt.CheckAvailable(ApplicationToSubmit."BOSA No", ApplicationToSubmit."Loan Type");
+        if RegisterToSubmit.Get(loanRegisterNumber) then
+            InstantLoanBlockMgt.CheckAvailable(RegisterToSubmit."Client Code", RegisterToSubmit."Loan Product Type");
         OnlineLoanGuarantors.Reset();
         OnlineLoanGuarantors.SetRange("Loan Application No", onlineLoanApplicationNumber);
 

@@ -3,6 +3,7 @@ Page 56050 "General Cue"
 {
     PageType = CardPart;
     SourceTable = "Members Cues";
+    RefreshOnActivate = true;
 
     layout
     {
