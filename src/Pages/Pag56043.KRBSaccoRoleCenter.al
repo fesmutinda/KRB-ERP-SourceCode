@@ -1106,6 +1106,26 @@ Page 56043 "KRB Sacco Role Center"
                 Caption = 'Credit Management';
                 ToolTip = 'Manage BOSA Loans Module';
 
+                action(CreditOnlineLoanApplications)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Online Loan Applications';
+                    Image = List;
+                    RunObject = page "Online Loan Applications";
+                    RunPageMode = Edit;
+                    ToolTip = 'View and edit online loan applications.';
+                }
+
+                action(CreditOnlineGuarantorship)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Online Loan Guarantorship Requests';
+                    Image = List;
+                    RunObject = page "Online Guarantorship Requests";
+                    RunPageMode = Edit;
+                    ToolTip = 'View and edit all online loan guarantorship requests.';
+                }
+
                 group("BOSA Loans Management")
                 {
                     Caption = 'New BOSA Loans Applications';
