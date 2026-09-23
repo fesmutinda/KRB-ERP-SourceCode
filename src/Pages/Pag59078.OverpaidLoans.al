@@ -86,12 +86,29 @@ page 59078 "Overpaid Loans"
     {
         area(Processing)
         {
+            action(TransferCustomerOverpayments)
+            {
+                ApplicationArea = All;
+                Caption = 'Transfer Customer Overpayments';
+                Image = TransferFunds;
+                ToolTip = 'Combine all overpaid loans for this member and transfer the total to an outstanding loan, deposits, or share capital. Includes loans hidden by list filters.';
+
+                trigger OnAction()
+                var
+                    TransferDialog: Page "Transfer Loan Overpayment";
+                begin
+                    TransferDialog.SetMember(Rec."Client Code");
+                    TransferDialog.RunModal();
+                    CurrPage.Update(false);
+                end;
+            }
+
             action(TransferOverpayment)
             {
                 ApplicationArea = All;
                 Caption = 'Transfer Overpayment';
                 Image = TransferFunds;
-                ToolTip = 'Clear the excess loan balance by transferring it to another outstanding loan or deposits belonging to the same member.';
+                ToolTip = 'Clear the excess loan balance by transferring it to another outstanding loan, deposits, or share capital belonging to the same member.';
 
                 trigger OnAction()
                 var

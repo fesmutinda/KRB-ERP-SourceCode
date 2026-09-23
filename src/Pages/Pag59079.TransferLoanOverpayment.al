@@ -9,10 +9,24 @@ page 59079 "Transfer Loan Overpayment"
         {
             group(Source)
             {
-                Caption = 'Overpaid Loan';
-                field(SourceLoanNo; SourceLoanNo) { ApplicationArea = All; Caption = 'Loan No.'; Editable = false; }
+                Caption = 'Overpayments';
+                field(SourceLoanNo; SourceLoanNo)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Loan No.';
+                    Editable = false;
+                    Visible = not Cumulative;
+                }
                 field(MemberNo; MemberNo) { ApplicationArea = All; Caption = 'Member No.'; Editable = false; }
-                field(Excess; Excess) { ApplicationArea = All; Caption = 'Overpaid Amount'; Editable = false; }
+                field(MemberName; MemberName) { ApplicationArea = All; Caption = 'Member Name'; Editable = false; }
+                field(SourceCount; SourceCount)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Overpaid Loans Included';
+                    Editable = false;
+                    ToolTip = 'The number of overpaid loans included. Customer transfers include all posted, non-reversed overpaid loans for this member, regardless of list filters.';
+                }
+                field(Excess; Excess) { ApplicationArea = All; Caption = 'Total Overpaid Amount'; Editable = false; }
             }
             group(Transfer)
             {
@@ -21,7 +35,7 @@ page 59079 "Transfer Loan Overpayment"
                 {
                     ApplicationArea = All;
                     Caption = 'Transfer To';
-                    ToolTip = 'Transfer the excess to another loan held by this member, or to the member deposit contributions.';
+                    ToolTip = 'Transfer the excess to an outstanding loan, deposits, or share capital belonging to this member.';
                     trigger OnValidate()
                     begin
                         Clear(TargetLoanNo);
@@ -39,7 +53,8 @@ page 59079 "Transfer Loan Overpayment"
                         Loan: Record "Loans Register";
                     begin
                         Loan.SetRange("Client Code", MemberNo);
-                        Loan.SetFilter("Loan  No.", '<>%1', SourceLoanNo);
+                        if SourceLoanNo <> '' then
+                            Loan.SetFilter("Loan  No.", '<>%1', SourceLoanNo);
                         if Page.RunModal(Page::"Overpayment Target Loans", Loan) = Action::LookupOK then begin
                             TargetLoanNo := Loan."Loan  No.";
                             UpdateAmounts();
@@ -58,7 +73,7 @@ page 59079 "Transfer Loan Overpayment"
                     ApplicationArea = All;
                     Caption = 'Transfer Remainder to Deposits';
                     Enabled = Destination = Destination::Loan;
-                    ToolTip = 'If the excess exceeds the destination loan balance, pay off that loan and transfer the rest to this member deposits.';
+                    ToolTip = 'If the excess exceeds the destination loan balance, pay off that loan and transfer the remainder to this member deposits.';
                     trigger OnValidate()
                     begin
                         UpdateAmounts();
@@ -66,6 +81,7 @@ page 59079 "Transfer Loan Overpayment"
                 }
                 field(LoanAmount; LoanAmount) { ApplicationArea = All; Caption = 'Amount to Loan'; Editable = false; }
                 field(DepositAmount; DepositAmount) { ApplicationArea = All; Caption = 'Amount to Deposits'; Editable = false; }
+                field(ShareAmount; ShareAmount) { ApplicationArea = All; Caption = 'Amount to Share Capital'; Editable = false; }
             }
         }
     }
@@ -74,6 +90,8 @@ page 59079 "Transfer Loan Overpayment"
     var
         TransferMgt: Codeunit "Loan Overpayment Transfer";
         DocumentNo: Code[20];
+        BatchLineCount: Integer;
+        ConfirmationText: Text;
     begin
         if CloseAction <> Action::OK then
             exit(true);
@@ -81,11 +99,21 @@ page 59079 "Transfer Loan Overpayment"
             Error('Select the destination loan.');
         if PostingDate = 0D then
             Error('Specify a posting date.');
-        if not Confirm('Post overpayment transfer for member %1 on %2?\Clear loan %3 by %4.\Credit loan %5 by %6.\Credit deposits by %7.', false,
-            MemberNo, PostingDate, SourceLoanNo, Excess, TargetLoanNo, LoanAmount, DepositAmount) then
+        BatchLineCount := TransferMgt.GetBatchLineCount();
+        ConfirmationText := StrSubstNo('Post overpayment transfer for member %1 on %2?\Clear %3 overpaid loan(s), totalling %4.',
+            MemberNo, PostingDate, SourceCount, Excess);
+        if LoanAmount > 0 then
+            ConfirmationText += StrSubstNo('\Credit loan %1 by %2.', TargetLoanNo, LoanAmount);
+        if DepositAmount > 0 then
+            ConfirmationText += StrSubstNo('\Credit deposits by %1.', DepositAmount);
+        if ShareAmount > 0 then
+            ConfirmationText += StrSubstNo('\Credit share capital by %1.', ShareAmount);
+        ConfirmationText += StrSubstNo('\Delete %1 existing journal line(s) from GENERAL / DEFAULT before posting.', BatchLineCount);
+        if not Confirm(ConfirmationText, false) then
             exit(false);
-        DocumentNo := TransferMgt.PostTransfer(SourceLoanNo, TargetLoanNo, Destination = Destination::Deposits, DepositRemainder, PostingDate, Excess, LoanAmount, DepositAmount);
-        Message('Overpayment transfer %1 posted. Loan %2 now has a zero balance.', DocumentNo, SourceLoanNo);
+        DocumentNo := TransferMgt.PostSources(MemberNo, SourceLoanNo, Sources, TargetLoanNo, Destination, DepositRemainder,
+            PostingDate, LoanAmount, DepositAmount, ShareAmount, BatchLineCount);
+        Message('Overpayment transfer %1 posted. All %2 included source loans now have zero balances.', DocumentNo, SourceCount);
         exit(true);
     end;
 
@@ -94,16 +122,31 @@ page 59079 "Transfer Loan Overpayment"
         Loan: Record "Loans Register";
     begin
         Loan.Get(LoanNo);
-        Loan.TestField(Posted, true);
-        Loan.TestField(Reversed, false);
-        Loan.CalcFields("Outstanding Balance");
+        InitializeTransfer(Loan."Client Code", LoanNo);
+    end;
+
+    procedure SetMember(CustomerNo: Code[20])
+    begin
+        InitializeTransfer(CustomerNo, '');
+    end;
+
+    local procedure InitializeTransfer(CustomerNo: Code[20]; LoanNo: Code[20])
+    var
+        TransferMgt: Codeunit "Loan Overpayment Transfer";
+        Member: Record Customer;
+    begin
+        Member.Get(CustomerNo);
+        MemberNo := CustomerNo;
+        MemberName := Member.Name;
         SourceLoanNo := LoanNo;
-        MemberNo := Loan."Client Code";
-        Excess := -Loan."Outstanding Balance";
-        if Excess <= 0 then
-            Error('This loan no longer has an overpayment.');
+        Cumulative := LoanNo = '';
+        Excess := TransferMgt.CollectOverpayments(MemberNo, SourceLoanNo, Sources);
+        SourceCount := Sources.Count();
         PostingDate := WorkDate();
         DepositRemainder := true;
+        Destination := Destination::Loan;
+        Clear(TargetLoanNo);
+        UpdateAmounts();
     end;
 
     local procedure UpdateAmounts()
@@ -112,19 +155,25 @@ page 59079 "Transfer Loan Overpayment"
     begin
         Clear(LoanAmount);
         Clear(DepositAmount);
+        Clear(ShareAmount);
         if (Destination = Destination::Loan) and (TargetLoanNo = '') then
             exit;
-        TransferMgt.GetAmounts(SourceLoanNo, TargetLoanNo, Destination = Destination::Deposits, DepositRemainder, Excess, LoanAmount, DepositAmount);
+        TransferMgt.GetDestinationAmounts(MemberNo, Sources, TargetLoanNo, Destination, DepositRemainder, LoanAmount, DepositAmount, ShareAmount);
     end;
 
     var
         SourceLoanNo: Code[20];
         MemberNo: Code[20];
+        MemberName: Text[100];
         TargetLoanNo: Code[20];
-        Destination: Option Loan,Deposits;
+        Destination: Enum "Overpayment Destination";
+        Sources: Dictionary of [Code[20], Decimal];
+        Cumulative: Boolean;
+        SourceCount: Integer;
         DepositRemainder: Boolean;
         PostingDate: Date;
         Excess: Decimal;
         LoanAmount: Decimal;
         DepositAmount: Decimal;
+        ShareAmount: Decimal;
 }

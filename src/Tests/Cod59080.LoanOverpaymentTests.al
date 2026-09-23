@@ -72,6 +72,110 @@ codeunit 59080 "Loan Overpayment Tests"
         AssertAmounts(100, 0.01);
     end;
 
+
+    [Test]
+    procedure FullExcessGoesToShareCapital()
+    var
+        ShareAmount: Decimal;
+    begin
+        TransferMgt.AllocateDestination(1250.25, 0, "Overpayment Destination"::"Share Capital", false, LoanAmount, DepositAmount, ShareAmount);
+        AssertAmounts(0, 0);
+        if ShareAmount <> 1250.25 then
+            Error('Expected share capital 1250.25; received %1.', ShareAmount);
+    end;
+
+    [Test]
+    procedure SwitchingFromSharesClearsPreviousAllocation()
+    var
+        ShareAmount: Decimal;
+    begin
+        ShareAmount := 1250.25;
+        TransferMgt.AllocateDestination(1250.25, 0, "Overpayment Destination"::Deposits, false, LoanAmount, DepositAmount, ShareAmount);
+        AssertAmounts(0, 1250.25);
+        if ShareAmount <> 0 then
+            Error('Share capital allocation must be cleared when switching to deposits.');
+    end;
+
+    [Test]
+    procedure CustomerOverpaymentsAreAccumulatedForDeposits()
+    var
+        Sources: Dictionary of [Code[20], Decimal];
+        ShareAmount: Decimal;
+    begin
+        Sources.Add('LOAN-A', 1000.25);
+        Sources.Add('LOAN-B', 250.50);
+        TransferMgt.GetDestinationAmounts('MEMBER-A', Sources, '', "Overpayment Destination"::Deposits, false, LoanAmount, DepositAmount, ShareAmount);
+        AssertAmounts(0, 1250.75);
+        if ShareAmount <> 0 then
+            Error('Deposits must not allocate to share capital.');
+    end;
+
+    [Test]
+    procedure CustomerOverpaymentsAreAccumulatedForShares()
+    var
+        Sources: Dictionary of [Code[20], Decimal];
+        ShareAmount: Decimal;
+    begin
+        Sources.Add('LOAN-A', 1000.25);
+        Sources.Add('LOAN-B', 250.50);
+        TransferMgt.GetDestinationAmounts('MEMBER-A', Sources, '', "Overpayment Destination"::"Share Capital", false, LoanAmount, DepositAmount, ShareAmount);
+        AssertAmounts(0, 0);
+        if ShareAmount <> 1250.75 then
+            Error('Expected combined share capital 1250.75; received %1.', ShareAmount);
+    end;
+
+    [Test]
+    procedure UnchangedSourceSnapshotIsAccepted()
+    var
+        ExpectedSources: Dictionary of [Code[20], Decimal];
+        CurrentSources: Dictionary of [Code[20], Decimal];
+    begin
+        ExpectedSources.Add('LOAN-A', 100);
+        ExpectedSources.Add('LOAN-B', 200);
+        CurrentSources.Add('LOAN-B', 200);
+        CurrentSources.Add('LOAN-A', 100);
+        TransferMgt.ValidateSnapshot(ExpectedSources, CurrentSources);
+    end;
+
+    [Test]
+    procedure ChangedSourcesWithSameTotalAreRejected()
+    var
+        ExpectedSources: Dictionary of [Code[20], Decimal];
+        CurrentSources: Dictionary of [Code[20], Decimal];
+    begin
+        ExpectedSources.Add('LOAN-A', 100);
+        ExpectedSources.Add('LOAN-B', 200);
+        CurrentSources.Add('LOAN-A', 150);
+        CurrentSources.Add('LOAN-B', 150);
+        asserterror TransferMgt.ValidateSnapshot(ExpectedSources, CurrentSources);
+        AssertErrorContains('source loan balances have changed');
+    end;
+
+    [Test]
+    procedure AddedOverpaidLoanRequiresNewPreview()
+    var
+        ExpectedSources: Dictionary of [Code[20], Decimal];
+        CurrentSources: Dictionary of [Code[20], Decimal];
+    begin
+        ExpectedSources.Add('LOAN-A', 100);
+        CurrentSources.Add('LOAN-A', 100);
+        CurrentSources.Add('LOAN-B', 200);
+        asserterror TransferMgt.ValidateSnapshot(ExpectedSources, CurrentSources);
+        AssertErrorContains('source loans have changed');
+    end;
+
+    [Test]
+    procedure ReplacedSourceWithSameAmountIsRejected()
+    var
+        ExpectedSources: Dictionary of [Code[20], Decimal];
+        CurrentSources: Dictionary of [Code[20], Decimal];
+    begin
+        ExpectedSources.Add('LOAN-A', 100);
+        CurrentSources.Add('LOAN-B', 100);
+        asserterror TransferMgt.ValidateSnapshot(ExpectedSources, CurrentSources);
+        AssertErrorContains('source loans have changed');
+    end;
+
     local procedure AssertAmounts(ExpectedLoan: Decimal; ExpectedDeposit: Decimal)
     begin
         if (LoanAmount <> ExpectedLoan) or (DepositAmount <> ExpectedDeposit) then
